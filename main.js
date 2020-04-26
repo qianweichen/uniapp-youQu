@@ -6,6 +6,47 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 
 const app = new Vue({
-    ...App
+	...App
 })
 app.$mount()
+
+//request
+Vue.prototype.request = function(obj) {
+	uni.request({
+		url: obj.url || '',
+		data: obj.data || {},
+		method: obj.method || 'GET',
+		header: obj.header || {
+			"Content-Type": "application/json"
+		},
+		success: (res) => {
+			typeof obj.success == "function" && obj.success(res);
+		},
+		fail: (res) => {
+			console.log('request错误：', res);
+			uni.showToast({
+				title: '网络错误',
+				icon: 'none'
+			})
+		}
+	})
+}
+//uploadFile
+Vue.prototype.uploadFile = function(obj) {
+	uni.uploadFile({
+		url: obj.url || '',
+		filePath: obj.filePath || '',
+		name: obj.name || '',
+		formData: obj.formData || {},
+		success: function(res) {
+			typeof obj.success == "function" && obj.success(res);
+		},
+		fail: function() {
+			console.log('uploadFile错误：', res);
+			uni.showToast({
+				title: '网络错误',
+				icon: 'none'
+			})
+		}
+	})
+}
