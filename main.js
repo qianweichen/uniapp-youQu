@@ -10,7 +10,7 @@ const app = new Vue({
 })
 app.$mount()
 
-//判断授权
+//判断授权 已授权为true
 Vue.prototype.beAuthorized = function() {
 	var userInfo = uni.getStorageSync('userInfo');
 	if (userInfo) return true;
