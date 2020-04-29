@@ -10,6 +10,13 @@ const app = new Vue({
 })
 app.$mount()
 
+//判断授权
+Vue.prototype.beAuthorized = function() {
+	var userInfo = uni.getStorageSync('userInfo');
+	if (userInfo) return true;
+	return false;
+}
+
 //request
 Vue.prototype.request = function(obj) {
 	uni.request({
