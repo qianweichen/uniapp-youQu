@@ -1,0 +1,65 @@
+/* 样式 */
+.circle {
+	border-radius: 50%;
+}
+
+/* 布局 */
+.flex {
+	display: flex;
+	align-items: center;
+}
+
+.flex-between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flex-around {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+/* 字体 */
+.bold {
+	font-weight: bold;
+}
+
+.fs-22 {
+	font-size: 22rpx;
+}
+
+.fs-26 {
+	font-size: 26rpx;
+}
+
+.fs-28 {
+	font-size: 28rpx;
+}
+.fs-30 {
+	font-size: 30rpx;
+}
+.fs-32 {
+	font-size: 32rpx;
+}
+
+/* 分享 */
+button.share {
+	padding: 0;
+	margin: 0;
+	background: transparent;
+	color: inherit;
+	font-size: inherit;
+	line-height: initial;
+}
+
+button.share::after {
+	border: none;
+}

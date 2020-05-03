@@ -38,23 +38,5 @@ export default {
 
 <style>
 /*每个页面公共css */
-.flex {
-	display: flex;
-	align-items: center;
-}
-.flex-between {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-.flex-center {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.flex-around {
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-}
+@import "@/common/common.css";
 </style>
