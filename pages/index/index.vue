@@ -43,13 +43,16 @@ export default {
 	},
 	data() {
 		return {
-			tabIndex: 'home',
-			loadTabList:[true,false,false,false]
+			tabIndex: 'find',
+			loadTabList:[false,true,false,false]
 		};
 	},
 	methods: {
 		changeTabIndex(index) {
 			this.tabIndex = index;
+			if(index=="home"&&!this.loadTabList[0]){
+				this.loadTabList[0] = true;
+			}
 			if(index=="find"&&!this.loadTabList[1]){
 				this.loadTabList[1] = true;
 			}

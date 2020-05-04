@@ -31,7 +31,9 @@
 .bold {
 	font-weight: bold;
 }
-
+.fs-20 {
+	font-size: 20rpx;
+}
 .fs-22 {
 	font-size: 22rpx;
 }

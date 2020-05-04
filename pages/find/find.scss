@@ -1,0 +1,107 @@
+.page-find{
+	height: 100%;
+	overflow-y: auto;
+	background-color: $themeColor;
+	color: #fff;
+	.myCircle{
+		.title{
+			padding: 40rpx 30rpx;
+			.left{
+				image{
+					width: 44rpx;
+					height: auto;
+					margin-right: 17rpx;
+				}
+			}
+			.right{
+				width:210rpx;
+				height:54rpx;
+				border:1px solid rgba(188,188,192,1);
+				border-radius:28rpx;
+				image{
+					width: 22rpx;
+					height: auto;
+					margin-right: 17rpx;
+				}
+			}
+		}
+		.list{
+			padding-left: 30rpx;
+			display: -webkit-box;
+			overflow-x: scroll;
+			-webkit-overflow-scrolling:touch;
+			.item{
+				margin-right: 10rpx;
+				box-sizing: border-box;
+				text-align: center;
+				width:220rpx;
+				height:380rpx;
+				background:$ornamentColor;
+				border-radius:8rpx;
+				padding: 30rpx 21rpx;
+				.headerBox{
+					width:128rpx;
+					height:128rpx;
+					border: 2rpx solid #fff;
+					margin: 0 auto;
+					image{
+						width: 100%;
+						height: 100%;
+					}
+				}
+				.join{
+					margin: 0 auto;
+					margin-top: 27rpx;
+					width:134rpx;
+					height:46rpx;
+					border:2rpx solid rgba(134,133,141,1);
+					border-radius:24rpx;
+				}
+				.bold{
+					padding: 14rpx 0;
+				}
+				.fs-20{
+					overflow : hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					-webkit-box-orient: vertical;
+				}
+			}
+		}
+	}
+	.mid-banner{
+		width: 690rpx;
+		height: auto;
+		display: block;
+		margin: 0 auto;
+		border-radius:8rpx;
+		margin-top: 42rpx;
+	}
+	.recommend{
+		.title{
+			.right{
+				width:180rpx;
+				height:54rpx;
+			}
+		}
+		.recommend-list{
+			padding: 0 30rpx;
+			.item{
+				padding-bottom: 40rpx;
+				.header{
+					width:50px;
+					height:50px;
+					border:2rpx solid #fff;
+					margin-right: 20rpx;
+				}
+				.join{
+					width:134rpx;
+					height:46rpx;
+					background:#7364BD;
+					border-radius:24rpx;
+				}
+			}
+		}
+	}
+}

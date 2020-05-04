@@ -2,7 +2,7 @@ export default {
 	data() {
 		return {
 			customBar: this.CustomBar,
-			topCustomBar: '', //顶部状态栏高度
+			topCustomBar: 0, //顶部状态栏高度
 			tabsFlag: true, //推荐/喜欢
 			videoIndex: 0, //当前视频下标
 			videoContext: '', //视频对象

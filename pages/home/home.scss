@@ -1,38 +1,38 @@
-.page-home {
-	height: 100%;
-	.topTab {
-		width: 100%;
-		background-color: $themeColor;
-		position: fixed;
-		top: 0;
-		left: 0;
-		.tabs {
-			width: 192rpx;
-			color: #908e99;
-			> view {
-				position: relative;
-			}
-			.line {
-				width: 22rpx;
-				height: 4rpx;
-				background: #fff;
-				border-radius: 2rpx;
-				position: absolute;
-				left: calc(50% - 11rpx);
-				bottom: -15rpx;
-			}
-			.active {
-				color: #fff;
-			}
+.topTab {
+	width: 100%;
+	background-color: $themeColor;
+	position: fixed;
+	top: 0;
+	left: 0;
+	.tabs {
+		width: 192rpx;
+		color: #908e99;
+		> view {
+			position: relative;
 		}
-		.search {
-			width: 40rpx;
-			height: 40rpx;
+		.line {
+			width: 22rpx;
+			height: 4rpx;
+			background: #fff;
+			border-radius: 2rpx;
 			position: absolute;
-			left: 30rpx;
-			top: calc(50% - 10rpx);
+			left: calc(50% - 11rpx);
+			bottom: -15rpx;
+		}
+		.active {
+			color: #fff;
 		}
 	}
+	.search {
+		width: 40rpx;
+		height: 40rpx;
+		position: absolute;
+		left: 30rpx;
+		top: calc(50% - 10rpx);
+	}
+}
+.page-home {
+	height: 100%;
 	swiper {
 		background-color: #000;
 	}
@@ -161,13 +161,13 @@
 				right: 30rpx;
 			}
 		}
-		.sendComment{
+		.sendComment {
 			padding: 0 32rpx;
 			height: 110rpx;
-			input{
+			input {
 				width: 600rpx;
 			}
-			.send{
+			.send {
 				width: 55rpx;
 				height: auto;
 			}
