@@ -3,6 +3,7 @@
 	overflow-y: auto;
 	background-color: $themeColor;
 	color: #fff;
+	// 圈子
 	.myCircle{
 		.title{
 			padding: 40rpx 30rpx;
@@ -72,7 +73,7 @@
 	}
 	.mid-banner{
 		width: 690rpx;
-		height: auto;
+		height: 202rpx;
 		display: block;
 		margin: 0 auto;
 		border-radius:8rpx;

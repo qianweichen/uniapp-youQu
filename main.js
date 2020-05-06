@@ -10,6 +10,25 @@ const app = new Vue({
 })
 app.$mount()
 
+//跳转页面
+Vue.prototype.goPage = function(url){
+	uni.navigateTo({
+		url
+	})
+}
+
+//返回上一页
+Vue.prototype.goBack = function(){
+	uni.navigateBack();
+}
+
+//返回主页
+Vue.prototype.goHome = function(){
+	uni.reLaunch({
+		url:'/pages/index/index'
+	});
+}
+
 //判断授权 已授权为true
 Vue.prototype.beAuthorized = function() {
 	var userInfo = uni.getStorageSync('userInfo');

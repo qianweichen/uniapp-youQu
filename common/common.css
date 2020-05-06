@@ -26,10 +26,21 @@
 	align-items: center;
 	justify-content: space-around;
 }
+.align-star{
+	align-items:flex-start;
+}
+.flex-column-between{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
 
 /* 字体 */
 .bold {
 	font-weight: bold;
+}
+.fc-f{
+	color: #fff;
 }
 .fs-20 {
 	font-size: 20rpx;
@@ -37,7 +48,9 @@
 .fs-22 {
 	font-size: 22rpx;
 }
-
+.fs-24 {
+	font-size: 24rpx;
+}
 .fs-26 {
 	font-size: 26rpx;
 }

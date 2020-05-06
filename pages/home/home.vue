@@ -1,8 +1,8 @@
 <template>
 	<view class="page-home">
 		<!-- tab -->
-		<view class="topTab flex-center" :style="'height:' + (customBar + 10) + 'px;'">
-			<view class="tabs flex-between fs-32" :style="'padding-top:' + topCustomBar / 2 + 'px;'">
+		<view class="topTab flex-center" :style="'height:' + (customBar + topCustomBar) + 'px;'">
+			<view class="tabs flex-between fs-32">
 				<view @click="changeTabs(true)">
 					<text :class="{ active: tabsFlag }">推荐</text>
 					<view v-if="tabsFlag" class="line"></view>
@@ -14,7 +14,7 @@
 			</view>
 			<image class="search" src="../../static/search.png" mode="widthFix"></image>
 		</view>
-		<view :style="'height:' + (customBar + 10) + 'px;'"></view>
+		<view :style="'height:' + (customBar + topCustomBar) + 'px;'"></view>
 		<!-- 视频 -->
 		<swiper @change="changeSwiper" vertical :style="'height:calc(100% - ' + (customBar + 10) + 'px);'">
 			<swiper-item v-for="(item, index) in 3" :key="index">

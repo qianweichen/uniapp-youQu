@@ -30,6 +30,12 @@
 				"navigationBarTitleText": "站内信"
 			}
         }
+        ,{
+            "path" : "pages/circle/circle",
+            "style" : {
+				"navigationBarTitleText": "圈子"
+			}
+        }
     ],
 	"globalStyle": {
 		"backgroundColor": "#F8F8F8",

@@ -2,8 +2,9 @@ export default {
 	data() {
 		return {
 			customBar: this.CustomBar,
+			topCustomBar: this.StatusBar, //顶部状态栏高度
 			tabsFlag: true, //圈子/动态
-			topCustomBar: 0, //顶部状态栏高度
+			dynamicList: [1, 2, 3]
 		}
 	},
 	methods: {
@@ -14,11 +15,5 @@ export default {
 	},
 	created() {
 		console.log('findCreated');
-		//获取顶部状态栏高度
-		uni.getSystemInfo({
-			success: res => {
-				this.topCustomBar = res.statusBarHeight;
-			}
-		});
 	}
 }

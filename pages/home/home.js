@@ -2,7 +2,7 @@ export default {
 	data() {
 		return {
 			customBar: this.CustomBar,
-			topCustomBar: 0, //顶部状态栏高度
+			topCustomBar: this.StatusBar, //顶部状态栏高度
 			tabsFlag: true, //推荐/喜欢
 			videoIndex: 0, //当前视频下标
 			videoContext: '', //视频对象
@@ -46,11 +46,5 @@ export default {
 	},
 	created() {
 		console.log('homeCreated');
-		//获取顶部状态栏高度
-		uni.getSystemInfo({
-			success: res => {
-				this.topCustomBar = res.statusBarHeight;
-			}
-		});
 	}
 };

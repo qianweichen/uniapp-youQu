@@ -4,6 +4,7 @@
 	position: fixed;
 	top: 0;
 	left: 0;
+	z-index: 1;
 	.tabs {
 		width: 192rpx;
 		color: #908e99;
@@ -28,7 +29,7 @@
 		height: 40rpx;
 		position: absolute;
 		left: 30rpx;
-		top: calc(50% - 10rpx);
+		top: calc(50% - 20rpx);
 	}
 }
 .page-home {
