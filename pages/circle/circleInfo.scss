@@ -1,0 +1,118 @@
+.page-circleInfo {
+	.banner {
+		height: 400rpx;
+		background-repeat: no-repeat;
+		background-position: 0 0;
+		background-size: contain;
+		background-attachment: fixed;
+		background-color: rgba(0, 0, 0, 0.2);
+		background-blend-mode: multiply;
+		position: relative;
+		.tsBox {
+			position: absolute;
+			right: 32rpx;
+			top: 174rpx;
+			text-align: center;
+			.ts {
+				width: 60rpx;
+				height: auto;
+			}
+		}
+	}
+	.personInfo {
+		width: 400rpx;
+		margin: 0 auto;
+		text-align: center;
+		position: relative;
+		top: -60rpx;
+		.header {
+			width: 120rpx;
+			height: 120rpx;
+			border: 2rpx solid #fff;
+		}
+		.bold {
+			padding-top: 12rpx;
+			padding-bottom: 8rpx;
+		}
+		.fs-24 {
+			width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+	.list {
+		padding: 0 30rpx;
+		.item {
+			padding: 54rpx 0;
+			border-bottom: 2rpx solid $ornamentColor;
+			.left {
+				image {
+					width: 40rpx;
+					height: 40rpx;
+					margin-right: 24rpx;
+				}
+			}
+			.right {
+				.header {
+					width: 48rpx;
+					height: 48rpx;
+				}
+				.fc-d{
+					margin: 0 20rpx;
+				}
+				.right-icon {
+					width: 16rpx;
+					height: auto;
+				}
+				.headerBox{
+					padding-right: 28rpx;
+					.header{
+						margin-left: -12rpx;
+					}
+				}
+			}
+		}
+	}
+	.guifan{
+		padding: 50rpx 30rpx;
+		color: #7364BD;
+	}
+	.complaint{
+		color: #000;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 320px;
+		background-color: #fff;
+		border-radius:8rpx 8rpx 0px 0px;
+		padding: 60rpx 50rpx;
+		box-sizing: border-box;
+		.title{
+			text-align: center;
+			position: relative;
+			image{
+				width: 27rpx;
+				height: 27rpx;
+				position: absolute;
+				right: 0;
+				top: calc(50% - 18.5rpx);
+			}
+		}
+		.textarea{
+			width: 100%;
+			height: 334rpx;
+			background-color: rgba(0,0,0,0.1);
+			border-radius:8rpx;
+			margin: 36rpx 0;
+			padding: 30rpx;
+			box-sizing: border-box;
+		}
+		.btn{
+			height: 90rpx;
+			background-color: #7364BD;
+			border-radius:8rpx;
+		}
+	}
+}

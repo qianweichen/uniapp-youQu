@@ -1,15 +1,7 @@
 <template>
 	<view class="page-circle">
-		<view class="backBtnBox flex-center" :style="'height:' + (customBar + topCustomBar) + 'px; '">
-			<view class="backBtn flex-around">
-				<image @click="goBack" class="back" src="../../static/w_back.png" mode="widthFix"></image>
-				<view class="line"></view>
-				<image @click="goHome" class="home" src="../../static/w_home.png" mode="widthFix"></image>
-			</view>
-		</view>
-		<view class="topInfoBox">
-			<image class="bg" src="../../static/logo.png" mode="aspectFill"></image>
-			<view class="mask"></view>
+		<backCapsule type="capsule"></backCapsule>
+		<view class="topInfoBox" :style="'background-image: url(' + '../../static/logo.png' + ');'">
 			<view class="info">
 				<view class="flex-between align-star">
 					<view class="flex info-left">
@@ -45,8 +37,6 @@ export default {
 	},
 	data() {
 		return {
-			customBar: this.CustomBar,
-			topCustomBar: this.StatusBar,
 			dynamicList:[1,2,3]
 		};
 	},

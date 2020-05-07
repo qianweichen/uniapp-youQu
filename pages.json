@@ -5,38 +5,53 @@
 			"style": {
 				"navigationBarTitleText": "友趣"
 			}
-		}
-	    ,{
-            "path" : "pages/home/home",
-            "style" : {
+		}, {
+			"path": "pages/home/home",
+			"style": {
 				"navigationBarTitleText": "主页"
 			}
-        }
-        ,{
-            "path" : "pages/find/find",
-            "style" : {
+		}, {
+			"path": "pages/find/find",
+			"style": {
 				"navigationBarTitleText": "发现"
 			}
-        }
-        ,{
-            "path" : "pages/mine/mine",
-            "style" : {
+		}, {
+			"path": "pages/mine/mine",
+			"style": {
 				"navigationBarTitleText": "我的"
 			}
-        }
-        ,{
-            "path" : "pages/message/message",
-            "style" : {
+		}, {
+			"path": "pages/message/message",
+			"style": {
 				"navigationBarTitleText": "站内信"
 			}
-        }
-        ,{
-            "path" : "pages/circle/circle",
-            "style" : {
+		}, {
+			"path": "pages/circle/circle",
+			"style": {
 				"navigationBarTitleText": "圈子"
 			}
-        }
-    ],
+		}, {
+			"path": "pages/articleDetails/articleDetails",
+			"style": {
+				"navigationBarTitleText": "帖子详情"
+			}
+		}, {
+			"path": "pages/circle/circleInfo",
+			"style": {
+				"navigationBarTitleText": "圈子资料"
+			}
+		}, {
+			"path": "pages/circle/circleManager",
+			"style": {
+				"navigationBarTitleText": "管理员"
+			}
+		}, {
+			"path": "pages/task/task",
+			"style": {
+				"navigationBarTitleText": "任务"
+			}
+		}
+	],
 	"globalStyle": {
 		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "custom"

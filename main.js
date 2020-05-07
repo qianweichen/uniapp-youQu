@@ -10,6 +10,13 @@ const app = new Vue({
 })
 app.$mount()
 
+//顶部tabbar
+import navigationBar from "./components/navigationBar/navigationBar.vue";
+Vue.component("navigationBar",navigationBar);
+//返回胶囊
+import backCapsule from "./components/backCapsule/backCapsule.vue";
+Vue.component("backCapsule",backCapsule);
+
 //跳转页面
 Vue.prototype.goPage = function(url){
 	uni.navigateTo({

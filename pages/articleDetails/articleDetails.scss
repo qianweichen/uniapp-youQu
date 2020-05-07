@@ -1,0 +1,147 @@
+.page-articleDetails {
+	padding: 0 30rpx;
+	padding-bottom: 120rpx;
+	.list {
+		.item {
+			.header {
+				image {
+					width: 60rpx;
+					height: 60rpx;
+				}
+				.fs-28 {
+					padding: 0 20rpx;
+				}
+				.fs-26 {
+					color: #aaa;
+				}
+			}
+			.content {
+				padding: 26rpx 0 30rpx 0;
+				line-height: 40rpx;
+			}
+			.mediaBox {
+				> view {
+					display: flex;
+					flex-wrap: wrap;
+					image {
+						display: block;
+						border-radius: 8rpx;
+						margin-right: 10rpx;
+					}
+				}
+				.one {
+					image {
+						width: 372rpx;
+						height: 596rpx;
+					}
+				}
+				.two {
+					image {
+						width: 340rpx;
+						height: 340rpx;
+					}
+					image:last-child {
+						margin: 0;
+					}
+				}
+				.more {
+					image {
+						width: 222rpx;
+						height: 222rpx;
+						margin-bottom: 10rpx;
+					}
+					image:nth-child(3n) {
+						margin: 0;
+					}
+				}
+			}
+			.bottom {
+				padding-top: 30rpx;
+				.circleName {
+					width: 178rpx;
+					height: 56rpx;
+					background: $ornamentColor;
+					border-radius: 12rpx;
+				}
+				.header {
+					width: 40rpx;
+					height: 40rpx;
+					margin-right: 11rpx;
+				}
+				.function {
+					.flex {
+						margin-right: 49rpx;
+					}
+					image {
+						width: 32rpx;
+						height: auto;
+						margin-right: 12rpx;
+					}
+				}
+				.more {
+					width: 32rpx;
+				}
+			}
+		}
+		.item:last-child {
+			border: none;
+		}
+	}
+	.circleName {
+		height: 120rpx;
+		background: #2A263D;
+		border-radius: 12rpx;
+		padding: 16rpx 30rpx;
+		margin: 40rpx 0;
+		.header {
+			width: 90rpx;
+			height: 90rpx;
+			margin-right: 19rpx;
+		}
+		.right {
+			width: 16rpx;
+			height: auto;
+		}
+		.bold {
+			padding-bottom: 12rpx;
+		}
+	}
+	.comment {
+		padding-bottom: 50rpx;
+		.header {
+			width: 66rpx;
+			height: 66rpx;
+			margin-right: 20rpx;
+		}
+		.fs-30{
+			padding-top: 12rpx;
+		}
+		.right {
+			text-align: center;
+			.good {
+				width: 30rpx;
+				height: 30rpx;
+			}
+		}
+	}
+	.sendBox{
+		width: 100%;
+		height: 120rpx;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		background-color: $themeColor;
+		padding: 30rpx 28rpx;
+		box-sizing: border-box;
+		.box{
+			height:64rpx;
+			background:#3F3D46;
+			border-radius:32rpx;
+			padding: 0 32rpx;
+			.send{
+				width: 38rpx;
+				height: 38rpx;
+			}
+		}
+	}
+}

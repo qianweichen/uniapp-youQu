@@ -62,7 +62,7 @@ import dynamicList from '@/components/dynamic/dynamic.vue';
 						</view>
 						<button type="default" class="share flex" open-type="share">
 							<image src="../../static/wechat.png" mode="widthFix"></image>
-							<text>320</text>
+							<text>分享</text>
 						</button>
 					</view>
 					<!-- 圈子首页 -->
