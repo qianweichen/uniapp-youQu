@@ -1,19 +1,31 @@
 /* 样式 */
-.dark-bg{
+
+.btn-big {
+	width:690rpx;
+	margin: 0 auto;
+	height: 80rpx;
+	border-radius: 40rpx;
+	background-color: #7364BD;
+}
+
+.dark-bg {
 	min-height: 100vh;
 	background-color: #1f1d2b;
 	color: #fff;
 }
+
 .circle {
 	border-radius: 50%;
 }
-.mask{
+
+.mask {
 	position: fixed;
 	left: 0;
 	top: 0;
+	z-index: 1;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* 布局 */
@@ -39,10 +51,12 @@
 	align-items: center;
 	justify-content: space-around;
 }
-.align-star{
-	align-items:flex-start;
+
+.align-star {
+	align-items: flex-start;
 }
-.flex-column-between{
+
+.flex-column-between {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -52,24 +66,35 @@
 .bold {
 	font-weight: bold;
 }
-.fc-f{
+
+.fc-f {
 	color: #fff;
 }
-.fc-d{
+
+.fc-d {
 	color: #ddd;
 }
-.fc-9{
+
+.fc-9 {
 	color: #999;
 }
+
+.fs-18 {
+	font-size: 18rpx;
+}
+
 .fs-20 {
 	font-size: 20rpx;
 }
+
 .fs-22 {
 	font-size: 22rpx;
 }
+
 .fs-24 {
 	font-size: 24rpx;
 }
+
 .fs-26 {
 	font-size: 26rpx;
 }
@@ -77,15 +102,23 @@
 .fs-28 {
 	font-size: 28rpx;
 }
+
 .fs-30 {
 	font-size: 30rpx;
 }
+
 .fs-32 {
 	font-size: 32rpx;
 }
+
 .fs-36 {
 	font-size: 36rpx;
 }
+
+.fs-46 {
+	font-size: 46rpx;
+}
+
 /* 分享 */
 button.share {
 	padding: 0;

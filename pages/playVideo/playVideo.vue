@@ -1,20 +1,6 @@
 <template>
-	<view class="page-home">
-		<!-- tab -->
-		<view class="topTab flex-center" :style="'height:' + (customBar + topCustomBar) + 'px;'">
-			<view class="tabs flex-between fs-32">
-				<view @click="changeTabs(true)">
-					<text :class="{ active: tabsFlag }">推荐</text>
-					<view v-if="tabsFlag" class="line"></view>
-				</view>
-				<view @click="changeTabs(false)">
-					<text :class="{ active: !tabsFlag }">关注</text>
-					<view v-if="!tabsFlag" class="line"></view>
-				</view>
-			</view>
-			<image @click="goPage('/pages/search/search')" class="search" src="../../static/search.png" mode="widthFix"></image>
-		</view>
-		<view :style="'height:' + (customBar + topCustomBar) + 'px;'"></view>
+	<view>
+		<backCapsule type="normal"></backCapsule>
 		<!-- 视频 -->
 		<swiper @change="changeSwiper" vertical :style="'height:calc(100% - ' + (customBar + 10) + 'px);'">
 			<swiper-item v-for="(item, index) in 3" :key="index">
@@ -92,7 +78,7 @@
 							</view>
 							<view class="likeBox">
 								<image class="like" src="../../static/like2.png" mode="widthFix"></image>
-								<view class="fs-26" :style="'color: #' + (false?'999':'7364BD') + ';'">205</view>
+								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">205</view>
 							</view>
 						</view>
 						<!-- 二级评论 -->
@@ -107,7 +93,7 @@
 							</view>
 							<view class="likeBox">
 								<image class="like" src="../../static/like2.png" mode="widthFix"></image>
-								<view class="fs-26" :style="'color: #' + (false?'999':'7364BD') + ';'">205</view>
+								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">205</view>
 							</view>
 						</view>
 						<!-- 查看全部 -->
@@ -119,7 +105,7 @@
 				</view>
 			</scroll-view>
 			<view class="sendComment flex-between">
-				<input type="text" placeholder="留下你的精彩评论吧" maxlength="30"/>
+				<input type="text" placeholder="留下你的精彩评论吧" maxlength="30" />
 				<image class="send" src="../../static/send.png" mode="widthFix"></image>
 			</view>
 		</view>
@@ -127,12 +113,51 @@
 </template>
 
 <script>
-import homeJs from "./home.js";
 export default {
-	...homeJs
+	data() {
+		return {
+			videoIndex: 0, //当前视频下标
+			videoContext: '', //视频对象
+			progressNum: 0, //视频播放进度百分比
+			showVideoPlayBtn: false ,//控制播放按钮
+			showCommentFlag:false	//评论弹窗
+		};
+	},
+	methods:{
+		//滑动视频
+		changeSwiper(e) {
+			this.progressNum = 0; //重置百分比
+			this.videoIndex = e.detail.current; //设置视频下标
+			this.videoContext = uni.createVideoContext('myVideo', this); //获取视频对象
+		},
+		// 视频进度改变
+		videoTimeUpdate(e) {
+			this.progressNum = (e.detail.currentTime / e.detail.duration) * 100;
+		},
+		//暂停视频
+		pauseVideo() {
+			this.videoContext.stop();
+			this.showVideoPlayBtn = true;
+		},
+		//播放视频
+		playVideo() {
+			this.videoContext.play();
+			this.showVideoPlayBtn = false;
+		},
+		//评论弹窗
+		showCommentFun(){
+			this.showCommentFlag = true;
+		},
+		hideCommentFun(){
+			this.showCommentFlag = false;
+		}
+	}
 };
 </script>
 
 <style lang="scss">
-@import './home.scss';
+@import '@/pages/home/home.scss';
+swiper{
+	height: 100vh;
+}
 </style>

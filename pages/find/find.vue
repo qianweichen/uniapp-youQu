@@ -12,7 +12,7 @@
 					<view v-if="!tabsFlag" class="line"></view>
 				</view>
 			</view>
-			<image class="search" src="../../static/search.png" mode="widthFix"></image>
+			<image @click="goPage('/pages/search/search')" class="search" src="../../static/search.png" mode="widthFix"></image>
 		</view>
 		<view :style="'height:' + (customBar + topCustomBar) + 'px;'"></view>
 		<!-- 我加入的圈子 -->

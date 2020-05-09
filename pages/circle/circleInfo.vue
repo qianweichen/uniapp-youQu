@@ -24,7 +24,7 @@
 					<text class="fs-26 fc-d">乖乖是只猫</text>
 				</view>
 			</view>
-			<view class="item flex-between">
+			<view class="item flex-between" @click="goPage('/pages/circle/circleManager?id=' + '1')">
 				<view class="left flex">
 					<image src="../../static/gly.png" mode="widthFix"></image>
 					<view class="fs-28">管理员</view>

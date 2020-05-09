@@ -46,5 +46,6 @@ export default {
 	},
 	created() {
 		console.log('homeCreated');
+		this.videoContext = uni.createVideoContext('myVideo', this); //获取视频对象
 	}
 };

@@ -41,6 +41,21 @@
 				"navigationBarTitleText": "圈子资料"
 			}
 		}, {
+			"path": "pages/circle/creatCircle",
+			"style": {
+				"navigationBarTitleText": "创建圈子"
+			}
+		}, {
+			"path": "pages/circle/creatCircle-L",
+			"style": {
+				"navigationBarTitleText": "圈子简介"
+			}
+		}, {
+			"path": "pages/circle/creatCircle-S",
+			"style": {
+				"navigationBarTitleText": "圈子名称"
+			}
+		}, {
 			"path": "pages/circle/circleManager",
 			"style": {
 				"navigationBarTitleText": "管理员"
@@ -50,8 +65,31 @@
 			"style": {
 				"navigationBarTitleText": "任务"
 			}
+		}, {
+			"path": "pages/task/deposit",
+			"style": {
+				"navigationBarTitleText": "提现"
+			}
 		}
-	],
+	    ,{
+            "path" : "pages/personalCenter/personalCenter",
+            "style" : {
+				"navigationBarTitleText": "个人主页"
+			}
+        }
+        ,{
+            "path" : "pages/playVideo/playVideo",
+            "style" : {
+				"navigationBarTitleText": "视频"
+			}
+        }
+        ,{
+            "path" : "pages/search/search",
+            "style" : {
+				"navigationBarTitleText": "搜索"
+			}
+        }
+    ],
 	"globalStyle": {
 		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "custom"

@@ -1,0 +1,98 @@
+.page-persionalC{
+	.banner {
+		height: 400rpx;
+		background-repeat: no-repeat;
+		background-position: 0 0;
+		background-size: contain;
+		background-attachment: fixed;
+		background-color: rgba(0, 0, 0, 0.2);
+		background-blend-mode: multiply;
+		position: relative;
+		.header{
+			width:188rpx;
+			height:188rpx;
+			border: 2rpx solid #fff;
+			position: absolute;
+			left: 30rpx;
+			bottom: -60rpx;
+		}
+		.btnBox{
+			position: absolute;
+			width: 472rpx;
+			height: 64rpx;
+			right: 30rpx;
+			bottom: 20rpx;
+			>view{
+				background:rgba(0,0,0,0.3);
+				border-radius:8rpx;
+			}
+			.gz{
+				width: 344rpx;
+				height: 100%;
+			}
+			.sx{
+				width: 120rpx;
+				height: 100%;
+			}
+		}
+	}
+	.info{
+		padding: 100rpx 30rpx 72rpx 30rpx;
+		.bold{
+			padding-bottom: 20rpx;
+		}
+	}
+	.myNum{
+		padding: 0 30rpx;
+		padding-bottom: 50rpx;
+		border-bottom: 2rpx solid rgba(255,255,255,0.06);
+		>view{
+			padding-right: 60rpx;
+		}
+	}
+	.tabBox{
+		// position: sticky;
+		// top: 0;
+		// left: 0;
+		// background-color: $themeColor;
+		color: rgba(255,255,255,0.6);
+		>view{
+			width: 220rpx;
+			padding-top: 47rpx;
+			padding-bottom: 20rpx;
+			border-bottom: 4rpx solid transparent;
+			text-align: center;
+		}
+		.active{
+			font-size:34rpx;
+			color: #fff;
+			border-bottom: 4rpx solid #7364BD;
+		}
+	}
+	.list-zp{
+		flex-wrap: wrap;
+		.item{
+			width:246rpx;
+			height:330rpx;
+			margin-bottom: 6rpx;
+			margin-right: 6rpx;
+			position: relative;
+			image{
+				display: block;
+				width: 100%;
+				height: 100%;
+			}
+			.mask{
+				position: absolute;
+				height: 144rpx;
+				top: unset;
+				left: 0;
+				bottom: 0;
+				background:linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0));
+			}
+		}
+		.item:nth-child(3n){
+			margin-right: 0;
+		}
+	}
+}

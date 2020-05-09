@@ -1,6 +1,6 @@
 <!-- 顶部tabbar
 									haveHeight:是否需要高度占位
-	<navigationBar name="圈子资料" :haveHeight="true"></navigationBar>
+	<navigationBar name="圈子资料" haveHeight></navigationBar>
  -->
 <template>
 	<view>

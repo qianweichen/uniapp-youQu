@@ -4,7 +4,7 @@
 		<view class="topInfoBox" :style="'background-image: url(' + '../../static/logo.png' + ');'">
 			<view class="info">
 				<view class="flex-between align-star">
-					<view class="flex info-left">
+					<view class="flex info-left" @click="goPage('/pages/circle/circleInfo?id='+'1')">
 						<view class="user flex-column-between">
 							<image class="header circle" src="../../static/logo.png" mode="aspectFill"></image>
 							<view v-if="true" class="fs-22 join flex-center">加入</view>

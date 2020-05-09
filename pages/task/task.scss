@@ -1,0 +1,66 @@
+.page-task{
+	padding: 0 30rpx;
+	box-sizing: border-box;
+	.topBox{
+		height:180rpx;
+		background:linear-gradient(0deg,rgba(168,102,214,1),rgba(130,121,228,1));
+		border-radius:4rpx;
+		text-align: center;
+		padding: 0 100rpx;
+		.line{
+			width:2rpx;
+			height:80rpx;
+			background:rgba(255,255,255,0.1);
+			border-radius:2rpx;
+		}
+		.left{
+			width: 180rpx;
+			.fs-18{
+				width:72rpx;
+				height:28rpx;
+				background:rgba(255,255,255,0.2);
+				border-radius:4rpx;
+				margin-left: 8rpx;
+			}
+			.tixian{
+				width:74rpx;
+				height:36rpx;
+				background:rgba(255,255,255,1);
+				border-radius:18rpx;
+				color: #7364BD;
+				margin-left: 20rpx;
+			}
+		}
+		.right{
+			width: 180rpx;
+		}
+	}
+	.title{
+		padding: 60rpx 0;
+	}
+	.list{
+		.item{
+			padding-bottom: 60rpx;
+			.fs-26{
+				padding-bottom: 17rpx;
+			}
+			.right{
+				width:110rpx;
+				height:46rpx;
+				border-radius:24rpx;
+				background-color: #7364BD;
+			}
+		}
+	}
+	.contact{
+		width:110rpx;
+		height:110rpx;
+		position: fixed;
+		right: 30rpx;
+		bottom: 60rpx;
+		image{
+			width:110rpx;
+			height:110rpx;
+		}
+	}
+}
