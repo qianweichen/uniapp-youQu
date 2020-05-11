@@ -16,7 +16,7 @@
 				<image class="icon" :src="'../../static/tabbar/find' + (tabIndex == 'find' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'find' }">发现</view>
 			</view>
-			<view><image class="icon publish" src="../../static/tabbar/publish.png" mode="widthFix"></image></view>
+			<view><image @click="togglePublishFlag(true)" class="icon publish" src="../../static/tabbar/publish.png" mode="widthFix"></image></view>
 			<view @click="changeTabIndex('message')">
 				<image class="icon" :src="'../../static/tabbar/message' + (tabIndex == 'message' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'message' }">站内信</view>
@@ -26,6 +26,7 @@
 				<view :class="{ active: tabIndex == 'mine' }">我的</view>
 			</view>
 		</view>
+		<publish v-if="showPublishFlag" @togglePublishFlag="togglePublishFlag"></publish>
 	</view>
 </template>
 
@@ -34,20 +35,27 @@ import home from '@/pages/home/home';
 import find from '@/pages/find/find';
 import message from '@/pages/message/message';
 import mine from '@/pages/mine/mine';
+import publish from '@/components/publish/publish';
 export default {
 	components: {
 		home,
 		find,
 		message,
-		mine
+		mine,
+		publish
 	},
 	data() {
 		return {
 			tabIndex: 'find',
-			loadTabList: [false, true, false, false]
+			loadTabList: [false, true, false, false],
+			showPublishFlag:false
 		};
 	},
 	methods: {
+		// 选择发布类型
+		togglePublishFlag(flag){
+			this.showPublishFlag = flag;
+		},
 		//暂停视频
 		stopHomeVideo() {
 			if (this.$refs.homePage) {

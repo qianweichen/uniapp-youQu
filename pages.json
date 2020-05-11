@@ -70,26 +70,43 @@
 			"style": {
 				"navigationBarTitleText": "提现"
 			}
-		}
-	    ,{
-            "path" : "pages/personalCenter/personalCenter",
-            "style" : {
+		}, {
+			"path": "pages/personalCenter/personalCenter",
+			"style": {
 				"navigationBarTitleText": "个人主页"
 			}
-        }
-        ,{
-            "path" : "pages/playVideo/playVideo",
-            "style" : {
+		}, {
+			"path": "pages/playVideo/playVideo",
+			"style": {
 				"navigationBarTitleText": "视频"
 			}
-        }
-        ,{
-            "path" : "pages/search/search",
-            "style" : {
+		}, {
+			"path": "pages/search/search",
+			"style": {
 				"navigationBarTitleText": "搜索"
 			}
-        }
-    ],
+		}, {
+			"path": "pages/publish/publish-v",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
+		}, {
+			"path": "pages/publish/publish-i",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
+		}, {
+			"path": "pages/publish/chooseCircle",
+			"style": {
+				"navigationBarTitleText": "发布到"
+			}
+		}, {
+			"path": "pages/publish/shoot",
+			"style": {
+				"navigationBarTitleText": "拍摄"
+			}
+		}
+	],
 	"globalStyle": {
 		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "custom"
