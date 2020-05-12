@@ -46,8 +46,8 @@ export default {
 	},
 	data() {
 		return {
-			tabIndex: 'find',
-			loadTabList: [false, true, false, false],
+			tabIndex: 'mine',
+			loadTabList: [false, false, false, true],
 			showPublishFlag:false
 		};
 	},

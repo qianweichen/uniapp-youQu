@@ -1,10 +1,10 @@
 <template>
 	<view class="dark-bg">
 		<backCapsule v-if="shootTime == 1 || shootTime == 3" type="normal"></backCapsule>
-		<camera class="camera" @error="cameraError"></camera>
+		<camera class="camera" @error="cameraError" :device-position="devicePosition?'back':'front'"></camera>
 		<view class="btnBox flex-between">
 			<view class="item" v-if="shootTime == 2"></view>
-			<view class="item" v-if="shootTime == 1 || shootTime == 3">
+			<view class="item" v-if="shootTime == 1 || shootTime == 3" @click="goPage('/pages/publish/chooseMusic')">
 				<image src="../../static/shoot-m.png" mode="widthFix"></image>
 				<view>音乐</view>
 			</view>
@@ -14,16 +14,20 @@
 				<image :class="{ none: shootTime != 2 }" class="img" src="../../static/shooting.png" mode="widthFix"></image>
 			</view>
 			<image v-if="shootTime == 3" class="img" src="../../static/shooted.png" mode="widthFix"></image>
-			<view class="item" v-if="shootTime == 1">
+			<view class="item" v-if="shootTime == 1" @click="chooseVideo">
 				<image src="../../static/shoot-img.png" mode="widthFix"></image>
 				<view>相册</view>
 			</view>
 			<view class="item" v-if="shootTime == 2"></view>
-			<view class="item" v-if="shootTime == 3">
+			<view class="item" v-if="shootTime == 3" @click="nextStep">
 				<image src="../../static/shoot-next.png" mode="widthFix" style="width: 68rpx;"></image>
 				<view>下一步</view>
 			</view>
 			<image v-if="shootTime == 3" @click="delFun" class="del" src="../../static/shoot-del.png" mode="widthFix"></image>
+		</view>
+		<view class="overturn" @click="overturn">
+			<image src="../../static/shoot-fz.png" mode="widthFix"></image>
+			<view class="fs-24 bold">翻转</view>
 		</view>
 	</view>
 </template>
@@ -32,19 +36,59 @@
 export default {
 	data() {
 		return {
-			cameraContext: '',
+			devicePosition:true,//前置或后置，值为front, back
+			cameraContext: '', //视频对象
 			shootTime: 1, //拍摄状态 1开始 2拍摄中 3结束
 			timerNum: 0, //拍摄时长
-			myInterval: ''
+			myInterval: '', //定时器
+			shootData: {
+				tempVideoPath:'',	//视频地址
+				tempThumbPath:''	//封面地址
+			} //拍摄信息
 		};
 	},
 	methods: {
+		// 翻转摄像头
+		overturn(){
+			this.devicePosition = !this.devicePosition;
+		},
+		//选择视频
+		chooseVideo() {
+			uni.showLoading({
+				title:'加载中'
+			})
+			uni.chooseVideo({
+				count: 1,
+				sourceType: ['album'],
+				success: res => {
+					uni.hideLoading();
+					console.log('选择视频',res);
+					this.shootData = {
+						tempVideoPath:res.tempFilePath,
+						tempThumbPath:res.thumbTempFilePath
+					}
+					uni.setStorageSync('shootData', this.shootData);
+					uni.navigateTo({
+						url: '/pages/publish/publish-v'
+					});
+				}
+			});
+		},
+		//下一步
+		nextStep() {
+			uni.setStorageSync('shootData', this.shootData);
+			uni.navigateTo({
+				url: '/pages/publish/publish-v'
+			});
+		},
+		//摄像头禁用
 		cameraError() {
 			uni.showToast({
 				title: '摄像头被禁用',
 				icon: 'none'
 			});
 		},
+		//开始拍摄
 		shootStar() {
 			clearInterval(this.myInterval);
 			this.cameraContext.startRecord({
@@ -57,13 +101,14 @@ export default {
 				},
 				timeoutCallback: e => {
 					uni.showToast({
-						title:'拍摄时长上限为30秒',
-						icon:'none'
-					})
+						title: '拍摄时长上限为30秒',
+						icon: 'none'
+					});
 					this.saveVideo(e);
 				}
 			});
 		},
+		//拍摄结束
 		shootEnd() {
 			this.cameraContext.stopRecord({
 				success: e => {
@@ -71,11 +116,14 @@ export default {
 				}
 			});
 		},
-		saveVideo(e){
+		//拍摄完保存地址
+		saveVideo(e) {
 			console.log('录像结束', e);
+			this.shootData = e;
 			this.shootTime = 3;
 			clearInterval(this.myInterval);
 		},
+		//点击删除重新拍摄
 		delFun() {
 			this.shootTime = 1;
 		}
@@ -138,6 +186,16 @@ export default {
 }
 .camera {
 	height: 100vh;
+}
+.overturn{
+	position: fixed;
+	right: 40rpx;
+	top: 200rpx;
+	text-align: center;
+	image{
+		width: 50rpx;
+		height: auto;
+	}
 }
 .hide {
 	opacity: 0;

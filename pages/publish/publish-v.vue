@@ -4,7 +4,7 @@
 		<navigationBar name="发布" haveHeight></navigationBar>
 		<view class="iptBox flex-between">
 			<textarea class="fs-26" placeholder="写下你的想法，让更多的人看见~" placeholder-class="fc-9" maxlength="140" />
-			<video src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" controls></video>
+			<video :src="videoData.tempVideoPath" controls :poster="videoData.tempThumbPath"></video>
 		</view>
 		<view class="chooseBox fs-26">
 			<view class="item flex-between">
@@ -31,7 +31,8 @@
 export default {
 	data() {
 		return {
-			noForwardFlag: false
+			noForwardFlag: false, //是否允许转发
+			videoData: {} //视频数据
 		};
 	},
 	methods: {
@@ -52,6 +53,11 @@ export default {
 		noForward(e) {
 			this.noForwardFlag = e.detail.value;
 		}
+	},
+	onLoad() {
+		//获取拍摄或选择的视频
+		this.videoData = uni.getStorageSync('shootData');
+		uni.removeStorageSync('shootData');
 	}
 };
 </script>
@@ -61,12 +67,12 @@ export default {
 	padding: 50rpx;
 	textarea {
 		width: 460rpx;
-		height:262rpx;
+		height: 262rpx;
 	}
-	video{
-		width:188rpx;
-		height:262rpx;
-		border-radius:8rpx;
+	video {
+		width: 188rpx;
+		height: 262rpx;
+		border-radius: 8rpx;
 	}
 }
 .chooseBox {

@@ -1,0 +1,20 @@
+.fans {
+	padding: 30rpx;
+	.header {
+		width: 105rpx;
+		height: 105rpx;
+		margin-right: 20rpx;
+	}
+	.bold{
+		padding-bottom: 20rpx;
+	}
+	.gz {
+		width: 154rpx;
+		height: 60rpx;
+		background: #7364bd;
+		border-radius: 4rpx;
+	}
+	.active {
+		background-color: #4c4a55;
+	}
+}

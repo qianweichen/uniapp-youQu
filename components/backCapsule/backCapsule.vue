@@ -1,5 +1,5 @@
 <!-- 回退胶囊 
-	<backCapsule type="normal"></backCapsule>
+	<backCapsule type="normal"></backCapsule>	white:白色主题
 	<backCapsule type="capsule"></backCapsule>
  -->
 <template>
@@ -9,13 +9,14 @@
 			<view class="line"></view>
 			<image @click="goHome" class="home" src="../../static/w_home.png" mode="widthFix"></image>
 		</view>
-		<view v-if="type == 'normal'" class="normal flex-around"><image @click="goBack" class="back" src="../../static/w_back.png" mode="widthFix"></image></view>
+		<view v-if="type == 'normal' && white" class="normal flex-around"><image @click="goBack" class="back" src="../../static/b_back.png" mode="widthFix"></image></view>
+		<view v-if="type == 'normal' && !white" class="normal flex-around"><image @click="goBack" class="back" src="../../static/w_back.png" mode="widthFix"></image></view>
 	</view>
 </template>
 
 <script>
 export default {
-	props: { type: String },
+	props: { type: String, white: Boolean },
 	data() {
 		return {
 			customBar: this.CustomBar,
@@ -33,7 +34,7 @@ export default {
 	z-index: 2;
 	.normal {
 		.back {
-			width: 32rpx;
+			width: 40rpx;
 			height: auto;
 		}
 	}

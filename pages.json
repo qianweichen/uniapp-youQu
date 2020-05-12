@@ -26,6 +26,21 @@
 				"navigationBarTitleText": "站内信"
 			}
 		}, {
+			"path": "pages/message/fans",
+			"style": {
+				"navigationBarTitleText": "粉丝"
+			}
+		}, {
+			"path": "pages/message/good",
+			"style": {
+				"navigationBarTitleText": "赞"
+			}
+		}, {
+			"path": "pages/message/comment",
+			"style": {
+				"navigationBarTitleText": "评论"
+			}
+		}, {
 			"path": "pages/circle/circle",
 			"style": {
 				"navigationBarTitleText": "圈子"
@@ -105,7 +120,44 @@
 			"style": {
 				"navigationBarTitleText": "拍摄"
 			}
+		}, {
+			"path": "pages/publish/chooseMusic",
+			"style": {
+				"navigationBarTitleText": "音乐",
+				"navigationBarTextStyle": "black"
+			}
+		}, {
+			"path": "pages/mine/editInformation",
+			"style": {
+				"navigationBarTitleText": "编辑资料"
+			}
+		}, {
+			"path": "pages/mine/myCircle",
+			"style": {
+				"navigationBarTitleText": "加入的圈子"
+			}
+		},{
+			"path": "pages/mine/followee",
+			"style": {
+				"navigationBarTitleText": "我关注的人"
+			}
+		},{
+			"path": "pages/mine/creatCircle",
+			"style": {
+				"navigationBarTitleText": "我管理的圈子"
+			}
+		},{
+			"path": "pages/mine/myCollect",
+			"style": {
+				"navigationBarTitleText": "我的收藏"
+			}
+		},{
+			"path": "pages/mine/myFans",
+			"style": {
+				"navigationBarTitleText": "我的粉丝"
+			}
 		}
+		
 	],
 	"globalStyle": {
 		"backgroundColor": "#F8F8F8",

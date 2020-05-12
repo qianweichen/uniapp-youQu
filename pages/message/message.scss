@@ -1,0 +1,79 @@
+.page-msg{
+	padding: 0 30rpx;
+	.btnBox{
+		text-align: center;
+		padding-bottom: 50rpx;
+		border-bottom: 2rpx solid rgba(255,255,255,0.1);
+		image{
+			width: 80rpx;
+			height: auto;
+			margin-bottom: 14rpx;
+		}
+	}
+	.good{
+		padding: 30rpx 0;
+		border-bottom: 2rpx solid rgba(255,255,255,0.1);
+		.header{
+			width: 90rpx;
+			height: 90rpx;
+			margin-right: 20rpx;
+		}
+		.pic{
+			width:130rpx;
+			height:130rpx;
+		}
+		.headerBox{
+			image{
+				width:54rpx;
+				height:54rpx;
+				border-radius:50%;
+				margin-right: 10rpx;
+			}
+		}
+		.fs-24{
+			padding-top: 10rpx;
+			padding-bottom: 20rpx;
+		}
+	}
+	.fans{
+		padding: 30rpx 0;
+		border-bottom: 2rpx solid rgba(255,255,255,0.1);
+		.header{
+			width:90rpx;
+			height:90rpx;
+			margin-right: 20rpx;
+		}
+		.fs-26{
+			padding-top: 18rpx;
+			padding-bottom: 34rpx;
+		}
+		.cont{
+			width: 400rpx;
+			overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+		}
+		.gz{
+			width:154rpx;
+			height:60rpx;
+			background:#7364BD;
+			border-radius:4rpx;
+		}
+		.active{
+			background-color: #4C4A55;
+		}
+	}
+	.comment{
+		.fs-24{
+			padding: 0;
+		}
+		.cont{
+			width: 400rpx;
+			overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+			padding-top: 15rpx;
+			padding-bottom: 36rpx;
+		}
+	}
+}
