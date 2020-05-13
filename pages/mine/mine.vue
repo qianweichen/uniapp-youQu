@@ -58,13 +58,9 @@ export default {
 				img:'../../static/collect.png',
 				url:'/pages/mine/myCollect'
 			},{
-				name:'收到的礼物',
-				img:'../../static/gift.png',
-				url:''
-			},{
 				name:'我的钱包',
 				img:'../../static/wallet.png',
-				url:''
+				url:'/pages/mine/wallet'
 			},{
 				name:'邀请好友',
 				img:'../../static/share.png',
@@ -72,12 +68,17 @@ export default {
 			},{
 				name:'服务中心',
 				img:'../../static/service.png',
-				url:''
+				url:'/pages/mine/serve'
 			},{
 				name:'关于我们',
 				img:'../../static/about.png',
 				url:''
 			}
+			// ,{
+			// 	name:'收到的礼物',
+			// 	img:'../../static/gift.png',
+			// 	url:''
+			// }
 			// ,{
 			// 	name:'我的订单',
 			// 	img:'../../static/order.png',

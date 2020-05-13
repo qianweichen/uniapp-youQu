@@ -156,8 +156,37 @@
 			"style": {
 				"navigationBarTitleText": "我的粉丝"
 			}
+		},{
+			"path": "pages/mine/wallet",
+			"style": {
+				"navigationBarTitleText": "我的钱包"
+			}
+		},{
+			"path": "pages/mine/serve",
+			"style": {
+				"navigationBarTitleText": "服务中心"
+			}
+		},{
+			"path": "pages/serve/bannedPost",
+			"style": {
+				"navigationBarTitleText": "禁言申诉"
+			}
+		},{
+			"path": "pages/serve/delete",
+			"style": {
+				"navigationBarTitleText": "回收站"
+			}
+		},{
+			"path": "pages/serve/inform",
+			"style": {
+				"navigationBarTitleText": "举报投诉记录"
+			}
+		},{
+			"path": "pages/serve/opinion",
+			"style": {
+				"navigationBarTitleText": "意见反馈"
+			}
 		}
-		
 	],
 	"globalStyle": {
 		"backgroundColor": "#F8F8F8",
