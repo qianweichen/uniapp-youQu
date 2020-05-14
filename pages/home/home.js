@@ -8,10 +8,15 @@ export default {
 			videoContext: '', //视频对象
 			progressNum: 0, //视频播放进度百分比
 			showVideoPlayBtn: false ,//控制播放按钮
-			showCommentFlag:false	//评论弹窗
+			showCommentFlag:false	,//评论弹窗
+			showShareFlag:false //控制分享弹出
 		};
 	},
 	methods: {
+		//切换分享弹出层
+		toggleShareBox(flag){
+			this.showShareFlag = flag;
+		},
 		// 切换顶部tab
 		changeTabs(flag) {
 			this.tabsFlag = flag;

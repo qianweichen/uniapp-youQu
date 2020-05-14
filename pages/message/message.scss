@@ -4,6 +4,10 @@
 	color: #fff;
 	padding: 0 30rpx;
 	padding-bottom: 150rpx;
+	.bg-theme{
+		width: 100%;
+		background-color: $themeColor;
+	}
 	.btnBox{
 		text-align: center;
 		padding-bottom: 50rpx;

@@ -61,11 +61,9 @@
 							<image src="../../static/comment.png" mode="widthFix"></image>
 							<view>280</view>
 						</view>
-						<view>
-							<button class="share" open-type="share">
-								<image src="../../static/wechat.png" mode="widthFix"></image>
-								<view>分享</view>
-							</button>
+						<view @click="toggleShareBox(true)">
+							<image src="../../static/wechat.png" mode="widthFix"></image>
+							<view>分享</view>
 						</view>
 					</view>
 				</view>
@@ -121,6 +119,35 @@
 			<view class="sendComment flex-between">
 				<input type="text" placeholder="留下你的精彩评论吧" maxlength="30"/>
 				<image class="send" src="../../static/send.png" mode="widthFix"></image>
+			</view>
+		</view>
+		<!-- 分享弹窗 -->
+		<view v-if="showShareFlag">
+			<view class="mask" @click="toggleShareBox(false)"></view>
+			<view class="shareBox flex-around">
+				<view class="flex-between">
+					<view @click="goPage('/pages/mine/invitation')">
+						<image src="../../static/icon-pyq.png" mode="widthFix"></image>
+						<view class="fs-22">朋友圈</view>
+					</view>
+					<view>
+						<button open-type="share" class="share">
+							<image src="../../static/wechat.png" mode="widthFix"></image>
+							<view class="fs-22">微信好友</view>
+						</button>
+					</view>
+				</view>
+				<view class="line"></view>
+				<view class="flex-between">
+					<view>
+						<image src="../../static/icon-jb.png" mode="widthFix"></image>
+						<view class="fs-22">举报</view>
+					</view>
+					<view>
+						<image src="../../static/icon-del.png" mode="widthFix"></image>
+						<view class="fs-22">删除</view>
+					</view>
+				</view>
 			</view>
 		</view>
 	</view>

@@ -1,7 +1,7 @@
 /* 样式 */
 
 .btn-big {
-	width:690rpx;
+	width: 690rpx;
 	margin: 0 auto;
 	height: 80rpx;
 	border-radius: 40rpx;
@@ -66,7 +66,9 @@
 .bold {
 	font-weight: bold;
 }
-
+.fc-a {
+	color: #aaa;
+}
 .fc-f {
 	color: #fff;
 }
@@ -78,9 +80,11 @@
 .fc-9 {
 	color: #999;
 }
+
 .fc-3 {
 	color: #333;
 }
+
 .fs-18 {
 	font-size: 18rpx;
 }
@@ -115,6 +119,10 @@
 
 .fs-36 {
 	font-size: 36rpx;
+}
+
+.fs-40 {
+	font-size: 40rpx;
 }
 
 .fs-46 {

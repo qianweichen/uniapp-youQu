@@ -64,7 +64,7 @@ export default {
 			},{
 				name:'邀请好友',
 				img:'../../static/share.png',
-				url:''
+				url:'/pages/mine/invitation'
 			},{
 				name:'服务中心',
 				img:'../../static/service.png',

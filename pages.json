@@ -177,6 +177,11 @@
 				"navigationBarTitleText": "关于我们"
 			}
 		},{
+			"path": "pages/mine/invitation",
+			"style": {
+				"navigationBarTitleText": "推荐有礼"
+			}
+		},{
 			"path": "pages/serve/bannedPost",
 			"style": {
 				"navigationBarTitleText": "禁言申诉"
