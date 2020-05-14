@@ -3,7 +3,7 @@ export default {
 		return {
 			customBar: this.CustomBar,
 			topCustomBar: this.StatusBar, //顶部状态栏高度
-			tabsFlag: false, //圈子/动态
+			tabsFlag: true, //圈子/动态
 			dynamicList: [1, 2, 3],
 			tabIndex: 0,
 		}

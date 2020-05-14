@@ -46,9 +46,9 @@
 				<view :class="{ active: tabIndex == 3 }" @click="changeTab(3)">
 					<text>用户</text>
 				</view>
-				<view :class="{ active: tabIndex == 4 }" @click="changeTab(4)">
+				<!-- <view :class="{ active: tabIndex == 4 }" @click="changeTab(4)">
 					<text>音乐</text>
-				</view>
+				</view> -->
 			</view>
 			<!-- 综合 -->
 			<view v-if="tabIndex == 0">
@@ -106,7 +106,7 @@
 				</view>
 			</view>
 			<!-- 音乐 -->
-			<view v-if="tabIndex == 4">
+			<!-- <view v-if="tabIndex == 4">
 				<view class="user music">
 					<view class="item flex-between" v-for="(item,index) in 5" :key="index">
 						<view class="flex">
@@ -124,7 +124,7 @@
 						<view class="right flex-center fs-28">使用</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -138,7 +138,7 @@ export default {
 	data() {
 		return {
 			searched:true,
-			tabIndex: 4,
+			tabIndex: 0,
 			dynamicList:[1,2],
 			imgTextList:[1,2]
 		};
