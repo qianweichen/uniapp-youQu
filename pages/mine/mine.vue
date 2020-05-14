@@ -72,7 +72,7 @@ export default {
 			},{
 				name:'关于我们',
 				img:'../../static/about.png',
-				url:''
+				url:'/pages/mine/about'
 			}
 			// ,{
 			// 	name:'收到的礼物',

@@ -16,7 +16,7 @@
 		<view class="list">
 			<view class="item flex-between">
 				<view class="left flex">
-					<image src="../../static/qz.png" mode="widthFix"></image>
+					<image src="../../static/cinfo-1.png" mode="widthFix"></image>
 					<view class="fs-28">圈主</view>
 				</view>
 				<view class="right flex">
@@ -26,11 +26,31 @@
 			</view>
 			<view class="item flex-between" @click="goPage('/pages/circle/circleManager?id=' + '1')">
 				<view class="left flex">
-					<image src="../../static/gly.png" mode="widthFix"></image>
+					<image src="../../static/cinfo-2.png" mode="widthFix"></image>
 					<view class="fs-28">管理员</view>
 				</view>
 				<view class="right flex">
 					<view class="headerBox"><image v-for="(item, index) in 5" :key="index" class="header circle" src="../../static/logo.png" mode="aspectFill"></image></view>
+					<image class="right-icon" src="../../static/right.png" mode="widthFix"></image>
+				</view>
+			</view>
+			<view class="item flex-between" @click="toggleIptCodeFlag(true)">
+				<view class="left flex">
+					<image src="../../static/cinfo-3.png" mode="widthFix"></image>
+					<view class="fs-28">我的邀请码</view>
+				</view>
+				<view class="right flex">
+					<text class="fs-26 fc-d">{{erCode}}</text>
+					<image class="right-icon" src="../../static/right.png" mode="widthFix"></image>
+				</view>
+			</view>
+			<view class="item flex-between">
+				<view class="left flex">
+					<image src="../../static/cinfo-4.png" mode="widthFix"></image>
+					<view class="fs-28">是否开放圈子</view>
+				</view>
+				<view class="right flex">
+					<switch :checked="jurisdiction" @change="changeJurisdiction" color="#7364BD" style="zoom: 0.8;"/>
 					<image class="right-icon" src="../../static/right.png" mode="widthFix"></image>
 				</view>
 			</view>
@@ -49,6 +69,19 @@
 			<textarea class="textarea fs-26" placeholder="请说明投诉理由" />
 			<view class="btn flex-center fc-f">提交</view>
 		</view>
+		<!-- 生成邀请码弹窗 -->
+		<view v-if="showIptCodeFlag" class="erCodeBox">
+			<view class="fs-32 bold title">我的邀请码</view>
+			<view class="iptBox flex fs-26">
+				<input class="left flex-center" type="text" :placeholder="erCode" v-model="erCode"/>
+				<view class="right fc-f flex-center">刷新</view>
+			</view>
+			<view class="fs-22 tip">点击刷新随机生成新的邀请码</view>
+			<view class="btnBox flex">
+				<view class="flex-center" @click="toggleIptCodeFlag(false)">关闭</view>
+				<view class="flex-center" @click="copyCode">复制邀请码</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -56,10 +89,28 @@
 export default {
 	data() {
 		return {
-			showComplaintFlag:false
+			showComplaintFlag:false,	//投诉弹窗
+			jurisdiction:true	,//权限
+			showIptCodeFlag:false,	//显示生成邀请码
+			erCode:'4477es'
 		};
 	},
 	methods: {
+		// 复制邀请码
+		copyCode(){
+			uni.setClipboardData({
+			    data: this.erCode
+			});
+		},
+		//显示隐藏	生成邀请码
+		toggleIptCodeFlag(flag){
+			this.showIptCodeFlag = flag;
+		},
+		//设置权限
+		changeJurisdiction(e){
+			this.jurisdiction = e.detail.value;
+		},
+		//显示隐藏	投诉
 		toggleComplaint(flag){
 			this.showComplaintFlag = flag;
 		},

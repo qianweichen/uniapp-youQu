@@ -4,7 +4,7 @@
 		<camera class="camera" @error="cameraError" :device-position="devicePosition?'back':'front'"></camera>
 		<view class="btnBox flex-between">
 			<view class="item" v-if="shootTime == 2"></view>
-			<view class="item" v-if="shootTime == 1 || shootTime == 3" @click="goPage('/pages/publish/chooseMusic')">
+			<view class="item" v-if="shootTime == 1 || shootTime == 3" @click="chooseMusic">
 				<image src="../../static/shoot-m.png" mode="widthFix"></image>
 				<view>音乐</view>
 			</view>
@@ -16,7 +16,7 @@
 			<image v-if="shootTime == 3" class="img" src="../../static/shooted.png" mode="widthFix"></image>
 			<view class="item" v-if="shootTime == 1" @click="chooseVideo">
 				<image src="../../static/shoot-img.png" mode="widthFix"></image>
-				<view>相册</view>
+				<view>上传</view>
 			</view>
 			<view class="item" v-if="shootTime == 2"></view>
 			<view class="item" v-if="shootTime == 3" @click="nextStep">
@@ -48,6 +48,13 @@ export default {
 		};
 	},
 	methods: {
+		chooseMusic(){
+			// 	/pages/publish/chooseMusic
+			uni.showToast({
+				title:'功能正在开发，敬请期待！',
+				icon:'none'
+			})
+		},
 		// 翻转摄像头
 		overturn(){
 			this.devicePosition = !this.devicePosition;

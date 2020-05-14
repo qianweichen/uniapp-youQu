@@ -1,5 +1,9 @@
 .page-msg{
+	height: 100%;
+	background-color: #1f1d2b;
+	color: #fff;
 	padding: 0 30rpx;
+	padding-bottom: 150rpx;
 	.btnBox{
 		text-align: center;
 		padding-bottom: 50rpx;
@@ -74,6 +78,60 @@
 			white-space: nowrap;
 			padding-top: 15rpx;
 			padding-bottom: 36rpx;
+		}
+	}
+	.symNote{
+		padding-bottom: 50rpx;
+		.time{
+			text-align: center;
+			padding-bottom: 36rpx;
+		}
+		.pic{
+			width:122rpx;
+			height:122rpx;
+			margin-right: 20rpx;
+		}
+		.infoBox{
+			width:470rpx;
+			height:366rpx;
+			background:#4C4A55;
+			border-radius:8rpx;
+			padding: 28rpx 24rpx;
+			box-sizing: border-box;
+			.userBox{
+				margin: 26rpx 0;
+				width:418rpx;
+				height:106rpx;
+				background:rgba(255,255,255,0.06);
+				border-radius:8rpx;
+				padding: 0 22rpx;
+				box-sizing: border-box;
+				.header{
+					width:82rpx;
+					height:82rpx;
+					margin-right: 18rpx;
+				}
+			}
+			.cont{
+				text{
+					color: #7364BD;
+				}
+			}
+			.symNote-btnBox{
+				padding-top: 30rpx;
+				justify-content: flex-end;
+				view{
+					width:140rpx;
+					height:50rpx;
+					border:2rpx solid rgba(255,255,255,0.4);
+					border-radius:26rpx;
+				}
+				.agree{
+					background:#7364BD;
+					border-color: #7364BD;
+					margin-left: 20rpx;
+				}
+			}
 		}
 	}
 }

@@ -64,7 +64,12 @@
 				</view>
 			</view>
 		</view>
-		<view v-else>
+		<view v-else class="dynamic">
+			<image class="banner" src="../../static/banner.gif" mode="aspectFill"></image>
+			<view class="tabBox flex fs-30">
+				<view :class="{ active: tabIndex == 0 }" @click="changeMidTab(0)"><text>推荐</text></view>
+				<view :class="{ active: tabIndex == 1 }" @click="changeMidTab(1)"><text>关注</text></view>
+			</view>
 			<dynamicList type="dynamic" :list="dynamicList"></dynamicList>
 		</view>
 	</view>

@@ -79,6 +79,7 @@
 		color: #7364BD;
 	}
 	.complaint{
+		z-index: 1;
 		color: #000;
 		position: fixed;
 		bottom: 0;
@@ -113,6 +114,57 @@
 			height: 90rpx;
 			background-color: #7364BD;
 			border-radius:8rpx;
+		}
+	}
+	.erCodeBox{
+		color: #000;
+		position: fixed;
+		z-index: 1;
+		left: calc(50% - 302rpx);
+		top: calc(50% - 203rpx);
+		width:604rpx;
+		height:406rpx;
+		background:rgba(255,255,255,1);
+		border-radius:8rpx;
+		text-align: center;
+		.title{
+			padding: 50rpx 0;
+		}
+		.iptBox{
+			margin: 0 auto;
+			width: 416rpx;
+			height: 67rpx;
+			border-radius:34rpx;
+			background-color: #eee;
+			overflow: hidden;
+			.left{
+				width: 100%;
+			}
+			.right{
+				width: 126rpx;
+				height: 100%;
+				background-color: #7364BD;
+			}
+		}
+		.tip{
+			padding-top: 25rpx;
+			color: #aaa;
+		}
+		.btnBox{
+			view{
+				width: 50%;
+				padding: 36rpx 0;
+				color: #666;
+			}
+			view:first-child{
+				border-right: 2rpx solid rgba(0,0,0,0.1);
+				color: #aaa;
+			}
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			border-top: 2rpx solid rgba(0,0,0,0.1);
 		}
 	}
 }

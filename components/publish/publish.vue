@@ -16,11 +16,11 @@
 	<view class="page-publish mask">
 		<view class="btnBox">
 			<view class="send flex-between fc-f">
-				<view @click="goPage('/pages/publish/shoot')">
+				<view @click="sendV">
 					<image src="../../static/send-v.png" mode="widthFix"></image>
 					<view class="fs-26">发视频</view>
 				</view>
-				<view @click="goPage('/pages/publish/publish-i')">
+				<view @click="sendI">
 					<image src="../../static/send-i.png" mode="widthFix"></image>
 					<view class="fs-26">发动态</view>
 				</view>
@@ -38,6 +38,14 @@
 			};
 		},
 		methods:{
+			sendV(){
+				this.close();
+				this.goPage('/pages/publish/shoot');
+			},
+			sendI(){
+				this.close();
+				this.goPage('/pages/publish/publish-i');
+			},
 			close(){
 				this.$emit("togglePublishFlag",false);
 			}

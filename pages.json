@@ -41,6 +41,11 @@
 				"navigationBarTitleText": "评论"
 			}
 		}, {
+			"path": "pages/message/systemNote",
+			"style": {
+				"navigationBarTitleText": "系统通知"
+			}
+		}, {
 			"path": "pages/circle/circle",
 			"style": {
 				"navigationBarTitleText": "圈子"
@@ -167,6 +172,11 @@
 				"navigationBarTitleText": "服务中心"
 			}
 		},{
+			"path": "pages/mine/about",
+			"style": {
+				"navigationBarTitleText": "关于我们"
+			}
+		},{
 			"path": "pages/serve/bannedPost",
 			"style": {
 				"navigationBarTitleText": "禁言申诉"
@@ -183,6 +193,11 @@
 			}
 		},{
 			"path": "pages/serve/opinion",
+			"style": {
+				"navigationBarTitleText": "意见反馈"
+			}
+		},{
+			"path": "pages/serve/opinionDetail",
 			"style": {
 				"navigationBarTitleText": "意见反馈"
 			}

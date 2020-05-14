@@ -1,5 +1,5 @@
 <template>
-	<view class="page-msg dark-bg">
+	<view class="page-msg">
 		<navigationBar name="站内信" haveHeight></navigationBar>
 		<view class="btnBox flex-around fs-26">
 			<view @click="goPage('/pages/message/fans')">
@@ -13,6 +13,10 @@
 			<view @click="goPage('/pages/message/comment')">
 				<image src="../../static/msg3.png" mode="widthFix"></image>
 				<view>评论</view>
+			</view>
+			<view @click="goPage('/pages/message/systemNote')">
+				<image src="../../static/msg4.png" mode="widthFix"></image>
+				<view>通知</view>
 			</view>
 		</view>
 		<view class="list">
@@ -66,6 +70,21 @@
 					</view>
 				</view>
 				<image class="pic" src="../../static/logo.png" mode="aspectFill"></image>
+			</view>
+			<!-- 系统消息 -->
+			<view class="good flex-between align-star comment" @click="goPage('/pages/message/systemNote')">
+				<view class="flex align-star">
+					<image class="header circle" src="../../static/msg-lb.png" mode="aspectFill"></image>
+					<view>
+						<view class="fs-26">
+							系统消息
+						</view>
+						<view class="cont fs-32" style="padding-bottom: 0;">
+							您有新的通知
+						</view>
+					</view>
+				</view>
+				<view class="fs-24 fc-9">下午 17:28</view>
 			</view>
 		</view>
 	</view>

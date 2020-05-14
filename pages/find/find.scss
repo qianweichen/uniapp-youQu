@@ -105,4 +105,28 @@
 			}
 		}
 	}
+	.dynamic{
+		.banner{
+			margin: 32rpx 30rpx;
+			width: 690rpx;
+			height:280rpx;
+			border-radius:8rpx;
+		}
+		.tabBox {
+			padding: 0 30rpx;
+			color: rgba(255, 255, 255, 0.6);
+			> view {
+				width: 120rpx;
+				padding-top: 47rpx;
+				padding-bottom: 20rpx;
+				border-bottom: 4rpx solid transparent;
+				text-align: center;
+			}
+			.active {
+				font-size: 34rpx;
+				color: #fff;
+				border-bottom: 4rpx solid #7364bd;
+			}
+		}
+	}
 }

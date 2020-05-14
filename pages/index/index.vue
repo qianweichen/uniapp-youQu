@@ -46,8 +46,8 @@ export default {
 	},
 	data() {
 		return {
-			tabIndex: 'mine',
-			loadTabList: [false, false, false, true],
+			tabIndex: 'home',
+			loadTabList: [true, false, false, false],
 			showPublishFlag:false
 		};
 	},
