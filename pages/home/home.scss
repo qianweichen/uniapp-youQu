@@ -48,6 +48,47 @@ swiper {
 		height: 100%;
 		display: block;
 	}
+	.playEndBox {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		z-index: 1;
+		left: 0;
+		top: 0;
+		background-color: rgba(0, 0, 0, 0.5);
+		.fxd {
+			margin: 0 auto;
+			padding-top: 200rpx;
+			width: 80%;
+			.line-left {
+				width: 200rpx;
+				height: 2rpx;
+				background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+			}
+			.mid {
+				padding: 0 40rpx;
+			}
+			.line-right {
+				width: 200rpx;
+				height: 2rpx;
+				background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+			}
+		}
+		.endShareBox {
+			width: 240rpx;
+			margin: 60rpx auto;
+			.endBtn {
+				width: 100rpx;
+				height: 100rpx;
+				border-radius: 50%;
+				background-color: rgba(0, 0, 0, 0.6);
+				image {
+					width: 60rpx;
+					height: auto;
+				}
+			}
+		}
+	}
 	.progress {
 		width: 100%;
 		height: 2rpx;
@@ -91,6 +132,10 @@ swiper {
 		}
 	}
 	.contentBox {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding-bottom: 40rpx;
 		width: 100%;
 		height: 386rpx;
 		background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
@@ -137,7 +182,7 @@ swiper {
 			color: #fff;
 			image {
 				width: 40rpx;
-				height: auto;
+				height: 40rpx;
 				margin-right: 12rpx;
 			}
 		}
@@ -218,6 +263,27 @@ swiper {
 		}
 	}
 }
+.twoComment {
+	.inputAlt-cont {
+		z-index: 1;
+		background-color: #13111F;
+		color: #f2f2f2;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		border-radius: 20rpx 20rpx 0 0;
+		width: 100%;
+		height: 500rpx;
+		font-size: 30rpx;
+	}
+	.inputAlt-cont-head {
+		padding: 20rpx;
+		border-bottom: 2rpx solid #eee;
+	}
+	.inputAlt-cont-ipt {
+		padding: 20rpx;
+	}
+}
 .shareBox {
 	position: fixed;
 	z-index: 1;
@@ -229,17 +295,17 @@ swiper {
 	border-radius: 8rpx 8rpx 0 0;
 	padding: 0 40rpx;
 	box-sizing: border-box;
-	>.flex-between{
+	> .flex-between {
 		width: 224rpx;
 		text-align: center;
 	}
-	image{
+	image {
 		width: 84rpx;
 		height: auto;
 	}
 	.line {
-		width:2rpx;
-		height:130rpx;
-		background:rgba(51,51,51,0.2);
+		width: 2rpx;
+		height: 130rpx;
+		background: rgba(51, 51, 51, 0.2);
 	}
 }

@@ -4,6 +4,31 @@ export default {
 	onLaunch: function() {
 		// console.log('App Launch')
 		
+		//登陆
+		uni.login({
+		  provider: 'weixin',
+		  success: res => {
+			this.request({
+				url: this.apiUrl + 'Login/index',
+				data:{
+					code:res.code
+				},
+				success:res=>{
+					// console.log("openid:",res);
+					if(res.data.code==0){
+						uni.setStorageSync('openid',res.data.info.openid);
+						uni.setStorageSync('session_key',res.data.info.session_key);
+					}else{
+						uni.showToast({
+							title: '登陆失败，请稍后再试',
+							icon: 'none'
+						})
+					}
+				}
+			})
+		  }
+		});
+		
 		//自定义导航栏高度封装CustomBar
 		uni.getSystemInfo({
 			success: function(e) {

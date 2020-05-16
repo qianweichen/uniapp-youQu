@@ -10,29 +10,32 @@ const app = new Vue({
 })
 app.$mount()
 
+//请求地址
+Vue.prototype.apiUrl = "https://quanyu.udiao.cn/index.php?s=/api/";
+
 //顶部tabbar
 import navigationBar from "./components/navigationBar/navigationBar.vue";
-Vue.component("navigationBar",navigationBar);
+Vue.component("navigationBar", navigationBar);
 //返回胶囊
 import backCapsule from "./components/backCapsule/backCapsule.vue";
-Vue.component("backCapsule",backCapsule);
+Vue.component("backCapsule", backCapsule);
 
 //跳转页面
-Vue.prototype.goPage = function(url){
+Vue.prototype.goPage = function(url) {
 	uni.navigateTo({
 		url
 	})
 }
 
 //返回上一页
-Vue.prototype.goBack = function(){
+Vue.prototype.goBack = function() {
 	uni.navigateBack();
 }
 
 //返回主页
-Vue.prototype.goHome = function(){
+Vue.prototype.goHome = function() {
 	uni.reLaunch({
-		url:'/pages/index/index'
+		url: '/pages/index/index'
 	});
 }
 
@@ -43,8 +46,38 @@ Vue.prototype.beAuthorized = function() {
 	return false;
 }
 
+//用户登陆 获取token
+Vue.prototype.doLogin = function(userInfo,callBack) {
+	uni.showLoading({
+		title:'登陆中'
+	});
+	uni.setStorageSync('userInfo',userInfo);
+	this.request({
+		url: this.apiUrl + 'Login/do_login',
+		data: {
+			userInfo,
+			wx_openid: uni.getStorageSync('openid')
+		},
+		success: res => {
+			uni.hideLoading();
+			// console.log("登陆获取token：",res);
+			if(res.data.code==0){
+				uni.setStorageSync('userId',res.data.id);
+				uni.setStorageSync('token',res.data.token);
+				callBack();
+			}else{
+				uni.showToast({
+					title: '登陆失败，请稍后再试',
+					icon: 'none'
+				})
+			}
+		}
+	});
+}
+
 //request
 Vue.prototype.request = function(obj) {
+	obj.data.much_id = 1;	//平台标识 默认为1
 	uni.request({
 		url: obj.url || '',
 		data: obj.data || {},
@@ -53,12 +86,19 @@ Vue.prototype.request = function(obj) {
 			"Content-Type": "application/json"
 		},
 		success: (res) => {
+			if(res.data.status&&res.data.status=="error"){
+				uni.showToast({
+					title: '网络错误,请稍后再试',
+					icon: 'none'
+				})
+				return;
+			}
 			typeof obj.success == "function" && obj.success(res);
 		},
 		fail: (res) => {
 			console.log('request错误：', res);
 			uni.showToast({
-				title: '网络错误',
+				title: '网络错误,请稍后再试',
 				icon: 'none'
 			})
 		}
@@ -77,7 +117,7 @@ Vue.prototype.uploadFile = function(obj) {
 		fail: function() {
 			console.log('uploadFile错误：', res);
 			uni.showToast({
-				title: '网络错误',
+				title: '网络错误,请稍后再试',
 				icon: 'none'
 			})
 		}
