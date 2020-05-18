@@ -101,7 +101,9 @@ export default {
 			this.showIptCodeFlag = false;
 		}
 	},
-	created() {}
+	onLoad(options) {
+		console.log(options.id);
+	}
 };
 </script>
 

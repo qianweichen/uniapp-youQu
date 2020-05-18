@@ -48,12 +48,12 @@ export default {
 		return {
 			tabIndex: 'home',
 			loadTabList: [true, false, false, false],
-			showPublishFlag:false
+			showPublishFlag: false
 		};
 	},
 	methods: {
 		// 选择发布类型
-		togglePublishFlag(flag){
+		togglePublishFlag(flag) {
 			this.showPublishFlag = flag;
 		},
 		//暂停视频
@@ -83,8 +83,32 @@ export default {
 			}
 		}
 	},
+	onLoad(options) {
+		if(options.id){
+			uni.setStorageSync('shareVideoId',options.id);
+		}
+	},
 	onHide() {
 		this.stopHomeVideo(); //打开其他页面暂停视频
+	},
+	onShareAppMessage(res) {
+		// console.log(res);
+		// 系统菜单分享
+		if (res.from === 'menu') {
+			return {
+				title: this.miniProgramName,
+				path: '/pages/index/index',
+				imageUrl: '/static/logo.png'
+			};
+		}
+		// 页面内分享按钮
+		if (res.from === 'button') {
+			return {
+				title: res.target.dataset.content || this.miniProgramName,
+				path: '/pages/index/index?id=' + res.target.dataset.id,
+				imageUrl: res.target.dataset.img
+			};
+		}
 	}
 };
 </script>

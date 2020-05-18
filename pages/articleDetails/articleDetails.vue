@@ -98,6 +98,9 @@ export default {
 			customBar: this.CustomBar,
 			topCustomBar: this.StatusBar
 		};
+	},
+	onLoad(options) {
+		console.log(options.id);
 	}
 };
 </script>

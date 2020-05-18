@@ -10,6 +10,8 @@ const app = new Vue({
 })
 app.$mount()
 
+//小程序名
+Vue.prototype.miniProgramName = "友趣小程序";
 //请求地址
 Vue.prototype.apiUrl = "https://quanyu.udiao.cn/index.php?s=/api/";
 
@@ -86,9 +88,16 @@ Vue.prototype.request = function(obj) {
 			"Content-Type": "application/json"
 		},
 		success: (res) => {
+			if(res.status&&res.status=="error"){
+				uni.showToast({
+					title: res.msg,
+					icon: 'none'
+				})
+				return;
+			}
 			if(res.data.status&&res.data.status=="error"){
 				uni.showToast({
-					title: '网络错误,请稍后再试',
+					title: res.data.msg,
 					icon: 'none'
 				})
 				return;
