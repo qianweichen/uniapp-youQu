@@ -43,7 +43,7 @@
 				<view class="mask"></view>
 			</view>
 		</view>
-		<view v-if="tabIndex == 1 || tabIndex == 2"><dynamicList type="dynamic" :list="dynamicList"></dynamicList></view>
+		<view v-if="tabIndex == 1 || tabIndex == 2"><dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun"></dynamicList></view>
 		<view v-if="dynamicList.length==0" style="text-align: center; padding-top: 100rpx;">暂无数据</view>
 	</view>
 </template>

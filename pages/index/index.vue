@@ -59,8 +59,8 @@ export default {
 		//暂停视频
 		stopHomeVideo() {
 			if (this.$refs.homePage) {
-				this.$refs.homePage.videoContext.stop();
-				this.$refs.homePage.showVideoPlayBtn = true;
+				this.$refs.homePage.$refs.videoBox.videoContext.stop();
+				this.$refs.homePage.$refs.videoBox.showVideoPlayBtn = true;
 			}
 		},
 		changeTabIndex(index) {

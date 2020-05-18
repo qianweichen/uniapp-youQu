@@ -10,6 +10,15 @@ export default {
 		};
 	},
 	methods: {
+		//点赞后修改数据
+		goodFun(index, num) {
+			this.dynamicList[index]['is_info_zan'] = !this.dynamicList[index]['is_info_zan']; //修改点赞状态
+			this.dynamicList[index]['info_zan_count'] = num; //修改点赞数
+		},
+		//评论后修改数据
+		commentFun(index) {
+			this.dynamicList[index].study_repount++; //评论数+1
+		},
 		//去播放页面
 		goPlayPage(index) {
 			var playVideoPageData = {
