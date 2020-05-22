@@ -35,14 +35,17 @@ commentFun(index) {
 				<view v-if="item.study_type == 2" class="mediaBox"><video :src="item.study_video" controls :poster="item.image_part[0]"></video></view>
 				<view v-else class="mediaBox">
 					<!-- 1 -->
-					<view class="one" v-if="item.image_part.length == 1"><image :src="item.image_part[0]" mode="aspectFill"></image></view>
+					<view class="one" v-if="item.image_part.length == 1">
+						<image :src="item.image_part[0]" mode="aspectFill" @click="browseImg(item.image_part,0)"></image>
+					</view>
 					<!-- 2 -->
 					<view class="two" v-if="item.image_part.length == 2">
-						<image :src="item.image_part[0]" mode="aspectFill"></image>
-						<image :src="item.image_part[1]" mode="aspectFill"></image>
+						<image v-for="(items,indexs) in item.image_part" :key="indexs" :src="items" mode="aspectFill" @click="browseImg(item.image_part,indexs)"></image>
 					</view>
 					<!-- 3-9 -->
-					<view class="more" v-if="item.image_part.length > 2"><image v-for="(item, index) in item.image_part" :key="index" :src="item" mode="aspectFill"></image></view>
+					<view class="more" v-if="item.image_part.length > 2">
+						<image v-for="(items, indexs) in item.image_part" :key="indexs" :src="items" mode="aspectFill" @click="browseImg(item.image_part,indexs)"></image>
+					</view>
 				</view>
 				<!-- 底部按钮 -->
 				<view class="bottom flex-between">
@@ -73,7 +76,7 @@ commentFun(index) {
 								<text>{{ item.study_repount }}</text>
 							</button>
 						</view>
-						<button type="default" class="share flex" open-type="share">
+						<button class="share flex" open-type="share" :data-id="item.id" :data-content="item.study_content" :data-img="item.image_part[0]">
 							<image src="../../static/wechat.png" mode="widthFix"></image>
 							<text>分享</text>
 						</button>
@@ -123,9 +126,9 @@ commentFun(index) {
 							</view> -->
 						</view>
 						<!-- 查看全部 -->
-						<view class="more flex" v-if="item.huifu_count > 2">
+						<view class="more flex" v-if="item.huifu_count > 2" @click="getMoreComment(item.id,item.user_id)">
 							<view class="line"></view>
-							<text class="fs-26" style="color: #999;">查看全部</text>
+							<text class="fs-26" style="color: #999;">查看全部{{item.huifu_count}}条评论</text>
 						</view>
 					</block>
 				</view>

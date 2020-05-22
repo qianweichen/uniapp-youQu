@@ -1,24 +1,37 @@
 <template>
 	<view class="page-circle dark-bg">
 		<backCapsule type="capsule"></backCapsule>
-		<view class="topInfoBox" :style="'background-image: url(' + '../../static/logo.png' + ');'">
+		<view class="topInfoBox" :style="'background-image: url(' + (circleData.realm_bg||'') + ');'">
 			<view class="info">
 				<view class="flex-between align-star">
 					<view class="flex info-left" @click="goPage('/pages/circle/circleInfo?id=' + '1')">
 						<view class="user flex-column-between">
-							<image class="header circle" src="../../static/logo.png" mode="aspectFill"></image>
-							<view v-if="true" class="fs-22 join flex-center">加入</view>
-							<view v-else class="fs-22 join flex-center outCircle">退圈</view>
+							<image class="header circle" :src="circleData.realm_icon" mode="aspectFill"></image>
+							<view v-if="isAuthorized" @click.stop="join">
+								<view v-if="!circleData.is_trailing" class="fs-22 join flex-center">加入</view>
+								<view v-else class="fs-22 join flex-center outCircle">退圈</view>
+							</view>
+							<view v-else @click.stop="">
+								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+									<view class="fs-22 join flex-center">加入</view>
+								</button>
+							</view>
 						</view>
 						<view class="nameBox fc-f flex-column-between">
-							<view class="fs-32 bold">爱宠俱乐部</view>
-							<view class="fs-24" style="color: #ddd;">宠物是我们最好的朋友，不要伤害它...</view>
-							<view class="fs-20">关注 1758 | 帖子 474</view>
+							<view class="fs-32 bold">{{circleData.realm_name}}</view>
+							<view class="fs-24" style="color: #ddd;">{{circleData.realm_synopsis}}</view>
+							<view class="fs-20">关注 {{circleData.concern}} | 帖子 {{circleData.is_paper_count}}</view>
 						</view>
 					</view>
-					<view class="share">
+					<view v-if="isAuthorized" class="share" @click="shareQrCode">
 						<image src="../../static/ercode.png" mode="widthFix"></image>
 						<view class="fs-22 fc-f">分享</view>
+					</view>
+					<view v-else class="share">
+						<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+							<image src="../../static/ercode.png" mode="widthFix"></image>
+							<view class="fs-22 fc-f">分享</view>
+						</button>
 					</view>
 				</view>
 			</view>
@@ -56,54 +69,42 @@
 		<view v-else>
 			<!-- 置顶 -->
 			<view class="topBox fs-24">
-				<view class="item flex" v-for="(item, index) in 2" :key="index">
+				<view class="item flex" v-for="(item, index) in topList" :key="index" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.id)">
 					<view class="tag flex-center">置顶</view>
-					<view class="info">纯干货！养猫3种错误的喂养方式。你是不是也这样？</view>
+					<view class="info">{{item.study_content}}</view>
 				</view>
 			</view>
-			<dynamicList type="circle" :list="dynamicList"></dynamicList>
+			<dynamicList type="circle" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun"></dynamicList>
 			<!-- 发布按钮 -->
 			<image class="sendDynamic" src="../../static/tabbar/publish.png" mode="widthFix"></image>
+		</view>
+		
+		<!-- 图片展示由自己实现 -->
+		<view class="flex_row_c_c modalView" :class="qrShow?'show':''" @tap="hideQr()">
+			<view class="flex_column">
+				<view class="backgroundColor-white padding1vh border_radius_10px">
+					<image :src="poster.finalPath || ''" mode="widthFix" class="posterImage"></image>
+				</view>
+				<view class="flex_row marginTop2vh">
+					<button type="primary" size="mini" @tap.prevent.stop="saveImage()">保存图片</button>
+				</view>
+			</view>
+		</view>
+		<!-- 画布 -->
+		<view class="hideCanvasView">
+			<canvas class="hideCanvas" canvas-id="default_PosterCanvasId" :style="{width: (poster.width||10) + 'px', height: (poster.height||10) + 'px'}"></canvas>
 		</view>
 	</view>
 </template>
 
 <script>
 import dynamicList from '@/components/dynamic/dynamic.vue';
+import circleJs from './circle.js';
 export default {
 	components: {
 		dynamicList
 	},
-	data() {
-		return {
-			noJurisdiction: true, //没权限
-			erCode: '', //邀请码
-			showIptCodeFlag: false, //显示输入邀请码
-			dynamicList: [1, 2, 3]
-		};
-	},
-	methods: {
-		// 粘贴
-		setCode() {
-			uni.getClipboardData({
-				success: res => {
-					this.erCode = res.data;
-				}
-			});
-		},
-		// 输入邀请码弹窗
-		toggleIptCodeFlag(flag) {
-			this.showIptCodeFlag = flag;
-		},
-		// 请求访问
-		sendCode() {
-			this.noJurisdiction = false;
-			this.showIptCodeFlag = false;
-		}
-	},
-	onLoad(options) {
-		console.log(options.id);
-	}
+	...circleJs
 };
 </script>
 

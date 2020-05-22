@@ -47,16 +47,16 @@ export default {
 					is_user: this.personalInfo.is_user
 				},
 				success: res => {
-					console.log("关注:", res);
+					// console.log("关注:", res);
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
 					});
 					if (res.data.msg == "关注成功！") {
-						wx.requestSubscribeMessage({
+						uni.requestSubscribeMessage({
 							tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
 							success: (res) => {
-								console.log(res)
+								// console.log(res)
 							}
 						});
 					}
@@ -84,7 +84,7 @@ export default {
 				},
 				success: res => {
 					uni.hideLoading();
-					console.log("获取用户信息:", res);
+					// console.log("获取用户信息:", res);
 					this.personalInfo = res.data.info;
 				},
 			});
@@ -143,5 +143,24 @@ export default {
 	},
 	onReachBottom() {
 		this.getVideoList();
+	},
+	onShareAppMessage(res) {
+		// console.log(res);
+		// 系统菜单分享
+		if (res.from === 'menu') {
+			return {
+				title: this.miniProgramName,
+				path: '/pages/index/index',
+				imageUrl: '/static/logo.png'
+			};
+		}
+		// 页面内分享按钮
+		if (res.from === 'button') {
+			return {
+				title: res.target.dataset.content || this.miniProgramName,
+				path: '/pages/index/index?id=' + res.target.dataset.id,
+				imageUrl: res.target.dataset.img
+			};
+		}
 	}
 };

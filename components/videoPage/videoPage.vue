@@ -139,9 +139,9 @@
 							</view> -->
 						</view>
 						<!-- 查看全部 -->
-						<view class="more flex" v-if="item.huifu_count > 2">
+						<view class="more flex" v-if="item.huifu_count > 2" @click="getMoreComment(item.id,item.user_id)">
 							<view class="line"></view>
-							<text class="fs-26" style="color: #999;">查看全部</text>
+							<text class="fs-26" style="color: #999;">查看全部{{item.huifu_count}}条评论</text>
 						</view>
 					</block>
 				</view>

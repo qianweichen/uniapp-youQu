@@ -57,6 +57,12 @@ export default {
 		}
 	},
 	methods: {
+		// 查看全部二级评论
+		getMoreComment(id,uid){
+			uni.navigateTo({
+				url:`/pages/commentList/commentList?id=${id}&uid=${uid}`
+			})
+		},
 		//删除
 		deleteVideo() {
 			if (this.deleteContent == '') {
@@ -340,6 +346,7 @@ export default {
 		},
 		//授权
 		getUserInfo(e) {
+			if(!e.detail.userInfo)	return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 			});

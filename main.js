@@ -11,7 +11,7 @@ const app = new Vue({
 app.$mount()
 
 //小程序名
-Vue.prototype.miniProgramName = "友趣小程序";
+Vue.prototype.miniProgramName = "友趣短视频";
 //请求地址
 Vue.prototype.apiUrl = "https://quanyu.udiao.cn/index.php?s=/api/";
 
@@ -49,11 +49,11 @@ Vue.prototype.beAuthorized = function() {
 }
 
 //用户登陆 获取token
-Vue.prototype.doLogin = function(userInfo,callBack) {
+Vue.prototype.doLogin = function(userInfo, callBack) {
 	uni.showLoading({
-		title:'登陆中'
+		title: '登陆中'
 	});
-	uni.setStorageSync('userInfo',userInfo);
+	uni.setStorageSync('userInfo', userInfo);
 	this.request({
 		url: this.apiUrl + 'Login/do_login',
 		data: {
@@ -63,11 +63,14 @@ Vue.prototype.doLogin = function(userInfo,callBack) {
 		success: res => {
 			uni.hideLoading();
 			// console.log("登陆获取token：",res);
-			if(res.data.code==0){
-				uni.setStorageSync('userId',res.data.id);
-				uni.setStorageSync('token',res.data.token);
+			if (res.data.code == 0) {
+				uni.setStorageSync('userId', res.data.id);
+				uni.setStorageSync('token', res.data.token);
+				uni.showToast({
+					title:'登陆成功'
+				})
 				callBack();
-			}else{
+			} else {
 				uni.showToast({
 					title: '登陆失败，请稍后再试',
 					icon: 'none'
@@ -79,7 +82,7 @@ Vue.prototype.doLogin = function(userInfo,callBack) {
 
 //request
 Vue.prototype.request = function(obj) {
-	obj.data.much_id = 1;	//平台标识 默认为1
+	obj.data.much_id = 1; //平台标识 默认为1
 	uni.request({
 		url: obj.url || '',
 		data: obj.data || {},
@@ -88,14 +91,14 @@ Vue.prototype.request = function(obj) {
 			"Content-Type": "application/json"
 		},
 		success: (res) => {
-			if(res.status&&res.status=="error"){
+			if (res.status && res.status == "error") {
 				uni.showToast({
 					title: res.msg,
 					icon: 'none'
 				})
 				return;
 			}
-			if(res.data.status&&res.data.status=="error"){
+			if (res.data.status && res.data.status == "error") {
 				uni.showToast({
 					title: res.data.msg,
 					icon: 'none'
@@ -131,4 +134,21 @@ Vue.prototype.uploadFile = function(obj) {
 			})
 		}
 	})
+}
+
+//浏览图片
+Vue.prototype.browseImg = function(urls, current) {
+	uni.previewImage({
+		urls,
+		current,
+		// longPressActions: {
+		// 	itemList: ['发送给朋友', '保存图片', '收藏'],
+		// 	success: function(data) {
+		// 		console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+		// 	},
+		// 	fail: function(err) {
+		// 		console.log(err.errMsg);
+		// 	}
+		// }
+	});
 }

@@ -207,7 +207,11 @@
 				"navigationBarTitleText": "意见反馈"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/commentList/commentList",
+            "style" : {}
+        }
+    ],
 	"globalStyle": {
 		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "custom"
