@@ -8,20 +8,25 @@ export default {
 			noJurisdiction: false, //没权限
 			erCode: '', //邀请码
 			showIptCodeFlag: false, //显示输入邀请码
-			page:1,
+			page: 1,
 			dynamicList: [],
 			circleId: '', //圈子id
 			circleData: {}, //圈子信息
 			isAuthorized: false, //授权否
 			qrCode: '', //圈子二维码
-			topList:[],	//置顶推荐
-			
+			topList: [], //置顶推荐
+			showPublishFlag: false, //发布
+			//海报数据
 			poster: {},
 			qrShow: false,
 			canvasId: 'default_PosterCanvasId'
 		};
 	},
 	methods: {
+		// 选择发布类型
+		togglePublishFlag(flag) {
+			this.showPublishFlag = flag;
+		},
 		//点赞后修改数据
 		goodFun(index, num) {
 			this.dynamicList[index]['is_info_zan'] = !this.dynamicList[index]['is_info_zan']; //修改点赞状态
@@ -32,8 +37,8 @@ export default {
 			this.dynamicList[index].study_repount++; //评论数+1
 		},
 		// 帖子数据
-		getArticleList(isFirstPage){
-			if(isFirstPage==true){
+		getArticleList(isFirstPage) {
+			if (isFirstPage == true) {
 				this.page = 1;
 				this.dynamicList = [];
 			}
@@ -43,20 +48,20 @@ export default {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
 					uid: uni.getStorageSync('userId'),
-					tory_id:this.circleId,
-					index_page:this.page,
+					tory_id: this.circleId,
+					index_page: this.page,
 					version: 3, // 0是文字 1是语音 2是视频 3是全部
-					startid:this.dynamicList.length?this.dynamicList[0].id:0,
+					startid: this.dynamicList.length ? this.dynamicList[0].id : 0,
 				},
 				success: res => {
-					console.log("帖子数据:",res);
+					// console.log("帖子数据:", res);
 					this.dynamicList = this.dynamicList.concat(res.data.info);
 					this.page++;
 				},
-			}); 
+			});
 		},
 		// 获取置顶帖子
-		getTopArticle(){
+		getTopArticle() {
 			this.request({
 				url: this.apiUrl + 'User/get_placement_top',
 				data: {
@@ -65,7 +70,7 @@ export default {
 					tory_id: this.circleId,
 				},
 				success: res => {
-					console.log("置顶帖子:",res);
+					// console.log("置顶帖子:", res);
 					this.topList = res.data.info;
 				},
 			});
@@ -248,7 +253,7 @@ export default {
 					uid: uni.getStorageSync('userId'),
 					tory_id: this.circleId,
 					is_trailing: this.circleData['is_trailing'] == true ? 1 : 0,
-					trailing_type: 1, //0申请（干掉） 1暗号
+					trailing_type: 1, //0申请（干掉） 1邀请码
 					trailing_text: this.erCode //邀请码
 				},
 				success: res => {
@@ -257,7 +262,11 @@ export default {
 					uni.showToast({
 						title: res.data.msg
 					});
+					this.showIptCodeFlag = false;	//隐藏邀请码填写弹窗
+					//刷新信息
 					this.getCircleInfo();
+					this.getTopArticle();
+					this.getArticleList(true);
 				},
 			});
 		},
@@ -273,8 +282,10 @@ export default {
 				},
 				success: res => {
 					uni.hideLoading();
-					console.log("获取圈子信息:", res);
+					// console.log("获取圈子信息:", res);
 					this.circleData = res.data.info;
+													      //私密圈子   并且   未加入
+					this.noJurisdiction = res.data.info.attention == 1 && res.data.info.is_trailing == false;
 				},
 			});
 		},
@@ -292,8 +303,14 @@ export default {
 		},
 		// 请求访问
 		sendCode() {
-			this.noJurisdiction = false;
-			this.showIptCodeFlag = false;
+			if(!this.erCode){
+				uni.showToast({
+					title:'请输入邀请码',
+					icon:'none'
+				})
+				return;
+			}
+			this.join();
 		},
 		getUserInfo(e) {
 			if (!e.detail.userInfo) return;
@@ -315,7 +332,7 @@ export default {
 		this.getTopArticle();
 		this.getArticleList(true);
 	},
-	onReachBottom(){
+	onReachBottom() {
 		this.getArticleList();
 	},
 	onShareAppMessage(res) {

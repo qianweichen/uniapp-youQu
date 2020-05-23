@@ -72,7 +72,8 @@ export default {
 					console.log('选择视频',res);
 					this.shootData = {
 						tempVideoPath:res.tempFilePath,
-						tempThumbPath:res.thumbTempFilePath
+						tempThumbPath:res.thumbTempFilePath,
+						duration:res.duration
 					}
 					uni.setStorageSync('shootData', this.shootData);
 					uni.navigateTo({
@@ -126,6 +127,7 @@ export default {
 		//拍摄完保存地址
 		saveVideo(e) {
 			console.log('录像结束', e);
+			e.duration = this.timerNum;
 			this.shootData = e;
 			this.shootTime = 3;
 			clearInterval(this.myInterval);
@@ -137,6 +139,12 @@ export default {
 	},
 	onLoad() {
 		this.cameraContext = uni.createCameraContext();
+		//自动调用一下获得权限
+		this.cameraContext.startRecord({
+			success: e => {
+				this.cameraContext.stopRecord();
+			}
+		});
 	}
 };
 </script>

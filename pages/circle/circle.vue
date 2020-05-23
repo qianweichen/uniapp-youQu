@@ -4,12 +4,15 @@
 		<view class="topInfoBox" :style="'background-image: url(' + (circleData.realm_bg||'') + ');'">
 			<view class="info">
 				<view class="flex-between align-star">
-					<view class="flex info-left" @click="goPage('/pages/circle/circleInfo?id=' + '1')">
+					<view class="flex info-left" @click="goPage('/pages/circle/circleInfo?id=' + circleId)">
 						<view class="user flex-column-between">
 							<image class="header circle" :src="circleData.realm_icon" mode="aspectFill"></image>
-							<view v-if="isAuthorized" @click.stop="join">
-								<view v-if="!circleData.is_trailing" class="fs-22 join flex-center">加入</view>
-								<view v-else class="fs-22 join flex-center outCircle">退圈</view>
+							<view v-if="isAuthorized">
+								<view v-if="!noJurisdiction" @click.stop="join">
+									<view v-if="!circleData.is_trailing" class="fs-22 join flex-center">加入</view>
+									<view v-else class="fs-22 join flex-center outCircle">退圈</view>
+								</view>
+								<view v-else class="fs-22 join flex-center" @click.stop="toggleIptCodeFlag(true)">加入</view>
 							</view>
 							<view v-else @click.stop="">
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
@@ -38,7 +41,7 @@
 		</view>
 		<!-- 无权限 -->
 		<view v-if="noJurisdiction" class="noQx">
-			<view @click="toggleIptCodeFlag(true)">
+			<view v-if="isAuthorized" @click="toggleIptCodeFlag(true)">
 				<view class="picBox flex-center">
 					<view>
 						<image src="../../static/lock.png" mode="widthFix"></image>
@@ -49,6 +52,20 @@
 					<view>该圈子需要有邀请码才可以加入和访问</view>
 					<view>点击填写邀请码</view>
 				</view>
+			</view>
+			<view v-else>
+				<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+					<view class="picBox flex-center">
+						<view>
+							<image src="../../static/lock.png" mode="widthFix"></image>
+							<view class="fs-22">私密圈子</view>
+						</view>
+					</view>
+					<view class="fs-22">
+						<view>该圈子需要有邀请码才可以加入和访问</view>
+						<view>点击填写邀请码</view>
+					</view>
+				</button>
 			</view>
 			<!-- 填写弹窗 -->
 			<view v-if="showIptCodeFlag" class="mask"></view>
@@ -76,7 +93,7 @@
 			</view>
 			<dynamicList type="circle" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun"></dynamicList>
 			<!-- 发布按钮 -->
-			<image class="sendDynamic" src="../../static/tabbar/publish.png" mode="widthFix"></image>
+			<image @click="togglePublishFlag(true)" class="sendDynamic" src="../../static/tabbar/publish.png" mode="widthFix"></image>
 		</view>
 		
 		<!-- 图片展示由自己实现 -->
@@ -94,15 +111,19 @@
 		<view class="hideCanvasView">
 			<canvas class="hideCanvas" canvas-id="default_PosterCanvasId" :style="{width: (poster.width||10) + 'px', height: (poster.height||10) + 'px'}"></canvas>
 		</view>
+		<!-- 发布 -->
+		<publish v-if="showPublishFlag" @togglePublishFlag="togglePublishFlag"></publish>
 	</view>
 </template>
 
 <script>
+import publish from '@/components/publish/publish';
 import dynamicList from '@/components/dynamic/dynamic.vue';
 import circleJs from './circle.js';
 export default {
 	components: {
-		dynamicList
+		dynamicList,
+		publish
 	},
 	...circleJs
 };

@@ -3,19 +3,20 @@
 		<backCapsule type="normal"></backCapsule>
 		<navigationBar name="发布到" haveHeight></navigationBar>
 		<view class="list">
-			<view class="item flex-between" v-for="(item,index) in 5" :key="index" @click="choose()">
+			<view class="item flex-between" v-for="(item,index) in list" :key="index" @click="choose(item)">
 				<view class="flex">
-					<image class="header circle" src="../../static/logo.png" mode="aspectFill"></image>
+					<image class="header circle" :src="item.realm_icon" mode="aspectFill"></image>
 					<view>
-						<view class="fs-30">流浪动物保护领养中心</view>
+						<view class="fs-30">{{item.realm_name}}</view>
 						<view class="flex fs-24">
-							<view>1358人加入</view>
-							<view>466条内容</view>
+							<view>{{item.concern}}人加入</view>
+							<view>{{item.is_paper_count}}条内容</view>
 						</view>
 					</view>
 				</view>
-				<image class="yes" src="../../static/yes.png" mode="widthFix"></image>
+				<!-- <image v-if="item.checked" class="yes" src="../../static/yes.png" mode="widthFix"></image> -->
 			</view>
+			<view v-if="list.length==0" style="text-align: center; padding-top: 400rpx;">您还没加入任何圈子，请先加入</view>
 		</view>
 	</view>
 </template>
@@ -24,13 +25,47 @@
 	export default{
 		data(){
 			return{
-				
+				list:[],
+				page:1
 			}
 		},
 		methods:{
-			choose(){
+			choose(data){
+				//修改上一个页面的发布圈子信息
+				var pages = getCurrentPages();
+				var page = pages[pages.length - 2];
+				page.$vm.chooseCirce = data;
+				
 				this.goBack();
-			}
+			},
+			//获取所有圈子
+			getCircle(){
+				uni.showLoading({
+					title:'加载中'
+				});
+				this.request({
+					url: this.apiUrl + 'User/get_right_needle',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId'),
+						get_id:-1,
+						page:this.page
+					},
+					success: res => {
+						uni.hideLoading();
+						console.log("获取所有圈子:",res);
+						this.page++;
+						this.list = res.data.info;
+					},
+				});
+			},
+		},
+		onLoad() {
+			this.getCircle();
+		},
+		onReachBottom() {
+			this.getCircle();
 		}
 	}
 </script>

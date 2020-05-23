@@ -3,18 +3,18 @@
 		<backCapsule type="normal"></backCapsule>
 		<navigationBar name="发布" haveHeight></navigationBar>
 		<view class="iptBox flex-between">
-			<textarea class="fs-26" placeholder="写下你的想法，让更多的人看见~" placeholder-class="fc-9" maxlength="140" />
+			<textarea class="fs-26" placeholder="写下你的想法，让更多的人看见~" placeholder-class="fc-9" maxlength="140" v-model="content" />
 			<video :src="videoData.tempVideoPath" controls :poster="videoData.tempThumbPath"></video>
 		</view>
 		<view class="chooseBox fs-26">
-			<view class="item flex-between">
+			<!-- <view class="item flex-between">
 				<view>禁止转发</view>
 				<switch :checked="noForwardFlag" @change="noForward" color="#7364BD" />
-			</view>
+			</view> -->
 			<view class="item flex-between" @click="goPage('/pages/publish/chooseCircle')">
 				<view>发布到</view>
 				<view class="flex">
-					<text class="xz">选择</text>
+					<text class="xz" :style="chooseCirce.realm_name ? 'color:#fff;' : ''">{{ chooseCirce.realm_name || '选择' }}</text>
 					<image class="right" src="../../static/right.png" mode="widthFix"></image>
 				</view>
 			</view>
@@ -23,19 +23,142 @@
 				<image src="../../static/tip.png" mode="widthFix"></image>
 			</view>
 		</view>
-		<view class="btn-big flex-center">发布</view>
+		<view class="btn-big flex-center" @click="send">发布</view>
 	</view>
 </template>
 
 <script>
+const qiniuUploader = require('@/components/qiniuUploader/qiniuUploader.js');
 export default {
 	data() {
 		return {
-			noForwardFlag: false, //是否允许转发
-			videoData: {} //视频数据
+			// noForwardFlag: false, //是否允许转发
+			videoData: {}, //视频数据
+			content: '', //内容
+			chooseCirce: {} //圈子信息
 		};
 	},
 	methods: {
+		// 第一步:订阅
+		send() {
+			if (!this.chooseCirce.id) {
+				uni.showToast({
+					title: '请选择圈子',
+					icon: 'none'
+				});
+				return;
+			}
+			if (!this.content) {
+				uni.showToast({
+					title: '请输入内容',
+					icon: 'none'
+				});
+				return;
+			}
+			uni.requestSubscribeMessage({
+				tmplIds: ['NfOZBD9yhTMpgM_CUJDBKdmkjvllcDF2RHPvlDMldoI', '7sor7eBvPETo04jeaDtzc_co2VX9_6NHnCJaqQiVMNE'],
+				success: res => {
+					// console.log(res);
+					this.saveVideo();
+				}
+			});
+		},
+		// 第二步:上传七牛
+		saveVideo() {
+			uni.showLoading({
+				title: '加载中'
+			});
+			var params = {};
+			params.token = uni.getStorageSync('token');
+			params.openid = uni.getStorageSync('openid');
+			params.uid = uni.getStorageSync('userId');
+			params.content = this.content;
+			params.is_open = 1; //可以转发
+			params.type = 2; //视频
+			params.fa_class = this.chooseCirce.id; //圈子id
+			params.color = '#000000';
+			params.title = 'default';
+			params.file_ss = 0;
+			params.mch_id = 1;
+			this.request({
+				url: this.apiUrl + 'User/upload_token',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log('上传七牛:', res);
+					var token = res.data.token;
+					// 交给七牛上传
+					qiniuUploader.upload(
+						this.videoData.tempVideoPath,
+						res => {
+							// 每个文件上传成功后,处理相关的事情
+							// 其中 info 是文件上传成功后，服务端返回的json，形式如
+							// {
+							//    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
+							//    "key": "gogopher.jpg"
+							//  }
+							// 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
+							params.user_file = 'https://' + res.imageURL;
+							//视频自动调取封面
+							params.img_arr = ['https://' + res.imageURL + '?vframe/jpg/offset/0'];
+							params.video_duration = parseInt(this.videoData.duration);
+							this.submit(params);
+							console.log('file url is: ' + res.fileUrl);
+						},
+						error => {
+							console.log('error: ' + error);
+							params.user_file = '';
+							this.submit(params);
+						},
+						{
+							region: 'ECN',
+							domain: 'dns.udiao.cn', // // bucket 域名，下载资源时用到。如果设置，会在 success callback 的 res 参数加上可以直接使用的 ImageURL 字段。否则需要自己拼接
+							// key: 'customFileName.jpg', // [非必须]自定义文件 key。如果不设置，默认为使用微信小程序 API 的临时文件名
+							// 以下方法三选一即可，优先级为：uptoken > uptokenURL > uptokenFunc
+							uptoken: token // 由其他程序生成七牛 uptoken
+							// uptokenURL: 'UpTokenURL.com/uptoken', // 从指定 url 通过 HTTP GET 获取 uptoken，返回的格式必须是 json 且包含 uptoken 字段，例如： {"uptoken": "[yourTokenString]"}
+							// uptokenFunc: function() {return '[yourTokenString]';}
+						},
+						res => {
+							// console.log('上传进度', res.progress);
+							// console.log('已经上传的数据长度', res.totalBytesSent);
+							// console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend);
+						},
+						() => {
+							// 取消上传
+						},
+						() => {
+							// `before` 上传前执行的操作
+						},
+						err => {
+							// `complete` 上传接受后执行的操作(无论成功还是失败都执行)
+						}
+					);
+				}
+			});
+		},
+		// 第三步:提交
+		submit(params) {
+			this.request({
+				url: this.apiUrl + 'User/add_circle',
+				data: params,
+				method: 'POST',
+				success: res => {
+					console.log('发布:', res);
+					uni.showToast({
+						title: res.data.msg
+					});
+					setTimeout(() => {
+						uni.reLaunch({
+							url: '../index/index'
+						});
+					}, 1500);
+				}
+			});
+		},
 		showTip() {
 			uni.showModal({
 				title: '发布须知',
@@ -48,16 +171,16 @@ export default {
 		// 上传图片
 		getImageInfo(e) {
 			console.log('图片返回：', e);
-		},
-		// 禁止转发
-		noForward(e) {
-			this.noForwardFlag = e.detail.value;
 		}
+		// 禁止转发
+		// noForward(e) {
+		// 	this.noForwardFlag = e.detail.value;
+		// }
 	},
 	onLoad() {
 		//获取拍摄或选择的视频
 		this.videoData = uni.getStorageSync('shootData');
-		uni.removeStorageSync('shootData');
+		// uni.removeStorageSync('shootData');
 	}
 };
 </script>
