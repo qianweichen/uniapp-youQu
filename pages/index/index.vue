@@ -2,9 +2,9 @@
 	<view class="page-index">
 		<view style="height: calc(100vh - 144rpx);">
 			<home ref="homePage" v-if="loadTabList[0]" :class="{ hide: tabIndex != 'home' }"></home>
-			<find v-if="loadTabList[1]" :class="{ hide: tabIndex != 'find' }"></find>
-			<message v-if="loadTabList[2]" :class="{ hide: tabIndex != 'message' }"></message>
-			<mine v-if="loadTabList[3]" :class="{ hide: tabIndex != 'mine' }"></mine>
+			<find ref="findPage" v-if="loadTabList[1]" :class="{ hide: tabIndex != 'find' }"></find>
+			<message ref="messagePage" v-if="loadTabList[2]" :class="{ hide: tabIndex != 'message' }"></message>
+			<mine ref="minePage" v-if="loadTabList[3]" :class="{ hide: tabIndex != 'mine' }"></mine>
 		</view>
 		<!-- tabbar -->
 		<view class="tabbar flex-around">
@@ -17,9 +17,15 @@
 				<view :class="{ active: tabIndex == 'find' }">发现</view>
 			</view>
 			<view><image @click="togglePublishFlag(true)" class="icon publish" src="../../static/tabbar/publish.png" mode="widthFix"></image></view>
-			<view @click="changeTabIndex('message')">
+			<view v-if="isAuthorized" @click="changeTabIndex('message')">
 				<image class="icon" :src="'../../static/tabbar/message' + (tabIndex == 'message' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'message' }">站内信</view>
+			</view>
+			<view v-else>
+				<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+					<image class="icon" :src="'../../static/tabbar/message' + (tabIndex == 'message' ? 'A' : '') + '.png'" mode="widthFix"></image>
+					<view :class="{ active: tabIndex == 'message' }">站内信</view>
+				</button>
 			</view>
 			<view @click="changeTabIndex('mine')">
 				<image class="icon" :src="'../../static/tabbar/mine' + (tabIndex == 'mine' ? 'A' : '') + '.png'" mode="widthFix"></image>
@@ -46,6 +52,7 @@ export default {
 	},
 	data() {
 		return {
+			isAuthorized: false, //授权否
 			tabIndex: 'home',
 			loadTabList: [true, false, false, false],
 			showPublishFlag: false
@@ -59,12 +66,12 @@ export default {
 		//暂停视频
 		stopHomeVideo() {
 			if (this.$refs.homePage) {
-				this.$refs.homePage.$refs.videoBox.videoContext.stop();
-				this.$refs.homePage.$refs.videoBox.showVideoPlayBtn = true;
+				this.$refs.homePage.$refs.videoBox.videoContext.pause();
 			}
 		},
 		changeTabIndex(index) {
 			this.tabIndex = index;
+			//控制第一次点击加载
 			if (index == 'home' && !this.loadTabList[0]) {
 				this.loadTabList[0] = true;
 			}
@@ -77,16 +84,40 @@ export default {
 			if (index == 'mine' && !this.loadTabList[3]) {
 				this.loadTabList[3] = true;
 			}
+			//控制每次点击触发刷新
+			if (index == 'home') {
+			} else if (index == 'find') {
+				if (this.$refs.findPage) this.$refs.findPage.onShowFun();
+			} else if (index == 'message') {
+				if (this.$refs.messagePage) this.$refs.messagePage.onShowFun();
+			} else if (index == 'mine') {
+				if (this.$refs.minePage) this.$refs.minePage.onShowFun();
+			}
 			//切换tab暂停视频
 			if (index == 'find' || index == 'message' || index == 'mine') {
 				this.stopHomeVideo(); //暂停视频
+			} else {
+				this.$refs.homePage.$refs.videoBox.videoContext.play();
 			}
+		},
+		getUserInfo(e) {
+			if (!e.detail.userInfo) return;
+			this.doLogin(e.detail.userInfo, () => {
+				this.isAuthorized = true;
+			});
 		}
 	},
 	onLoad(options) {
-		if(options.id){
-			uni.setStorageSync('shareVideoId',options.id);
+		if (options.id) {
+			uni.setStorageSync('shareVideoId', options.id);
 		}
+		//判断授权 已授权为true
+		this.isAuthorized = this.beAuthorized();
+	},
+	onShow() {
+		if (this.$refs.findPage) this.$refs.findPage.onShowFun();
+		if (this.$refs.messagePage) this.$refs.messagePage.onShowFun();
+		if (this.$refs.minePage) this.$refs.minePage.onShowFun();
 	},
 	onHide() {
 		this.stopHomeVideo(); //打开其他页面暂停视频

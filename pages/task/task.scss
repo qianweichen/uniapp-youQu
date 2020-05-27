@@ -14,7 +14,7 @@
 			border-radius:2rpx;
 		}
 		.left{
-			width: 180rpx;
+			// width: 180rpx;
 			.fs-18{
 				width:72rpx;
 				height:28rpx;
@@ -58,6 +58,7 @@
 		position: fixed;
 		right: 30rpx;
 		bottom: 60rpx;
+		z-index: 1;
 		image{
 			width:110rpx;
 			height:110rpx;

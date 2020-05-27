@@ -36,7 +36,7 @@ commentFun(index) {
 				<view v-else class="mediaBox">
 					<!-- 1 -->
 					<view class="one" v-if="item.image_part.length == 1">
-						<image :src="item.image_part[0]" mode="aspectFill" @click="browseImg(item.image_part,0)"></image>
+						<image :src="item.image_part[0]" mode="widthFix" @click="browseImg(item.image_part,0)"></image>
 					</view>
 					<!-- 2 -->
 					<view class="two" v-if="item.image_part.length == 2">

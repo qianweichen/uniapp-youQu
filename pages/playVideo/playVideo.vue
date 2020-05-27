@@ -18,21 +18,9 @@ export default {
 			videoList: [], //视频列表
 			videoIndex:0,	//初始下标
 			videoPage:1,	//初始页码
-			userId:''//用户id
+			userId:'',//个人页跳转来的用户id
+			search:''//搜索页跳转来的搜索内容
 		};
-	},
-	computed: {
-		//是否显示删除按钮
-		deleteBtnFlag() {
-			if (this.videoList.length == 0) return false;
-			var sameUser = this.videoList[this.videoIndex].user_id == uni.getStorageSync('userId');
-			var adAdmin = this.videoList[this.videoIndex]['check_qq'] == 'da';
-			var xiaoAdmin = this.videoList[this.videoIndex]['check_qq'] == 'xiao';
-			if (sameUser || adAdmin || xiaoAdmin) {
-				return true;
-			}
-			return false;
-		}
 	},
 	methods: {
 		//点赞后修改数据
@@ -45,13 +33,18 @@ export default {
 			this.videoList[index].study_repount++; //评论数+1
 		},
 		getVideoList(isFirstPage){
-			uni.showLoading({
-				title: '加载中'
-			});
 			if (isFirstPage) {
 				this.videoPage = 1;
 				this.dynamicList = [];
 			}
+			if(this.search){	//有搜索内容走搜索，没有则是从个人页来的
+				this.getSearchVideo();
+			}else{
+				this.getPersionVideo();
+			}
+		},
+		//获取个人动态
+		getPersionVideo(){
 			this.request({
 				url: this.apiUrl + 'User/get_my_list',
 				data: {
@@ -78,24 +71,36 @@ export default {
 				},
 			});
 		},
-		//授权
-		getUserInfo(e) {
-			if(!e.detail.userInfo)	return;
-			this.doLogin(e.detail.userInfo, () => {
-				this.isAuthorized = true;
+		//获取搜索动态
+		getSearchVideo(){
+			this.request({
+				url: this.apiUrl + 'User/get_search_list',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId'),
+					page: this.videoPage,
+					search: this.search,
+					version: 2
+				},
+				success: res => {
+					console.log("搜索:", res);
+					uni.hideLoading();
+					this.videoPage++;
+					this.videoList = this.videoList.concat(res.data.info);
+				},
 			});
 		}
 	},
 	onLoad() {
-		//判断授权 已授权为true
-		this.isAuthorized = this.beAuthorized();
 		//获取数据
 		var playVideoPageData = uni.getStorageSync('playVideoPageData');
 		if(playVideoPageData){
 			this.videoList = playVideoPageData.videoList;
 			this.videoPage = playVideoPageData.page;
-			this.userId = playVideoPageData.id;
+			this.userId = playVideoPageData.id;		//个人页跳转来的用户id
 			this.videoIndex = playVideoPageData.index;
+			this.search = playVideoPageData.search;	//搜索页跳转来的搜索内容
 			uni.removeStorageSync('playVideoPageData');
 		}
 	}

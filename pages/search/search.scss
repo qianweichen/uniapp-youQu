@@ -20,6 +20,10 @@
 				height: 100%;
 				background-color: #7364bd;
 			}
+			input{
+				position: relative;
+				z-index: 0;
+			}
 		}
 	}
 	.history {
@@ -90,12 +94,13 @@
 		}
 	}
 	.circleList {
+		width: 100%;
+		box-sizing: border-box;
 		padding: 40rpx 0;
 		padding-left: 30rpx;
-		display: -webkit-box;
-		overflow-x: scroll;
-		-webkit-overflow-scrolling: touch;
+		white-space: nowrap;
 		.item {
+			display: inline-block;
 			margin-right: 10rpx;
 			box-sizing: border-box;
 			text-align: center;

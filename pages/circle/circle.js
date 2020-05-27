@@ -25,6 +25,7 @@ export default {
 	methods: {
 		// 选择发布类型
 		togglePublishFlag(flag) {
+			uni.setStorageSync('sendCircleData',this.circleData);
 			this.showPublishFlag = flag;
 		},
 		//点赞后修改数据
@@ -349,7 +350,7 @@ export default {
 		if (res.from === 'button') {
 			return {
 				title: res.target.dataset.content || this.miniProgramName,
-				path: '/pages/index/index?id=' + res.target.dataset.id,
+				path: '/pages/articleDetails/articleDetails?id=' + res.target.dataset.id,
 				imageUrl: res.target.dataset.img
 			};
 		}

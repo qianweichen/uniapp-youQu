@@ -66,7 +66,7 @@
 				<image class="header circle" :src="articleData.realm_icon" mode="aspectFill"></image>
 				<view>
 					<view class="fs-26 bold">{{ articleData.realm_name }}</view>
-					<view class="fs-20" style="color: #9A989E;">关注 {{articleData.concern}} | 帖子 {{articleData.paper_number}}</view>
+					<view class="fs-20" style="color: #9A989E;">关注 {{articleData.concern||''}} | 帖子 {{articleData.paper_number||''}}</view>
 				</view>
 			</view>
 			<image class="right" src="../../static/right.png" mode="widthFix"></image>

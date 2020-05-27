@@ -162,8 +162,6 @@ export default {
 		},
 		//滑动视频
 		changeSwiper(e) {
-			this.showVideoEndShare = false; //重置结束弹窗
-			this.showVideoPlayBtn = false; //重置暂停按钮
 			this.progressNum = 0; //重置百分比
 			this.videoIndex = e.detail.current; //设置视频下标
 			this.videoContext = uni.createVideoContext('myVideo', this); //获取视频对象
@@ -171,6 +169,11 @@ export default {
 			if ((e.detail.current + 3) % 15 == 0) {
 				this.$emit('getNextPage'); //获取下一页
 			}
+		},
+		//视频播放开始
+		videoPlayStard(){
+			this.showVideoEndShare = false;
+			this.showVideoPlayBtn = false;
 		},
 		//视频播放结束
 		videoPlayEnd() {
@@ -188,8 +191,6 @@ export default {
 		//播放视频
 		playVideo() {
 			this.videoContext.play();
-			this.showVideoPlayBtn = false; //重置暂停按钮
-			this.showVideoEndShare = false; //重置暂停按钮
 		},
 		//评论弹窗
 		showCommentFun() {

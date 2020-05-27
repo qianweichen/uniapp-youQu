@@ -7,21 +7,18 @@
 			<view :class="{ active: tabIndex == 1 }" @click="changeTab(1)"><text>回复</text></view>
 		</view>
 		<view class="list">
-			<view class="item flex" v-for="(item,index) in 6" :key="index">
-				<image class="header" src="../../static/logo.png" mode="aspectFill"></image>
+			<view class="item flex" v-for="(item,index) in list" :key="index">
+				<image class="header" :src="item.paper.image_part[0]" mode="aspectFill"></image>
 				<view class="right flex-column-between">
 					<view class="fs-26">
-						楼主
-						<text>大圆子</text>
-						举报了你
-						<text>4-10</text>
-						发布在
-						<text>爱宠联盟</text>
-						“养猫3种错误的喂养方式” 的帖子。
+						<text>发布在</text>
+						<text>{{item.realm_name}}</text>
+						<view class="content">{{item.paper.study_content}}</view>
 					</view>
-					<view class="fs-24 fc-9">04-11 12:30</view>
+					<view class="fs-24 fc-9">{{item.petition_time}}</view>
 				</view>
 			</view>
+			<view v-if="list.length == 0" style="text-align: center; padding-top: 400rpx; color: #999;">暂无数据</view>
 		</view>
 	</view>
 </template>
@@ -30,13 +27,37 @@
 export default {
 	data() {
 		return {
-			tabIndex: 0
+			tabIndex: 0,
+			list:[]
 		};
 	},
 	methods: {
 		changeTab(index) {
 			this.tabIndex = index;
+			this.getReport();
+		},
+		getReport() {
+			uni.showLoading({
+				title: '加载中'
+			});
+			this.request({
+				url: this.apiUrl + 'User/get_user_report',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId'),
+					is_type: 'tab' + (this.tabIndex + 1)
+				},
+				success: res => {
+					console.log('记录:', res);
+					uni.hideLoading();
+					this.list = res.data.info;
+				}
+			});
 		}
+	},
+	onLoad() {
+		this.getReport();
 	}
 };
 </script>
@@ -79,6 +100,12 @@ export default {
 					color: #7364BD;
 					padding: 0 8rpx;
 				}
+			}
+			.content {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				padding-top: 10rpx;
 			}
 		}
 	}

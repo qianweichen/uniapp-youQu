@@ -3,7 +3,15 @@
 		<backCapsule type="normal"></backCapsule>
 		<navigationBar name="发布" haveHeight></navigationBar>
 		<view class="iptBox"><textarea class="fs-26" placeholder="在这里写下你的心情..." placeholder-class="fc-9" maxlength="140" v-model="content" /></view>
-		<sunui-upimg @change="getImageInfo" :upload_auto="true" ref="upimg1" :upload_count="6" upload_img_wh="width:196rpx;height:196rpx;"></sunui-upimg>
+		<sunui-upimg
+			@change="getImageInfo"
+			:upload_auto="true"
+			ref="upimg1"
+			:upload_count="6"
+			upload_img_wh="width:196rpx;height:196rpx;"
+			:url="apiUrl + 'User/img_upload'"
+			:header="formData"
+		></sunui-upimg>
 		<view class="chooseBox fs-26">
 			<!-- <view class="item flex-between">
 				<view>禁止转发</view>
@@ -33,10 +41,16 @@ export default {
 	},
 	data() {
 		return {
+			apiUrl:this.apiUrl,
 			// noForwardFlag: false,
-			content:'',
-			chooseCirce: {} ,//圈子信息
-			imgArr:[]
+			content: '',
+			chooseCirce: {}, //圈子信息
+			imgArr: [],
+			formData: {
+				token: uni.getStorageSync('token'),
+				openid: uni.getStorageSync('openid'),
+				much_id: 1
+			}
 		};
 	},
 	methods: {
@@ -60,6 +74,9 @@ export default {
 				tmplIds: ['NfOZBD9yhTMpgM_CUJDBKdmkjvllcDF2RHPvlDMldoI', '7sor7eBvPETo04jeaDtzc_co2VX9_6NHnCJaqQiVMNE'],
 				success: res => {
 					// console.log(res);
+					uni.showLoading({
+						title: '加载中'
+					});
 					var params = {};
 					params.token = uni.getStorageSync('token');
 					params.openid = uni.getStorageSync('openid');
@@ -68,7 +85,7 @@ export default {
 					params.is_open = 1; //可以转发
 					params.type = 0; //图文
 					params.fa_class = this.chooseCirce.id; //圈子id
-					params.img_arr=this.imgArr;	//图片
+					params.img_arr = this.imgArr; //图片
 					//默认
 					params.color = '#000000';
 					params.title = 'default';
@@ -85,14 +102,12 @@ export default {
 				data: params,
 				method: 'POST',
 				success: res => {
-					console.log('发布:', res);
+					// console.log('发布:', res);
 					uni.showToast({
 						title: res.data.msg
 					});
 					setTimeout(() => {
-						uni.reLaunch({
-							url: '../index/index'
-						});
+						this.goHome();
 					}, 1500);
 				}
 			});
@@ -110,11 +125,18 @@ export default {
 		getImageInfo(e) {
 			// console.log('图片返回：', e);
 			this.imgArr = e;
-		},
+		}
 		// 禁止转发
 		// noForward(e) {
 		// 	this.noForwardFlag = e.detail.value;
 		// }
+	},
+	onLoad() {
+		var sendCircleData = uni.getStorageSync('sendCircleData');
+		if(sendCircleData){
+			this.chooseCirce = sendCircleData;
+			uni.removeStorageSync('sendCircleData');
+		}
 	}
 };
 </script>

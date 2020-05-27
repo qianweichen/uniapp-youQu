@@ -6,10 +6,10 @@
 		<view class="btnBox flex-between fs-36">
 			<view class="item flex-center" :class="{ active: item.active }" v-for="(item, index) in moneyList" :key="index" @click="changeMoney(index)">
 				<view>{{ item.num }}元</view>
-				<view class="first flex-center fs-24 fc-f" v-if="index == 0">首次专享</view>
+				<view class="first flex-center fs-24 fc-f" v-if="index == 0 && item.num == 0.3">首次专享</view>
 			</view>
 		</view>
-		<view class="btn-big fs-26 flex-center">立即提现</view>
+		<view class="btn-big fs-26 flex-center" @click="withdraw">立即提现</view>
 	</view>
 </template>
 
@@ -24,16 +24,66 @@ export default {
 				{ num: 10, active: false },
 				{ num: 20, active: false },
 				{ num: 30, active: false }
-			]
+			],
+			index: 0
 		};
 	},
 	methods: {
+		withdraw() {
+			uni.showLoading({
+				title: '加载中'
+			});
+			this.request({
+				url: this.apiUrl + 'User/withdraw',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId'),
+					withdraw_money: this.moneyList[this.index].num,
+					withdraw_number: ''
+				},
+				success: res => {
+					console.log('提现:', res);
+					uni.showToast({
+						title: res.data.msg,
+						duration:3000
+					});
+					setTimeout(()=>{
+						this.getTxCs();
+					},3000)
+				}
+			});
+		},
 		changeMoney(index) {
 			for (var i = 0; i < this.moneyList.length; i++) {
 				this.moneyList[i].active = false;
 			}
 			this.moneyList[index].active = true;
+			this.index = index;
+		},
+		getTxCs() {
+			uni.showLoading({
+				title: '加载中'
+			});
+			this.request({
+				url: this.apiUrl + 'user/user_with_num',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log('提现次数:', res);
+					uni.hideLoading();
+					if (res.data.num >= 1) {
+						this.moneyList[0].num = 0.7;
+					}
+				}
+			});
 		}
+	},
+	onLoad() {
+		this.getTxCs();
 	}
 };
 </script>

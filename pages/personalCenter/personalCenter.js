@@ -108,6 +108,9 @@ export default {
 			if (this.tabIndex == 0) {
 				var version = 2;
 			}
+			if (this.tabIndex == 1) {
+				var version = 0;
+			}
 			this.request({
 				url: this.apiUrl + 'User/get_my_list' + urlEnd,
 				data: {
@@ -120,7 +123,7 @@ export default {
 				},
 				success: res => {
 					uni.hideLoading();
-					console.log("动态:", res);
+					// console.log("动态:", res);
 					this.videoPage++;
 					for (var i = 0; i < res.data.info.length; i++) {
 						this.dynamicList = this.dynamicList.concat(res.data.info[i].list);
@@ -158,7 +161,7 @@ export default {
 		if (res.from === 'button') {
 			return {
 				title: res.target.dataset.content || this.miniProgramName,
-				path: '/pages/index/index?id=' + res.target.dataset.id,
+				path: '/pages/articleDetails/articleDetails?id=' + res.target.dataset.id,
 				imageUrl: res.target.dataset.img
 			};
 		}

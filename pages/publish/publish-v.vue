@@ -152,9 +152,7 @@ export default {
 						title: res.data.msg
 					});
 					setTimeout(() => {
-						uni.reLaunch({
-							url: '../index/index'
-						});
+						this.goHome();
 					}, 1500);
 				}
 			});
@@ -180,7 +178,13 @@ export default {
 	onLoad() {
 		//获取拍摄或选择的视频
 		this.videoData = uni.getStorageSync('shootData');
-		// uni.removeStorageSync('shootData');
+		uni.removeStorageSync('shootData');
+		
+		var sendCircleData = uni.getStorageSync('sendCircleData');
+		if(sendCircleData){
+			this.chooseCirce = sendCircleData;
+			uni.removeStorageSync('sendCircleData');
+		}
 	}
 };
 </script>

@@ -21,9 +21,9 @@
 							</view>
 						</view>
 						<view class="nameBox fc-f flex-column-between">
-							<view class="fs-32 bold">{{circleData.realm_name}}</view>
-							<view class="fs-24" style="color: #ddd;">{{circleData.realm_synopsis}}</view>
-							<view class="fs-20">关注 {{circleData.concern}} | 帖子 {{circleData.is_paper_count}}</view>
+							<view class="fs-32 bold">{{circleData.realm_name||''}}</view>
+							<view class="fs-24" style="color: #ddd;">{{circleData.realm_synopsis||''}}</view>
+							<view class="fs-20">关注 {{circleData.concern||''}} | 帖子 {{circleData.is_paper_count||''}}</view>
 						</view>
 					</view>
 					<view v-if="isAuthorized" class="share" @click="shareQrCode">

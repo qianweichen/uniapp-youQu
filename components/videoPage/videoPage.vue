@@ -24,7 +24,16 @@
 		<swiper @change="changeSwiper" :current="videoIndex" vertical>
 			<swiper-item v-for="(item, index) in videoList" :key="index">
 				<view class="videoBox" v-if="index == videoIndex">
-					<video @click="pauseVideo" id="myVideo" :src="item.study_video" :controls="false" autoplay @timeupdate="videoTimeUpdate" @ended="videoPlayEnd"></video>
+					<video
+						@click="pauseVideo"
+						id="myVideo"
+						:src="item.study_video"
+						:controls="false"
+						autoplay
+						@timeupdate="videoTimeUpdate"
+						@ended="videoPlayEnd"
+						@play="videoPlayStard"
+					></video>
 					<!-- 播放结束 -->
 					<view class="playEndBox" v-if="showVideoEndShare">
 						<view class="fxd flex-between">
@@ -139,9 +148,9 @@
 							</view> -->
 						</view>
 						<!-- 查看全部 -->
-						<view class="more flex" v-if="item.huifu_count > 2" @click="getMoreComment(item.id,item.user_id)">
+						<view class="more flex" v-if="item.huifu_count > 2" @click="getMoreComment(item.id, item.user_id)">
 							<view class="line"></view>
-							<text class="fs-26" style="color: #999;">查看全部{{item.huifu_count}}条评论</text>
+							<text class="fs-26" style="color: #999;">查看全部{{ item.huifu_count }}条评论</text>
 						</view>
 					</block>
 				</view>

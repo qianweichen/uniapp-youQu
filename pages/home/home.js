@@ -95,7 +95,7 @@ export default {
 		}
 	},
 	created() {
-		console.log('homeCreated');
+		// console.log('homeCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
 		//接收分享id

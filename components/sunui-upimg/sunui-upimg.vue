@@ -104,7 +104,7 @@ export default {
 				return promisify(upload)({
 					url: _self.url,
 					path: path,
-					name: 'file',
+					name: 'sngpic',
 					extra: header,
 					_self: _self
 				});
@@ -208,7 +208,7 @@ const upload = function(options) {
 			console.warn('sunui-upimg - 如发现没有获取到返回值请到源码191行修改后端返回图片路径以便正常使用插件', JSON.parse(data));
 			try {
 				//Tip : 切记->主要修改这里图片的返回值为真实返回路径!!! 详情见示例
-				data = JSON.parse(res.data).info;
+				data = JSON.parse(res.data).url;
 			} catch (e) {
 				throw (e, data);
 			}

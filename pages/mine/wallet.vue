@@ -12,13 +12,13 @@
 			</view>
 			<view class="line"></view> -->
 			<view>
-				<view class="flex box-c">
+				<view class="flex-center box-c">
 					<view class="fs-22">我的积分</view>
-					<view class="fs-18 tag flex-center">可兑贝壳</view>
+					<view class="fs-18 tag flex-center">可提现</view>
 				</view>
 				<view class="flex-center">
-					<view class="fs-46">0</view>
-					<view class="dh fs-22 flex-center">兑换</view>
+					<view class="fs-46">{{personalInfo.fraction}}</view>
+					<view class="dh fs-22 flex-center" @click="goPage('/pages/task/deposit')">提现</view>
 				</view>
 			</view>
 		</view>
@@ -27,13 +27,17 @@
 			<!-- <view :class="{ active: tabIndex == 1 }" @click="changeTab(1)"><text>积分明细</text></view> -->
 		</view>
 		<view class="list">
-			<view class="item flex-between" v-for="(item,index) in 10" :key="index">
+			<view class="item flex-between" v-for="(item,index) in list" :key="index">
 				<view>
-					<view class="fs-26 title">积分增加</view>
-					<view class="fs-24 fc-9">2020-04-20  08:25:24</view>
+					<view class="fs-26 title">{{item.solution}}</view>
+					<view class="fs-24 fc-9">{{item.ruins_time}}</view>
 				</view>
-				<view class="fs-36 bold">+0.44</view>
+				<view class="fs-36 bold">
+					<text v-if="item.finance>0">+</text>
+					<text>{{item.finance}}</text>
+				</view>
 			</view>
+			<view v-if="list.length==0" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
 		</view>
 	</view>
 </template>
@@ -43,12 +47,68 @@
 		data() {
 			return {
 				tabIndex: 0,
+				personalInfo:'',
+				page:1,
+				list:[]
 			};
 		},
 		methods: {
 			changeTab(index) {
 				this.tabIndex = index;
-			}
+			},
+			getList(isFirstPage){
+				if(isFirstPage==true){
+					this.page = 1;
+					this.list = [];
+				}
+				this.request({
+					url: this.apiUrl + 'User/get_user_amount',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId'),
+						page:this.page,
+						evaluate:"tab2"
+					},
+					success: res => {
+						uni.hideLoading();
+						console.log('获取明细:', res);
+						if(res.data.info.length==0&&this.page>1){
+							uni.showToast({
+								title:'没有更多了',
+								icon:'none'
+							})
+						}
+						this.page++;
+						this.list = this.list.concat(res.data.info);
+					}
+				});
+			},
+			//获取用户信息
+			getPersonalInfo() {
+				uni.showLoading({
+					title: '加载中'
+				});
+				this.request({
+					url: this.apiUrl + 'User/get_user_info',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid')
+					},
+					success: res => {
+						uni.hideLoading();
+						console.log('获取用户信息:', res);
+						this.personalInfo = res.data.info;
+					}
+				});
+			},
+		},
+		onLoad() {
+			this.getPersonalInfo();
+			this.getList(true);
+		},
+		onReachBottom() {
+			this.getList();
 		}
 	};
 </script>

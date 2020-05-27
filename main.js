@@ -67,7 +67,7 @@ Vue.prototype.doLogin = function(userInfo, callBack) {
 				uni.setStorageSync('userId', res.data.id);
 				uni.setStorageSync('token', res.data.token);
 				uni.showToast({
-					title:'登陆成功'
+					title: '登陆成功'
 				})
 				callBack();
 			} else {
@@ -87,6 +87,7 @@ Vue.prototype.request = function(obj) {
 		url: obj.url || '',
 		data: obj.data || {},
 		method: obj.method || 'GET',
+		responseType: obj.responseType || '',
 		header: obj.header || {
 			"Content-Type": "application/json"
 		},

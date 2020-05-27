@@ -24,9 +24,11 @@
 					<view>在线客服</view>
 				</button>
 			</view>
-			<view class="item" @click="goPage('/pages/serve/opinion')">
-				<image src="../../static/serve-sc.png" mode="widthFix"></image>
-				<view>意见反馈</view>
+			<view class="item">
+				<button open-type="feedback" class="share">
+					<image src="../../static/serve-sc.png" mode="widthFix"></image>
+					<view>意见反馈</view>
+				</button>
 			</view>
 		</view>
 	</view>

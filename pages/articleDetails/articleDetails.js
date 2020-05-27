@@ -280,7 +280,7 @@ export default {
 				},
 				success: res => {
 					// console.log("获取评论:", res);
-					if(res.data.huifu.length==0){
+					if(res.data.huifu.length==0&&this.commentPage>1){
 						uni.showToast({
 							title:'没有更多了',
 							icon:'none'
@@ -344,7 +344,7 @@ export default {
 		if (res.from === 'button') {
 			return {
 				title: res.target.dataset.content || this.miniProgramName,
-				path: '/pages/index/index?id=' + res.target.dataset.id,
+				path: '/pages/articleDetails/articleDetails?id=' + res.target.dataset.id,
 				imageUrl: res.target.dataset.img
 			};
 		}

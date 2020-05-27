@@ -26,19 +26,9 @@
 				"navigationBarTitleText": "站内信"
 			}
 		}, {
-			"path": "pages/message/fans",
+			"path": "pages/message/classesMsg",
 			"style": {
-				"navigationBarTitleText": "粉丝"
-			}
-		}, {
-			"path": "pages/message/good",
-			"style": {
-				"navigationBarTitleText": "赞"
-			}
-		}, {
-			"path": "pages/message/comment",
-			"style": {
-				"navigationBarTitleText": "评论"
+				"navigationBarTitleText": "站内信"
 			}
 		}, {
 			"path": "pages/message/systemNote",
