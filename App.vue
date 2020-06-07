@@ -1,6 +1,6 @@
 <script>
 import Vue from 'vue';
-var timer = ""
+var timer = "";
 export default {
 	onLaunch: function() {
 		// console.log('App Launch')
@@ -94,7 +94,7 @@ export default {
 				//累计的时间加上这次看的时间是否到达15分钟
 				uni.removeStorageSync('playAppTime'); //到15分钟后删除累计的时间
 
-				this.request({
+				uni.request({
 					url: this.apiUrl + 'User/user_jf_add',
 					data: {
 						token: uni.getStorageSync('token'),

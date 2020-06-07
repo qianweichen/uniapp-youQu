@@ -11,6 +11,10 @@ export default {
 		};
 	},
 	methods: {
+		//关注后修改数据
+		attentionFun(index,state) {
+			this.videoList[index].is_follow = state; //评论数+1
+		},
 		//点赞后修改数据
 		goodFun(index, num) {
 			this.videoList[index]['is_info_zan'] = !this.videoList[index]['is_info_zan']; //修改点赞状态
@@ -23,7 +27,7 @@ export default {
 		// 切换顶部tab
 		changeTabs(flag) {
 			this.tabsFlag = flag;
-			
+
 			//获取数据
 			uni.showLoading({
 				title: '加载中'
@@ -47,7 +51,8 @@ export default {
 					openid: uni.getStorageSync('openid'),
 					uid: uni.getStorageSync('userId'),
 					version: 2, // 0是文字 1是语音 2是视频 3是全部
-					index_page: this.videoPage
+					index_page: this.videoPage,
+					id: this.shareVideoId
 				},
 				success: res => {
 					uni.hideLoading();
@@ -88,13 +93,13 @@ export default {
 		},
 		//授权
 		getUserInfo(e) {
-			if(!e.detail.userInfo)	return;
+			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 			});
 		}
 	},
-	created() {
+	mounted() {
 		// console.log('homeCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();

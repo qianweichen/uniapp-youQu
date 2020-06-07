@@ -22,7 +22,6 @@ swiper {
 		background-color: rgba(0, 0, 0, 0.5);
 		.fxd {
 			margin: 0 auto;
-			padding-top: 200rpx;
 			width: 80%;
 			.line-left {
 				width: 200rpx;
@@ -30,6 +29,8 @@ swiper {
 				background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 			}
 			.mid {
+				width: 140rpx;
+				text-align: center;
 				padding: 0 40rpx;
 			}
 			.line-right {
@@ -70,14 +71,15 @@ swiper {
 		}
 	}
 	.playBtn {
-		width: 126rpx;
-		height: 130rpx;
+		width: 125rpx;
+		height: 125rpx;
 		background: rgba(0, 0, 0, 0.5);
 		position: absolute;
 		left: calc(50% - 63rpx);
 		top: calc(50% - 75rpx);
 		image {
 			width: 39rpx;
+			margin-left: 8rpx;
 			height: auto;
 		}
 	}
@@ -150,6 +152,19 @@ swiper {
 					height: 40rpx;
 					margin-right: 12rpx;
 				}
+			}
+		}
+		.attention{
+			width:104rpx;
+			height:50rpx;
+			background:#7364BD;
+			border-radius:24rpx;
+			font-size: 24rpx;
+			margin-left: 19rpx;
+			image{
+				width: 17rpx;
+				height: auto;
+				margin-right: 11rpx;
 			}
 		}
 	}

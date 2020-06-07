@@ -93,6 +93,18 @@
 			border-bottom: 4rpx solid #7364bd;
 		}
 	}
+	.creatCircle{
+		padding: 0 30rpx;
+		font-size: 28rpx;
+		.btn{
+			width: 150rpx;
+			height: 50rpx;
+			color: #7364BD;
+			border: 2rpx solid #7364BD;
+			border-radius: 40rpx;
+			font-size: 24rpx;
+		}
+	}
 	.circleList {
 		width: 100%;
 		box-sizing: border-box;

@@ -1,14 +1,6 @@
 import Vue from 'vue'
 import App from './App'
 
-Vue.config.productionTip = false
-
-App.mpType = 'app'
-
-const app = new Vue({
-	...App
-})
-app.$mount()
 
 //小程序名
 Vue.prototype.miniProgramName = "友趣短视频";
@@ -153,3 +145,13 @@ Vue.prototype.browseImg = function(urls, current) {
 		// }
 	});
 }
+
+
+Vue.config.productionTip = false
+
+App.mpType = 'app'
+
+const app = new Vue({
+	...App
+})
+app.$mount()

@@ -62,6 +62,7 @@
 					padding: 14rpx 0;
 				}
 				.fs-20{
+					height: 60rpx;
 					white-space: normal;
 					overflow : hidden;
 					text-overflow: ellipsis;
@@ -107,6 +108,15 @@
 					height:46rpx;
 					background:#7364BD;
 					border-radius:24rpx;
+				}
+				.attention{
+					width: 40rpx;
+					height: 40rpx;
+					font-size: 22rpx;
+					background-color: #7364BD;
+					color: #fff;
+					border-radius: 8rpx;
+					margin-left: 20rpx;
 				}
 			}
 		}

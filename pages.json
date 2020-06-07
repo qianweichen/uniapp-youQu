@@ -131,77 +131,76 @@
 			"style": {
 				"navigationBarTitleText": "加入的圈子"
 			}
-		},{
+		}, {
 			"path": "pages/mine/followee",
 			"style": {
 				"navigationBarTitleText": "我关注的人"
 			}
-		},{
+		}, {
 			"path": "pages/mine/creatCircle",
 			"style": {
 				"navigationBarTitleText": "我管理的圈子"
 			}
-		},{
+		}, {
 			"path": "pages/mine/myCollect",
 			"style": {
 				"navigationBarTitleText": "我的收藏"
 			}
-		},{
+		}, {
 			"path": "pages/mine/myFans",
 			"style": {
 				"navigationBarTitleText": "我的粉丝"
 			}
-		},{
+		}, {
 			"path": "pages/mine/wallet",
 			"style": {
 				"navigationBarTitleText": "我的钱包"
 			}
-		},{
+		}, {
 			"path": "pages/mine/serve",
 			"style": {
 				"navigationBarTitleText": "服务中心"
 			}
-		},{
+		}, {
 			"path": "pages/mine/about",
 			"style": {
 				"navigationBarTitleText": "关于我们"
 			}
-		},{
+		}, {
 			"path": "pages/mine/invitation",
 			"style": {
 				"navigationBarTitleText": "推荐有礼"
 			}
-		},{
+		}, {
 			"path": "pages/serve/bannedPost",
 			"style": {
 				"navigationBarTitleText": "禁言申诉"
 			}
-		},{
+		}, {
 			"path": "pages/serve/delete",
 			"style": {
 				"navigationBarTitleText": "回收站"
 			}
-		},{
+		}, {
 			"path": "pages/serve/inform",
 			"style": {
 				"navigationBarTitleText": "举报投诉记录"
 			}
-		},{
+		}, {
 			"path": "pages/serve/opinion",
 			"style": {
 				"navigationBarTitleText": "意见反馈"
 			}
-		},{
+		}, {
 			"path": "pages/serve/opinionDetail",
 			"style": {
 				"navigationBarTitleText": "意见反馈"
 			}
+		}, {
+			"path": "pages/commentList/commentList",
+			"style": {}
 		}
-	    ,{
-            "path" : "pages/commentList/commentList",
-            "style" : {}
-        }
-    ],
+	],
 	"globalStyle": {
 		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "custom"

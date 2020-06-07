@@ -28,6 +28,7 @@
 					}
 				}
 				.nameBox {
+					width: 480rpx;
 					box-sizing: border-box;
 					padding: 6rpx 0;
 					height: 100%;
@@ -153,77 +154,29 @@
 		right: 30rpx;
 		bottom: 80rpx;
 	}
-	// 海报
-	.hideCanvasView {
-		position: relative;
-	}
-	
-	.hideCanvas {
+	.bannerBox {
 		position: fixed;
-		top: -99999upx;
-		left: -99999upx;
-		z-index: -99999;
-	}
-	
-	.flex_row_c_c {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-	}
-	
-	.modalView {
+		z-index: 1;
+		left: 0;
+		top: 0;
 		width: 100%;
 		height: 100%;
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		opacity: 0;
-		outline: 0;
-		transform: scale(1.2);
-		perspective: 2500upx;
-		background: rgba(0, 0, 0, 0.6);
-		transition: all .3s ease-in-out;
-		pointer-events: none;
-		backface-visibility: hidden;
-		z-index: 999;
-	}
-	
-	.modalView.show {
-		opacity: 1;
-		transform: scale(1);
-		pointer-events: auto;
-	}
-	
-	.flex_column {
-		display: flex;
-		flex-direction: column;
-	}
-	
-	.backgroundColor-white {
-		background-color: white;
-	}
-	
-	.border_radius_10px {
-		border-radius: 10px;
-	}
-	
-	.padding1vh {
-		padding: 1vh;
-	}
-	
-	.posterImage {
-		width: 80vw;
-	}
-	
-	.flex_row {
-		display: flex;
-		flex-direction: row;
-	}
-	
-	.marginTop2vh {
-		margin-top: 2vh;
+		.imgBox {
+			width: 650rpx;
+			height: 896rpx;
+			border-radius: 8rpx;
+			position: relative;
+			.close {
+				width: 40rpx;
+				height: auto;
+				position: absolute;
+				right: 20rpx;
+				top: 20rpx;
+			}
+		}
+		.btn-big {
+			width: 650rpx;
+			margin-top: 60rpx;
+		}
 	}
 }

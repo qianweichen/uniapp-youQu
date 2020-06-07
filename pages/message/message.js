@@ -63,6 +63,8 @@ export default {
 							res.data.data[i].pid.image_part = JSON.parse(res.data.data[i].pid.image_part);
 					}
 					this.list = this.list.concat(res.data.data);
+					//修改首页未读消息
+					getCurrentPages()[0].$vm.messageNum = 0;
 				},
 			});
 		},

@@ -19,15 +19,18 @@ export default {
 			informContent: '', //举报输入内容
 			showInformFlag: false, //控制举报弹出
 			deleteContent: '', //删除输入内容
-			showDeleteFlag: false //控制删除弹出
+			showDeleteFlag: false, //控制删除弹出
+			animation: '' ,//分享动画
+			animationData:'',
+			userId:uni.getStorageSync('userId')
 		}
 	},
 	props: {
-		videoList: {	//视频数组
+		videoList: { //视频数组
 			type: Array,
 			default: []
 		},
-		index: {		//默认下标
+		index: { //默认下标
 			type: Number,
 			default: 0
 		}
@@ -57,10 +60,49 @@ export default {
 		}
 	},
 	methods: {
+		//关注
+		attention(uid,follow,index) {
+			uni.showLoading({
+				title: '加载中'
+			})
+			this.request({
+				url: this.apiUrl + 'User/get_user_cancel',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					this_uid: uni.getStorageSync('userId'),
+					uid,
+					is_user: follow
+				},
+				success: res => {
+					// console.log("关注:", res);
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					});
+					
+					//修改数据
+					if(follow==1){
+						this.$emit('attentionFun',index,0);
+					}else{
+						this.$emit('attentionFun',index,1);
+					}
+					
+					// if (res.data.msg == "关注成功！") {
+					// 	uni.requestSubscribeMessage({
+					// 		tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
+					// 		success: (res) => {
+					// 			// console.log(res)
+					// 		}
+					// 	});
+					// }
+				},
+			});
+		},
 		// 查看全部二级评论
-		getMoreComment(id,uid){
+		getMoreComment(id, uid) {
 			uni.navigateTo({
-				url:`/pages/commentList/commentList?id=${id}&uid=${uid}`
+				url: `/pages/commentList/commentList?id=${id}&uid=${uid}`
 			})
 		},
 		//删除
@@ -171,7 +213,7 @@ export default {
 			}
 		},
 		//视频播放开始
-		videoPlayStard(){
+		videoPlayStard() {
 			this.showVideoEndShare = false;
 			this.showVideoPlayBtn = false;
 		},
@@ -347,17 +389,37 @@ export default {
 		},
 		//授权
 		getUserInfo(e) {
-			if(!e.detail.userInfo)	return;
+			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
+				this.userId = uni.getStorageSync('userId');
 			});
+		},
+		shareAnimate() {
+			var animation = uni.createAnimation({
+				duration: 1000,
+				timingFunction: 'linear',
+			})
+			
+			var count=1;
+			setInterval(function() {
+				if(count++%2==1){
+					animation.scale(1.1).step()
+				}else{
+					animation.scale(0.9).step()
+				}
+				this.animationData = animation.export()
+			}.bind(this), 1000)
 		}
 	},
 	created() {
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
+
+		//分享动画
+		this.shareAnimate();
 	},
-	mounted(){
+	mounted() {
 		//初始视频下标
 		this.videoIndex = this.index;
 		//获取视频对象

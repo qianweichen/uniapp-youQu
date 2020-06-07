@@ -18,6 +18,7 @@
 			</view>
 			<view><image @click="togglePublishFlag(true)" class="icon publish" src="../../static/tabbar/publish.png" mode="widthFix"></image></view>
 			<view v-if="isAuthorized" @click="changeTabIndex('message')">
+				<view class="tip flex-center circle" v-if="messageNum">{{messageNum}}</view>
 				<image class="icon" :src="'../../static/tabbar/message' + (tabIndex == 'message' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'message' }">站内信</view>
 			</view>
@@ -55,7 +56,8 @@ export default {
 			isAuthorized: false, //授权否
 			tabIndex: 'home',
 			loadTabList: [true, false, false, false],
-			showPublishFlag: false
+			showPublishFlag: false,
+			messageNum:''
 		};
 	},
 	methods: {
@@ -70,7 +72,15 @@ export default {
 			}
 		},
 		changeTabIndex(index) {
+			//点击时本身就在首页，则触发刷新首页视频（赋值之前执行）
+			if (index == 'home') {
+				if(this.tabIndex == 'home'){
+					this.$refs.homePage.getHomeList(true);
+				}
+			}
+			
 			this.tabIndex = index;
+			
 			//控制第一次点击加载
 			if (index == 'home' && !this.loadTabList[0]) {
 				this.loadTabList[0] = true;
@@ -84,6 +94,7 @@ export default {
 			if (index == 'mine' && !this.loadTabList[3]) {
 				this.loadTabList[3] = true;
 			}
+			
 			//控制每次点击触发刷新
 			if (index == 'home') {
 			} else if (index == 'find') {
@@ -93,6 +104,7 @@ export default {
 			} else if (index == 'mine') {
 				if (this.$refs.minePage) this.$refs.minePage.onShowFun();
 			}
+			
 			//切换tab暂停视频
 			if (index == 'find' || index == 'message' || index == 'mine') {
 				this.stopHomeVideo(); //暂停视频
@@ -104,6 +116,26 @@ export default {
 			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
+				//获取消息数
+				this.getPersonalInfo();
+			});
+		},
+		//获取用户信息
+		getPersonalInfo() {
+			uni.showLoading({
+				title: '加载中'
+			});
+			this.request({
+				url: this.apiUrl + 'User/get_user_info',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid')
+				},
+				success: res => {
+					uni.hideLoading();
+					// console.log('获取用户信息:', res);
+					this.messageNum = res.data.info.message_num;
+				}
 			});
 		}
 	},
@@ -113,11 +145,13 @@ export default {
 		}
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
+		if(this.isAuthorized)
+			this.getPersonalInfo();	//获取消息数
 	},
 	onShow() {
-		if (this.$refs.findPage) this.$refs.findPage.onShowFun();
-		if (this.$refs.messagePage) this.$refs.messagePage.onShowFun();
-		if (this.$refs.minePage) this.$refs.minePage.onShowFun();
+		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();
+		// if (this.$refs.messagePage) this.$refs.messagePage.onShowFun();
+		// if (this.$refs.minePage) this.$refs.minePage.onShowFun();
 	},
 	onHide() {
 		this.stopHomeVideo(); //打开其他页面暂停视频
@@ -134,11 +168,20 @@ export default {
 		}
 		// 页面内分享按钮
 		if (res.from === 'button') {
-			return {
-				title: res.target.dataset.content || this.miniProgramName,
-				path: '/pages/index/index?id=' + res.target.dataset.id,
-				imageUrl: res.target.dataset.img
-			};
+			console.log(res);
+			if(res.target.dataset.type=='video'){	//视频分享，打开首页
+				return {
+					title: res.target.dataset.content || this.miniProgramName,
+					path: '/pages/index/index?id=' + res.target.dataset.id,
+					imageUrl: res.target.dataset.img
+				};
+			}else{	//动态分享，打开详情页
+				return {
+					title: res.target.dataset.content || this.miniProgramName,
+					path: '/pages/articleDetails/articleDetails?id=' + res.target.dataset.id,
+					imageUrl: res.target.dataset.img
+				};
+			}
 		}
 	}
 };
@@ -166,6 +209,19 @@ export default {
 		}
 		.active {
 			color: #7464bd;
+		}
+		>view{
+			position: relative;
+			.tip{
+				width: 30rpx;
+				height: 30rpx;
+				color: #fff;
+				background-color: #7364BD;
+				position: absolute;
+				right: 0;
+				top: 0;
+				font-size: 22rpx;
+			}
 		}
 	}
 	.hide {

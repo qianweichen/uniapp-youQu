@@ -5,17 +5,23 @@ export default {
 			customBar: this.CustomBar,
 			topCustomBar: this.StatusBar, //顶部状态栏高度
 			tabsFlag: true, //顶部 圈子/动态
-			dynamicList: [1, 2, 3],
+			dynamicList: [],
 			dynamicPage: 1,
 			tabIndex: 0, //动态 中部tab  推荐/关注
 			myCirclePage: 1,
 			myCircleList: [], //我加入的圈子
 			recommendPage: 1,
 			recommendList: [], //推荐的圈子
-			banners:[]
+			banners:[],
+			refreshFlag:false	//下拉刷新状态
 		}
 	},
 	methods: {
+		//关注后修改数据
+		attentionFun(index,state) {
+			this.dynamicList[index].is_follow = state; //评论数+1
+		},
+		 
 		//轮播图
 		getBanners(){
 			this.request({
@@ -47,6 +53,15 @@ export default {
 		changeMidTab(index) {
 			this.tabIndex = index;
 			if (index == 0) { //推荐
+				this.getDynamicList(true);
+			} else { //关注
+				this.getAttentionList(true);
+			}
+		},
+		//动态下拉刷新
+		refreshDynamic(){
+			this.refreshFlag = true;
+			if (this.tabIndex == 0) { //推荐
 				this.getDynamicList(true);
 			} else { //关注
 				this.getAttentionList(true);
@@ -147,6 +162,7 @@ export default {
 					}
 					this.dynamicPage++;
 					this.dynamicList = this.dynamicList.concat(res.data.info);
+					this.refreshFlag = false;
 				}
 			});
 		},
@@ -179,6 +195,7 @@ export default {
 					}
 					this.dynamicPage++;
 					this.dynamicList = this.dynamicList.concat(res.data.info);
+					this.refreshFlag = false;
 				}
 			});
 		},

@@ -1,7 +1,3 @@
-import _app from '@/components/QS-SharePoster/app.js';
-import {
-	getSharePoster
-} from '@/components/QS-SharePoster/QS-SharePoster.js';
 export default {
 	data() {
 		return {
@@ -19,13 +15,18 @@ export default {
 			//海报数据
 			poster: {},
 			qrShow: false,
-			canvasId: 'default_PosterCanvasId'
+			canvasId: 'default_PosterCanvasId',
+			screenWidth: uni.getSystemInfoSync().windowWidth
 		};
 	},
 	methods: {
+		//关注后修改数据
+		attentionFun(index, state) {
+			this.dynamicList[index].is_follow = state; //评论数+1
+		},
 		// 选择发布类型
 		togglePublishFlag(flag) {
-			uni.setStorageSync('sendCircleData',this.circleData);
+			uni.setStorageSync('sendCircleData', this.circleData);
 			this.showPublishFlag = flag;
 		},
 		//点赞后修改数据
@@ -36,6 +37,13 @@ export default {
 		//评论后修改数据
 		commentFun(index) {
 			this.dynamicList[index].study_repount++; //评论数+1
+		},
+		//动态视频播放
+		playVideoFun(index, oldIndex) {
+			if (typeof oldIndex == 'number') {
+				this.$set(this.dynamicList[oldIndex], 'playVideoFlag', false);
+			}
+			this.$set(this.dynamicList[index], 'playVideoFlag', true);
 		},
 		// 帖子数据
 		getArticleList(isFirstPage) {
@@ -56,6 +64,23 @@ export default {
 				},
 				success: res => {
 					// console.log("帖子数据:", res);
+					for (let i = 0; i < res.data.info.length; i++) {
+						let _item = res.data.info[i];
+						if (_item.study_type == 2) {
+							uni.getImageInfo({
+								src: _item.image_part[0],
+								success: (res) => {
+									var width = this.screenWidth - 30;
+									var height = width * res.height / res.width;
+									if (height > width) {
+										height /= 2;
+									}
+									// _item.height = height;	//不渲染
+									this.$set(_item, 'height', height); //渲染
+								}
+							})
+						}
+					}
 					this.dynamicList = this.dynamicList.concat(res.data.info);
 					this.page++;
 				},
@@ -76,10 +101,132 @@ export default {
 				},
 			});
 		},
-		//海报star
+		//海报star----------------------------------------------------------------------------
+		sharePosteCanvas(avaterSrc, codeSrc,bgSrc) {
+			uni.showLoading({
+				title: '生成中...',
+				mask: true
+			});
+			var cardInfo = uni.getStorageSync('userInfo'); //需要绘制的数据集合
+			const ctx = uni.createCanvasContext('myCanvas', this);
+			var width = '';
+			uni.createSelectorQuery()
+				.select('#canvas-container')
+				.boundingClientRect(rect => {
+					var left = rect.left;
+					var right = rect.right;
+					var height = rect.height;
+					width = rect.width;
+					ctx.save();
+					ctx.setFillStyle('#FFFFFF');
+					ctx.fillRect(0, 0, width, height);
+					//上半部分
+					ctx.drawImage(bgSrc, 0, 0, width, 195);
+
+					//头像
+					ctx.beginPath();
+					ctx.fill();
+					var avatarurl_width = 92; //绘制的头像宽度
+					var avatarurl_heigth = 92; //绘制的头像高度
+					var avatarurl_x = width / 2 - 46;
+					var avatarurl_y = 148;
+					//先画个圆   前两个参数确定了圆心 （x,y） 坐标  第三个参数是圆的半径  四参数是绘图方向  默认是false，即顺时针
+					ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_heigth / 2 + avatarurl_y, avatarurl_width / 2, 0, Math.PI * 2, false);
+					ctx.clip();
+					ctx.drawImage(avaterSrc, avatarurl_x, avatarurl_y, avatarurl_width, avatarurl_heigth); // 推进去图片，必须是https图片
+					//昵称
+					ctx.restore();
+					ctx.setFontSize(20);
+					ctx.setFillStyle('#000');
+					ctx.fillText(this.circleData.realm_name, (width - ctx.measureText(this.circleData.realm_name).width) / 2, avatarurl_y + 120);
+					//说明
+					ctx.setFontSize(11);
+					ctx.setFillStyle('#666');
+					var text = this.circleData.realm_synopsis,
+						lineheight = 20;
+					for (var i = 1; this.getTrueLength(text) > 0; i++) {
+						var tl = this.cutString(text, 50);
+						ctx.fillText(text.substr(0, tl).replace(/^\s+|\s+$/, ""), (width - 262) / 2, i * lineheight + avatarurl_y + 120);
+						text = text.substr(tl);
+					}
+					// ctx.fillText(this.circleData.realm_synopsis, (width - ctx.measureText(this.circleData.realm_synopsis).width) / 2, avatarurl_y + 140);
+					//说明
+					ctx.setFontSize(17);
+					ctx.setFillStyle('#BEB9DE');
+					ctx.fillText('长按识别二维码', width / 2 - 120, avatarurl_y + 222);
+					ctx.fillText('打开小程序', width / 2 - 120 + 34, avatarurl_y + 252);
+					//二维码
+					ctx.drawImage(codeSrc, width - 120, avatarurl_y + 185, 99, 99);
+				})
+				.exec();
+			setTimeout(function() {
+				ctx.draw();
+				uni.hideLoading();
+			}, 500);
+		},
+		getTrueLength(str) { //获取字符串的真实长度（字节长度）
+			var len = str.length,
+				truelen = 0;
+			for (var x = 0; x < len; x++) {
+				if (str.charCodeAt(x) > 128) {
+					truelen += 2;
+				} else {
+					truelen += 1;
+				}
+			}
+			return truelen;
+		},
+		cutString(str, leng) { //按字节长度截取字符串，返回substr截取位置
+			var len = str.length,
+				tlen = len,
+				nlen = 0;
+			for (var x = 0; x < len; x++) {
+				if (str.charCodeAt(x) > 128) {
+					if (nlen + 2 < leng) {
+						nlen += 2;
+					} else {
+						tlen = x;
+						break;
+					}
+				} else {
+					if (nlen + 1 < leng) {
+						nlen += 1;
+					} else {
+						tlen = x;
+						break;
+					}
+				}
+			}
+			return tlen;
+		},
 		shareQrCode() {
+			this.qrShow = true;
 			//获取二维码后生成图片
-			this.getQrCode().then(this.shareFc);
+			Promise.all([this.getCircleHead(), this.getQrCode(),this.getCircleBanner()]).then((res) => {
+				this.sharePosteCanvas(res[0], res[1],res[2]);
+			})
+		},
+		getCircleHead() {
+			return new Promise((resolve, reject) => {
+				var src = this.circleData.realm_icon;
+				uni.getImageInfo({
+					src: 'https' + src.substr(4,src.length-1),
+					success: function(image) {
+						resolve(image.path);
+					}
+				});
+			})
+		},
+		getCircleBanner() {
+			return new Promise((resolve, reject) => {
+				var src = this.circleData.realm_bg;
+				uni.getImageInfo({
+					src: 'https' + src.substr(4,src.length-1),
+					success: function(image) {
+						resolve(image.path);
+					}
+				});
+			})
 		},
 		getQrCode() { //获取圈子二维码
 			return new Promise((resolve, reject) => {
@@ -101,146 +248,66 @@ export default {
 						uni.hideLoading();
 						console.log("获取圈子二维码:", res);
 						this.qrCode = res.data.data.url;
-						resolve();
+						uni.getImageInfo({
+							src: this.qrCode,
+							success: function(image) {
+								resolve(image.path);
+							}
+						});
 					}
 				});
 			});
 		},
-		async shareFc() {
-			try {
-				_app.log('准备生成:' + new Date())
-				const d = await getSharePoster({
-					backgroundImage: this.circleData.realm_bg, //背景
-					_this: this, //若在组件中使用 必传
-					type: 'testShareType',
-					formData: {
-						//访问接口获取背景图携带自定义数据
-
-					},
-					posterCanvasId: this.canvasId, //canvasId
-					delayTimeScale: 20, //延时系数
-					/* background: {
-						width: 1080,
-						height: 1920,
-						backgroundColor: '#666'
-					}, */
-					drawArray: ({
-						bgObj,
-						type,
-						bgScale
-					}) => {
-						const dx = bgObj.width * 0.3;
-						const fontSize = bgObj.width * 0.045;
-						const lineHeight = bgObj.height * 0.04;
-						//可直接return数组，也可以return一个promise对象, 但最终resolve一个数组, 这样就可以方便实现后台可控绘制海报
-						return new Promise((rs, rj) => {
-							rs([{
-									type: 'custom',
-									setDraw(Context) {
-										Context.setFillStyle('black');
-										Context.setGlobalAlpha(0.3);
-										Context.fillRect(0, bgObj.height - bgObj.height * 0.2, bgObj.width, bgObj.height * 0.2);
-										Context.setGlobalAlpha(1);
-									}
+		saveBanner() {
+			uni.showLoading({
+				title: '加载中'
+			});
+			uni.canvasToTempFilePath({
+				canvasId: 'myCanvas',
+				success: function(res) {
+					uni.hideLoading();
+					var tempFilePath = res.tempFilePath;
+					uni.saveImageToPhotosAlbum({
+						filePath: tempFilePath,
+						success(res) {
+							uni.showModal({
+								content: '图片已保存到相册，赶紧晒一下吧~',
+								showCancel: false,
+								confirmText: '好的',
+								confirmColor: '#333',
+								success: function(res) {
+									if (res.confirm) {}
 								},
-								{
-									type: 'image',
-									url: this.circleData.realm_icon,
-									alpha: 1,
-									dx: bgObj.width * 0.03,
-									dy: bgObj.height - bgObj.width * 0.35,
-									infoCallBack(imageInfo) {
-										let scale = bgObj.width * 0.2 / imageInfo.height;
-										return {
-											circleSet: {
-												x: imageInfo.width * scale / 2,
-												y: bgObj.width * 0.2 / 2,
-												r: bgObj.width * 0.2 / 2
-											}, // 圆形图片 , 若circleSet与roundRectSet一同设置 优先circleSet设置
-											dWidth: imageInfo.width * scale, // 因为设置了圆形图片 所以要乘以2
-											dHeight: bgObj.width * 0.2,
-											/* roundRectSet: { // 圆角矩形
-												r: imageInfo.width * .1
-											} */
-										}
+								fail: function(res) {}
+							});
+						},
+						fail: function(res) {
+							console.log(res);
+							if (res.errMsg == 'saveImageToPhotosAlbum:fail auth deny') {
+								uni.showModal({
+									content: '检测到您未打开微信保存图片到相册，开启后即可保存图片',
+									confirmText: '去开启',
+									success(res) {
+										if (res.confirm) {
+											uni.openSetting({
+												success(res) {}
+											});
+										} else if (res.cancel) {}
 									}
-								},
-								{
-									type: 'image',
-									url: this.qrCode,
-									alpha: 1,
-									dx: bgObj.width * 0.75,
-									dy: bgObj.height - bgObj.width * 0.35,
-									infoCallBack(imageInfo) {
-										let scale = bgObj.width * 0.2 / imageInfo.height;
-										return {
-											circleSet: {
-												x: imageInfo.width * scale / 2,
-												y: bgObj.width * 0.2 / 2,
-												r: bgObj.width * 0.2 / 2
-											}, // 圆形图片 , 若circleSet与roundRectSet一同设置 优先circleSet设置
-											dWidth: imageInfo.width * scale, // 因为设置了圆形图片 所以要乘以2
-											dHeight: bgObj.width * 0.2,
-											/* roundRectSet: { // 圆角矩形
-												r: imageInfo.width * .1
-											} */
-										}
-									}
-								},
-								{
-									type: 'text',
-									text: this.circleData.realm_synopsis,
-									size: fontSize,
-									color: 'white',
-									alpha: 1,
-									textAlign: 'left',
-									textBaseline: 'middle',
-									infoCallBack(textLength) {
-										_app.log('index页面的text的infocallback ，textlength:' + textLength);
-										return {
-											dx: bgObj.width - textLength - fontSize,
-											dy: bgObj.height - lineHeight * 2
-										}
-									},
-									serialNum: 0,
-								}
-							]);
-						})
-					},
-					setCanvasWH: ({
-						bgObj,
-						type,
-						bgScale
-					}) => { // 为动态设置画布宽高的方法，
-						this.poster = bgObj;
-					}
-				});
-				_app.log('海报生成成功, 时间:' + new Date() + '， 临时路径: ' + d.poster.tempFilePath)
-				this.poster.finalPath = d.poster.tempFilePath;
-				this.qrShow = true;
-			} catch (e) {
-				_app.hideLoading();
-				_app.showToast(JSON.stringify(e));
-				console.log(JSON.stringify(e));
-			}
-		},
-		saveImage() {
-			// #ifndef H5
-			uni.saveImageToPhotosAlbum({
-				filePath: this.poster.finalPath,
-				success(res) {
-					_app.showToast('保存成功');
+								});
+							}
+						}
+					});
+				},
+				fail: function(err) {
+					console.log(err);
 				}
-			})
-			// #endif
-			// #ifdef H5
-			_app.showToast('保存了');
-			// #endif
+			});
 		},
 		hideQr() {
 			this.qrShow = false;
 		},
-		//海报end
+		//海报end------------------------------------------------------------------------------
 		join() {
 			uni.showLoading({
 				title: '加载中',
@@ -263,7 +330,7 @@ export default {
 					uni.showToast({
 						title: res.data.msg
 					});
-					this.showIptCodeFlag = false;	//隐藏邀请码填写弹窗
+					this.showIptCodeFlag = false; //隐藏邀请码填写弹窗
 					//刷新信息
 					this.getCircleInfo();
 					this.getTopArticle();
@@ -285,7 +352,7 @@ export default {
 					uni.hideLoading();
 					// console.log("获取圈子信息:", res);
 					this.circleData = res.data.info;
-													      //私密圈子   并且   未加入
+					//私密圈子   并且   未加入
 					this.noJurisdiction = res.data.info.attention == 1 && res.data.info.is_trailing == false;
 				},
 			});
@@ -304,10 +371,10 @@ export default {
 		},
 		// 请求访问
 		sendCode() {
-			if(!this.erCode){
+			if (!this.erCode) {
 				uni.showToast({
-					title:'请输入邀请码',
-					icon:'none'
+					title: '请输入邀请码',
+					icon: 'none'
 				})
 				return;
 			}

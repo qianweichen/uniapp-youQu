@@ -8,7 +8,8 @@ export default {
 			version: 3, // 0是文字 1是语音 2是视频 3是全部
 			circleList:[],
 			circlePage:1,
-			searchHistory:[]
+			searchHistory:[],
+			screenWidth: uni.getSystemInfoSync().windowWidth
 		};
 	},
 	computed: {
@@ -21,6 +22,17 @@ export default {
 		}
 	},
 	methods: {
+		//播放视频
+		playVideoFun(index,oldIndex){
+			if(typeof oldIndex == 'number'){
+				this.$set(this.dynamicList[oldIndex], 'playVideoFlag', false);
+			}
+			this.$set(this.dynamicList[index], 'playVideoFlag', true);
+		},
+		//关注后修改数据
+		attentionFun(index,state) {
+			this.dynamicList[index].is_follow = state;
+		},
 		chooseHistory(searchContent){
 			this.searchContent = searchContent;
 			this.search(true);
@@ -46,13 +58,13 @@ export default {
 						icon: 'none'
 					});
 					if (res.data.msg == "关注成功！") {
-						uni.requestSubscribeMessage({
-							tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
-							success: (res) => {
-								// console.log(res)
-								this.dynamicList[index].is_user = 1;
-							}
-						});
+						// uni.requestSubscribeMessage({
+						// 	tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
+						// 	success: (res) => {
+						// 		// console.log(res)
+						// 		this.dynamicList[index].is_user = 1;
+						// 	}
+						// });
 					}else{
 						this.dynamicList[index].is_user = 0;
 					}
@@ -176,6 +188,23 @@ export default {
 							icon:'none'
 						})
 					}
+					for (let i = 0; i < res.data.info.length; i++) {
+						let _item = res.data.info[i];
+						if (_item.study_type == 2) {
+							uni.getImageInfo({
+								src: _item.image_part[0],
+								success: (res) => {
+									var width = this.screenWidth - 30;
+									var height = width * res.height / res.width;
+									if(height>width){
+										height /=2; 
+									}
+									// _item.height = height;	//不渲染
+									this.$set(_item, 'height', height);	//渲染
+								}
+							})
+						}
+					}
 					this.page++;
 					this.dynamicList = this.dynamicList.concat(res.data.info);
 				},
@@ -203,7 +232,7 @@ export default {
 			if (index == 0) { //综合
 				this.version = 3;
 				this.searchDynamic(isFirstPage);
-				this.searchCircle(isFirstPage);
+				if(isFirstPage)	this.searchCircle(isFirstPage);
 			} else if (index == 1) { //视频
 				this.version = 2;
 				this.searchDynamic(isFirstPage);

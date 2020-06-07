@@ -20,10 +20,62 @@ export default {
 			informContent: '', //举报输入内容
 			showInformFlag: false, //控制举报弹出
 			deleteContent: '', //删除输入内容
-			showDeleteFlag: false //控制删除弹出
+			showDeleteFlag: false ,//控制删除弹出
+			userId:uni.getStorageSync('userId'),
+			oldIndex:''
 		};
 	},
 	methods: {
+		playVideoFun(index){
+			this.$emit('playVideoFun',index,this.oldIndex);
+			this.oldIndex = index;
+		},
+		videoError(e){
+			// console.log(e);
+			uni.showToast({
+				title:'视频跑丢啦',
+				icon:'none'
+			});
+		},
+		//关注
+		attention(uid,follow,index) {
+			uni.showLoading({
+				title: '加载中'
+			})
+			this.request({
+				url: this.apiUrl + 'User/get_user_cancel',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					this_uid: uni.getStorageSync('userId'),
+					uid,
+					is_user: follow
+				},
+				success: res => {
+					// console.log("关注:", res);
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					});
+					
+					//修改数据
+					if(follow==1){
+						this.$emit('attentionFun',index,0);
+					}else{
+						this.$emit('attentionFun',index,1);
+					}
+					
+					// if (res.data.msg == "关注成功！") {
+					// 	uni.requestSubscribeMessage({
+					// 		tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
+					// 		success: (res) => {
+					// 			// console.log(res)
+					// 		}
+					// 	});
+					// }
+				},
+			});
+		},
 		// 查看全部二级评论
 		getMoreComment(id,uid){
 			uni.navigateTo({
@@ -308,6 +360,7 @@ export default {
 			if(!e.detail.userInfo)	return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
+				this.userId = uni.getStorageSync('userId');
 			});
 		}
 	},

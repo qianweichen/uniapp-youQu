@@ -6,10 +6,66 @@ export default {
 			personalId: '', //主页用户id
 			personalInfo: {}, //用户信息
 			uid: uni.getStorageSync('userId'), //用户id
-			videoPage: 1 //页码
+			videoPage: 1 ,//页码
+			isAuthorized: false //授权否
 		};
 	},
 	methods: {
+		//签到
+		signIn() {
+			uni.requestSubscribeMessage({
+				tmplIds: ['eouzl8p41dm6RqLnP1EJwn22CFomD67vIc8nXezyMI4'],
+				success: res => {
+					// console.log(res);
+					this.request({
+						url: this.apiUrl + 'User/add_user_punch',
+						data: {
+							token: uni.getStorageSync('token'),
+							openid: uni.getStorageSync('openid'),
+							uid: uni.getStorageSync('userId')
+						},
+						success: res => {
+							console.log('签到:', res);
+							uni.showToast({
+								title: res.data.msg,
+								icon: 'none'
+							});
+							// setTimeout(()=>{
+							// 	this.getPersonalInfo();
+							// },1500);
+						}
+					});
+				}
+			});
+		},
+		//关注后修改数据
+		attentionFun(index,state) {
+			this.dynamicList[index].is_follow = state; //评论数+1
+			this.getPersonalInfo();
+		},
+		//点赞
+		videoGoodFun(id, index) {
+			this.request({
+				url: this.apiUrl + 'User/add_user_zan',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					id,
+					uid: uni.getStorageSync('userId'),
+					applaud_type: 0,
+					zan_type: this.dynamicList[index]['is_info_zan'] == true ? 1 : 0
+				},
+				success: res => {
+					// console.log("点赞:", res);
+					this.dynamicList[index]['is_info_zan'] = !this.dynamicList[index]['is_info_zan']; //修改点赞状态
+					this.dynamicList[index]['info_zan_count'] = res.data.info_zan_count; //修改点赞数
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					});
+				},
+			});
+		},
 		//点赞后修改数据
 		goodFun(index, num) {
 			this.dynamicList[index]['is_info_zan'] = !this.dynamicList[index]['is_info_zan']; //修改点赞状态
@@ -52,14 +108,14 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
-					if (res.data.msg == "关注成功！") {
-						uni.requestSubscribeMessage({
-							tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
-							success: (res) => {
-								// console.log(res)
-							}
-						});
-					}
+					// if (res.data.msg == "关注成功！") {
+					// 	uni.requestSubscribeMessage({
+					// 		tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
+					// 		success: (res) => {
+					// 			// console.log(res)
+					// 		}
+					// 	});
+					// }
 					this.getPersonalInfo(); //更新用户信息
 				},
 			});
@@ -136,9 +192,20 @@ export default {
 					}
 				},
 			});
+		},
+		getUserInfo(e) {
+		    if(!e.detail.userInfo)	return;
+			this.doLogin(e.detail.userInfo, () => {
+				this.isAuthorized = true;
+				this.getPersonalInfo();
+				this.getVideoList(true);
+			});
 		}
 	},
 	onLoad(options) {
+		//判断授权 已授权为true
+		this.isAuthorized = this.beAuthorized();
+
 		//获取id 请求
 		this.personalId = options.id;
 		this.getPersonalInfo();
@@ -159,11 +226,19 @@ export default {
 		}
 		// 页面内分享按钮
 		if (res.from === 'button') {
-			return {
-				title: res.target.dataset.content || this.miniProgramName,
-				path: '/pages/articleDetails/articleDetails?id=' + res.target.dataset.id,
-				imageUrl: res.target.dataset.img
-			};
+			if(res.target.dataset.type=='persional'){
+				return {
+					title: this.personalInfo.user_nick_name || this.miniProgramName,
+					path: '/pages/personalCenter/personalCenter?id=' + this.personalId,
+					imageUrl: this.personalInfo.bg_img
+				};
+			}else{
+				return {
+					title: res.target.dataset.content || this.miniProgramName,
+					path: '/pages/articleDetails/articleDetails?id=' + res.target.dataset.id,
+					imageUrl: res.target.dataset.img
+				};
+			}
 		}
 	}
 };

@@ -3,7 +3,7 @@
 		<backCapsule type="capsule"></backCapsule>
 		<view class="topInfoBox" :style="'background-image: url(' + (circleData.realm_bg||'') + ');'">
 			<view class="info">
-				<view class="flex-between align-star">
+				<view class="flex-between">
 					<view class="flex info-left" @click="goPage('/pages/circle/circleInfo?id=' + circleId)">
 						<view class="user flex-column-between">
 							<image class="header circle" :src="circleData.realm_icon" mode="aspectFill"></image>
@@ -91,26 +91,28 @@
 					<view class="info">{{item.study_content}}</view>
 				</view>
 			</view>
-			<dynamicList type="circle" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun"></dynamicList>
+			<dynamicList type="circle" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList>
 			<!-- 发布按钮 -->
 			<image @click="togglePublishFlag(true)" class="sendDynamic" src="../../static/tabbar/publish.png" mode="widthFix"></image>
 		</view>
 		
-		<!-- 图片展示由自己实现 -->
-		<view class="flex_row_c_c modalView" :class="qrShow?'show':''" @tap="hideQr()">
-			<view class="flex_column">
-				<view class="backgroundColor-white padding1vh border_radius_10px">
-					<image :src="poster.finalPath || ''" mode="widthFix" class="posterImage"></image>
-				</view>
-				<view class="flex_row marginTop2vh">
-					<button type="primary" size="mini" @tap.prevent.stop="saveImage()">保存图片</button>
+		<!-- 海报 -->
+		<view v-if="qrShow">
+			<view class="mask"></view>
+			<view class="bannerBox flex-center">
+				<view>
+					<view class="imgBox">
+						<view class="modal-content" id="canvas-container" style="padding:0px; width:100%; height: 100%;">
+							<canvas canvas-id="myCanvas" style="width:100%; background-color:#ffffff; height:100%;"></canvas>
+						</view>
+		
+						<image @click="hideQr" class="close" src="../../static/close-f.png" mode="widthFix"></image>
+					</view>
+					<view class="btn-big fc-f flex-center" @click="saveBanner">保存图片</view>
 				</view>
 			</view>
 		</view>
-		<!-- 画布 -->
-		<view class="hideCanvasView">
-			<canvas class="hideCanvas" canvas-id="default_PosterCanvasId" :style="{width: (poster.width||10) + 'px', height: (poster.height||10) + 'px'}"></canvas>
-		</view>
+		
 		<!-- 发布 -->
 		<publish v-if="showPublishFlag" @togglePublishFlag="togglePublishFlag"></publish>
 	</view>

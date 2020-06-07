@@ -2,7 +2,7 @@
 	<view>
 		<backCapsule type="normal"></backCapsule>
 		<view style="height: 100vh;">
-			<videoBox :videoList="videoList" @getNextPage="getVideoList" @goodFun="goodFun" @commentFun="commentFun" :index="videoIndex"></videoBox>
+			<videoBox :videoList="videoList" @getNextPage="getVideoList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" :index="videoIndex"></videoBox>
 		</view>
 	</view>
 </template>
@@ -23,6 +23,10 @@ export default {
 		};
 	},
 	methods: {
+		//关注后修改数据
+		attentionFun(index,state) {
+			this.videoList[index].is_follow = state; //评论数+1
+		},
 		//点赞后修改数据
 		goodFun(index, num) {
 			this.videoList[index]['is_info_zan'] = !this.videoList[index]['is_info_zan']; //修改点赞状态

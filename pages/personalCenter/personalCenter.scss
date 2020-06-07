@@ -8,6 +8,50 @@
 		background-color: rgba(0, 0, 0, 0.2);
 		background-blend-mode: multiply;
 		position: relative;
+		.infoBox{
+			width:688rpx;
+			background:$themeColor;
+			padding: 48rpx 40rpx;
+			box-sizing: border-box;
+			border-radius:8rpx;
+			position: absolute;
+			left: calc(50% - 344rpx);
+			top: 320rpx;
+			.header{
+				width: 140rpx;
+				height: 140rpx;
+				position: absolute;
+				left: 507rpx;
+				top: -26.5px;
+				border: 2rpx solid #fff;
+			}
+			.name{
+				font-weight:800;
+				padding-bottom: 30rpx;
+			}
+			.numberBox{
+				>view{
+					padding-right: 66rpx;
+					color: rgba(255,255,255,0.7);
+					>text{
+						color: #fff;
+						padding-right: 10rpx;
+					}
+				}
+			}
+			.autograph{
+				color: rgba(255,255,255,0.5);
+				padding: 40rpx 0;
+			}
+			.myBtnBox{
+				>view{
+					width:126rpx;
+					height:56rpx;
+					background-color: #7364BD;
+					border-radius:28rpx;
+				}
+			}
+		}
 		.header{
 			width:188rpx;
 			height:188rpx;
@@ -55,6 +99,7 @@
 		// top: 0;
 		// left: 0;
 		// background-color: $themeColor;
+		border-top: 2rpx solid rgba(255,255,255,0.06);
 		color: rgba(255,255,255,0.6);
 		>view{
 			width: 220rpx;
@@ -70,25 +115,58 @@
 		}
 	}
 	.list-zp{
+		padding: 0 30rpx;
 		flex-wrap: wrap;
 		.item{
-			width:246rpx;
-			height:330rpx;
-			margin-bottom: 6rpx;
-			margin-right: 6rpx;
-			position: relative;
-			image{
-				display: block;
+			border-radius: 8rpx;
+			overflow: hidden;
+			background:rgba(115,99,189,0.1);
+			width:330rpx;
+			height:492rpx;
+			margin-bottom: 30rpx;
+			.imgBox{
 				width: 100%;
-				height: 100%;
+				height: 330rpx;
+				position: relative;
+				image{
+					display: block;
+					width: 100%;
+					height: 100%;
+				}
+				.mask{
+					position: absolute;
+					height: 144rpx;
+					top: unset;
+					left: 0;
+					bottom: 0;
+					background:linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0));
+				}
 			}
-			.mask{
-				position: absolute;
-				height: 144rpx;
-				top: unset;
-				left: 0;
-				bottom: 0;
-				background:linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0));
+			.infoBox{
+				width: 100%;
+				height: 162rpx;
+				padding: 20rpx;
+				box-sizing: border-box;
+				.cont{
+					overflow : hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					-webkit-box-orient: vertical;
+				}
+				.header{
+					width:40rpx;
+					height:40rpx;
+					margin-right: 14rpx;
+				}
+				.nickName{
+					color: rgba(255,255,255,0.6);
+				}
+				.good{
+					width: 30rpx;
+					height: auto;
+					margin-right: 11rpx;
+				}
 			}
 		}
 		.item:nth-child(3n){

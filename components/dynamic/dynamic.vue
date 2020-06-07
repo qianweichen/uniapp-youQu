@@ -2,7 +2,7 @@
 import dynamicList from '@/components/dynamic/dynamic.vue';
 
 //dynamic:动态  circle:圈子
-<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun"></dynamicList> 
+<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList> 
 
  components:{
  	dynamicList
@@ -17,6 +17,17 @@ goodFun(index, num) {
 commentFun(index) {
 	this.dynamicList[index].study_repount++; //评论数+1
 },
+//关注后修改数据
+attentionFun(index,state) {
+	this.dynamicList[index].is_follow = state;
+},
+//播放视频
+playVideoFun(index,oldIndex){
+	if(typeof oldIndex == 'number'){
+		this.$set(this.dynamicList[oldIndex], 'playVideoFlag', false);
+	}
+	this.$set(this.dynamicList[index], 'playVideoFlag', true);
+},
  
 -->
 <template>
@@ -24,28 +35,43 @@ commentFun(index) {
 		<view class="dynamicList">
 			<view class="item" v-for="(item, index) in list" :key="index">
 				<!-- 头部 -->
-				<view class="header flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
-					<image class="circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
-					<view class="fs-28">{{ item.user_nick_name }}</view>
-					<view class="fs-26">{{ item.adapter_time }}</view>
+				<view class="flex-between">
+					<view class="header flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
+						<image class="circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
+						<view class="fs-28">{{ item.user_nick_name }}</view>
+						<view class="fs-26">{{ item.adapter_time }}</view>
+					</view>
+					<view v-if="item.user_id != userId">
+						<view v-if="isAuthorized" class="btn flex-center fs-22" @click.stop="attention(item.user_id, item.is_follow, index)">
+							{{ item.is_follow == 1 ? '已关注' : '关注' }}
+						</view>
+						<button v-else open-type="getUserInfo" class="share btn flex-center" @getuserinfo="getUserInfo" style="font-size: 22rpx;">关注</button>
+					</view>
 				</view>
 				<!-- 文字 -->
 				<view class="content fs-28" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 				<!-- 图片/视频 -->
-				<view v-if="item.study_type == 2" class="mediaBox"><video :src="item.study_video" controls :poster="item.image_part[0]"></video></view>
-				<view v-else class="mediaBox">
+				<view v-if="item.study_type == 2" class="mediaBox" :style="'height:' + item.height + 'px;'">
+					<video v-if="item.playVideoFlag" :src="item.study_video" controls autoplay @error="videoError"></video>
+					<image v-else class="poster" :src="item.image_part[0]" mode="aspectFill"></image>
+					<image v-if="!item.playVideoFlag" @click="playVideoFun(index)" class="circle play" src="../../static/icon-play.png" mode="widthFix"></image>
+				</view>
+				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox">
 					<!-- 1 -->
-					<view class="one" v-if="item.image_part.length == 1">
-						<image :src="item.image_part[0]" mode="widthFix" @click="browseImg(item.image_part,0)"></image>
-					</view>
+					<!-- <view class="one" v-if="item.image_part.length == 1"><image :src="item.image_part[0]" mode="widthFix" @click="browseImg(item.image_part, 0)"></image></view> -->
 					<!-- 2 -->
-					<view class="two" v-if="item.image_part.length == 2">
-						<image v-for="(items,indexs) in item.image_part" :key="indexs" :src="items" mode="aspectFill" @click="browseImg(item.image_part,indexs)"></image>
-					</view>
+					<!-- <view class="two" v-if="item.image_part.length == 2">
+						<image v-for="(items, indexs) in item.image_part" :key="indexs" :src="items" mode="aspectFill" @click="browseImg(item.image_part, indexs)"></image>
+					</view> -->
 					<!-- 3-9 -->
-					<view class="more" v-if="item.image_part.length > 2">
-						<image v-for="(items, indexs) in item.image_part" :key="indexs" :src="items" mode="aspectFill" @click="browseImg(item.image_part,indexs)"></image>
-					</view>
+					<!-- <view class="more" v-if="item.image_part.length > 2">
+						<image v-for="(items, indexs) in item.image_part" :key="indexs" :src="items" mode="aspectFill" @click="browseImg(item.image_part, indexs)"></image>
+					</view> -->
+					<swiper class="swiper" indicator-dots autoplay circular>
+						<swiper-item v-for="(items, indexs) in item.image_part" :key="indexs">
+							<image :src="items" mode="aspectFill" @click="browseImg(item.image_part, indexs)"></image>
+						</swiper-item>
+					</swiper>
 				</view>
 				<!-- 底部按钮 -->
 				<view class="bottom flex-between">
@@ -66,7 +92,7 @@ commentFun(index) {
 								<text>{{ item.info_zan_count }}</text>
 							</button>
 						</view>
-						<view class="flex" v-if="isAuthorized" @click="showCommentFun(item.id,index)">
+						<view class="flex" v-if="isAuthorized" @click="showCommentFun(item.id, index)">
 							<image src="../../static/comment.png" mode="widthFix"></image>
 							<text>{{ item.study_repount }}</text>
 						</view>
@@ -82,7 +108,7 @@ commentFun(index) {
 						</button>
 					</view>
 					<!-- 圈子首页 -->
-					<image v-if="type == 'circle'" class="more" src="../../static/more.png" mode="widthFix" @click="showAction(item.user_id,index,item.id)"></image>
+					<image v-if="type == 'circle'" class="more" src="../../static/more.png" mode="widthFix" @click="showAction(item.user_id, index, item.id)"></image>
 				</view>
 			</view>
 		</view>
@@ -126,9 +152,9 @@ commentFun(index) {
 							</view> -->
 						</view>
 						<!-- 查看全部 -->
-						<view class="more flex" v-if="item.huifu_count > 2" @click="getMoreComment(item.id,item.user_id)">
+						<view class="more flex" v-if="item.huifu_count > 2" @click="getMoreComment(item.id, item.user_id)">
 							<view class="line"></view>
-							<text class="fs-26" style="color: #999;">查看全部{{item.huifu_count}}条评论</text>
+							<text class="fs-26" style="color: #999;">查看全部{{ item.huifu_count }}条评论</text>
 						</view>
 					</block>
 				</view>

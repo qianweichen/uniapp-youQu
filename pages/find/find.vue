@@ -62,7 +62,10 @@
 						<view class="flex">
 							<image class="header circle" :src="item.realm_icon" mode="aspectFill"></image>
 							<view>
-								<view class="fs-28">{{ item.realm_name }}</view>
+								<view class="fs-28 flex">
+									<view>{{ item.realm_name }}</view>
+									<view class="attention flex-center" v-if="item.attention==1">私</view>
+								</view>
 								<view class="fs-20" style="color: #9A989E; padding-top: 10rpx; width: 410rpx;">{{ item.realm_synopsis }}</view>
 							</view>
 						</view>
@@ -72,7 +75,7 @@
 			</view>
 		</view>
 		<view v-else class="dynamic" :style="'height: calc(100% - ' + (customBar + topCustomBar) + 'px);'">
-			<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic">
+			<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic" refresher-enabled @refresherrefresh="refreshDynamic" :refresher-triggered="refreshFlag">
 				<swiper class="banner" indicator-dots autoplay>
 					<swiper-item v-for="(item, index) in banners" :key="index">
 						<image :src="item.playbill_url" mode="aspectFill" style="width: 100%; height: 100%;"></image>
@@ -82,7 +85,7 @@
 					<view :class="{ active: tabIndex == 0 }" @click="changeMidTab(0)"><text>推荐</text></view>
 					<view :class="{ active: tabIndex == 1 }" @click="changeMidTab(1)"><text>关注</text></view>
 				</view>
-				<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun"></dynamicList>
+				<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun"></dynamicList>
 				<view v-if="dynamicList.length == 0" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
 			</scroll-view>
 		</view>

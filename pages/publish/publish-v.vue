@@ -152,7 +152,9 @@ export default {
 						title: res.data.msg
 					});
 					setTimeout(() => {
-						this.goHome();
+						uni.navigateBack({
+							delta:2
+						});
 					}, 1500);
 				}
 			});

@@ -55,8 +55,14 @@
 					success: res => {
 						uni.hideLoading();
 						console.log("获取所有圈子:",res);
+						if (this.page > 1 && res.data.info.length == 0) {
+							uni.showToast({
+								title: '没有更多了',
+								icon: 'none'
+							})
+						}
 						this.page++;
-						this.list = res.data.info;
+						this.list = this.list.concat(res.data.info);
 					},
 				});
 			},

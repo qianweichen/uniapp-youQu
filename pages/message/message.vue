@@ -15,14 +15,14 @@
 					<image src="../../static/msg3.png" mode="widthFix"></image>
 					<view>评论</view>
 				</view>
-				<view @click="goPage('/pages/message/systemNote')">
+				<!-- <view @click="goPage('/pages/message/systemNote')">
 					<image src="../../static/msg4.png" mode="widthFix"></image>
 					<view>通知</view>
-				</view>
+				</view> -->
 			</view>
 			<view class="list">
 				<!-- 系统消息 -->
-				<view class="good flex-between align-star comment" @click="goPage('/pages/message/systemNote')">
+				<!-- <view class="good flex-between align-star comment" @click="goPage('/pages/message/systemNote')">
 					<view class="flex align-star">
 						<image class="header circle" src="../../static/msg-lb.png" mode="aspectFill"></image>
 						<view>
@@ -31,11 +31,11 @@
 						</view>
 					</view>
 					<view class="fs-24 fc-9">下午 17:28</view>
-				</view>
+				</view> -->
 				<uni-swipe-action>
 					<uni-swipe-action-item :options="options" @click="onClick(item.id,index)" @change="change" v-for="(item, index) in list" :key="index">
 						<!-- 赞 -->
-						<view v-if="item.type == 1" class="good flex-between align-star bg-theme">
+						<view v-if="item.type == 1" class="good flex-between align-star bg-theme" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.pid.id)">
 							<view class="flex align-star">
 								<image class="header circle" :src="item.launch_user_id.user_head_sculpture" mode="aspectFill"></image>
 								<view>
@@ -54,12 +54,12 @@
 							<image class="pic" :src="item.pid.image_part[0]" mode="aspectFill"></image>
 						</view>
 						<!-- 评价 -->
-						<view v-if="item.type == 2" class="good flex-between align-star comment bg-theme">
+						<view v-if="item.type == 2" class="good flex-between align-star comment bg-theme" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.pid.id)">
 							<view class="flex align-star">
 								<image class="header circle" :src="item.launch_user_id.user_head_sculpture" mode="aspectFill"></image>
 								<view>
-									<view class="fs-26">{{item.launch_user_id.user_nick_name}}评论了你的作品</view>
-									<view class="cont fs-26">{{ item.pid.study_content }}</view>
+									<view class="fs-26">{{item.launch_user_id.user_nick_name}} 评论了你的作品 {{ item.pid.study_content }}</view>
+									<view class="cont fs-26">{{item.content}}</view>
 									<view class="fs-24 fc-9">{{ item.add_time }}</view>
 								</view>
 							</view>

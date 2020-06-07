@@ -4,8 +4,8 @@
 	components:{
 		videoBox
 	},
-										@getNextPage:获取下一页数据函数默认15条，在倒数第二条时请求				index:视频初始下标，不填默认为0
-	<videoBox :videoList="videoList" @getNextPage="getHomeList" @goodFun="goodFun" @commentFun="commentFun" :index="videoIndex"></videoBox>
+										@getNextPage:获取下一页数据函数默认15条，在倒数第二条时请求											index:视频初始下标，不填默认为0
+	<videoBox :videoList="videoList" @getNextPage="getHomeList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" :index="videoIndex"></videoBox>
 	
 	//点赞后修改数据
 	goodFun(index, num) {
@@ -16,7 +16,10 @@
 	commentFun(index) {
 		this.videoList[index].study_repount++; //评论数+1
 	},
-	
+	//关注后修改数据
+	attentionFun(index,state) {
+		this.videoList[index].is_follow = state;
+	},
  -->
 <template>
 	<view style="height: 100%;">
@@ -35,38 +38,54 @@
 						@play="videoPlayStard"
 					></video>
 					<!-- 播放结束 -->
-					<view class="playEndBox" v-if="showVideoEndShare">
-						<view class="fxd flex-between">
-							<view class="line-left"></view>
-							<view class="mid fc-f">分享到</view>
-							<view class="line-right"></view>
-						</view>
-						<view class="flex-between endShareBox">
-							<button open-type="share" class="share" :data-id="item.id" :data-content="item.study_content" :data-img="item.image_part[0]">
-								<view class="endBtn flex-center"><image src="../../static/videoEnd1.png" mode="widthFix"></image></view>
-							</button>
-							<view class="endBtn flex-center" @click="goPage('/pages/mine/invitation')"><image src="../../static/videoEnd2.png" mode="widthFix"></image></view>
-						</view>
-						<view class="flex-center endShareBox">
-							<view @click="playVideo">
-								<view class="endBtn flex-center"><image src="../../static/videoEnd3.png" mode="widthFix"></image></view>
-								<view class="fc-f fs-24" style="text-align: center; padding-top: 20rpx;">重播</view>
+					<view class="playEndBox flex-center" v-if="showVideoEndShare">
+						<view>
+							<view class="fxd flex-between">
+								<view class="line-left"></view>
+								<view class="mid fc-f">分享到</view>
+								<view class="line-right"></view>
+							</view>
+							<view class="flex-between endShareBox">
+								<button open-type="share" class="share" data-type="video" :data-id="item.id" :data-content="item.study_content" :data-img="item.image_part[0]">
+									<view class="endBtn flex-center"><image src="../../static/videoEnd1.png" mode="widthFix"></image></view>
+								</button>
+								<view class="endBtn flex-center" @click="goPage('/pages/mine/invitation')"><image src="../../static/videoEnd2.png" mode="widthFix"></image></view>
+							</view>
+							<view class="flex-center endShareBox">
+								<view @click="playVideo">
+									<view class="endBtn flex-center"><image src="../../static/videoEnd3.png" mode="widthFix"></image></view>
+									<view class="fc-f fs-24" style="text-align: center; padding-top: 20rpx;">重播</view>
+								</view>
 							</view>
 						</view>
 					</view>
 					<!-- 播放按钮 -->
-					<view v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle flex-center"><image src="../../static/play.png" mode="widthFix"></image></view>
+					<!-- <view v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle flex-center"><image src="../../static/play.png" mode="widthFix"></image></view> -->
+					<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
+					
 					<!-- 文案区域 -->
 					<view class="contentBox">
 						<view class="userInfo flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 							<view class="header circle">
 								<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
-								<image class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image>
+								<!-- <image class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
 							</view>
 							<view>
 								<view class="fs-28 bold">{{ item.user_nick_name }}</view>
-								<view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view>
+								<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 							</view>
+							<view v-if="isAuthorized">
+								<view v-if="item.user_id != userId&&item.is_follow!=1" class="attention flex-center" @click.stop="attention(item.user_id, item.is_follow,index)">
+									<image v-if="item.is_follow!=1" src="../../static/add.png" mode="widthFix"></image>
+									<view>关注</view>
+								</view>
+							</view>
+							<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
+								<view class="attention flex-center">
+									<image src="../../static/add.png" mode="widthFix"></image>
+									<view>关注</view>
+								</view>
+							</button>
 						</view>
 						<view class="text fs-28" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 						<view class="circleName flex" @click="goPage('/pages/circle/circle?id=' + item.tory_id)">
@@ -101,7 +120,7 @@
 							</button>
 						</view>
 						<view @click="toggleShareBox(true)">
-							<image src="../../static/wechat.png" mode="widthFix"></image>
+							<image src="../../static/wechat.png" mode="widthFix" :animation="animationData"></image>
 							<view>分享</view>
 						</view>
 					</view>
@@ -188,6 +207,7 @@
 						<button
 							open-type="share"
 							class="share"
+							data-type="video"
 							:data-id="videoList[videoIndex].id"
 							:data-content="videoList[videoIndex].study_content"
 							:data-img="videoList[videoIndex].image_part[0]"

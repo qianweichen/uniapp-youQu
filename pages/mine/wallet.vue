@@ -17,8 +17,11 @@
 					<view class="fs-18 tag flex-center">可提现</view>
 				</view>
 				<view class="flex-center">
-					<view class="fs-46">{{personalInfo.fraction}}</view>
-					<view class="dh fs-22 flex-center" @click="goPage('/pages/task/deposit')">提现</view>
+					<view class="fs-46">
+						<view>{{ personalInfo.fraction }}</view>
+						<view style="font-size: 22rpx;">(约{{(personalInfo.fraction/100).toFixed(2)}}元)</view>
+					</view>
+					<text class="fs-22 bold tixian flex-center" @click="goPage('/pages/task/deposit')">提现</text>
 				</view>
 			</view>
 		</view>
@@ -145,6 +148,14 @@
 			height: 80rpx;
 			background: rgba(255, 255, 255, 0.2);
 			border-radius: 2rpx;
+		}
+		.tixian{
+			width:74rpx;
+			height:36rpx;
+			background:rgba(255,255,255,1);
+			border-radius:18rpx;
+			color: #7364BD;
+			margin-left: 20rpx;
 		}
 	}
 	.tabBox {

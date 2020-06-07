@@ -20,9 +20,10 @@
 			</view>
 			<image @click="goPage('/pages/search/search')" class="search" src="../../static/search.png" mode="widthFix"></image>
 		</view>
-		<view :style="'height:' + (customBar + topCustomBar) + 'px;'"></view>
-		<view  :style="'height:calc(100% - ' + (customBar + topCustomBar) + 'px);'">
-			<videoBox ref="videoBox" :videoList="videoList" @getNextPage="getHomeList" @goodFun="goodFun" @commentFun="commentFun"></videoBox>
+		<!-- <view :style="'height:' + (customBar + topCustomBar) + 'px;'"></view> -->
+		<!-- <view  :style="'height:calc(100% - ' + (customBar + topCustomBar) + 'px);'"> -->
+		<view style="height: 100%;">
+			<videoBox ref="videoBox" :videoList="videoList" @getNextPage="getHomeList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun"></videoBox>
 		</view>
 	</view>
 </template>

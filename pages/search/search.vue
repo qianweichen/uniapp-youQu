@@ -6,7 +6,7 @@
 			<view class="search flex-between">
 				<view class="left flex">
 					<image src="../../static/search.png" mode="widthFix"></image>
-					<input class="fs-26" type="text" placeholder="请输入要搜索的内容" placeholder-class="fc-9" v-model="searchContent"/>
+					<input class="fs-26" type="text" confirm-type="搜索" @confirm="search(true)" placeholder="请输入要搜索的内容" placeholder-class="fc-9" v-model="searchContent"/>
 				</view>
 				<view class="right fs-30 fc-f flex-center" @click="search(true)">搜索</view>
 			</view>
@@ -53,6 +53,7 @@
 			<!-- 综合 -->
 			<view v-if="tabIndex == 0">
 				<scroll-view class="circleList" scroll-x="true" @scrolltolower="getMyCircle">
+					<!-- 圈子 -->
 					<view class="item" v-for="(item, index) in circleList" :key="index" @click="goPage('/pages/circle/circle?id='+item.id)">
 						<view class="headerBox circle"><image class="circle" :src="item.realm_icon" mode="aspectFill"></image></view>
 						<view class="bold fs-26">{{item.realm_name}}</view>
@@ -62,7 +63,11 @@
 						<view v-else class="join no-join fs-22 flex-center">申请加入</view> -->
 					</view>
 				</scroll-view>
-				<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun"></dynamicList> 
+				<view v-if="circleList.length==0" class="flex-between creatCircle">
+					<view>暂时没有{{searchContent}}的圈子</view>
+					<view class="btn flex-center" @click="goPage('/pages/circle/creatCircle')">抢先申请</view>
+				</view>
+				<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList> 
 				<view v-if="dynamicList.length==0" style="text-align: center; padding-top: 300rpx; color: #999;">暂无数据</view>
 			</view>
 			<!-- 视频 -->

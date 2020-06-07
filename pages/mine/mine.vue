@@ -181,15 +181,16 @@ export default {
 		},
 		onShowFun(){
 			this.isAuthorized = this.beAuthorized();
-			this.getPersonalInfo();
+			if(this.isAuthorized)
+				this.getPersonalInfo();
 		}
 	},
 	created() {
 		// console.log('mineCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
-
-		this.getPersonalInfo();
+		if(this.isAuthorized)
+			this.getPersonalInfo();
 	}
 };
 </script>

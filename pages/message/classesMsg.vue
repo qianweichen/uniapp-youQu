@@ -5,7 +5,7 @@
 		<uni-swipe-action>
 			<uni-swipe-action-item :options="options" @click="onClick(item.id,index)" @change="change" v-for="(item, index) in list" :key="index">
 				<!-- 赞 -->
-				<view v-if="item.type == 1" class="good flex-between align-star bg-theme">
+				<view v-if="item.type == 1" class="good flex-between align-star bg-theme" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.pid.id)">
 					<view class="flex align-star">
 						<image class="header circle" :src="item.launch_user_id.user_head_sculpture" mode="aspectFill"></image>
 						<view>
@@ -24,12 +24,12 @@
 					<image class="pic" :src="item.pid.image_part[0]" mode="aspectFill"></image>
 				</view>
 				<!-- 评价 -->
-				<view v-if="item.type == 2" class="good flex-between align-star comment bg-theme">
+				<view v-if="item.type == 2" class="good flex-between align-star comment bg-theme" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.pid.id)">
 					<view class="flex align-star">
 						<image class="header circle" :src="item.launch_user_id.user_head_sculpture" mode="aspectFill"></image>
 						<view>
-							<view class="fs-26">{{item.launch_user_id.user_nick_name}}评论了你的作品</view>
-							<view class="cont fs-26">{{ item.pid.study_content }}</view>
+							<view class="fs-26">{{item.launch_user_id.user_nick_name}} 评论了你的作品 {{ item.pid.study_content }}</view>
+							<view class="cont fs-26">{{item.content}}</view>
 							<view class="fs-24 fc-9">{{ item.add_time }}</view>
 						</view>
 					</view>

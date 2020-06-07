@@ -4,8 +4,12 @@
 	<navigationBar name="圈子资料" haveHeight></navigationBar>
  -->
 <template>
-	<view>
+	<!-- <view>
 		<view :class="{ bg: haveHeight, white: white }" class="navigationBar flex-center fs-32" :style="'height:' + (customBar + topCustomBar) + 'px; '">{{ name }}</view>
+		<view v-if="haveHeight" :style="'height:' + (customBar + topCustomBar) + 'px; '"></view>
+	</view> -->
+	<view>
+		<view :class="{ bg: haveHeight, white: white }" class="navigationBar flex-center fs-32" :style="'height:' + customBar + 'px; '+'padding-top:'+topCustomBar+'px;'">{{ name }}</view>
 		<view v-if="haveHeight" :style="'height:' + (customBar + topCustomBar) + 'px; '"></view>
 	</view>
 </template>
@@ -24,6 +28,7 @@ export default {
 
 <style lang="scss">
 .navigationBar {
+	box-sizing: border-box;
 	width: 100%;
 	position: fixed;
 	top: 0;

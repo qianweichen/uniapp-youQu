@@ -107,7 +107,7 @@ export default {
 						title: res.data.msg
 					});
 					setTimeout(() => {
-						this.goHome();
+						uni.navigateBack();
 					}, 1500);
 				}
 			});

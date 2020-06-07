@@ -15,6 +15,12 @@
 					color: #aaa;
 				}
 			}
+			.btn {
+				width: 100rpx;
+				height: 50rpx;
+				background: #7364BD;
+				border-radius: 24rpx;
+			}
 			.content {
 				padding: 26rpx 0 30rpx 0;
 				line-height: 40rpx;
@@ -183,6 +189,53 @@
 		}
 		.inputAlt-cont-ipt {
 			padding: 20rpx;
+		}
+	}
+	.shareBox{
+		transition: all ease 0.3s;
+		box-sizing: border-box;
+		width:90rpx;
+		height: 90rpx;
+		background:#7363BD;
+		box-shadow:-1px 1px 4px 1px rgba(0, 0, 0, 0.35);
+		border-radius:44rpx;
+		position: fixed;
+		right: 30rpx;
+		bottom: 300rpx;
+		text-align: center;
+		justify-content: space-around;
+		image{
+			width: 65rpx;
+			height: auto;
+			margin: 0 auto;
+		}
+		.icon-share{
+			width: 38rpx;
+		}
+	}
+	.bannerBox {
+		position: fixed;
+		z-index: 1;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		.imgBox {
+			width: 650rpx;
+			height: 1012rpx;
+			border-radius: 8rpx;
+			position: relative;
+			.close {
+				width: 40rpx;
+				height: auto;
+				position: absolute;
+				right: 20rpx;
+				top: 20rpx;
+			}
+		}
+		.btn-big {
+			width: 650rpx;
+			margin-top: 60rpx;
 		}
 	}
 }
