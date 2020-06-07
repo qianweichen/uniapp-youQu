@@ -167,7 +167,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="shareBox flex-column-between" :style="shareOpen?'height:350rpx;':''">
+		<view v-if="isAuthorized" class="shareBox flex-column-between" :style="shareOpen?'height:350rpx;':''">
 			<view v-if="!shareOpen" @click="toggleShare(true)">
 				<image class="icon-share" src="../../static/share-r.png" mode="widthFix"></image>
 				<view class="fs-22">分享</view>
@@ -182,6 +182,14 @@
 			</view>
 			<image v-if="shareOpen" @click="toggleShare(false)" src="../../static/arrow-down.png" mode="widthFix" style="width: 26rpx; height: auto;"></image>
 		</view>
+		<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+			<view class="shareBox flex-column-between">
+				<view>
+					<image class="icon-share" src="../../static/share-r.png" mode="widthFix"></image>
+					<view class="fs-22">分享</view>
+				</view>
+			</view>
+		</button>
 		
 		<!-- 海报 -->
 		<view v-if="showBannerFlag">

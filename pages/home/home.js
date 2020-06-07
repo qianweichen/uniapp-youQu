@@ -45,14 +45,14 @@ export default {
 				this.videoList = [];
 			}
 			this.request({
-				url: this.apiUrl + 'User/get_index_list',
+				url: this.apiUrl + 'User/get_index_list2',
 				data: {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
 					uid: uni.getStorageSync('userId'),
 					version: 2, // 0是文字 1是语音 2是视频 3是全部
 					index_page: this.videoPage,
-					id: this.shareVideoId
+					old_id: this.shareVideoId
 				},
 				success: res => {
 					uni.hideLoading();

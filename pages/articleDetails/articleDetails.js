@@ -194,32 +194,13 @@ export default {
 			return tlen;
 		},
 		getQrCode() {
-			// return new Promise((resolve, reject) => {
-			// 	this.request({
-			// 		url: this.apiUrl + 'User/qrcode',
-			// 		data: {
-			// 			token: uni.getStorageSync('token'),
-			// 			openid: uni.getStorageSync('openid'),
-			// 			id: this.articleId
-			// 		},
-			// 		success: res => {
-			// 			console.log('二维码:', res);
-			// 			uni.getImageInfo({
-			// 				src: res.data.data.url,
-			// 				success: res => {
-			// 					resolve(res.path);
-			// 				}
-			// 			});
-			// 		}
-			// 	});
-			// });
 			return new Promise((resolve, reject) => {
 				this.request({
-					url: this.apiUrl + 'User/qrcode_code',
+					url: this.apiUrl + 'User/qrcode',
 					data: {
 						token: uni.getStorageSync('token'),
 						openid: uni.getStorageSync('openid'),
-						uid: uni.getStorageSync('userId')
+						id: this.articleId
 					},
 					success: res => {
 						console.log('二维码:', res);
