@@ -149,7 +149,8 @@ export default {
 				success: res => {
 					console.log('发布:', res);
 					uni.showToast({
-						title: res.data.msg
+						title: res.data.msg,
+						icon:'none'
 					});
 					setTimeout(() => {
 						uni.navigateBack({
