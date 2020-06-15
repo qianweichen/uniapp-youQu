@@ -10,9 +10,11 @@ Vue.prototype.apiUrl = "https://quanyu.udiao.cn/index.php?s=/api/";
 //顶部tabbar
 import navigationBar from "./components/navigationBar/navigationBar.vue";
 Vue.component("navigationBar", navigationBar);
+
 //返回胶囊
 import backCapsule from "./components/backCapsule/backCapsule.vue";
 Vue.component("backCapsule", backCapsule);
+
 //加载动画
 import wLoading from "@/components/loading/w-loading.vue";
 Vue.component('w-loading',wLoading);
