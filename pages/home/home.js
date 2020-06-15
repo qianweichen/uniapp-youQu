@@ -29,9 +29,7 @@ export default {
 			this.tabsFlag = flag;
 
 			//获取数据
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			if (flag) {
 				this.getHomeList(true);
 			} else {
@@ -55,7 +53,7 @@ export default {
 					old_id: this.shareVideoId
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("首页视频列表:", res);
 					this.videoPage++;
 					this.videoList = this.videoList.concat(res.data.info);
@@ -78,7 +76,7 @@ export default {
 					index_page: this.videoPage
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					if (res.data.info.length == 0) {
 						uni.showToast({
 							title: '暂无关注数据',
@@ -110,9 +108,7 @@ export default {
 			uni.removeStorageSync('shareVideoId');
 		}
 		//获取首页视频列表
-		uni.showLoading({
-			title: '加载中'
-		});
+		this.$refs.loading.open();
 		this.getHomeList(true);
 	}
 };

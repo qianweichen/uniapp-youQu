@@ -4,7 +4,7 @@ export default {
 			isAuthorized: false, //授权否
 			customBar: this.CustomBar,
 			topCustomBar: this.StatusBar, //顶部状态栏高度
-			tabsFlag: true, //顶部 圈子/动态
+			tabsFlag: false, //顶部 圈子/动态
 			dynamicList: [],
 			dynamicPage: 1,
 			tabIndex: 0, //动态 中部tab  推荐/关注

@@ -3,13 +3,13 @@
 		<!-- tab -->
 		<view class="topTab flex-center" :style="'height:' + (customBar + topCustomBar) + 'px;'">
 			<view class="tabs flex-between fs-32">
-				<view @click="changeTabs(true)">
-					<text :class="{ active: tabsFlag }">圈子</text>
-					<view v-if="tabsFlag" class="line"></view>
-				</view>
 				<view @click="changeTabs(false)">
 					<text :class="{ active: !tabsFlag }">动态</text>
 					<view v-if="!tabsFlag" class="line"></view>
+				</view>
+				<view @click="changeTabs(true)">
+					<text :class="{ active: tabsFlag }">圈子</text>
+					<view v-if="tabsFlag" class="line"></view>
 				</view>
 			</view>
 			<image @click="goPage('/pages/search/search')" class="search" src="../../static/search.png" mode="widthFix"></image>

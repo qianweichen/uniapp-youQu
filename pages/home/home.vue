@@ -25,6 +25,7 @@
 		<view style="height: 100%;">
 			<videoBox ref="videoBox" :videoList="videoList" @getNextPage="getHomeList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun"></videoBox>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
