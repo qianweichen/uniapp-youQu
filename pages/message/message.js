@@ -13,9 +13,7 @@ export default {
 	},
 	methods: {
 		onClick(id,index) {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'user/message_del',
 				data: {
@@ -26,7 +24,7 @@ export default {
 				},
 				success: res => {
 					console.log("删除消息:", res);
-					uni.hideLoading();
+					this.$refs.loading.close();
 					this.list.splice(index,1);
 				},
 			});
@@ -36,9 +34,7 @@ export default {
 		},
 		//获取消息
 		getMsg() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'user/message',
 				data: {
@@ -50,7 +46,7 @@ export default {
 				},
 				success: res => {
 					console.log("获取消息:", res);
-					uni.hideLoading();
+					this.$refs.loading.close();
 					if (this.page > 1 && res.data.data.length == 0) {
 						uni.showToast({
 							title: '没有更多了',
@@ -77,7 +73,7 @@ export default {
 			this.getMsg();
 		}
 	},
-	created() {
+	mounted() {
 		// console.log('messageCreated');
 		this.getMsg();
 	}

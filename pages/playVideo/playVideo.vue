@@ -2,8 +2,9 @@
 	<view>
 		<backCapsule type="normal"></backCapsule>
 		<view style="height: 100vh;">
-			<videoBox :videoList="videoList" @getNextPage="getVideoList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" :index="videoIndex"></videoBox>
+			<videoBox :videoList="videoList" @loginFun="getVideoList" @getNextPage="getVideoList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" :index="videoIndex"></videoBox>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

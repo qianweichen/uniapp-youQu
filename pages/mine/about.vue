@@ -37,6 +37,7 @@
 				</view>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -54,9 +55,7 @@
 				});
 			},
 			getAuthority(){
-				uni.showLoading({
-					title:'加载中'
-				});
+				this.$refs.loading.open();
 				this.request({
 					url: this.apiUrl + 'User/get_authority',
 					data: {
@@ -66,7 +65,7 @@
 					success: res => {
 						console.log("站点信息:",res);
 						this.info = res.data;
-						uni.hideLoading();
+						this.$refs.loading.close();
 					},
 				});
 			}

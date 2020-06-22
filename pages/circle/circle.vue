@@ -1,5 +1,5 @@
 <template>
-	<view class="page-circle dark-bg">
+	<view class="page-circle dark-bg" @touchstart="touchstart" @touchend="touchend" @touchmove="touchmove">
 		<backCapsule type="capsule"></backCapsule>
 		<view class="topInfoBox" :style="'background-image: url(' + (circleData.realm_bg||'') + ');'">
 			<view class="info">
@@ -91,7 +91,7 @@
 					<view class="info">{{item.study_content}}</view>
 				</view>
 			</view>
-			<dynamicList type="circle" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList>
+			<dynamicList ref="dynamicList" type="circle" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList>
 			<!-- 发布按钮 -->
 			<image @click="togglePublishFlag(true)" class="sendDynamic" src="../../static/tabbar/publish.png" mode="widthFix"></image>
 		</view>
@@ -115,6 +115,7 @@
 		
 		<!-- 发布 -->
 		<publish v-if="showPublishFlag" @togglePublishFlag="togglePublishFlag"></publish>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

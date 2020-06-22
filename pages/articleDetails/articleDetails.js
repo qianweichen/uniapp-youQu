@@ -294,9 +294,7 @@ export default {
 		},
 		//关注
 		attention(uid, follow, index) {
-			uni.showLoading({
-				title: '加载中'
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',
 				data: {
@@ -312,7 +310,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
-
+					this.$refs.loading.close();
 					//修改数据
 					if (follow == 1) {
 						this.articleData.is_follow = 0;
@@ -353,10 +351,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_complaint',
 				data: {
@@ -373,6 +368,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.informContent = '';
 					this.toggleInform(false);
 				},
@@ -390,10 +386,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/del_article',
 				data: {
@@ -409,6 +402,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.deleteContent = '';
 					this.toggleDelete(false);
 				},
@@ -442,10 +436,7 @@ export default {
 		},
 		//点赞
 		goodFun() {
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_user_zan',
 				data: {
@@ -462,15 +453,14 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.getArticleDetails();
 				},
 			});
 		},
 		//回复的消息点赞
 		commentGoodFun(id, index) {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_prely',
 				data: {
@@ -482,6 +472,7 @@ export default {
 				},
 				success: res => {
 					// console.log("回复的消息点赞", res);
+					this.$refs.loading.close();
 					this.commentList[index]['is_huifu_zan'] = !this.commentList[index]['is_huifu_zan'];
 					if (this.commentList[index]['is_huifu_zan']) {
 						this.commentList[index]['is_huifu_zan_count'] = this.commentList[index]['is_huifu_zan_count'] + 1;
@@ -508,10 +499,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_reply',
 				data: {
@@ -528,7 +516,8 @@ export default {
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
-					})
+					});
+					this.$refs.loading.close();
 					this.getCommentList(true); //重新加载评论
 				},
 			});
@@ -554,10 +543,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_reply_duplex',
 				data: {
@@ -575,7 +561,8 @@ export default {
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
-					})
+					});
+					this.$refs.loading.close();
 					this.getCommentList(true);
 				},
 			});
@@ -621,7 +608,7 @@ export default {
 					id: this.articleId
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("文章详情:",res);
 					this.articleData = res.data.info;
 				},
@@ -640,10 +627,7 @@ export default {
 		this.isAuthorized = this.beAuthorized();
 
 		this.articleId = options.id;
-		uni.showLoading({
-			title: '加载中',
-			mask: true
-		});
+		this.$refs.loading.open();
 		this.getArticleDetails();
 		this.getCommentList(true);
 	},

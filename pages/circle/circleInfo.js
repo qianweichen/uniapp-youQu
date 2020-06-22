@@ -50,7 +50,7 @@ export default {
 					id: this.id,
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("圈子信息:", res);
 					this.circleInfo = res.data.info;
 					this.erCode = res.data.info.atcipher;
@@ -69,9 +69,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中'
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_tc_submit',
 				data: {
@@ -92,6 +90,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.tsContent = '';
 					this.toggleComplaint(false);
 				},
@@ -99,9 +98,7 @@ export default {
 		},
 		// 打开或关闭圈子
 		toggleAtence() {
-			uni.showLoading({
-				title:'加载中'
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'user/territoryStatus',
 				data: {
@@ -114,15 +111,14 @@ export default {
 					uni.showToast({
 						title: res.data.msg,
 					});
+					this.$refs.loading.close();
 					this.getCircleInfo();
 				},
 			});
 		},
 		// 随机生成
 		getRandom(){
-			uni.showLoading({
-				title:'加载中'
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_ah_random',
 				data: {
@@ -131,7 +127,7 @@ export default {
 				},
 				success: res => {
 					// console.log("随机生成:", res);
-					uni.hideLoading();
+					this.$refs.loading.close();
 					this.erCode = res.data;
 				},
 			});
@@ -139,9 +135,7 @@ export default {
 	},
 	onLoad(options) {
 		this.id = options.id;
-		uni.showLoading({
-			title:'加载中'
-		});
+		this.$refs.loading.open();
 		this.getCircleInfo();
 	}
 };

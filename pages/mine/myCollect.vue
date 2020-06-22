@@ -14,6 +14,7 @@
 			</view>
 			<view v-if="list.length==0" style="text-align: center; padding-top: 400rpx; color: #999;">暂无数据</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -31,9 +32,7 @@
 					this.page = 1;
 					this.list = [];
 				}
-				uni.showLoading({
-					title:'加载中'
-				});
+				this.$refs.loading.open();
 				this.request({
 					url: this.apiUrl + 'User/get_user_collection',
 					data: {
@@ -44,7 +43,7 @@
 					},
 					success: res => {
 						console.log("关注:",res);
-						uni.hideLoading();
+						this.$refs.loading.close();
 						if(res.data.info.length==0&&this.page>1){
 							uni.showToast({
 								title:'没有更多了',

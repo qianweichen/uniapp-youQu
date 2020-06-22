@@ -34,6 +34,7 @@
 				</view>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

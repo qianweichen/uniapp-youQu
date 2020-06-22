@@ -28,6 +28,7 @@
 			<textarea class="textarea fs-26" placeholder="请说明投诉理由" v-model="tsContent"/>
 			<view class="btn flex-center fc-f" @click="sendTs">提交</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -66,9 +67,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中'
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_tc_submit',
 				data: {
@@ -89,6 +88,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.tsContent = '';
 					this.toggleComplaint(false);
 				},
@@ -108,7 +108,7 @@ export default {
 					id: this.id,
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("圈子信息:", res);
 					this.circleInfo = res.data.info;
 				},
@@ -124,9 +124,7 @@ export default {
 	},
 	onLoad(options) {
 		this.id = options.id;
-		uni.showLoading({
-			title:'加载中'
-		})
+		this.$refs.loading.open();
 		this.getCircleInfo();
 	}
 };

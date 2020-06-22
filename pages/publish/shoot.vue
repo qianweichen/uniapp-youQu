@@ -29,6 +29,7 @@
 			<image src="../../static/shoot-fz.png" mode="widthFix"></image>
 			<view class="fs-24 bold">翻转</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -61,14 +62,12 @@ export default {
 		},
 		//选择视频
 		chooseVideo() {
-			uni.showLoading({
-				title:'加载中'
-			})
+			this.$refs.loading.open();
 			uni.chooseVideo({
 				count: 1,
 				sourceType: ['album'],
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					console.log('选择视频',res);
 					this.shootData = {
 						tempVideoPath:res.tempFilePath,

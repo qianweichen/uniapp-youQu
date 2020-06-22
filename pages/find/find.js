@@ -81,9 +81,7 @@ export default {
 				this.myCirclePage = 1;
 				this.myCircleList = [];
 			}
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_right_needle',
 				data: {
@@ -94,7 +92,7 @@ export default {
 					page: this.myCirclePage
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("我加入的圈子:", res);
 					if (res.data.info.length == 0 && this.myCirclePage > 1) {
 						uni.showToast({
@@ -113,9 +111,7 @@ export default {
 				this.recommendPage = 1;
 				this.recommendList = [];
 			}
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_tj_list',
 				data: {
@@ -126,7 +122,7 @@ export default {
 					page: this.recommendPage
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("推荐圈子:", res);
 					this.recommendPage++;
 					this.recommendList = this.recommendList.concat(res.data.info);
@@ -139,9 +135,7 @@ export default {
 				this.dynamicPage = 1;
 				this.dynamicList = [];
 			}
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_index_list',
 				data: {
@@ -152,7 +146,7 @@ export default {
 					index_page: this.dynamicPage
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("动态列表:", res);
 					if (res.data.info.length == 0 && this.dynamicPage > 1) {
 						uni.showToast({
@@ -172,9 +166,7 @@ export default {
 				this.dynamicPage = 1;
 				this.dynamicList = [];
 			}
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_my_index_list',
 				data: {
@@ -185,7 +177,7 @@ export default {
 					index_page: this.dynamicPage
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("关注列表:", res);
 					if (res.data.info.length == 0 && this.dynamicPage > 1) {
 						uni.showToast({
@@ -211,7 +203,7 @@ export default {
 			this.getMyCircle(true);
 		}
 	},
-	created() {
+	mounted() {
 		// console.log('findCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();

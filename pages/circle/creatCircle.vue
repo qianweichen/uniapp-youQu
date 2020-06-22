@@ -43,6 +43,7 @@
 		</view>
 		<view class="tip fc-9 fs-26 flex-center">说明：只有加入圈子的人才能看见圈子里发布的内容，加入圈子，需要通过圈子管理员审核。私密圈子需要邀请码才能加入</view>
 		<view class="btn-big fs-32 flex-center" @click="submit">提交申请</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -134,9 +135,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title:'加载中'
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_territory_petition',
 				data: {
@@ -153,7 +152,7 @@ export default {
 					solicit_origin:this.circleInfo.reason //原因
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("提交:",res);
 					uni.showToast({
 						title:res.data.msg,

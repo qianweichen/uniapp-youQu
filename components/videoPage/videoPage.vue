@@ -4,8 +4,8 @@
 	components:{
 		videoBox
 	},
-										@getNextPage:获取下一页数据函数默认15条，在倒数第二条时请求											index:视频初始下标，不填默认为0
-	<videoBox :videoList="videoList" @getNextPage="getHomeList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" :index="videoIndex"></videoBox>
+									@loginFun:刷新数据	@getNextPage:获取下一页数据函数默认15条，在倒数第二条时请求											index:视频初始下标，不填默认为0
+	<videoBox :videoList="videoList" @loginFun="getList" @getNextPage="getHomeList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" :index="videoIndex"></videoBox>
 	
 	//点赞后修改数据
 	goodFun(index, num) {
@@ -258,6 +258,7 @@
 				</view>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

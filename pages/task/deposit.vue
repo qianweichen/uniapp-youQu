@@ -10,6 +10,7 @@
 			</view>
 		</view>
 		<view class="btn-big fs-26 flex-center" @click="withdraw">立即提现</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -30,9 +31,7 @@ export default {
 	},
 	methods: {
 		withdraw() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/withdraw',
 				data: {
@@ -48,6 +47,7 @@ export default {
 						title: res.data.msg,
 						duration:3000
 					});
+					this.$refs.loading.close();
 					setTimeout(()=>{
 						this.getTxCs();
 					},3000)
@@ -62,9 +62,7 @@ export default {
 			this.index = index;
 		},
 		getTxCs() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'user/user_with_num',
 				data: {
@@ -74,7 +72,7 @@ export default {
 				},
 				success: res => {
 					console.log('提现次数:', res);
-					uni.hideLoading();
+					this.$refs.loading.close();
 					if (res.data.num >= 1) {
 						this.moneyList[0].num = 0.7;
 					}

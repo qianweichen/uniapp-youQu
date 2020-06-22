@@ -31,6 +31,7 @@
 			</view>
 		</view>
 		<view class="btn-big flex-center fs-32" @click="submit">保存</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -86,15 +87,14 @@ export default {
 			this.sexIndex = e.detail.value;
 		},
 		submit() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			Promise.all([this.updataInfo(), this.updataBg()]).then(res => {
 				// console.log(res);
 				uni.showToast({
 					title: res[1].data.msg,
 					icon:'none'
 				});
+				this.$refs.loading.close();
 				setTimeout(()=>{
 					this.getPersonalInfo();
 				},1500);
@@ -138,9 +138,7 @@ export default {
 		},
 		//获取用户信息
 		getPersonalInfo() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_info',
 				data: {
@@ -148,7 +146,7 @@ export default {
 					openid: uni.getStorageSync('openid')
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					console.log('获取用户信息:', res);
 					this.img = res.data.info.user_head_sculpture;
 					this.nick_name = res.data.info.user_nick_name;

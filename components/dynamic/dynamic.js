@@ -20,28 +20,81 @@ export default {
 			informContent: '', //举报输入内容
 			showInformFlag: false, //控制举报弹出
 			deleteContent: '', //删除输入内容
-			showDeleteFlag: false ,//控制删除弹出
-			userId:uni.getStorageSync('userId'),
-			oldIndex:''
+			showDeleteFlag: false, //控制删除弹出
+			userId: uni.getStorageSync('userId'),
+			oldIndex: '',
+
+			clickTime: 0, //视频点击事件  控制双击
+			isVideoFull: false, //是否已经全屏
+
+			imgHeightList: [], //轮播高度数组
+			screenWidth: uni.getSystemInfoSync().windowWidth, //屏幕宽度
+			screenHeight: uni.getSystemInfoSync().windowHeight, //屏幕宽度
+			bannerImgNumList: [] //轮播中图片总数
 		};
 	},
 	methods: {
-		playVideoFun(index){
-			this.$emit('playVideoFun',index,this.oldIndex);
-			this.oldIndex = index;
+		changeSwiper(e) {
+			var index = e.currentTarget.dataset.index;
+			this.bannerImgNumList[index] = e.detail.current + 1;
+			this.bannerImgNumList.splice(index, 1, e.detail.current + 1);
 		},
-		videoError(e){
+		imgLoad(e) {
+			var index = e.currentTarget.dataset.index,
+				imgwidth = e.detail.width,
+				imgheight = e.detail.height;
+			// 宽高比
+			var ratio = imgwidth / imgheight;
+			// 计算的高度值
+			var viewHeight = this.screenWidth / ratio;
+			if (viewHeight > (this.screenHeight / 2)) {
+				viewHeight = (this.screenHeight / 2);
+			}
+
+			//存到对应的动态下标上
+			if (!this.imgHeightList[index]) {
+				this.imgHeightList[index] = viewHeight;
+				this.imgHeightList.splice(index, 1, viewHeight)
+			} else if (viewHeight > this.imgHeightList[index]) {
+				this.imgHeightList[index] = viewHeight;
+				this.imgHeightList.splice(index, 1, viewHeight)
+			}
+			// console.log(this.imgHeightList);
+		},
+		clickVideoFun(e) {
+			var curTime = e.timeStamp; //本次点击时间
+			var lastTime = this.clickTime; //上次点击时间
+			if (curTime - lastTime > 0) {
+				if (curTime - lastTime < 300) {
+					// console.log("双击事件，用了：" + (curTime - lastTime));
+					var videoContext = uni.createVideoContext('myVideo', this);
+					if (this.isVideoFull) {
+						videoContext.exitFullScreen();
+						this.isVideoFull = false;
+					} else {
+						videoContext.requestFullScreen();
+						this.isVideoFull = true;
+					}
+
+				}
+			}
+			this.clickTime = curTime;
+		},
+		playVideoFun(index) {
+			this.$emit('playVideoFun', index, this.oldIndex);
+			this.oldIndex = index;
+			this.isVideoFull = false;
+		},
+		videoError(e) {
 			// console.log(e);
 			uni.showToast({
-				title:'视频跑丢啦',
-				icon:'none'
+				title: '视频跑丢啦',
+				icon: 'none'
 			});
 		},
 		//关注
-		attention(uid,follow,index) {
-			uni.showLoading({
-				title: '加载中'
-			})
+		attention(uid, follow, index) {
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',
 				data: {
@@ -57,14 +110,14 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
-					
+					this.$refs.loading.close();
 					//修改数据
-					if(follow==1){
-						this.$emit('attentionFun',index,0);
-					}else{
-						this.$emit('attentionFun',index,1);
+					if (follow == 1) {
+						this.$emit('attentionFun', index, 0);
+					} else {
+						this.$emit('attentionFun', index, 1);
 					}
-					
+
 					// if (res.data.msg == "关注成功！") {
 					// 	uni.requestSubscribeMessage({
 					// 		tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
@@ -77,9 +130,9 @@ export default {
 			});
 		},
 		// 查看全部二级评论
-		getMoreComment(id,uid){
+		getMoreComment(id, uid) {
 			uni.navigateTo({
-				url:`/pages/commentList/commentList?id=${id}&uid=${uid}`
+				url: `/pages/commentList/commentList?id=${id}&uid=${uid}`
 			})
 		},
 		//举报
@@ -91,10 +144,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_complaint',
 				data: {
@@ -111,6 +161,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.informContent = '';
 					this.toggleInform(false);
 				},
@@ -128,10 +179,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/del_article',
 				data: {
@@ -147,6 +195,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.deleteContent = '';
 					this.toggleDelete(false);
 				},
@@ -188,10 +237,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_reply_duplex',
 				data: {
@@ -204,6 +250,7 @@ export default {
 				},
 				success: res => {
 					console.log("发送二级评论:", res);
+					this.$refs.loading.close();
 					this.twoComment = '';
 					this.showTwoLevCommentFlag = false;
 					uni.showToast({
@@ -265,10 +312,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_reply',
 				data: {
@@ -285,7 +329,8 @@ export default {
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
-					})
+					});
+					this.$refs.loading.close();
 					this.showCommentFun(); //重新加载评论
 					this.$emit('commentFun', this.clickDynamicIndex) //评论数+1
 				},
@@ -357,7 +402,7 @@ export default {
 		},
 		//授权
 		getUserInfo(e) {
-			if(!e.detail.userInfo)	return;
+			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 				this.userId = uni.getStorageSync('userId');

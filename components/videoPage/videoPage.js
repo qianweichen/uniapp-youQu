@@ -62,9 +62,7 @@ export default {
 	methods: {
 		//关注
 		attention(uid,follow,index) {
-			uni.showLoading({
-				title: '加载中'
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',
 				data: {
@@ -80,7 +78,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
-					
+					this.$refs.loading.close();
 					//修改数据
 					if(follow==1){
 						this.$emit('attentionFun',index,0);
@@ -114,10 +112,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/del_article',
 				data: {
@@ -133,6 +128,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.deleteContent = '';
 					this.toggleDelete(false);
 				},
@@ -154,10 +150,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_complaint',
 				data: {
@@ -174,6 +167,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.informContent = '';
 					this.toggleInform(false);
 				},
@@ -220,6 +214,7 @@ export default {
 		//视频播放结束
 		videoPlayEnd() {
 			this.showVideoEndShare = true;
+			this.videoContext.play();
 		},
 		// 视频进度改变
 		videoTimeUpdate(e) {
@@ -254,10 +249,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_reply',
 				data: {
@@ -274,7 +266,8 @@ export default {
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
-					})
+					});
+					this.$refs.loading.close();
 					this.showCommentFun(); //重新加载评论
 					this.$emit('commentFun', this.videoIndex) //评论数+1
 				},
@@ -290,10 +283,7 @@ export default {
 				})
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_reply_duplex',
 				data: {
@@ -311,7 +301,8 @@ export default {
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
-					})
+					});
+					this.$refs.loading.close();
 					this.showCommentFun();
 				},
 			});
@@ -393,6 +384,7 @@ export default {
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 				this.userId = uni.getStorageSync('userId');
+				this.$emit('loginFun',true);
 			});
 		},
 		shareAnimate() {

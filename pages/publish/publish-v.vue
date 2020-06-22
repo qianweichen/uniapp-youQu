@@ -24,6 +24,7 @@
 			</view>
 		</view>
 		<view class="btn-big flex-center" @click="send">发布</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -65,9 +66,7 @@ export default {
 		},
 		// 第二步:上传七牛
 		saveVideo() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			var params = {};
 			params.token = uni.getStorageSync('token');
 			params.openid = uni.getStorageSync('openid');
@@ -152,6 +151,7 @@ export default {
 						title: res.data.msg,
 						icon:'none'
 					});
+					this.$refs.loading.close();
 					setTimeout(() => {
 						uni.navigateBack({
 							delta:2

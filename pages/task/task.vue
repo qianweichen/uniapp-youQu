@@ -63,6 +63,7 @@
 		<button open-type="contact" class="contact share"><image class="circle" src="../../static/icon-kf.png" mode="widthFix"></image></button>
 		<ad unit-id="adunit-37e1565cee4fea69"></ad>
 		<publish v-if="showPublishFlag" @togglePublishFlag="togglePublishFlag"></publish>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -87,9 +88,7 @@ export default {
 		},
 		//任务信息
 		getTaskData() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/bonus_points_task',
 				data: {
@@ -100,7 +99,7 @@ export default {
 				},
 				success: res => {
 					console.log('任务信息:', res);
-					uni.hideLoading();
+					this.$refs.loading.close();
 					this.taskData = res.data.data;
 				}
 			});
@@ -134,9 +133,7 @@ export default {
 		},
 		//获取用户信息
 		getPersonalInfo() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_info',
 				data: {
@@ -144,7 +141,7 @@ export default {
 					openid: uni.getStorageSync('openid')
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log('获取用户信息:', res);
 					this.personalInfo = res.data.info;
 				}
@@ -177,9 +174,7 @@ export default {
 			rewardedVideoAd.onClose(res => {
 				console.log('onClose event', res);
 				if ((res && res.isEnded) || res === undefined) {
-					uni.showLoading({
-						title: '加载中'
-					});
+					this.$refs.loading.open();
 					this.request({
 						url: this.apiUrl + 'User/user_jf_add',
 						data: {
@@ -195,6 +190,7 @@ export default {
 								title: res.data.msg,
 								icon: 'none'
 							});
+							this.$refs.loading.close();
 							this.getPersonalInfo();
 							this.getTaskData();
 						}

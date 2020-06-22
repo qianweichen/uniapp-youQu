@@ -11,6 +11,7 @@
 			<view>2、名称不能包含“医疗机构、具有药用性产品名、股票期货彩票”等金融信息。</view>
 		</view>
 		<view class="btn-big flex-center fs-32" @click="save">保存</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

@@ -72,6 +72,7 @@
 				</view>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -156,9 +157,7 @@ export default {
 		},
 		//获取用户信息
 		getPersonalInfo() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_info',
 				data: {
@@ -166,7 +165,7 @@ export default {
 					openid: uni.getStorageSync('openid')
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					console.log('获取用户信息:', res);
 					this.personalInfo = res.data.info;
 				}
@@ -185,7 +184,7 @@ export default {
 				this.getPersonalInfo();
 		}
 	},
-	created() {
+	mounted() {
 		// console.log('mineCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();

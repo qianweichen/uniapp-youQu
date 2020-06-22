@@ -16,7 +16,15 @@ export default {
 			poster: {},
 			qrShow: false,
 			canvasId: 'default_PosterCanvasId',
-			screenWidth: uni.getSystemInfoSync().windowWidth
+			//自动播放数据
+			screenWidth: uni.getSystemInfoSync().windowWidth,
+			screenHeight: uni.getSystemInfoSync().windowHeight,
+			playIndex: 0, //播放视频下标
+			firstTop: 200, //第一个默认的位置
+			touchStar: 0,
+			touchEnd: 0,
+			pageScroll: 0,
+			timer: null
 		};
 	},
 	methods: {
@@ -40,8 +48,11 @@ export default {
 		},
 		//动态视频播放
 		playVideoFun(index, oldIndex) {
-			if (typeof oldIndex == 'number') {
-				this.$set(this.dynamicList[oldIndex], 'playVideoFlag', false);
+			// if (typeof oldIndex == 'number') {
+			// 	this.$set(this.dynamicList[oldIndex], 'playVideoFlag', false);
+			// }
+			for (var i = 0; i < this.dynamicList.length; i++) {
+				this.$set(this.dynamicList[i], 'playVideoFlag', false);
 			}
 			this.$set(this.dynamicList[index], 'playVideoFlag', true);
 		},
@@ -102,7 +113,7 @@ export default {
 			});
 		},
 		//海报star----------------------------------------------------------------------------
-		sharePosteCanvas(avaterSrc, codeSrc,bgSrc) {
+		sharePosteCanvas(avaterSrc, codeSrc, bgSrc) {
 			uni.showLoading({
 				title: '生成中...',
 				mask: true
@@ -131,14 +142,16 @@ export default {
 					var avatarurl_x = width / 2 - 46;
 					var avatarurl_y = 148;
 					//先画个圆   前两个参数确定了圆心 （x,y） 坐标  第三个参数是圆的半径  四参数是绘图方向  默认是false，即顺时针
-					ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_heigth / 2 + avatarurl_y, avatarurl_width / 2, 0, Math.PI * 2, false);
+					ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_heigth / 2 + avatarurl_y, avatarurl_width / 2, 0, Math.PI *
+						2, false);
 					ctx.clip();
 					ctx.drawImage(avaterSrc, avatarurl_x, avatarurl_y, avatarurl_width, avatarurl_heigth); // 推进去图片，必须是https图片
 					//昵称
 					ctx.restore();
 					ctx.setFontSize(20);
 					ctx.setFillStyle('#000');
-					ctx.fillText(this.circleData.realm_name, (width - ctx.measureText(this.circleData.realm_name).width) / 2, avatarurl_y + 120);
+					ctx.fillText(this.circleData.realm_name, (width - ctx.measureText(this.circleData.realm_name).width) / 2,
+						avatarurl_y + 120);
 					//说明
 					ctx.setFontSize(11);
 					ctx.setFillStyle('#666');
@@ -202,15 +215,15 @@ export default {
 		shareQrCode() {
 			this.qrShow = true;
 			//获取二维码后生成图片
-			Promise.all([this.getCircleHead(), this.getQrCode(),this.getCircleBanner()]).then((res) => {
-				this.sharePosteCanvas(res[0], res[1],res[2]);
+			Promise.all([this.getCircleHead(), this.getQrCode(), this.getCircleBanner()]).then((res) => {
+				this.sharePosteCanvas(res[0], res[1], res[2]);
 			})
 		},
 		getCircleHead() {
 			return new Promise((resolve, reject) => {
 				var src = this.circleData.realm_icon;
 				uni.getImageInfo({
-					src: 'https' + src.substr(4,src.length-1),
+					src: 'https' + src.substr(4, src.length - 1),
 					success: function(image) {
 						resolve(image.path);
 					}
@@ -221,7 +234,7 @@ export default {
 			return new Promise((resolve, reject) => {
 				var src = this.circleData.realm_bg;
 				uni.getImageInfo({
-					src: 'https' + src.substr(4,src.length-1),
+					src: 'https' + src.substr(4, src.length - 1),
 					success: function(image) {
 						resolve(image.path);
 					}
@@ -309,10 +322,7 @@ export default {
 		},
 		//海报end------------------------------------------------------------------------------
 		join() {
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/set_user_trailing',
 				data: {
@@ -325,7 +335,7 @@ export default {
 					trailing_text: this.erCode //邀请码
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("加入:",res);
 					uni.showToast({
 						title: res.data.msg
@@ -349,7 +359,7 @@ export default {
 					id: this.circleId,
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("获取圈子信息:", res);
 					this.circleData = res.data.info;
 					//私密圈子   并且   未加入
@@ -385,6 +395,16 @@ export default {
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 			});
+		},
+		//存储滑动开始和结束位置
+		touchstart(e) {
+			this.touchStar = this.pageScroll;
+		},
+		touchmove(e) {
+			this.touchEnd = this.pageScroll;
+		},
+		touchend(e) {
+			this.touchEnd = this.pageScroll;
 		}
 	},
 	onLoad(options) {
@@ -392,13 +412,19 @@ export default {
 		this.isAuthorized = this.beAuthorized();
 		// 获取id请求
 		this.circleId = options.id;
-		uni.showLoading({
-			title: '加载中',
-			mask: true
-		})
+		this.$refs.loading.open();
 		this.getCircleInfo();
 		this.getTopArticle();
 		this.getArticleList(true);
+	},
+	onPullDownRefresh() {
+		this.$refs.loading.open();
+		this.getCircleInfo();
+		this.getTopArticle();
+		this.getArticleList(true);
+		setTimeout(() => {
+			uni.stopPullDownRefresh();
+		}, 2000);
 	},
 	onReachBottom() {
 		this.getArticleList();
@@ -421,5 +447,51 @@ export default {
 				imageUrl: res.target.dataset.img
 			};
 		}
+	},
+	onPageScroll(e) {
+		this.pageScroll = e.scrollTop;
+		// clearTimeout(this.timer);
+		// this.timer = setTimeout(()=>{
+		uni.createSelectorQuery().in(this.$refs.dynamicList).select("#videoGroup" + this.playIndex).boundingClientRect(rect => {
+			uni.createSelectorQuery().in(this.$refs.dynamicList).select("#videoGroup" + (this.playIndex - 1 < 0 ? 0 : this.playIndex -
+				1)).boundingClientRect(rect2 => {
+				let spaceArea = (this.screenHeight - rect.height) / 2; //留白区域
+				let spaceArea2 = (this.screenHeight - rect2.height) / 2; //上一个留白区域
+				if ((this.touchEnd - this.touchStar > 0) && (e.scrollTop > (this.firstTop - spaceArea))) {
+					this.playIndex++;
+					this.firstTop = this.firstTop + rect.height;
+					console.log("触发向下", this.playIndex)
+
+					// if (!autoPlayFlag) {
+					// 	return;
+					// }
+					//自动播放视频
+					if (this.playIndex - 2 >= 0) {
+						this.$set(this.dynamicList[this.playIndex - 2], 'playVideoFlag', false);
+					}
+					this.$set(this.dynamicList[this.playIndex - 1], 'playVideoFlag', true);
+					//自动播放视频end
+
+				} else if ((this.touchEnd - this.touchStar < 0) && (e.scrollTop <= (this.firstTop - rect2.height - spaceArea2))) {
+					this.playIndex--;
+					this.firstTop = this.firstTop - rect2.height;
+					console.log("触发向上", this.playIndex)
+
+					// if (!autoPlayFlag) {
+					// 	return;
+					// }
+					//自动播放视频
+					// if (this.playIndex - 2 >= 0) {
+					// 	this.$set(this.dynamicList[this.playIndex + 1], 'playVideoFlag', false);
+					// }
+					for (var i = 0; i < this.dynamicList.length; i++) {
+						this.$set(this.dynamicList[i], 'playVideoFlag', false);
+					}
+					this.$set(this.dynamicList[this.playIndex], 'playVideoFlag', true);
+					//自动播放视频end
+				}
+			}).exec();
+		}).exec();
+		// },50);
 	}
 };

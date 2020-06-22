@@ -4,6 +4,7 @@
 		<navigationBar :name="title" haveHeight></navigationBar>
 		<textarea class="textarea fs-26" value="" placeholder="填写简介，不超过140个字符" placeholder-class="fc-f" v-model="information" maxlength="140"/>
 		<view class="btn-big flex-center fs-32" @click="save">保存</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>		
 	</view>
 </template>
 

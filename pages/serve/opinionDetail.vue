@@ -18,6 +18,7 @@
 			</view>
 			<view class="btn-big flex-center fs-32">提交</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

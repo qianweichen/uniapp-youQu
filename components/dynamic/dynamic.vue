@@ -33,9 +33,9 @@ playVideoFun(index,oldIndex){
 <template>
 	<view class="page-dynamic fc-f">
 		<view class="dynamicList">
-			<view class="item" v-for="(item, index) in list" :key="index">
+			<view class="item" v-for="(item, index) in list" :key="index" :id="'videoGroup' + index">
 				<!-- 头部 -->
-				<view class="flex-between">
+				<view class="flex-between padding">
 					<view class="header flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 						<image class="circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 						<view class="fs-28">{{ item.user_nick_name }}</view>
@@ -49,14 +49,14 @@ playVideoFun(index,oldIndex){
 					</view>
 				</view>
 				<!-- 文字 -->
-				<view class="content fs-28" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
+				<view class="content fs-28 padding" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 				<!-- 图片/视频 -->
 				<view v-if="item.study_type == 2" class="mediaBox" :style="'height:' + item.height + 'px;'">
-					<video v-if="item.playVideoFlag" :src="item.study_video" controls autoplay @error="videoError"></video>
+					<video v-if="item.playVideoFlag" id="myVideo" :src="item.study_video" controls autoplay @error="videoError" @click="clickVideoFun"></video>
 					<image v-else class="poster" :src="item.image_part[0]" mode="aspectFill"></image>
 					<image v-if="!item.playVideoFlag" @click="playVideoFun(index)" class="circle play" src="../../static/icon-play.png" mode="widthFix"></image>
 				</view>
-				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox">
+				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox" :style="'height:' + imgHeightList[index] + 'px;'">
 					<!-- 1 -->
 					<!-- <view class="one" v-if="item.image_part.length == 1"><image :src="item.image_part[0]" mode="widthFix" @click="browseImg(item.image_part, 0)"></image></view> -->
 					<!-- 2 -->
@@ -67,14 +67,15 @@ playVideoFun(index,oldIndex){
 					<!-- <view class="more" v-if="item.image_part.length > 2">
 						<image v-for="(items, indexs) in item.image_part" :key="indexs" :src="items" mode="aspectFill" @click="browseImg(item.image_part, indexs)"></image>
 					</view> -->
-					<swiper class="swiper" indicator-dots autoplay circular>
+					<swiper class="swiper" circular @change="changeSwiper" :data-index="index">
 						<swiper-item v-for="(items, indexs) in item.image_part" :key="indexs">
-							<image :src="items" mode="aspectFill" @click="browseImg(item.image_part, indexs)"></image>
+							<image :src="items" mode="aspectFill" @click="browseImg(item.image_part, indexs)" @load="imgLoad" :data-index="index"></image>
 						</swiper-item>
 					</swiper>
+					<view class="page-num flex-center">{{ bannerImgNumList[index] || 1 }}/{{ item.image_part.length }}</view>
 				</view>
 				<!-- 底部按钮 -->
-				<view class="bottom flex-between">
+				<view class="bottom flex-between padding">
 					<!-- 动态列表 -->
 					<view v-if="type == 'dynamic'" class="flex-center circleName" @click="goPage('/pages/circle/circle?id=' + item.tory_id)">
 						<image class="header circle" :src="item.realm_icon" mode="aspectFill"></image>
@@ -207,6 +208,7 @@ playVideoFun(index,oldIndex){
 				</view>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

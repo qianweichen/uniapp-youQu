@@ -89,6 +89,7 @@
 				<view v-if="dynamicList.length == 0" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
 			</scroll-view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

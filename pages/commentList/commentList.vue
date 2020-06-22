@@ -24,6 +24,7 @@
 				<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -47,10 +48,7 @@ export default {
 				});
 				return;
 			}
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_paper_reply_duplex',
 				data: {
@@ -68,6 +66,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.getCommentList(true);
 				}
 			});

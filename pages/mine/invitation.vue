@@ -37,6 +37,7 @@
 				</view>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -215,9 +216,7 @@ export default {
 			this.showBannerFlag = flag;
 		},
 		getCode() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/ger_user_code',
 				data: {
@@ -227,7 +226,7 @@ export default {
 				},
 				success: res => {
 					// console.log("邀请码:",res);
-					uni.hideLoading();
+					this.$refs.loading.close();
 					this.code = res.data;
 				}
 			});
@@ -240,9 +239,7 @@ export default {
 				});
 				return;
 			}
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/add_user_invitation',
 				data: {
@@ -257,6 +254,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 				}
 			});
 		},

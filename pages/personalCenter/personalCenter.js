@@ -90,9 +90,7 @@ export default {
 		},
 		//关注
 		attention() {
-			uni.showLoading({
-				title: '加载中'
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',
 				data: {
@@ -108,6 +106,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					// if (res.data.msg == "关注成功！") {
 					// 	uni.requestSubscribeMessage({
 					// 		tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
@@ -127,9 +126,7 @@ export default {
 		},
 		//获取用户信息
 		getPersonalInfo() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_info_my',
 				data: {
@@ -139,7 +136,7 @@ export default {
 					this_uid: uni.getStorageSync('userId')
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("获取用户信息:", res);
 					this.personalInfo = res.data.info;
 				},
@@ -147,9 +144,7 @@ export default {
 		},
 		//获取作品数据
 		getVideoList(isFirstPage) {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			if (isFirstPage) {
 				this.videoPage = 1;
 				this.dynamicList = [];
@@ -178,7 +173,7 @@ export default {
 					version
 				},
 				success: res => {
-					uni.hideLoading();
+					this.$refs.loading.close();
 					// console.log("动态:", res);
 					this.videoPage++;
 					for (var i = 0; i < res.data.info.length; i++) {

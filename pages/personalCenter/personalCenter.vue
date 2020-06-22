@@ -109,6 +109,7 @@
 		</view>
 		<view v-if="tabIndex == 1 || tabIndex == 2"><dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun"></dynamicList></view>
 		<view v-if="dynamicList.length == 0" style="text-align: center; padding-top: 100rpx;">暂无数据</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

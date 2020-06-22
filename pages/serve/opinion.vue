@@ -8,6 +8,7 @@
 				<image class="right" src="../../static/right-9.png" mode="widthFix"></image>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

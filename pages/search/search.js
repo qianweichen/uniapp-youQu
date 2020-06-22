@@ -24,8 +24,11 @@ export default {
 	methods: {
 		//播放视频
 		playVideoFun(index,oldIndex){
-			if(typeof oldIndex == 'number'){
-				this.$set(this.dynamicList[oldIndex], 'playVideoFlag', false);
+			// if(typeof oldIndex == 'number'){
+			// 	this.$set(this.dynamicList[oldIndex], 'playVideoFlag', false);
+			// }
+			for (var i = 0; i < this.dynamicList.length; i++) {
+				this.$set(this.dynamicList[i], 'playVideoFlag', false);
 			}
 			this.$set(this.dynamicList[index], 'playVideoFlag', true);
 		},
@@ -39,9 +42,7 @@ export default {
 		},
 		//关注
 		attention(id,isUser,index) {
-			uni.showLoading({
-				title: '加载中'
-			})
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',
 				data: {
@@ -57,6 +58,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					if (res.data.msg == "关注成功！") {
 						// uni.requestSubscribeMessage({
 						// 	tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
@@ -94,9 +96,7 @@ export default {
 				this.page = 1;
 				this.dynamicList = [];
 			}
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'user/user_search',
 				data: {
@@ -108,7 +108,7 @@ export default {
 				},
 				success: res => {
 					console.log("搜用户:", res);
-					uni.hideLoading();
+					this.$refs.loading.close();
 					if(res.data.data.length==0&&this.page>1){
 						uni.showToast({
 							title:'没有更多了',
@@ -122,11 +122,9 @@ export default {
 		},
 		//分页查圈子
 		getMyCircle(){
-			uni.showLoading({
-				title:'加载中'
-			});
+			this.$refs.loading.open();
 			this.searchCircle().then(()=>{
-				uni.hideLoading();
+				this.$refs.loading.close();
 			})
 		},
 		//搜圈子
@@ -166,9 +164,7 @@ export default {
 				this.page = 1;
 				this.dynamicList = [];
 			}
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_search_list',
 				data: {
@@ -181,7 +177,7 @@ export default {
 				},
 				success: res => {
 					console.log("搜索:", res);
-					uni.hideLoading();
+					this.$refs.loading.close();
 					if(res.data.info.length==0&&this.page>1){
 						uni.showToast({
 							title:'没有更多了',

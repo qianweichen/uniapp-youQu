@@ -18,6 +18,7 @@
 			</view>
 			<view v-if="list.length==0" style="text-align: center; padding-top: 400rpx;">您还没加入任何圈子，请先加入</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -40,9 +41,7 @@
 			},
 			//获取所有圈子
 			getCircle(){
-				uni.showLoading({
-					title:'加载中'
-				});
+				this.$refs.loading.open();
 				this.request({
 					url: this.apiUrl + 'User/get_right_needle',
 					data: {
@@ -53,7 +52,7 @@
 						page:this.page
 					},
 					success: res => {
-						uni.hideLoading();
+						this.$refs.loading.close();
 						console.log("获取所有圈子:",res);
 						if (this.page > 1 && res.data.info.length == 0) {
 							uni.showToast({

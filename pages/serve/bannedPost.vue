@@ -37,6 +37,7 @@
 				</view>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -59,9 +60,7 @@ export default {
 			this.showTwoLevCommentFlag = flag;
 		},
 		getBanned() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_banned',
 				data: {
@@ -71,7 +70,7 @@ export default {
 				},
 				success: res => {
 					console.log('禁言:', res);
-					uni.hideLoading();
+					this.$refs.loading.close();
 					this.list = res.data.info;
 				}
 			});
@@ -84,9 +83,7 @@ export default {
 				});
 				return;
 			}
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/do_user_mutter',
 				data: {
@@ -103,6 +100,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.$refs.loading.close();
 					this.twoComment = '';
 					this.toggleTwoLevComment(false);
 					setTimeout(() => {

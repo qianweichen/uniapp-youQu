@@ -87,6 +87,7 @@
 				<view class="flex-center" @click="copyCode">复制邀请码</view>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 

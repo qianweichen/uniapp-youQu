@@ -38,7 +38,8 @@
 		}, {
 			"path": "pages/circle/circle",
 			"style": {
-				"navigationBarTitleText": "圈子"
+				"navigationBarTitleText": "圈子",
+				"enablePullDownRefresh": true
 			}
 		}, {
 			"path": "pages/articleDetails/articleDetails",

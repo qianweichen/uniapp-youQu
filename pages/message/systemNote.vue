@@ -26,6 +26,7 @@
 				</view>
 			</view>
 		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -42,9 +43,7 @@ export default {
 	methods: {
 		//获取消息
 		getMsg() {
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_smail',
 				data: {
@@ -56,7 +55,7 @@ export default {
 				},
 				success: res => {
 					console.log('获取消息:', res);
-					uni.hideLoading();
+					this.$refs.loading.close();
 					if (this.page > 1 && res.data.data.length == 0) {
 						uni.showToast({
 							title: '没有更多了',

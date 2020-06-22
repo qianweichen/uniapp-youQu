@@ -1,11 +1,13 @@
 <!-- 
 https://ext.dcloud.net.cn/plugin?id=504 
 
+<w-loading mask="true" click="true" ref="loading"></w-loading>
+
 //打开加载动画
-this.$refs.loading.open()
+this.$refs.loading.open();
 
 //关闭加载动画
-this.$refs.loading.close()
+this.$refs.loading.close();
 -->
 <template>
 	<view class="mask" :class="mask == 'true' || mask == true ? 'mask-show' : ''" @click="Mclose" v-if="show" @touchmove.stop.prevent="preventTouchMove">
