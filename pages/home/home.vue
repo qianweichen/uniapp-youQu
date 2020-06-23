@@ -23,7 +23,7 @@
 		<!-- <view :style="'height:' + (customBar + topCustomBar) + 'px;'"></view> -->
 		<!-- <view  :style="'height:calc(100% - ' + (customBar + topCustomBar) + 'px);'"> -->
 		<view style="height: 100%;">
-			<videoBox ref="videoBox" :videoList="videoList" @loginFun="getHomeList" @getNextPage="getHomeList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun"></videoBox>
+			<videoBox ref="videoBox" :videoList="videoList" @loginFun="refreshList" @getNextPage="getHomeList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun"></videoBox>
 		</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>

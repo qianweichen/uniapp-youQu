@@ -36,6 +36,16 @@ export default {
 				this.getAttentionList(true);
 			}
 		},
+		//授权后刷新数据
+		refreshList(){
+			//获取数据
+			this.$refs.loading.open();
+			if (this.tabsFlag) {
+				this.getHomeList(true);
+			} else {
+				this.getAttentionList(true);
+			}
+		},
 		//获取首页视频列表
 		getHomeList(isFirstPage) {
 			if (isFirstPage) {

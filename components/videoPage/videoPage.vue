@@ -62,7 +62,7 @@
 					<!-- 播放按钮 -->
 					<!-- <view v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle flex-center"><image src="../../static/play.png" mode="widthFix"></image></view> -->
 					<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
-					
+
 					<!-- 文案区域 -->
 					<view class="contentBox">
 						<view class="userInfo flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
@@ -75,8 +75,12 @@
 								<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 							</view>
 							<view v-if="isAuthorized">
-								<view v-if="item.user_id != userId&&item.is_follow!=1" class="attention flex-center" @click.stop="attention(item.user_id, item.is_follow,index)">
-									<image v-if="item.is_follow!=1" src="../../static/add.png" mode="widthFix"></image>
+								<view
+									v-if="item.user_id != userId && item.is_follow != 1"
+									class="attention flex-center"
+									@click.stop="attention(item.user_id, item.is_follow, index)"
+								>
+									<image v-if="item.is_follow != 1" src="../../static/add.png" mode="widthFix"></image>
 									<view>关注</view>
 								</view>
 							</view>

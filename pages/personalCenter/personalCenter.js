@@ -11,6 +11,13 @@ export default {
 		};
 	},
 	methods: {
+		//播放视频
+		playVideoFun(index,oldIndex){
+			for (var i = 0; i < this.dynamicList.length; i++) {
+				this.$set(this.dynamicList[i], 'playVideoFlag', false);
+			}
+			this.$set(this.dynamicList[index], 'playVideoFlag', true);
+		},
 		//签到
 		signIn() {
 			uni.requestSubscribeMessage({

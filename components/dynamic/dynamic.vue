@@ -23,8 +23,8 @@ attentionFun(index,state) {
 },
 //播放视频
 playVideoFun(index,oldIndex){
-	if(typeof oldIndex == 'number'){
-		this.$set(this.dynamicList[oldIndex], 'playVideoFlag', false);
+	for (var i = 0; i < this.dynamicList.length; i++) {
+		this.$set(this.dynamicList[i], 'playVideoFlag', false);
 	}
 	this.$set(this.dynamicList[index], 'playVideoFlag', true);
 },
