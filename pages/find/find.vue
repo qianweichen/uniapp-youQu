@@ -76,9 +76,9 @@
 		</view>
 		<view v-else class="dynamic" :style="'height: calc(100% - ' + (customBar + topCustomBar) + 'px);'">
 			<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic" refresher-enabled @refresherrefresh="refreshDynamic" :refresher-triggered="refreshFlag">
-				<swiper class="banner" indicator-dots autoplay>
-					<swiper-item v-for="(item, index) in banners" :key="index">
-						<image :src="item.playbill_url" mode="aspectFill" style="width: 100%; height: 100%;"></image>
+				<swiper class="banner" indicator-dots autoplay @change="swiperChange" previous-margin="40rpx" next-margin="40rpx">
+					<swiper-item class="flex" v-for="(item, index) in banners" :key="index">
+						<image :src="item.playbill_url" mode="aspectFill" :style="index!=swiperIndex?'height: 80%;':''"></image>
 					</swiper-item>
 				</swiper>
 				<view class="tabBox flex fs-30">

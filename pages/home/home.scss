@@ -31,8 +31,47 @@
 		left: 30rpx;
 		top: calc(50% - 20rpx);
 	}
+	
 }
+
 .page-home {
 	height: 100%;
 	overflow: hidden;
+	.notice{
+		width:534rpx;
+		height:618rpx;
+		background:#fff;
+		border-radius:10rpx;
+		position: fixed;
+		left: calc(50% - 267rpx);
+		top: calc(50% - 309rpx);
+		image{
+			width: 688rpx;
+			height: auto;
+			position: absolute;
+			top: -200rpx;
+			left: calc(50% - 344rpx);
+		}
+		.concat{
+			width: 388rpx;
+			margin: 0 auto;
+			padding-top: 120rpx;
+			text-align: center;
+			.title{
+				font-size: 46rpx;
+				color: #000;
+			}
+			.info{
+				padding-top: 60rpx;
+				font-size: 24rpx;
+				line-height: 40rpx;
+			}
+			.btn-big{
+				width: 100%;
+				color: #fff;
+				height: 75rpx;
+				margin-top: 40rpx;
+			}
+		}
+	}
 }

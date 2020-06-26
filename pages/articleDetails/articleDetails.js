@@ -20,7 +20,7 @@ export default {
 			deleteContent: '', //删除输入内容
 			showDeleteFlag: false, //控制删除弹出
 			userId: uni.getStorageSync('userId'),
-			shareOpen: false, //分享打开
+			shareOpen: true, //分享打开
 			showBannerFlag: false, //显示海报
 			bannerBg: {} //canvas动态图宽高
 
@@ -74,7 +74,7 @@ export default {
 					ctx.setFontSize(18);
 					ctx.setFillStyle('#000');
 					ctx.fillText(this.articleData.user_nick_name, 81, 60);
-					
+
 					//圈子名背景
 					var cNameX = width - ctx.measureText(this.articleData.realm_name).width - 20,
 						cNameY = 38.5,
@@ -90,7 +90,7 @@ export default {
 					ctx.setFontSize(13);
 					ctx.setFillStyle('#fff');
 					ctx.fillText(this.articleData.realm_name, width - ctx.measureText(this.articleData.realm_name).width - 25, 55);
-					
+
 					//时间背景
 					ctx.setFillStyle('#D1D6D8');
 					ctx.fillRect(20, 90, ctx.measureText(this.articleData.adapter_time).width + 10, 23);
@@ -98,12 +98,12 @@ export default {
 					ctx.setFontSize(13);
 					ctx.setFillStyle('#fff');
 					ctx.fillText(this.articleData.adapter_time, 25, 106);
-					
+
 					// 发布了一条动态
 					ctx.setFontSize(13);
 					ctx.setFillStyle('#aaa');
 					ctx.fillText('发布了一条动态', 100, 106);
-					
+
 					//图片
 					// var bgWidth = this.bannerBg.width * 200 / this.bannerBg.height;
 					// ctx.drawImage(bgSrc, 0, 0, 305, 200, 20, 123, 285, 200);;
@@ -132,7 +132,7 @@ export default {
 						clip_height
 					}
 					ctx.drawImage(img, clip_left, clip_top, clip_width, clip_height, 0, 123, width, canvas_height);
-					
+
 					//内容
 					ctx.setFontSize(16);
 					ctx.setFillStyle('#333');
@@ -633,6 +633,13 @@ export default {
 	},
 	onReachBottom() {
 		if (this.hasNextPage) this.getCommentList();
+	},
+	onPageScroll(e) {
+		if (e.scrollTop > 20) {
+			this.shareOpen = false;
+		} else {
+			this.shareOpen = true;
+		}
 	},
 	onShareAppMessage(res) {
 		// console.log(res);

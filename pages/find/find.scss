@@ -123,11 +123,22 @@
 	}
 	.dynamic{
 		.banner{
-			margin: 32rpx 30rpx;
-			width: 690rpx;
+			margin: 32rpx 0;
+			width: 100%;
 			height:280rpx;
 			border-radius:8rpx;
 			overflow: hidden;
+			background-color: $themeColor;
+			swiper-item{
+				padding: 0 10rpx;
+				box-sizing: border-box;
+			}
+			image{
+				width: 100%; 
+				height: 100%;
+				border-radius: 20rpx;
+				transition: all ease 0.3s;
+			}
 		}
 		.tabBox {
 			padding: 0 30rpx;

@@ -203,7 +203,7 @@
 			<view class="mask" @click="toggleShareBox(false)"></view>
 			<view class="shareBox flex-around">
 				<view class="flex-between">
-					<view @click="goPage('/pages/mine/invitation')">
+					<view @click="makeBanner">
 						<image src="../../static/icon-pyq.png" mode="widthFix"></image>
 						<view class="fs-22">朋友圈</view>
 					</view>
@@ -259,6 +259,23 @@
 				<view class="inputAlt-cont-ipt">
 					<view style="text-align:right; font-size:24rpx;">{{ deleteContent.length }}/200</view>
 					<textarea fixed="true" placeholder="请说明删除原因" v-model="deleteContent" auto-focus maxlength="200"></textarea>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 海报 -->
+		<view v-if="showBannerFlag">
+			<view class="mask"></view>
+			<view class="bannerBox flex-center">
+				<view>
+					<view class="imgBox">
+						<view class="modal-content" id="canvas-container" style="padding:0px; width:100%; height: 100%;">
+							<canvas canvas-id="myCanvas" style="width:100%; background-color:#ffffff; height:100%;"></canvas>
+						</view>
+		
+						<image @click="toggleBannerFlag(false)" class="close" src="../../static/close.png" mode="widthFix"></image>
+					</view>
+					<view class="btn-big fc-f flex-center" @click="saveBanner">保存图片</view>
 				</view>
 			</view>
 		</view>

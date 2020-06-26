@@ -7,7 +7,8 @@ export default {
 			tabsFlag: true, //推荐/喜欢
 			videoPage: 1, //视频页码
 			videoList: [], //视频列表
-			isAuthorized: false //授权否
+			isAuthorized: false ,//授权否
+			isShowNotice:false
 		};
 	},
 	methods: {
@@ -99,6 +100,11 @@ export default {
 				},
 			});
 		},
+		//关闭公告
+		closeNotice(){
+			uni.setStorageSync('isShowNotice',true);
+			this.isShowNotice = false;
+		},
 		//授权
 		getUserInfo(e) {
 			if (!e.detail.userInfo) return;
@@ -108,6 +114,11 @@ export default {
 		}
 	},
 	mounted() {
+		// 公告
+		if(!uni.getStorageSync('isShowNotice')){
+			this.isShowNotice = true;
+		}
+		
 		// console.log('homeCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();

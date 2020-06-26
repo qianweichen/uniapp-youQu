@@ -13,15 +13,19 @@ export default {
 			recommendPage: 1,
 			recommendList: [], //推荐的圈子
 			banners:[],
-			refreshFlag:false	//下拉刷新状态
+			refreshFlag:false	,//下拉刷新状态
+			swiperIndex:0
 		}
 	},
 	methods: {
+		swiperChange(e){
+			// console.log(e.detail.current);
+			this.swiperIndex = e.detail.current;
+		},
 		//关注后修改数据
 		attentionFun(index,state) {
 			this.dynamicList[index].is_follow = state; //评论数+1
 		},
-		 
 		//轮播图
 		getBanners(){
 			this.request({

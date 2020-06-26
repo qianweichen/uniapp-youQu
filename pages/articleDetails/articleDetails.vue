@@ -182,13 +182,20 @@
 			</view>
 			<image v-if="shareOpen" @click="toggleShare(false)" src="../../static/arrow-down.png" mode="widthFix" style="width: 26rpx; height: auto;"></image>
 		</view>
-		<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
-			<view class="shareBox flex-column-between">
-				<view>
-					<image class="icon-share" src="../../static/share-r.png" mode="widthFix"></image>
-					<view class="fs-22">分享</view>
-				</view>
+		<button v-else open-type="getUserInfo" class="share shareBox flex-column-between" @getuserinfo="getUserInfo" :style="shareOpen?'height:350rpx;':''">
+			<view v-if="!shareOpen">
+				<image class="icon-share" src="../../static/share-r.png" mode="widthFix"></image>
+				<view class="fs-22">分享</view>
 			</view>
+			<view v-if="shareOpen" >
+				<image src="../../static/share-hy.png" mode="widthFix"></image>
+				<view class="fs-22">好友</view>
+			</view>
+			<view v-if="shareOpen">
+				<image src="../../static/share-puq.png" mode="widthFix"></image>
+				<view class="fs-22">朋友圈</view>
+			</view>
+			<image v-if="shareOpen" @click="toggleShare(false)" src="../../static/arrow-down.png" mode="widthFix" style="width: 26rpx; height: auto;"></image>
 		</button>
 		
 		<!-- 海报 -->
