@@ -176,8 +176,8 @@ export default {
 					//说明
 					ctx.setFontSize(17);
 					ctx.setFillStyle('#BEB9DE');
-					ctx.fillText('长按识别二维码', width / 2 - 120, 417);
-					ctx.fillText('打开小程序', width / 2 - 120 + 34, 444);
+					ctx.fillText('长按识别二维码', width / 2 - 120, 430);
+					ctx.fillText('打开小程序', width / 2 - 120 + 34, 460);
 					//二维码
 					ctx.drawImage(codeSrc, width - 120, 392, 99, 99);
 				})

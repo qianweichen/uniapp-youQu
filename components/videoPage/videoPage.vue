@@ -123,9 +123,15 @@
 								<view>{{ item.study_repount }}</view>
 							</button>
 						</view>
-						<view @click="toggleShareBox(true)">
+						<view v-if="isAuthorized" @click="toggleShareBox(true)">
 							<image src="../../static/wechat.png" mode="widthFix" :animation="animationData"></image>
 							<view>分享</view>
+						</view>
+						<view v-else>
+							<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+								<image src="../../static/wechat.png" mode="widthFix" :animation="animationData"></image>
+								<view>分享</view>
+							</button>
 						</view>
 					</view>
 				</view>
@@ -272,10 +278,10 @@
 						<view class="modal-content" id="canvas-container" style="padding:0px; width:100%; height: 100%;">
 							<canvas canvas-id="myCanvas" style="width:100%; background-color:#ffffff; height:100%;"></canvas>
 						</view>
-		
 						<image @click="toggleBannerFlag(false)" class="close" src="../../static/close.png" mode="widthFix"></image>
 					</view>
 					<view class="btn-big fc-f flex-center" @click="saveBanner">保存图片</view>
+					<view class="btn-big fc-f flex-center" style="margin-top: 20rpx;" @click="toggleBannerFlag(false)">关闭</view>
 				</view>
 			</view>
 		</view>

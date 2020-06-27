@@ -109,6 +109,7 @@
 						<image @click="hideQr" class="close" src="../../static/close-f.png" mode="widthFix"></image>
 					</view>
 					<view class="btn-big fc-f flex-center" @click="saveBanner">保存图片</view>
+					<view class="btn-big fc-f flex-center" style="margin-top: 20rpx;" @click="hideQr">关闭</view>
 				</view>
 			</view>
 		</view>

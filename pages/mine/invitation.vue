@@ -34,6 +34,7 @@
 						<image @click="toggleBannerFlag(false)" class="close" src="../../static/close-f.png" mode="widthFix"></image>
 					</view>
 					<view class="btn-big fc-f flex-center" @click="saveBanner">保存图片</view>
+					<view class="btn-big fc-f flex-center" style="margin-top: 20rpx;" @click="toggleBannerFlag(false)">关闭</view>
 				</view>
 			</view>
 		</view>
