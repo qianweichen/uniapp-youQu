@@ -12,22 +12,22 @@ export default {
 			myCircleList: [], //我加入的圈子
 			recommendPage: 1,
 			recommendList: [], //推荐的圈子
-			banners:[],
-			refreshFlag:false	,//下拉刷新状态
-			swiperIndex:0
+			banners: [],
+			refreshFlag: false, //下拉刷新状态
+			swiperIndex: 0
 		}
 	},
 	methods: {
-		swiperChange(e){
+		swiperChange(e) {
 			// console.log(e.detail.current);
 			this.swiperIndex = e.detail.current;
 		},
 		//关注后修改数据
-		attentionFun(index,state) {
+		attentionFun(index, state) {
 			this.dynamicList[index].is_follow = state; //评论数+1
 		},
 		//轮播图
-		getBanners(){
+		getBanners() {
 			this.request({
 				url: this.apiUrl + 'User/get_ad',
 				data: {
@@ -63,7 +63,7 @@ export default {
 			}
 		},
 		//动态下拉刷新
-		refreshDynamic(){
+		refreshDynamic() {
 			this.refreshFlag = true;
 			if (this.tabIndex == 0) { //推荐
 				this.getDynamicList(true);
@@ -72,7 +72,7 @@ export default {
 			}
 		},
 		// 触底获取
-		getDynamic(){
+		getDynamic() {
 			if (this.tabIndex == 0) { //推荐
 				this.getDynamicList();
 			} else { //关注
@@ -196,13 +196,13 @@ export default {
 			});
 		},
 		getUserInfo(e) {
-		    if(!e.detail.userInfo)	return;
+			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 				this.getMyCircle(true);
 			});
 		},
-		onShowFun(){
+		onShowFun() {
 			this.isAuthorized = this.beAuthorized();
 			this.getMyCircle(true);
 		}
@@ -211,8 +211,9 @@ export default {
 		// console.log('findCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
-		
-		this.getMyCircle(true);
+		if (this.isAuthorized) {
+			this.getMyCircle(true);
+		}
 		this.getRecommendCircle(true);
 		this.getDynamicList(true);
 		this.getBanners();

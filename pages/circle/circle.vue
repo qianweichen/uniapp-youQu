@@ -1,6 +1,7 @@
 <template>
 	<view class="page-circle dark-bg" @touchstart="touchstart" @touchend="touchend" @touchmove="touchmove">
 		<backCapsule type="capsule"></backCapsule>
+		<navigationBar :name="circleData.realm_name||''"></navigationBar>
 		<view class="topInfoBox" :style="'background-image: url(' + (circleData.realm_bg||'') + ');'">
 			<view class="info">
 				<view class="flex-between">

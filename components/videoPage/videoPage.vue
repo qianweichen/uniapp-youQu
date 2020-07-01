@@ -92,11 +92,18 @@
 							</button>
 						</view>
 						<view class="text fs-28" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
-						<view class="circleName flex" @click="goPage('/pages/circle/circle?id=' + item.tory_id)">
-							<view class="flex">
-								<image class="circle" :src="item.realm_icon" mode="aspectFill"></image>
-								<text class="fs-22">{{ item.realm_name }}</text>
+						<view class="flex-between">
+							<view class="circleName flex" @click="goPage('/pages/circle/circle?id=' + item.tory_id)">
+								<view class="flex">
+									<image class="circle" :src="item.realm_icon" mode="aspectFill"></image>
+									<text class="fs-22">{{ item.realm_name }}</text>
+								</view>
 							</view>
+							<swiper class="comment-swiper" vertical circular autoplay>
+								<swiper-item v-for="(item,index) in 3" :key="index">
+									<view class="fs-24">这是一条评论这是一条评论这是一条评论{{index}}</view>
+								</swiper-item>
+							</swiper>
 						</view>
 					</view>
 					<!-- 进度条 -->
@@ -268,7 +275,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<!-- 海报 -->
 		<view v-if="showBannerFlag">
 			<view class="mask"></view>
