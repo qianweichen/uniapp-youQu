@@ -1,5 +1,5 @@
 <template>
-	<view class="page-persionalC dark-bg">
+	<view class="page-persionalC dark-bg" @touchstart="touchstart" @touchend="touchend" @touchmove="touchmove">
 		<backCapsule type="capsule"></backCapsule>
 		<navigationBar name="个人主页"></navigationBar>
 		<view v-if="personalInfo.bg_img" class="banner" :style="'background-image: url(' + personalInfo.bg_img + ');'">
@@ -108,7 +108,7 @@
 			</view>
 		</view>
 		<view v-if="tabIndex == 1"><dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun"></dynamicList></view>
-		<view v-if="tabIndex == 2"><dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList></view>
+		<view v-if="tabIndex == 2"><dynamicList ref="dynamicList" type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList></view>
 		<view v-if="dynamicList.length == 0" style="text-align: center; padding-top: 100rpx;">暂无数据</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>

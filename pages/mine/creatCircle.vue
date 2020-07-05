@@ -4,7 +4,7 @@
 		<navigationBar name="我管理的圈子" haveHeight></navigationBar>
 		<view>
 			<view class="fans flex-between" v-for="(item, index) in list" :key="index">
-				<view class="flex align-star" @click="goPage('/pages/circle/circle?id=' + item.id)">
+				<view class="flex align-star" @click="goPage('/pagesA/circle/circle?id=' + item.id)">
 					<image class="header circle" :src="item.realm_icon" mode="aspectFill"></image>
 					<view>
 						<view class="fs-28 bold">{{item.realm_name}}</view>

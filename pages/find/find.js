@@ -28,17 +28,20 @@ export default {
 		},
 		//轮播图
 		getBanners() {
-			this.request({
-				url: this.apiUrl + 'User/get_ad',
-				data: {
-					token: uni.getStorageSync('token'),
-					openid: uni.getStorageSync('openid'),
-				},
-				success: res => {
-					// console.log("轮播图:",res);
-					this.banners = res.data.info_sw;
-				},
-			});
+			return new Promise((resolve, reject)=>{
+				this.request({
+					url: this.apiUrl + 'User/get_ad',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+					},
+					success: res => {
+						// console.log("轮播图:",res);
+						this.banners = res.data.info_sw;
+						resolve();
+					},
+				});
+			})
 		},
 		//点赞后修改数据
 		goodFun(index, num) {
@@ -81,87 +84,90 @@ export default {
 		},
 		// 我加入的圈子
 		getMyCircle(isFirstPage) {
-			if (isFirstPage == true) {
-				this.myCirclePage = 1;
-				this.myCircleList = [];
-			}
-			this.$refs.loading.open();
-			this.request({
-				url: this.apiUrl + 'User/get_right_needle',
-				data: {
-					token: uni.getStorageSync('token'),
-					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId'),
-					get_id: -1,
-					page: this.myCirclePage
-				},
-				success: res => {
-					this.$refs.loading.close();
-					// console.log("我加入的圈子:", res);
-					if (res.data.info.length == 0 && this.myCirclePage > 1) {
-						uni.showToast({
-							title: '没有更多了',
-							icon: 'none'
-						})
-					}
-					this.myCirclePage++;
-					this.myCircleList = this.myCircleList.concat(res.data.info);
-				},
+			return new Promise((resolve, reject)=>{
+				if (isFirstPage == true) {
+					this.myCirclePage = 1;
+					this.myCircleList = [];
+				}
+				this.request({
+					url: this.apiUrl + 'User/get_right_needle',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId'),
+						get_id: -1,
+						page: this.myCirclePage
+					},
+					success: res => {
+						// console.log("我加入的圈子:", res);
+						if (res.data.info.length == 0 && this.myCirclePage > 1) {
+							uni.showToast({
+								title: '没有更多了',
+								icon: 'none'
+							})
+						}
+						this.myCirclePage++;
+						this.myCircleList = this.myCircleList.concat(res.data.info);
+						resolve();
+					},
+				});
 			});
 		},
 		// 推荐圈子
 		getRecommendCircle(isFirstPage, change = 0) { //change切换传1
-			if (isFirstPage == true) {
-				this.recommendPage = 1;
-				this.recommendList = [];
-			}
-			this.$refs.loading.open();
-			this.request({
-				url: this.apiUrl + 'User/get_tj_list',
-				data: {
-					token: uni.getStorageSync('token'),
-					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId'),
-					change,
-					page: this.recommendPage
-				},
-				success: res => {
-					this.$refs.loading.close();
-					// console.log("推荐圈子:", res);
-					this.recommendPage++;
-					this.recommendList = this.recommendList.concat(res.data.info);
+			return new Promise((resolve, reject) => {
+				if (isFirstPage == true) {
+					this.recommendPage = 1;
+					this.recommendList = [];
 				}
+				this.request({
+					url: this.apiUrl + 'User/get_tj_list',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId'),
+						change,
+						page: this.recommendPage
+					},
+					success: res => {
+						// console.log("推荐圈子:", res);
+						this.recommendPage++;
+						this.recommendList = this.recommendList.concat(res.data.info);
+						resolve();
+					}
+				});
 			});
 		},
 		// 动态列表
 		getDynamicList(isFirstPage) {
-			if (isFirstPage == true) {
-				this.dynamicPage = 1;
-				this.dynamicList = [];
-			}
-			this.$refs.loading.open();
-			this.request({
-				url: this.apiUrl + 'User/get_index_list',
-				data: {
-					token: uni.getStorageSync('token'),
-					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId'),
-					version: 0, // 0是文字 1是语音 2是视频 3是全部
-					index_page: this.dynamicPage
-				},
-				success: res => {
-					this.$refs.loading.close();
-					// console.log("动态列表:", res);
-					if (res.data.info.length == 0 && this.dynamicPage > 1) {
-						uni.showToast({
-							title: '没有更多了',
-							icon: 'none'
-						})
-					}
-					this.dynamicPage++;
-					this.dynamicList = this.dynamicList.concat(res.data.info);
-					this.refreshFlag = false;
+			return new Promise((resolve, reject)=>{
+				if (isFirstPage == true) {
+					this.dynamicPage = 1;
+					this.dynamicList = [];
 				}
+				this.request({
+					url: this.apiUrl + 'User/get_index_list',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId'),
+						version: 0, // 0是文字 1是语音 2是视频 3是全部
+						index_page: this.dynamicPage
+					},
+					success: res => {
+						// console.log("动态列表:", res);
+						if (res.data.info.length == 0 && this.dynamicPage > 1) {
+							uni.showToast({
+								title: '没有更多了',
+								icon: 'none'
+							})
+						}
+						this.dynamicPage++;
+						this.dynamicList = this.dynamicList.concat(res.data.info);
+						this.refreshFlag = false;
+						resolve();
+					}
+				});
 			});
 		},
 		// 关注列表
@@ -170,7 +176,6 @@ export default {
 				this.dynamicPage = 1;
 				this.dynamicList = [];
 			}
-			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_my_index_list',
 				data: {
@@ -204,7 +209,9 @@ export default {
 		},
 		onShowFun() {
 			this.isAuthorized = this.beAuthorized();
-			this.getMyCircle(true);
+			if (this.isAuthorized) {
+				this.getMyCircle(true);
+			}
 		}
 	},
 	mounted() {
@@ -212,10 +219,15 @@ export default {
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
 		if (this.isAuthorized) {
-			this.getMyCircle(true);
+			this.$refs.loading.open();
+			Promise.all([this.getRecommendCircle(true),this.getDynamicList(true),this.getBanners(),this.getMyCircle(true)]).then(()=>{
+				this.$refs.loading.close();
+			});
+		}else{
+			this.$refs.loading.open();
+			Promise.all([this.getRecommendCircle(true),this.getDynamicList(true),this.getBanners()]).then(()=>{
+				this.$refs.loading.close();
+			});
 		}
-		this.getRecommendCircle(true);
-		this.getDynamicList(true);
-		this.getBanners();
 	}
 }

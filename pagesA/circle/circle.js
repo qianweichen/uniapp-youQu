@@ -24,7 +24,8 @@ export default {
 			touchStar: 0,
 			touchEnd: 0,
 			pageScroll: 0,
-			timer: null
+			timer: null,
+			autoPlayFlag:false
 		};
 	},
 	methods: {
@@ -51,6 +52,7 @@ export default {
 			// if (typeof oldIndex == 'number') {
 			// 	this.$set(this.dynamicList[oldIndex], 'playVideoFlag', false);
 			// }
+			this.autoPlayFlag = true;
 			for (var i = 0; i < this.dynamicList.length; i++) {
 				this.$set(this.dynamicList[i], 'playVideoFlag', false);
 			}
@@ -443,15 +445,13 @@ export default {
 		if (res.from === 'button') {
 			return {
 				title: res.target.dataset.content || this.miniProgramName,
-				path: '/pages/articleDetails/articleDetails?id=' + res.target.dataset.id,
+				path: '/pagesA/articleDetails/articleDetails?id=' + res.target.dataset.id,
 				imageUrl: res.target.dataset.img
 			};
 		}
 	},
 	onPageScroll(e) {
 		this.pageScroll = e.scrollTop;
-		// clearTimeout(this.timer);
-		// this.timer = setTimeout(()=>{
 		uni.createSelectorQuery().in(this.$refs.dynamicList).select("#videoGroup" + this.playIndex).boundingClientRect(rect => {
 			uni.createSelectorQuery().in(this.$refs.dynamicList).select("#videoGroup" + (this.playIndex - 1 < 0 ? 0 : this.playIndex -
 				1)).boundingClientRect(rect2 => {
@@ -462,9 +462,9 @@ export default {
 					this.firstTop = this.firstTop + rect.height;
 					console.log("触发向下", this.playIndex)
 
-					// if (!autoPlayFlag) {
-					// 	return;
-					// }
+					if (!this.autoPlayFlag) {
+						return;
+					}
 					//自动播放视频
 					if (this.playIndex - 2 >= 0) {
 						this.$set(this.dynamicList[this.playIndex - 2], 'playVideoFlag', false);
@@ -477,9 +477,9 @@ export default {
 					this.firstTop = this.firstTop - rect2.height;
 					console.log("触发向上", this.playIndex)
 
-					// if (!autoPlayFlag) {
-					// 	return;
-					// }
+					if (!this.autoPlayFlag) {
+						return;
+					}
 					//自动播放视频
 					// if (this.playIndex - 2 >= 0) {
 					// 	this.$set(this.dynamicList[this.playIndex + 1], 'playVideoFlag', false);
@@ -492,6 +492,5 @@ export default {
 				}
 			}).exec();
 		}).exec();
-		// },50);
 	}
 };

@@ -5,7 +5,7 @@
 		<view class="topInfoBox" :style="'background-image: url(' + (circleData.realm_bg||'') + ');'">
 			<view class="info">
 				<view class="flex-between">
-					<view class="flex info-left" @click="goPage('/pages/circle/circleInfo?id=' + circleId)">
+					<view class="flex info-left" @click="goPage('/pagesA/circle/circleInfo?id=' + circleId)">
 						<view class="user flex-column-between">
 							<image class="header circle" :src="circleData.realm_icon" mode="aspectFill"></image>
 							<view v-if="isAuthorized">
@@ -87,7 +87,7 @@
 		<view v-else>
 			<!-- 置顶 -->
 			<view class="topBox fs-24">
-				<view class="item flex" v-for="(item, index) in topList" :key="index" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.id)">
+				<view class="item flex" v-for="(item, index) in topList" :key="index" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
 					<view class="tag flex-center">置顶</view>
 					<view class="info">{{item.study_content}}</view>
 				</view>

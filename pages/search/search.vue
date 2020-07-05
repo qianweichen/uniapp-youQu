@@ -1,5 +1,5 @@
 <template>
-	<view class="dark-bg page-search">
+	<view class="dark-bg page-search" @touchstart="touchstart" @touchend="touchend" @touchmove="touchmove">
 		<backCapsule type="normal"></backCapsule>
 		<navigationBar name="搜索" haveHeight></navigationBar>
 		<view class="searchBox">
@@ -54,7 +54,7 @@
 			<view v-if="tabIndex == 0">
 				<scroll-view class="circleList" scroll-x="true" @scrolltolower="getMyCircle">
 					<!-- 圈子 -->
-					<view class="item" v-for="(item, index) in circleList" :key="index" @click="goPage('/pages/circle/circle?id='+item.id)">
+					<view class="item" v-for="(item, index) in circleList" :key="index" @click="goPage('/pagesA/circle/circle?id='+item.id)">
 						<view class="headerBox circle"><image class="circle" :src="item.realm_icon" mode="aspectFill"></image></view>
 						<view class="bold fs-26">{{item.realm_name}}</view>
 						<view class="fs-20" style="color: #9A989E;">{{item.realm_synopsis}}</view>
@@ -65,9 +65,9 @@
 				</scroll-view>
 				<view v-if="circleList.length==0" class="flex-between creatCircle">
 					<view>暂时没有{{searchContent}}的圈子</view>
-					<view class="btn flex-center" @click="goPage('/pages/circle/creatCircle')">抢先申请</view>
+					<view class="btn flex-center" @click="goPage('/pagesA/circle/creatCircle')">抢先申请</view>
 				</view>
-				<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList> 
+				<dynamicList ref="dynamicList" type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList> 
 				<view v-if="dynamicList.length==0" style="text-align: center; padding-top: 300rpx; color: #999;">暂无数据</view>
 			</view>
 			<!-- 视频 -->

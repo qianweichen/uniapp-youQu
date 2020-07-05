@@ -20,12 +20,17 @@ export default {
 			showInformFlag: false, //控制举报弹出
 			deleteContent: '', //删除输入内容
 			showDeleteFlag: false, //控制删除弹出
-			animation: '' ,//分享动画
-			animationData:'',
-			userId:uni.getStorageSync('userId'),
-			
+			animation: '', //分享动画
+			animationData: '',
+			userId: uni.getStorageSync('userId'),
+
 			showBannerFlag: false, //显示海报
-			bannerBg: {} //canvas动态图宽高
+			bannerBg: {}, //canvas动态图宽高
+
+			showAd: false,
+			adTimer:null,
+			adShowTimer:null,
+			second:5
 		}
 	},
 	props: {
@@ -92,7 +97,7 @@ export default {
 					ctx.save();
 					ctx.setFillStyle('#FFFFFF');
 					ctx.fillRect(0, 0, width, height);
-		
+
 					//头像
 					ctx.beginPath();
 					ctx.fill();
@@ -110,7 +115,7 @@ export default {
 					ctx.setFontSize(18);
 					ctx.setFillStyle('#000');
 					ctx.fillText(this.videoList[this.videoIndex].user_nick_name, 81, 60);
-					
+
 					//圈子名背景
 					var cNameX = width - ctx.measureText(this.videoList[this.videoIndex].realm_name).width - 20,
 						cNameY = 38.5,
@@ -121,8 +126,9 @@ export default {
 					//圈子名
 					ctx.setFontSize(13);
 					ctx.setFillStyle('#fff');
-					ctx.fillText(this.videoList[this.videoIndex].realm_name, width - ctx.measureText(this.videoList[this.videoIndex].realm_name).width - 25, 55);
-					
+					ctx.fillText(this.videoList[this.videoIndex].realm_name, width - ctx.measureText(this.videoList[this.videoIndex].realm_name)
+						.width - 25, 55);
+
 					//时间背景
 					ctx.setFillStyle('#D1D6D8');
 					ctx.fillRect(20, 90, ctx.measureText(this.videoList[this.videoIndex].adapter_time).width + 10, 23);
@@ -130,12 +136,12 @@ export default {
 					ctx.setFontSize(13);
 					ctx.setFillStyle('#fff');
 					ctx.fillText(this.videoList[this.videoIndex].adapter_time, 25, 106);
-					
+
 					// 发布了一条动态
 					ctx.setFontSize(13);
 					ctx.setFillStyle('#aaa');
 					ctx.fillText('发布了一条动态', 100, 106);
-					
+
 					//图片
 					var canvas_width = 305,
 						canvas_height = 200;
@@ -162,7 +168,7 @@ export default {
 						clip_height
 					}
 					ctx.drawImage(img, clip_left, clip_top, clip_width, clip_height, 0, 123, width, canvas_height);
-					
+
 					//内容
 					ctx.setFontSize(16);
 					ctx.setFillStyle('#333');
@@ -310,7 +316,7 @@ export default {
 				fail: function(err) {
 					console.log(err);
 				}
-			},this);
+			}, this);
 		},
 		//控制海报
 		toggleBannerFlag(flag) {
@@ -318,7 +324,7 @@ export default {
 		},
 		// 海报end-----------------------------------------------------------------------------------------------------
 		//关注
-		attention(uid,follow,index) {
+		attention(uid, follow, index) {
 			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',
@@ -337,12 +343,12 @@ export default {
 					});
 					this.$refs.loading.close();
 					//修改数据
-					if(follow==1){
-						this.$emit('attentionFun',index,0);
-					}else{
-						this.$emit('attentionFun',index,1);
+					if (follow == 1) {
+						this.$emit('attentionFun', index, 0);
+					} else {
+						this.$emit('attentionFun', index, 1);
 					}
-					
+
 					// if (res.data.msg == "关注成功！") {
 					// 	uni.requestSubscribeMessage({
 					// 		tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
@@ -357,7 +363,7 @@ export default {
 		// 查看全部二级评论
 		getMoreComment(id, uid) {
 			uni.navigateTo({
-				url: `/pages/commentList/commentList?id=${id}&uid=${uid}`
+				url: `/pagesA/commentList/commentList?id=${id}&uid=${uid}`
 			})
 		},
 		//删除
@@ -462,6 +468,24 @@ export default {
 			if ((e.detail.current + 3) % 15 == 0) {
 				this.$emit('getNextPage'); //获取下一页
 			}
+			
+			//广告
+			this.second = 5;
+			if ((e.detail.current + 1) % 6 == 0) {
+				clearTimeout(this.adShowTimer);
+				this.adShowTimer = setTimeout(()=>{
+					this.showAd = true;
+					clearInterval(this.adTimer);
+					this.adTimer = setInterval(() => {
+						this.second--;
+						console.log(this.second);
+						if(this.second==0){
+							this.showAd = false;
+							clearInterval(this.adTimer);
+						}
+					}, 1000);
+				},500);
+			}
 		},
 		//视频播放开始
 		videoPlayStard() {
@@ -519,14 +543,14 @@ export default {
 				},
 				success: res => {
 					console.log("评论:", res);
-					this.commentContent = '';
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
 					});
 					this.$refs.loading.close();
 					this.showCommentFun(); //重新加载评论
-					this.$emit('commentFun', this.videoIndex) //评论数+1
+					this.$emit('commentFun', this.videoIndex, this.commentContent) //评论数+1
+					this.commentContent = '';
 				},
 			});
 
@@ -641,7 +665,7 @@ export default {
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 				this.userId = uni.getStorageSync('userId');
-				this.$emit('loginFun',true);
+				this.$emit('loginFun', true);
 			});
 		},
 		shareAnimate() {
@@ -649,12 +673,12 @@ export default {
 				duration: 1000,
 				timingFunction: 'linear',
 			})
-			
-			var count=1;
+
+			var count = 1;
 			setInterval(function() {
-				if(count++%2==1){
+				if (count++ % 2 == 1) {
 					animation.scale(1.1).step()
-				}else{
+				} else {
 					animation.scale(0.9).step()
 				}
 				this.animationData = animation.export()

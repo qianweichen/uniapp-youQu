@@ -61,11 +61,11 @@ export default {
 		},
 		sendV() {
 			this.close();
-			this.goPage('/pages/publish/shoot');
+			this.goPage('/pagesA/publish/shoot');
 		},
 		sendI() {
 			this.close();
-			this.goPage('/pages/publish/publish-i');
+			this.goPage('/pagesA/publish/publish-i');
 		},
 		close() {
 			this.$emit('togglePublishFlag', false);

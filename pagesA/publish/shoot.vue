@@ -50,7 +50,7 @@ export default {
 	},
 	methods: {
 		chooseMusic(){
-			// 	/pages/publish/chooseMusic
+			// 	/pagesA/publish/chooseMusic
 			uni.showToast({
 				title:'功能正在开发，敬请期待！',
 				icon:'none'
@@ -76,7 +76,7 @@ export default {
 					}
 					uni.setStorageSync('shootData', this.shootData);
 					uni.navigateTo({
-						url: '/pages/publish/publish-v'
+						url: '/pagesA/publish/publish-v'
 					});
 				}
 			});
@@ -85,7 +85,7 @@ export default {
 		nextStep() {
 			uni.setStorageSync('shootData', this.shootData);
 			uni.navigateTo({
-				url: '/pages/publish/publish-v'
+				url: '/pagesA/publish/publish-v'
 			});
 		},
 		//摄像头禁用

@@ -62,7 +62,6 @@
 					<!-- 播放按钮 -->
 					<!-- <view v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle flex-center"><image src="../../static/play.png" mode="widthFix"></image></view> -->
 					<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
-
 					<!-- 文案区域 -->
 					<view class="contentBox">
 						<view class="userInfo flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
@@ -91,18 +90,21 @@
 								</view>
 							</button>
 						</view>
-						<view class="text fs-28" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
+						<view class="text fs-28" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 						<view class="flex-between">
-							<view class="circleName flex" @click="goPage('/pages/circle/circle?id=' + item.tory_id)">
+							<view class="circleName flex" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">
 								<view class="flex">
 									<image class="circle" :src="item.realm_icon" mode="aspectFill"></image>
 									<text class="fs-22">{{ item.realm_name }}</text>
 								</view>
 							</view>
 							<swiper class="comment-swiper" vertical circular autoplay>
-								<swiper-item v-for="(item,index) in 3" :key="index">
-									<view class="fs-24">这是一条评论这是一条评论这是一条评论{{index}}</view>
+								<swiper-item v-for="(item, index) in item.pinglun" :key="index">
+									<view class="fs-24">{{ item.reply_content }}</view>
 								</swiper-item>
+								<swiper-item v-if="item.pinglun.length == 1"><view class="fs-24">{{item.pinglun[0].reply_content}}</view></swiper-item>
+								<swiper-item v-if="item.pinglun.length == 0"><view class="fs-24">暂无评论，期待您的精彩评论！</view></swiper-item>
+								<swiper-item v-if="item.pinglun.length == 0"><view class="fs-24">暂无评论，期待您的精彩评论！</view></swiper-item>
 							</swiper>
 						</view>
 					</view>
@@ -141,7 +143,34 @@
 							</button>
 						</view>
 					</view>
+					<!-- 广告 -->
+					<view class="ad-group" :class="{show:showAd}">
+						<view class="second">{{second}}秒后消失</view>
+						<ad unit-id="adunit-88a4f70853188f51" ad-type="video" ad-theme="white"></ad>
+					</view>
 				</view>
+				<!-- <view v-if="(index + 1) % 6 == 0" class="videoBox flex-center">
+					<ad unit-id="adunit-88a4f70853188f51" ad-type="video" ad-theme="white"></ad>
+					<view class="contentBox">
+						<view class="userInfo flex">
+							<view class="header circle">
+								<image class="header-img circle" src="../../static/logo.png" mode="aspectFill"></image>
+							</view>
+							<view>
+								<view class="fs-28 bold">友趣vlog</view>
+							</view>
+						</view>
+						<view class="text fs-28"></view>
+						<view class="flex-between">
+							<view class="circleName flex">
+								<view class="flex">
+									<image class="circle" src="../../static/logo.png" mode="aspectFill"></image>
+									<text class="fs-22">友趣vlog</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view> -->
 			</swiper-item>
 		</swiper>
 		<!-- 评论区域 -->

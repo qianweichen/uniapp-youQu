@@ -36,42 +36,6 @@
 				"navigationBarTitleText": "系统通知"
 			}
 		}, {
-			"path": "pages/circle/circle",
-			"style": {
-				"navigationBarTitleText": "圈子",
-				"enablePullDownRefresh": true
-			}
-		}, {
-			"path": "pages/articleDetails/articleDetails",
-			"style": {
-				"navigationBarTitleText": "帖子详情"
-			}
-		}, {
-			"path": "pages/circle/circleInfo",
-			"style": {
-				"navigationBarTitleText": "圈子资料"
-			}
-		}, {
-			"path": "pages/circle/creatCircle",
-			"style": {
-				"navigationBarTitleText": "创建圈子"
-			}
-		}, {
-			"path": "pages/circle/creatCircle-L",
-			"style": {
-				"navigationBarTitleText": "圈子简介"
-			}
-		}, {
-			"path": "pages/circle/creatCircle-S",
-			"style": {
-				"navigationBarTitleText": "圈子名称"
-			}
-		}, {
-			"path": "pages/circle/circleManager",
-			"style": {
-				"navigationBarTitleText": "管理员"
-			}
-		}, {
 			"path": "pages/task/task",
 			"style": {
 				"navigationBarTitleText": "任务"
@@ -95,32 +59,6 @@
 			"path": "pages/search/search",
 			"style": {
 				"navigationBarTitleText": "搜索"
-			}
-		}, {
-			"path": "pages/publish/publish-v",
-			"style": {
-				"navigationBarTitleText": "发布"
-			}
-		}, {
-			"path": "pages/publish/publish-i",
-			"style": {
-				"navigationBarTitleText": "发布"
-			}
-		}, {
-			"path": "pages/publish/chooseCircle",
-			"style": {
-				"navigationBarTitleText": "发布到"
-			}
-		}, {
-			"path": "pages/publish/shoot",
-			"style": {
-				"navigationBarTitleText": "拍摄"
-			}
-		}, {
-			"path": "pages/publish/chooseMusic",
-			"style": {
-				"navigationBarTitleText": "音乐",
-				"navigationBarTextStyle": "black"
 			}
 		}, {
 			"path": "pages/mine/editInformation",
@@ -172,36 +110,109 @@
 			"style": {
 				"navigationBarTitleText": "推荐有礼"
 			}
+		}
+	],
+	"subPackages": [{
+		"root": "pagesA",
+		"pages": [{
+			"path": "circle/circle",
+			"style": {
+				"navigationBarTitleText": "圈子",
+				"enablePullDownRefresh": true
+			}
 		}, {
-			"path": "pages/serve/bannedPost",
+			"path": "circle/circleInfo",
+			"style": {
+				"navigationBarTitleText": "圈子资料"
+			}
+		}, {
+			"path": "circle/creatCircle",
+			"style": {
+				"navigationBarTitleText": "创建圈子"
+			}
+		}, {
+			"path": "circle/creatCircle-L",
+			"style": {
+				"navigationBarTitleText": "圈子简介"
+			}
+		}, {
+			"path": "circle/creatCircle-S",
+			"style": {
+				"navigationBarTitleText": "圈子名称"
+			}
+		}, {
+			"path": "circle/circleManager",
+			"style": {
+				"navigationBarTitleText": "管理员"
+			}
+		}, {
+			"path": "articleDetails/articleDetails",
+			"style": {
+				"navigationBarTitleText": "帖子详情"
+			}
+		}, {
+			"path": "commentList/commentList",
+			"style": {
+				"navigationBarTitleText": "评论列表"
+			}
+		}, {
+			"path": "publish/publish-v",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
+		}, {
+			"path": "publish/publish-i",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
+		}, {
+			"path": "publish/chooseCircle",
+			"style": {
+				"navigationBarTitleText": "发布到"
+			}
+		}, {
+			"path": "publish/shoot",
+			"style": {
+				"navigationBarTitleText": "拍摄"
+				// "mp-weixin": {
+				// 	"usingComponents": {
+				// 		"my-clip": "plugin://myPlugin/clip"
+				// 	}
+				// }
+			}
+		}, {
+			"path": "publish/chooseMusic",
+			"style": {
+				"navigationBarTitleText": "音乐",
+				"navigationBarTextStyle": "black"
+			}
+		}, {
+			"path": "serve/bannedPost",
 			"style": {
 				"navigationBarTitleText": "禁言申诉"
 			}
 		}, {
-			"path": "pages/serve/delete",
+			"path": "serve/delete",
 			"style": {
 				"navigationBarTitleText": "回收站"
 			}
 		}, {
-			"path": "pages/serve/inform",
+			"path": "serve/inform",
 			"style": {
 				"navigationBarTitleText": "举报投诉记录"
 			}
 		}, {
-			"path": "pages/serve/opinion",
+			"path": "serve/opinion",
 			"style": {
 				"navigationBarTitleText": "意见反馈"
 			}
 		}, {
-			"path": "pages/serve/opinionDetail",
+			"path": "serve/opinionDetail",
 			"style": {
 				"navigationBarTitleText": "意见反馈"
 			}
-		}, {
-			"path": "pages/commentList/commentList",
-			"style": {}
-		}
-	],
+		}]
+	}],
 	"globalStyle": {
 		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "custom"

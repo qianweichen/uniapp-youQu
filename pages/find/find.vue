@@ -23,7 +23,7 @@
 						<image src="../../static/like-c.png" mode="widthFix"></image>
 						<text class="fs-32">我加入的圈子</text>
 					</view>
-					<view v-if="isAuthorized" class="right flex-center" @click="goPage('/pages/circle/creatCircle')">
+					<view v-if="isAuthorized" class="right flex-center" @click="goPage('/pagesA/circle/creatCircle')">
 						<image src="../../static/add.png" mode="widthFix"></image>
 						<text class="fs-22">创建我的圈子</text>
 					</view>
@@ -35,7 +35,7 @@
 					</view>
 				</view>
 				<scroll-view class="list" scroll-x="true" @scrolltolower="getMyCircle">
-					<view class="item" v-for="(item, index) in myCircleList" :key="index" @click="goPage('/pages/circle/circle?id=' + item.id)">
+					<view class="item" v-for="(item, index) in myCircleList" :key="index" @click="goPage('/pagesA/circle/circle?id=' + item.id)">
 						<view class="headerBox circle"><image class="circle" :src="item.realm_icon" mode="aspectFill"></image></view>
 						<view class="bold fs-26 name">{{ item.realm_name }}</view>
 						<view class="fs-20" style="color: #9A989E;">{{ item.realm_synopsis }}</view>
@@ -44,7 +44,7 @@
 					<view v-if="myCircleList.length == 0" style="padding: 40rpx 0; text-align: center; color: #999;">没有加入任何圈子</view>
 				</scroll-view>
 			</view>
-			<image class="mid-banner" src="../../static/banner.gif" mode="widthFix" @click="goPage('/pages/task/task')"></image>
+			<image class="mid-banner" src="https://quanyu.udiao.cn/assets/img/banner.gif" mode="widthFix" @click="goPage('/pages/task/task')"></image>
 			<!-- 为我推荐 -->
 			<view class="myCircle recommend">
 				<view class="title flex-between">
@@ -69,7 +69,7 @@
 								<view class="fs-20" style="color: #9A989E; padding-top: 10rpx; width: 410rpx;">{{ item.realm_synopsis }}</view>
 							</view>
 						</view>
-						<view class="fs-22 join flex-center" @click="goPage('/pages/circle/circle?id=' + item.id)">去圈子</view>
+						<view class="fs-22 join flex-center" @click="goPage('/pagesA/circle/circle?id=' + item.id)">去圈子</view>
 					</view>
 				</view>
 			</view>

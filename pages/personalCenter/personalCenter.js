@@ -7,12 +7,23 @@ export default {
 			personalInfo: {}, //用户信息
 			uid: uni.getStorageSync('userId'), //用户id
 			videoPage: 1 ,//页码
-			isAuthorized: false //授权否
+			isAuthorized: false ,//授权否
+			//自动播放数据
+			screenWidth: uni.getSystemInfoSync().windowWidth,
+			screenHeight: uni.getSystemInfoSync().windowHeight,
+			playIndex: 0, //播放视频下标
+			firstTop: 200, //第一个默认的位置
+			touchStar: 0,
+			touchEnd: 0,
+			pageScroll: 0,
+			timer: null,
+			autoPlayFlag:false
 		};
 	},
 	methods: {
 		//播放视频
 		playVideoFun(index,oldIndex){
+			this.autoPlayFlag = true;
 			for (var i = 0; i < this.dynamicList.length; i++) {
 				this.$set(this.dynamicList[i], 'playVideoFlag', false);
 			}
@@ -202,6 +213,16 @@ export default {
 				this.getPersonalInfo();
 				this.getVideoList(true);
 			});
+		},
+		//存储滑动开始和结束位置
+		touchstart(e) {
+			this.touchStar = this.pageScroll;
+		},
+		touchmove(e) {
+			this.touchEnd = this.pageScroll;
+		},
+		touchend(e) {
+			this.touchEnd = this.pageScroll;
 		}
 	},
 	onLoad(options) {
@@ -237,10 +258,56 @@ export default {
 			}else{
 				return {
 					title: res.target.dataset.content || this.miniProgramName,
-					path: '/pages/articleDetails/articleDetails?id=' + res.target.dataset.id,
+					path: '/pagesA/articleDetails/articleDetails?id=' + res.target.dataset.id,
 					imageUrl: res.target.dataset.img
 				};
 			}
 		}
+	},
+	onPageScroll(e) {
+		if(this.tabIndex!=2){
+			return;
+		}
+		this.pageScroll = e.scrollTop;
+		uni.createSelectorQuery().in(this.$refs.dynamicList).select("#videoGroup" + this.playIndex).boundingClientRect(rect => {
+			uni.createSelectorQuery().in(this.$refs.dynamicList).select("#videoGroup" + (this.playIndex - 1 < 0 ? 0 : this.playIndex -
+				1)).boundingClientRect(rect2 => {
+				let spaceArea = (this.screenHeight - rect.height) / 2; //留白区域
+				let spaceArea2 = (this.screenHeight - rect2.height) / 2; //上一个留白区域
+				if ((this.touchEnd - this.touchStar > 0) && (e.scrollTop > (this.firstTop - spaceArea))) {
+					this.playIndex++;
+					this.firstTop = this.firstTop + rect.height;
+					console.log("触发向下", this.playIndex)
+	
+					if (!this.autoPlayFlag) {
+						return;
+					}
+					//自动播放视频
+					if (this.playIndex - 2 >= 0) {
+						this.$set(this.dynamicList[this.playIndex - 2], 'playVideoFlag', false);
+					}
+					this.$set(this.dynamicList[this.playIndex - 1], 'playVideoFlag', true);
+					//自动播放视频end
+	
+				} else if ((this.touchEnd - this.touchStar < 0) && (e.scrollTop <= (this.firstTop - rect2.height - spaceArea2))) {
+					this.playIndex--;
+					this.firstTop = this.firstTop - rect2.height;
+					console.log("触发向上", this.playIndex)
+	
+					if (!this.autoPlayFlag) {
+						return;
+					}
+					//自动播放视频
+					// if (this.playIndex - 2 >= 0) {
+					// 	this.$set(this.dynamicList[this.playIndex + 1], 'playVideoFlag', false);
+					// }
+					for (var i = 0; i < this.dynamicList.length; i++) {
+						this.$set(this.dynamicList[i], 'playVideoFlag', false);
+					}
+					this.$set(this.dynamicList[this.playIndex], 'playVideoFlag', true);
+					//自动播放视频end
+				}
+			}).exec();
+		}).exec();
 	}
 };

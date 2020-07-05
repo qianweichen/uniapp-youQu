@@ -4,7 +4,7 @@
 		<navigationBar name="我的收藏" haveHeight></navigationBar>
 		<view>
 			<view class="fans flex-between" v-for="(item,index) in list" :key="index">
-				<view class="flex align-star" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.id)">
+				<view class="flex align-star" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
 					<image class="header" :src="item.image_part[0]" mode="aspectFill"></image>
 					<view>
 						<view class="fs-28 bold">{{item.user_nick_name}}</view>

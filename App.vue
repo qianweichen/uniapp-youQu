@@ -1,6 +1,6 @@
 <script>
 import Vue from 'vue';
-var timer = "";
+var timer = '';
 export default {
 	onLaunch: function() {
 		// console.log('App Launch')
@@ -41,7 +41,7 @@ export default {
 					Vue.prototype.CustomBar = e.statusBarHeight + 45;
 				}
 				// #endif
-				// #ifdef MP-WEIXIN
+				// #ifdef MP-WEIXIN || MP-QQ
 				Vue.prototype.StatusBar = e.statusBarHeight;
 				let custom = wx.getMenuButtonBoundingClientRect();
 				Vue.prototype.Custom = custom;
@@ -82,7 +82,7 @@ export default {
 	},
 	onShow: function() {
 		// console.log('App Show')
-		
+
 		// 开始计算浏览时间
 		let inAppTime = Date.now(); //进入的时间
 		uni.setStorageSync('inAppTime', inAppTime); //存一下
@@ -120,7 +120,7 @@ export default {
 	},
 	onHide: function() {
 		// console.log('App Hide')
-		
+
 		//离开时存储这次的时间
 		let inAppTime = uni.getStorageSync('inAppTime');
 		let outAppTime = Date.now();

@@ -27,7 +27,7 @@
 					<text class="fs-26 fc-d">暂无圈主</text>
 				</view>
 			</view>
-			<view class="item flex-between" @click="goPage('/pages/circle/circleManager?id=' + id)">
+			<view class="item flex-between" @click="goPage('/pagesA/circle/circleManager?id=' + id)">
 				<view class="left flex">
 					<image src="../../static/cinfo-2.png" mode="widthFix"></image>
 					<view class="fs-28">管理员</view>

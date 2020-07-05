@@ -132,7 +132,7 @@ export default {
 		// 查看全部二级评论
 		getMoreComment(id, uid) {
 			uni.navigateTo({
-				url: `/pages/commentList/commentList?id=${id}&uid=${uid}`
+				url: `/pagesA/commentList/commentList?id=${id}&uid=${uid}`
 			})
 		},
 		//举报

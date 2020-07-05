@@ -11,7 +11,7 @@
 				<view>禁止转发</view>
 				<switch :checked="noForwardFlag" @change="noForward" color="#7364BD" />
 			</view> -->
-			<view class="item flex-between" @click="goPage('/pages/publish/chooseCircle')">
+			<view class="item flex-between" @click="goPage('/pagesA/publish/chooseCircle')">
 				<view>发布到</view>
 				<view class="flex">
 					<text class="xz" :style="chooseCirce.realm_name ? 'color:#fff;' : ''">{{ chooseCirce.realm_name || '选择' }}</text>

@@ -15,21 +15,21 @@
 					<image class="right" src="../../static/right-9.png" mode="widthFix"></image>
 				</view>
 			</view>
-			<view class="infoItem flex-between" @click="goPage('/pages/circle/creatCircle-S')">
+			<view class="infoItem flex-between" @click="goPage('/pagesA/circle/creatCircle-S')">
 				<view class="fc-9">圈子名称</view>
 				<view class="flex">
 					<view>{{circleInfo.name||'请填写'}}</view>
 					<image class="right" src="../../static/right-9.png" mode="widthFix"></image>
 				</view>
 			</view>
-			<view class="infoItem flex-between" @click="goPage('/pages/circle/creatCircle-L?type=1')">
+			<view class="infoItem flex-between" @click="goPage('/pagesA/circle/creatCircle-L?type=1')">
 				<view class="fc-9">圈子简介</view>
 				<view class="flex">
 					<view class="infoBox">{{circleInfo.intro||'请填写'}}</view>
 					<image class="right" src="../../static/right-9.png" mode="widthFix"></image>
 				</view>
 			</view>
-			<view class="infoItem flex-between" @click="goPage('/pages/circle/creatCircle-L?type=2')">
+			<view class="infoItem flex-between" @click="goPage('/pagesA/circle/creatCircle-L?type=2')">
 				<view class="fc-9">申请原因</view>
 				<view class="flex">
 					<view class="infoBox">{{circleInfo.reason||'请填写申请原因'}}</view>

@@ -34,8 +34,9 @@ export default {
 			this.videoList[index]['info_zan_count'] = num; //修改点赞数
 		},
 		//评论后修改数据
-		commentFun(index) {
+		commentFun(index,content) {
 			this.videoList[index].study_repount++; //评论数+1
+			this.videoList[index].pinglun.push({reply_content:content});
 		},
 		getVideoList(isFirstPage){
 			if (isFirstPage) {

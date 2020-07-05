@@ -49,7 +49,7 @@ playVideoFun(index,oldIndex){
 					</view>
 				</view>
 				<!-- 文字 -->
-				<view class="content fs-28 padding" @click="goPage('/pages/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
+				<view class="content fs-28 padding" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 				<!-- 图片/视频 -->
 				<view v-if="item.study_type == 2" class="mediaBox" :style="'height:' + item.height + 'px;'">
 					<video v-if="item.playVideoFlag" id="myVideo" :src="item.study_video" controls autoplay @error="videoError" @click="clickVideoFun"></video>
@@ -77,7 +77,7 @@ playVideoFun(index,oldIndex){
 				<!-- 底部按钮 -->
 				<view class="bottom flex-between padding">
 					<!-- 动态列表 -->
-					<view v-if="type == 'dynamic'" class="flex-center circleName" @click="goPage('/pages/circle/circle?id=' + item.tory_id)">
+					<view v-if="type == 'dynamic'" class="flex-center circleName" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">
 						<image class="header circle" :src="item.realm_icon" mode="aspectFill"></image>
 						<view class="fs-22" style="color: #908E99;">{{ item.realm_name }}</view>
 					</view>

@@ -8,16 +8,16 @@
 		</view>
 		<!-- tabbar -->
 		<view class="tabbar flex-around">
-			<view @click="changeTabIndex('home')">
+			<view @click="changeTabIndex" data-name="home">
 				<image class="icon" :src="'../../static/tabbar/home' + (tabIndex == 'home' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'home' }">首页</view>
 			</view>
-			<view @click="changeTabIndex('find')">
+			<view @click="changeTabIndex" data-name="find">
 				<image class="icon" :src="'../../static/tabbar/find' + (tabIndex == 'find' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'find' }">发现</view>
 			</view>
 			<view><image @click="togglePublishFlag(true)" class="icon publish" src="../../static/tabbar/publish.png" mode="widthFix"></image></view>
-			<view v-if="isAuthorized" @click="changeTabIndex('message')">
+			<view v-if="isAuthorized" @click="changeTabIndex" data-name="message">
 				<view class="tip flex-center circle" v-if="messageNum">{{messageNum}}</view>
 				<image class="icon" :src="'../../static/tabbar/message' + (tabIndex == 'message' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'message' }">站内信</view>
@@ -28,7 +28,7 @@
 					<view :class="{ active: tabIndex == 'message' }">站内信</view>
 				</button>
 			</view>
-			<view @click="changeTabIndex('mine')">
+			<view @click="changeTabIndex" data-name="mine">
 				<image class="icon" :src="'../../static/tabbar/mine' + (tabIndex == 'mine' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'mine' }">我的</view>
 			</view>
@@ -58,10 +58,22 @@ export default {
 			tabIndex: 'home',
 			loadTabList: [true, false, false, false],
 			showPublishFlag: false,
-			messageNum:''
+			messageNum:'',
+			clickTime: 0, //首页点击事件  控制双击
 		};
 	},
 	methods: {
+		doubleClick(e) {
+			var curTime = e.timeStamp; //本次点击时间
+			var lastTime = this.clickTime; //上次点击时间
+			if (curTime - lastTime > 0) {
+				if (curTime - lastTime < 300) {
+					// console.log("双击事件，用了：" + (curTime - lastTime));
+					this.$refs.homePage.getHomeList(true);
+				}
+			}
+			this.clickTime = curTime;
+		},
 		// 选择发布类型
 		togglePublishFlag(flag) {
 			this.showPublishFlag = flag;
@@ -72,11 +84,12 @@ export default {
 				this.$refs.homePage.$refs.videoBox.videoContext.pause();
 			}
 		},
-		changeTabIndex(index) {
+		changeTabIndex(e) {
+			var index = e.currentTarget.dataset.name;
 			//点击时本身就在首页，则触发刷新首页视频（赋值之前执行）
 			if (index == 'home') {
 				if(this.tabIndex == 'home'){
-					this.$refs.homePage.getHomeList(true);
+					this.doubleClick(e);
 				}
 			}
 			
@@ -177,7 +190,7 @@ export default {
 			}else{	//动态分享，打开详情页
 				return {
 					title: res.target.dataset.content || this.miniProgramName,
-					path: '/pages/articleDetails/articleDetails?id=' + res.target.dataset.id,
+					path: '/pagesA/articleDetails/articleDetails?id=' + res.target.dataset.id,
 					imageUrl: res.target.dataset.img
 				};
 			}
