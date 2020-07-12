@@ -87,18 +87,22 @@ Vue.prototype.request = function(obj) {
 			"Content-Type": "application/json"
 		},
 		success: (res) => {
+			var pages = getCurrentPages();
+			var page = pages[pages.length - 1];
 			if (res.status && res.status == "error") {
 				uni.showToast({
 					title: res.msg,
 					icon: 'none'
-				})
+				});
+				page.$vm.$refs.loading.close();
 				return;
 			}
 			if (res.data.status && res.data.status == "error") {
 				uni.showToast({
 					title: res.data.msg,
 					icon: 'none'
-				})
+				});
+				page.$vm.$refs.loading.close();
 				return;
 			}
 			typeof obj.success == "function" && obj.success(res);
@@ -108,7 +112,7 @@ Vue.prototype.request = function(obj) {
 			uni.showToast({
 				title: '网络错误,请稍后再试',
 				icon: 'none'
-			})
+			});
 		}
 	})
 }

@@ -478,14 +478,22 @@ export default {
 					clearInterval(this.adTimer);
 					this.adTimer = setInterval(() => {
 						this.second--;
-						console.log(this.second);
 						if(this.second==0){
 							this.showAd = false;
 							clearInterval(this.adTimer);
 						}
 					}, 1000);
 				},500);
+			}else{
+				clearTimeout(this.adShowTimer);
+				clearInterval(this.adTimer);
+				this.showAd = false;
 			}
+		},
+		closeAd(){
+			clearTimeout(this.adShowTimer);
+			clearInterval(this.adTimer);
+			this.showAd = false;
 		},
 		//视频播放开始
 		videoPlayStard() {
@@ -496,6 +504,13 @@ export default {
 		videoPlayEnd() {
 			this.showVideoEndShare = true;
 			this.videoContext.play();
+		},
+		//视频播放错误
+		videoPlayerror(){
+			uni.showToast({
+				title:'视频跑丢啦!',
+				icon:'none'
+			});
 		},
 		// 视频进度改变
 		videoTimeUpdate(e) {

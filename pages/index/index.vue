@@ -18,7 +18,7 @@
 			</view>
 			<view><image @click="togglePublishFlag(true)" class="icon publish" src="../../static/tabbar/publish.png" mode="widthFix"></image></view>
 			<view v-if="isAuthorized" @click="changeTabIndex" data-name="message">
-				<view class="tip flex-center circle" v-if="messageNum">{{messageNum}}</view>
+				<view class="tip flex-center circle" v-if="messageNum">{{ messageNum }}</view>
 				<image class="icon" :src="'../../static/tabbar/message' + (tabIndex == 'message' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'message' }">站内信</view>
 			</view>
@@ -58,8 +58,8 @@ export default {
 			tabIndex: 'home',
 			loadTabList: [true, false, false, false],
 			showPublishFlag: false,
-			messageNum:'',
-			clickTime: 0, //首页点击事件  控制双击
+			messageNum: '',
+			clickTime: 0 //首页点击事件  控制双击
 		};
 	},
 	methods: {
@@ -88,13 +88,13 @@ export default {
 			var index = e.currentTarget.dataset.name;
 			//点击时本身就在首页，则触发刷新首页视频（赋值之前执行）
 			if (index == 'home') {
-				if(this.tabIndex == 'home'){
+				if (this.tabIndex == 'home') {
 					this.doubleClick(e);
 				}
 			}
-			
+
 			this.tabIndex = index;
-			
+
 			//控制第一次点击加载
 			if (index == 'home' && !this.loadTabList[0]) {
 				this.loadTabList[0] = true;
@@ -108,7 +108,7 @@ export default {
 			if (index == 'mine' && !this.loadTabList[3]) {
 				this.loadTabList[3] = true;
 			}
-			
+
 			//控制每次点击触发刷新
 			if (index == 'home') {
 			} else if (index == 'find') {
@@ -118,7 +118,7 @@ export default {
 			} else if (index == 'mine') {
 				if (this.$refs.minePage) this.$refs.minePage.onShowFun();
 			}
-			
+
 			//切换tab暂停视频
 			if (index == 'find' || index == 'message' || index == 'mine') {
 				this.stopHomeVideo(); //暂停视频
@@ -157,8 +157,9 @@ export default {
 		}
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
-		if(this.isAuthorized)
-			this.getPersonalInfo();	//获取消息数
+		if (this.isAuthorized) this.getPersonalInfo(); //获取消息数
+		
+		wx.showShareMenu({menus: ['shareAppMessage', 'shareTimeline']});
 	},
 	onShow() {
 		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();
@@ -181,13 +182,15 @@ export default {
 		// 页面内分享按钮
 		if (res.from === 'button') {
 			console.log(res);
-			if(res.target.dataset.type=='video'){	//视频分享，打开首页
+			if (res.target.dataset.type == 'video') {
+				//视频分享，打开首页
 				return {
 					title: res.target.dataset.content || this.miniProgramName,
 					path: '/pages/index/index?id=' + res.target.dataset.id,
 					imageUrl: res.target.dataset.img
 				};
-			}else{	//动态分享，打开详情页
+			} else {
+				//动态分享，打开详情页
 				return {
 					title: res.target.dataset.content || this.miniProgramName,
 					path: '/pagesA/articleDetails/articleDetails?id=' + res.target.dataset.id,
@@ -195,6 +198,13 @@ export default {
 				};
 			}
 		}
+	},
+	onShareTimeline(res) {
+		return {
+			title: this.miniProgramName,
+			query: '',
+			imageUrl: '/static/logo.png'
+		};
 	}
 };
 </script>
@@ -222,13 +232,13 @@ export default {
 		.active {
 			color: #7464bd;
 		}
-		>view{
+		> view {
 			position: relative;
-			.tip{
+			.tip {
 				width: 30rpx;
 				height: 30rpx;
 				color: #fff;
-				background-color: #7364BD;
+				background-color: #7364bd;
 				position: absolute;
 				right: 0;
 				top: 0;

@@ -1,11 +1,11 @@
 <template>
 	<view class="page-circle dark-bg" @touchstart="touchstart" @touchend="touchend" @touchmove="touchmove">
 		<backCapsule type="capsule"></backCapsule>
-		<navigationBar :name="circleData.realm_name||''"></navigationBar>
-		<view class="topInfoBox" :style="'background-image: url(' + (circleData.realm_bg||'') + ');'">
+		<navigationBar :name="circleData.realm_name || ''"></navigationBar>
+		<view class="topInfoBox" :style="'background-image: url(' + (circleData.realm_bg || '') + ');'">
 			<view class="info">
 				<view class="flex-between">
-					<view class="flex info-left" @click="goPage('/pagesA/circle/circleInfo?id=' + circleId)">
+					<view class="flex info-left">
 						<view class="user flex-column-between">
 							<image class="header circle" :src="circleData.realm_icon" mode="aspectFill"></image>
 							<view v-if="isAuthorized">
@@ -16,16 +16,19 @@
 								<view v-else class="fs-22 join flex-center" @click.stop="toggleIptCodeFlag(true)">加入</view>
 							</view>
 							<view v-else @click.stop="">
-								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
-									<view class="fs-22 join flex-center">加入</view>
-								</button>
+								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view class="fs-22 join flex-center">加入</view></button>
 							</view>
 						</view>
-						<view class="nameBox fc-f flex-column-between">
-							<view class="fs-32 bold">{{circleData.realm_name||''}}</view>
-							<view class="fs-24" style="color: #ddd;">{{circleData.realm_synopsis||''}}</view>
-							<view class="fs-20">关注 {{circleData.concern||''}} | 帖子 {{circleData.is_paper_count||''}}</view>
+						<view v-if="isAuthorized" class="nameBox fc-f flex-column-between" @click="goPage('/pagesA/circle/circleInfo?id=' + circleId)">
+							<view class="fs-32 bold">{{ circleData.realm_name || '' }}</view>
+							<view class="fs-24" style="color: #ddd;">{{ circleData.realm_synopsis || '' }}</view>
+							<view class="fs-20">关注 {{ circleData.concern || '' }} | 帖子 {{ circleData.is_paper_count || '' }}</view>
 						</view>
+						<button v-else open-type="getUserInfo" class="share nameBox fc-f flex-column-between" @getuserinfo="getUserInfo" style="text-align: left;">
+							<view class="fs-32 bold">{{ circleData.realm_name || '' }}</view>
+							<view class="fs-24" style="color: #ddd;">{{ circleData.realm_synopsis || '' }}</view>
+							<view class="fs-20">关注 {{ circleData.concern || '' }} | 帖子 {{ circleData.is_paper_count || '' }}</view>
+						</button>
 					</view>
 					<view v-if="isAuthorized" class="share" @click="shareQrCode">
 						<image src="../../static/ercode.png" mode="widthFix"></image>
@@ -89,14 +92,22 @@
 			<view class="topBox fs-24">
 				<view class="item flex" v-for="(item, index) in topList" :key="index" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
 					<view class="tag flex-center">置顶</view>
-					<view class="info">{{item.study_content}}</view>
+					<view class="info">{{ item.study_content }}</view>
 				</view>
 			</view>
-			<dynamicList ref="dynamicList" type="circle" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList>
+			<dynamicList
+				ref="dynamicList"
+				type="circle"
+				:list="dynamicList"
+				@goodFun="goodFun"
+				@commentFun="commentFun"
+				@attentionFun="attentionFun"
+				@playVideoFun="playVideoFun"
+			></dynamicList>
 			<!-- 发布按钮 -->
 			<image @click="togglePublishFlag(true)" class="sendDynamic" src="../../static/tabbar/publish.png" mode="widthFix"></image>
 		</view>
-		
+
 		<!-- 海报 -->
 		<view v-if="qrShow">
 			<view class="mask"></view>
@@ -106,7 +117,7 @@
 						<view class="modal-content" id="canvas-container" style="padding:0px; width:100%; height: 100%;">
 							<canvas canvas-id="myCanvas" style="width:100%; background-color:#ffffff; height:100%;"></canvas>
 						</view>
-		
+
 						<image @click="hideQr" class="close" src="../../static/close-f.png" mode="widthFix"></image>
 					</view>
 					<view class="btn-big fc-f flex-center" @click="saveBanner">保存图片</view>
@@ -114,7 +125,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<!-- 发布 -->
 		<publish v-if="showPublishFlag" @togglePublishFlag="togglePublishFlag"></publish>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>

@@ -13,20 +13,22 @@ swiper {
 		opacity: 0;
 		bottom: 300rpx;
 		transition: all 1s;
+		border-radius: 30rpx;
+		overflow: hidden;
 		.second{
 			position: absolute;
-			right: 0;
-			top: 0;
+			right: 10rpx;
+			top: 10rpx;
 			font-size: 24rpx;
 			color: #fff;
-			z-index: 1;
+			z-index: 9999;
 		}
 		&.show{
 			left: 0;
 			opacity: 1;
 		}
 		ad{
-			zoom: 0.8;
+			zoom: 0.7;
 		}
 	}
 	video {

@@ -36,6 +36,7 @@
 						@timeupdate="videoTimeUpdate"
 						@ended="videoPlayEnd"
 						@play="videoPlayStard"
+						@error="videoPlayerror"
 					></video>
 					<!-- 播放结束 -->
 					<view class="playEndBox flex-center" v-if="showVideoEndShare">
@@ -98,7 +99,7 @@
 									<text class="fs-22">{{ item.realm_name }}</text>
 								</view>
 							</view>
-							<swiper class="comment-swiper" vertical circular autoplay>
+							<swiper class="comment-swiper" vertical circular autoplay interval="1500">
 								<swiper-item v-for="(item, index) in item.pinglun" :key="index">
 									<view class="fs-24">{{ item.reply_content }}</view>
 								</swiper-item>
@@ -144,10 +145,10 @@
 						</view>
 					</view>
 					<!-- 广告 -->
-					<view class="ad-group" :class="{show:showAd}">
-						<view class="second">{{second}}秒后消失</view>
+					<!-- <view class="ad-group" :class="{show:showAd}">
+						<view class="second" @click="closeAd">{{second}}秒后消失,点击关闭</view>
 						<ad unit-id="adunit-88a4f70853188f51" ad-type="video" ad-theme="white"></ad>
-					</view>
+					</view> -->
 				</view>
 				<!-- <view v-if="(index + 1) % 6 == 0" class="videoBox flex-center">
 					<ad unit-id="adunit-88a4f70853188f51" ad-type="video" ad-theme="white"></ad>
