@@ -7,13 +7,13 @@ export default {
 			tabsFlag: true, //推荐/喜欢
 			videoPage: 1, //视频页码
 			videoList: [], //视频列表
-			isAuthorized: false ,//授权否
-			isShowNotice:false
+			isAuthorized: false, //授权否
+			isShowNotice: false
 		};
 	},
 	methods: {
 		//关注后修改数据
-		attentionFun(index,state) {
+		attentionFun(index, state) {
 			this.videoList[index].is_follow = state; //评论数+1
 		},
 		//点赞后修改数据
@@ -22,10 +22,15 @@ export default {
 			this.videoList[index]['info_zan_count'] = num; //修改点赞数
 		},
 		//评论后修改数据
-		commentFun(index,content) {
-			this.videoList[index].study_repount++; //评论数+1
-			this.videoList[index].pinglun.push({reply_content:content});
-			console.log(this.videoList[index].pinglun);
+		commentFun(index, content , isDel) {
+			if(isDel){
+				this.videoList[index].study_repount--; //评论数-1
+			}else{
+				this.videoList[index].study_repount++; //评论数+1
+				this.videoList[index].pinglun.push({
+					reply_content: content
+				});
+			}
 		},
 		// 切换顶部tab
 		changeTabs(flag) {
@@ -40,7 +45,7 @@ export default {
 			}
 		},
 		//授权后刷新数据
-		refreshList(){
+		refreshList() {
 			//获取数据
 			this.$refs.loading.open();
 			if (this.tabsFlag) {
@@ -103,8 +108,8 @@ export default {
 			});
 		},
 		//关闭公告
-		closeNotice(){
-			uni.setStorageSync('isShowNotice',true);
+		closeNotice() {
+			uni.setStorageSync('showNoticeDate', new Date().toLocaleDateString());
 			this.isShowNotice = false;
 		},
 		//授权
@@ -116,11 +121,13 @@ export default {
 		}
 	},
 	mounted() {
-		// 公告
-		if(!uni.getStorageSync('isShowNotice')){
+		// 公告:每天弹出一次
+		var nowDate = new Date().toLocaleDateString(),
+			oldDate = uni.getStorageSync('showNoticeDate');
+		if(nowDate!=oldDate){
 			this.isShowNotice = true;
 		}
-		
+
 		// console.log('homeCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();

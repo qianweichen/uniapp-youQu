@@ -75,14 +75,14 @@
 				<view class="video flex-between">
 					<view class="item" v-for="(item,index) in dynamicList" :key="index" @click="goPlayPage(index)">
 						<image class="pic" :src="item.image_part[0]" mode="aspectFill"></image>
-						<view class="infoBox">
+						<view class="infoBox flex-column-between">
 							<view class="cont fs-28">
 								{{ item.study_content }}
 							</view>
 							<view class="flex-between">
 								<view class="flex">
 									<image class="header circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
-									<view class="fs-28">{{ item.user_nick_name }}</view>
+									<view class="fs-28 nick-name">{{ item.user_nick_name }}</view>
 								</view>
 								<view class="flex">
 									<image class="good" src="../../static/good.png" mode="widthFix"></image>

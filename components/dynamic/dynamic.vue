@@ -136,6 +136,9 @@ playVideoFun(index,oldIndex){
 								<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
 							</view>
+							<view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id,item.id)">
+								<image class="like" src="../../static/del-cmt.png" mode="widthFix"></image>
+							</view>
 						</view>
 						<!-- 二级评论 -->
 						<view class="secondaryComment item flex" v-for="(items, indexs) in item.huifu_info_list" :key="indexs">
@@ -205,6 +208,20 @@ playVideoFun(index,oldIndex){
 				<view class="inputAlt-cont-ipt">
 					<view style="text-align:right; font-size:24rpx;">{{ deleteContent.length }}/200</view>
 					<textarea fixed="true" placeholder="请说明删除原因" v-model="deleteContent" auto-focus maxlength="200"></textarea>
+				</view>
+			</view>
+		</view>
+		<!-- 删除回复信息填写 -->
+		<view class="twoComment inform" v-if="showDelInfoFlag">
+			<view class="mask" @click="showDelInfoFlag=false;"></view>
+			<view class="inputAlt-cont">
+				<view class="inputAlt-cont-head flex-between">
+					<view @click="showDelInfoFlag=false;">取消</view>
+					<view @click="delComment">删除</view>
+				</view>
+				<view class="inputAlt-cont-ipt">
+					<view style="text-align:right; font-size:24rpx;">{{ delCommentQuery.is_qq_text.length }}/200</view>
+					<textarea fixed="true" placeholder="请说明删除原因" v-model="delCommentQuery.is_qq_text" auto-focus maxlength="200"></textarea>
 				</view>
 			</view>
 		</view>

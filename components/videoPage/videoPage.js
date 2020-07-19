@@ -24,13 +24,16 @@ export default {
 			animationData: '',
 			userId: uni.getStorageSync('userId'),
 
+			showDelInfoFlag: false, //删除回复弹窗
+			delCommentQuery: {}, //删除参数
+
 			showBannerFlag: false, //显示海报
 			bannerBg: {}, //canvas动态图宽高
 
 			showAd: false,
-			adTimer:null,
-			adShowTimer:null,
-			second:5
+			adTimer: null,
+			adShowTimer: null,
+			second: 5
 		}
 	},
 	props: {
@@ -468,29 +471,29 @@ export default {
 			if ((e.detail.current + 3) % 15 == 0) {
 				this.$emit('getNextPage'); //获取下一页
 			}
-			
+
 			//广告
 			this.second = 5;
 			if ((e.detail.current + 1) % 6 == 0) {
 				clearTimeout(this.adShowTimer);
-				this.adShowTimer = setTimeout(()=>{
+				this.adShowTimer = setTimeout(() => {
 					this.showAd = true;
 					clearInterval(this.adTimer);
 					this.adTimer = setInterval(() => {
 						this.second--;
-						if(this.second==0){
+						if (this.second == 0) {
 							this.showAd = false;
 							clearInterval(this.adTimer);
 						}
 					}, 1000);
-				},500);
-			}else{
+				}, 500);
+			} else {
 				clearTimeout(this.adShowTimer);
 				clearInterval(this.adTimer);
 				this.showAd = false;
 			}
 		},
-		closeAd(){
+		closeAd() {
 			clearTimeout(this.adShowTimer);
 			clearInterval(this.adTimer);
 			this.showAd = false;
@@ -506,10 +509,10 @@ export default {
 			this.videoContext.play();
 		},
 		//视频播放错误
-		videoPlayerror(){
+		videoPlayerror() {
 			uni.showToast({
-				title:'视频跑丢啦!',
-				icon:'none'
+				title: '视频跑丢啦!',
+				icon: 'none'
 			});
 		},
 		// 视频进度改变
@@ -563,9 +566,13 @@ export default {
 						icon: 'none'
 					});
 					this.$refs.loading.close();
-					this.showCommentFun(); //重新加载评论
-					this.$emit('commentFun', this.videoIndex, this.commentContent) //评论数+1
-					this.commentContent = '';
+					if (res.data.msg == "已评论,请等待审核！") {
+						this.commentContent = '';
+					} else {
+						this.$emit('commentFun', this.videoIndex, this.commentContent) //评论数+1
+						this.commentContent = '';
+						this.showCommentFun(); //重新加载评论
+					}
 				},
 			});
 
@@ -600,6 +607,38 @@ export default {
 					});
 					this.$refs.loading.close();
 					this.showCommentFun();
+				},
+			});
+		},
+		//删除评论
+		delInfoIpt(paper_id, id) {
+			this.showDelInfoFlag = true;
+			this.delCommentQuery = {
+				paper_id,
+				id,
+				is_qq_text:''
+			}
+		},
+		delComment() {
+			this.$refs.loading.open();
+			this.request({
+				url: this.apiUrl + 'User/del_article_huifu',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId'),
+					...this.delCommentQuery,
+				},
+				success: res => {
+					console.log("删除评论:", res);
+					this.showDelInfoFlag = false;
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					});
+					this.$refs.loading.close();
+					this.showCommentFun();
+					this.$emit('commentFun', this.videoIndex, this.commentContent, true) //评论数-1
 				},
 			});
 		},

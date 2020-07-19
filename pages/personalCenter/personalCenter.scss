@@ -116,13 +116,13 @@
 	}
 	.list-zp{
 		padding: 0 30rpx;
-		flex-wrap: wrap;
+		align-items: flex-start;
 		.item{
 			border-radius: 8rpx;
 			overflow: hidden;
 			background:rgba(115,99,189,0.1);
 			width:330rpx;
-			height:492rpx;
+			// height:492rpx;
 			margin-bottom: 30rpx;
 			.imgBox{
 				width: 100%;
@@ -144,7 +144,7 @@
 			}
 			.infoBox{
 				width: 100%;
-				height: 162rpx;
+				// height: 162rpx;
 				padding: 20rpx;
 				box-sizing: border-box;
 				.cont{
@@ -153,6 +153,7 @@
 					display: -webkit-box;
 					-webkit-line-clamp: 2;
 					-webkit-box-orient: vertical;
+					padding-bottom: 30rpx;
 				}
 				.header{
 					width:40rpx;

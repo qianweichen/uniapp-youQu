@@ -49,8 +49,12 @@ export default {
 			this.dynamicList[index]['info_zan_count'] = num; //修改点赞数
 		},
 		//评论后修改数据
-		commentFun(index) {
-			this.dynamicList[index].study_repount++; //评论数+1
+		commentFun(index, content , isDel) {
+			if(isDel){
+				this.dynamicList[index].study_repount--; //评论数-1
+			}else{
+				this.dynamicList[index].study_repount++; //评论数+1
+			}
 		},
 		// 切换顶部tab
 		changeTabs(flag) {
@@ -59,10 +63,15 @@ export default {
 		// 切换中部tab  推荐/关注
 		changeMidTab(index) {
 			this.tabIndex = index;
+			this.$refs.loading.open();
 			if (index == 0) { //推荐
-				this.getDynamicList(true);
+				this.getDynamicList(true).then(()=>{
+					this.$refs.loading.close();
+				});
 			} else { //关注
-				this.getAttentionList(true);
+				this.getAttentionList(true).then(()=>{
+					this.$refs.loading.close();
+				});
 			}
 		},
 		//动态下拉刷新
@@ -76,10 +85,15 @@ export default {
 		},
 		// 触底获取
 		getDynamic() {
+			this.$refs.loading.open();
 			if (this.tabIndex == 0) { //推荐
-				this.getDynamicList();
+				this.getDynamicList().then(()=>{
+					this.$refs.loading.close();
+				});
 			} else { //关注
-				this.getAttentionList();
+				this.getAttentionList().then(()=>{
+					this.$refs.loading.close();
+				});
 			}
 		},
 		// 我加入的圈子
@@ -172,32 +186,34 @@ export default {
 		},
 		// 关注列表
 		getAttentionList(isFirstPage) {
-			if (isFirstPage == true) {
-				this.dynamicPage = 1;
-				this.dynamicList = [];
-			}
-			this.request({
-				url: this.apiUrl + 'User/get_my_index_list',
-				data: {
-					token: uni.getStorageSync('token'),
-					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId'),
-					version: 0, // 0是文字 1是语音 2是视频 3是全部
-					index_page: this.dynamicPage
-				},
-				success: res => {
-					this.$refs.loading.close();
-					// console.log("关注列表:", res);
-					if (res.data.info.length == 0 && this.dynamicPage > 1) {
-						uni.showToast({
-							title: '没有更多了',
-							icon: 'none'
-						})
-					}
-					this.dynamicPage++;
-					this.dynamicList = this.dynamicList.concat(res.data.info);
-					this.refreshFlag = false;
+			return new Promise((resolve, reject)=>{
+				if (isFirstPage == true) {
+					this.dynamicPage = 1;
+					this.dynamicList = [];
 				}
+				this.request({
+					url: this.apiUrl + 'User/get_my_index_list',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId'),
+						version: 0, // 0是文字 1是语音 2是视频 3是全部
+						index_page: this.dynamicPage
+					},
+					success: res => {
+						this.$refs.loading.close();
+						// console.log("关注列表:", res);
+						if (res.data.info.length == 0 && this.dynamicPage > 1) {
+							uni.showToast({
+								title: '没有更多了',
+								icon: 'none'
+							})
+						}
+						this.dynamicPage++;
+						this.dynamicList = this.dynamicList.concat(res.data.info);
+						this.refreshFlag = false;
+					}
+				});
 			});
 		},
 		getUserInfo(e) {

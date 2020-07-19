@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-
+import './static/ald-stat/ald-stat'
 
 //小程序名
 Vue.prototype.miniProgramName = "友趣短视频";

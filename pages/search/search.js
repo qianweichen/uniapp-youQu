@@ -256,9 +256,12 @@ export default {
 			this.dynamicList[index]['info_zan_count'] = num; //修改点赞数
 		},
 		//评论后修改数据
-		commentFun(index,content) {
-			this.dynamicList[index].study_repount++; //评论数+1
-			this.dynamicList[index].pinglun.push({reply_content:content});
+		commentFun(index, content , isDel) {
+			if(isDel){
+				this.dynamicList[index].study_repount--; //评论数-1
+			}else{
+				this.dynamicList[index].study_repount++; //评论数+1
+			}
 		},
 		delHistory(index){
 			var arr = uni.getStorageSync('searchHistory');
@@ -293,7 +296,7 @@ export default {
 				if ((this.touchEnd - this.touchStar > 0) && (e.scrollTop > (this.firstTop - spaceArea))) {
 					this.playIndex++;
 					this.firstTop = this.firstTop + rect.height;
-					console.log("触发向下", this.playIndex)
+					// console.log("触发向下", this.playIndex)
 	
 					if (!this.autoPlayFlag) {
 						return;
@@ -308,7 +311,7 @@ export default {
 				} else if ((this.touchEnd - this.touchStar < 0) && (e.scrollTop <= (this.firstTop - rect2.height - spaceArea2))) {
 					this.playIndex--;
 					this.firstTop = this.firstTop - rect2.height;
-					console.log("触发向上", this.playIndex)
+					// console.log("触发向上", this.playIndex)
 	
 					if (!this.autoPlayFlag) {
 						return;

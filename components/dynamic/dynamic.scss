@@ -26,9 +26,14 @@
 				border-radius: 24rpx;
 			}
 			.content {
-				padding-top: 26rpx;
-				padding-bottom: 30rpx;
+				margin-top: 26rpx;
+				margin-bottom: 30rpx;
 				line-height: 40rpx;
+				overflow : hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
 			}
 			.mediaBox {
 				position: relative;

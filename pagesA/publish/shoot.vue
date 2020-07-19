@@ -62,7 +62,6 @@ export default {
 		},
 		//选择视频
 		chooseVideo() {
-			this.$refs.loading.open();
 			uni.chooseVideo({
 				count: 1,
 				sourceType: ['album'],

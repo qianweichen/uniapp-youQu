@@ -19,6 +19,7 @@ export default {
 						if (res.data.code == 0) {
 							uni.setStorageSync('openid', res.data.info.openid);
 							uni.setStorageSync('session_key', res.data.info.session_key);
+							wx.aldstat.sendOpenid(res.data.info.openid);
 						} else {
 							uni.showToast({
 								title: '登陆失败，请稍后再试',
@@ -46,6 +47,10 @@ export default {
 				let custom = wx.getMenuButtonBoundingClientRect();
 				Vue.prototype.Custom = custom;
 				Vue.prototype.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+				console.log('看这里-------------------------------------↓');
+				console.log(e.statusBarHeight);
+				console.log(custom.bottom + custom.top - e.statusBarHeight);
+				console.log('看这里-------------------------------------↑');
 				// #endif
 				// #ifdef MP-ALIPAY
 				Vue.prototype.StatusBar = e.statusBarHeight;

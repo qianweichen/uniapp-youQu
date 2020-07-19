@@ -27,11 +27,27 @@ export default {
 			clickTime: 0, //视频点击事件  控制双击
 			isVideoFull: false, //是否已经全屏
 
+			showDelInfoFlag: false, //删除回复弹窗
+			delCommentQuery: {}, //删除参数
+
 			imgHeightList: [], //轮播高度数组
 			screenWidth: uni.getSystemInfoSync().windowWidth, //屏幕宽度
 			screenHeight: uni.getSystemInfoSync().windowHeight, //屏幕宽度
 			bannerImgNumList: [] //轮播中图片总数
 		};
+	},
+	computed: {
+		//是否显示删除按钮
+		deleteBtnFlag() {
+			if (this.list.length ==0 || !this.clickDynamicId) return false;
+			var sameUser = this.list[this.clickDynamicIndex].user_id == uni.getStorageSync('userId');
+			var adAdmin = this.list[this.clickDynamicIndex]['check_qq'] == 'da';
+			var xiaoAdmin = this.list[this.clickDynamicIndex]['check_qq'] == 'xiao';
+			if (sameUser || adAdmin || xiaoAdmin) {
+				return true;
+			}
+			return false;
+		}
 	},
 	methods: {
 		changeSwiper(e) {
@@ -331,11 +347,45 @@ export default {
 						icon: 'none'
 					});
 					this.$refs.loading.close();
+					if (res.data.msg == "已评论,请等待审核！") {
+						return;
+					}
 					this.showCommentFun(); //重新加载评论
 					this.$emit('commentFun', this.clickDynamicIndex) //评论数+1
 				},
 			});
-
+		},
+		//删除评论
+		delInfoIpt(paper_id, id) {
+			this.showDelInfoFlag = true;
+			this.delCommentQuery = {
+				paper_id,
+				id,
+				is_qq_text:''
+			}
+		},
+		delComment() {
+			this.$refs.loading.open();
+			this.request({
+				url: this.apiUrl + 'User/del_article_huifu',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId'),
+					...this.delCommentQuery,
+				},
+				success: res => {
+					console.log("删除评论:", res);
+					this.showDelInfoFlag = false;
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					});
+					this.$refs.loading.close();
+					this.showCommentFun();
+					this.$emit('commentFun', this.clickDynamicIndex, '', true) //评论数-1
+				},
+			});
 		},
 		//获取评论
 		getCommentList(isFirstPage) {

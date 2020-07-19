@@ -82,27 +82,55 @@
 			<view :class="{ active: tabIndex == 2 }" @click="changeTab(2)"><text>赞</text></view>
 		</view>
 		<view v-if="tabIndex == 0" class="list-zp flex-between">
-			<view class="item" v-for="(item, index) in dynamicList" :key="index" @click="goPlayPage(index)">
-				<view class="imgBox">
-					<image :src="item.image_part[0]" mode="aspectFill"></image>
-					<view class="mask"></view>
+			<view>
+				<view v-if="index%2==0" class="item" v-for="(item, index) in dynamicList" :key="index" @click="goPlayPage(index)">
+					<view class="imgBox">
+						<image :src="item.image_part[0]" mode="aspectFill"></image>
+						<view class="mask"></view>
+					</view>
+					<view class="infoBox flex-column-between">
+						<view class="cont fs-24" v-if="item.study_content">{{item.study_content}}</view>
+						<view class="flex-between">
+							<view class="flex">
+								<image class="circle header" :src="item.user_head_sculpture" mode="aspectFill"></image>
+								<view class="fs-22 nickName">{{item.user_nick_name}}</view>
+							</view>
+							<view v-if="isAuthorized" class="flex" @click.stop="videoGoodFun(item.id,index)">
+								<image v-if="item.is_info_zan" class="good" src="../../static/like.png" mode="widthFix"></image>
+								<image v-else class="good" src="../../static/like2.png" mode="widthFix"></image>
+								<view class="fs-22">{{item.info_zan_count}}</view>
+							</view>
+							<button v-else open-type="getUserInfo" class="share flex" @getuserinfo="getUserInfo" @click.stop="">
+								<image class="good" src="../../static/like2.png" mode="widthFix"></image>
+								<view class="fs-22">{{item.info_zan_count}}</view>
+							</button>
+						</view>
+					</view>
 				</view>
-				<view class="infoBox flex-column-between">
-					<view class="cont fs-24">{{item.study_content}}</view>
-					<view class="flex-between">
-						<view class="flex">
-							<image class="circle header" :src="item.user_head_sculpture" mode="aspectFill"></image>
-							<view class="fs-22 nickName">{{item.user_nick_name}}</view>
+			</view>
+			<view>
+				<view v-if="index%2==1" class="item" v-for="(item, index) in dynamicList" :key="index" @click="goPlayPage(index)">
+					<view class="imgBox">
+						<image :src="item.image_part[0]" mode="aspectFill"></image>
+						<view class="mask"></view>
+					</view>
+					<view class="infoBox flex-column-between">
+						<view class="cont fs-24" v-if="item.study_content">{{item.study_content}}</view>
+						<view class="flex-between">
+							<view class="flex">
+								<image class="circle header" :src="item.user_head_sculpture" mode="aspectFill"></image>
+								<view class="fs-22 nickName">{{item.user_nick_name}}</view>
+							</view>
+							<view v-if="isAuthorized" class="flex" @click.stop="videoGoodFun(item.id,index)">
+								<image v-if="item.is_info_zan" class="good" src="../../static/like.png" mode="widthFix"></image>
+								<image v-else class="good" src="../../static/like2.png" mode="widthFix"></image>
+								<view class="fs-22">{{item.info_zan_count}}</view>
+							</view>
+							<button v-else open-type="getUserInfo" class="share flex" @getuserinfo="getUserInfo" @click.stop="">
+								<image class="good" src="../../static/like2.png" mode="widthFix"></image>
+								<view class="fs-22">{{item.info_zan_count}}</view>
+							</button>
 						</view>
-						<view v-if="isAuthorized" class="flex" @click.stop="videoGoodFun(item.id,index)">
-							<image v-if="item.is_info_zan" class="good" src="../../static/like.png" mode="widthFix"></image>
-							<image v-else class="good" src="../../static/like2.png" mode="widthFix"></image>
-							<view class="fs-22">{{item.info_zan_count}}</view>
-						</view>
-						<button v-else open-type="getUserInfo" class="share flex" @getuserinfo="getUserInfo" @click.stop="">
-							<image class="good" src="../../static/like2.png" mode="widthFix"></image>
-							<view class="fs-22">{{item.info_zan_count}}</view>
-						</button>
 					</view>
 				</view>
 			</view>
