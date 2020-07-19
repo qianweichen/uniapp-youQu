@@ -8,8 +8,25 @@
 				<view class="fs-40 bold title">我的邀请码</view>
 				<view class="code flex-center">{{ code }}</view>
 			</view>
-			<input class="input fs-26" type="text" placeholder="输入好友验证码" placeholder-class="fc-a" v-model="friendCode" />
-			<view class="fc-a fs-22 tip">输入朋友邀请码，朋友和你都能获得积分奖励</view>
+			<view class="input-group">
+				<view class="fs-22">
+					<view>邀请好友输入邀请码后，</view>
+					<view>
+						您和好友最高得
+						<span>200</span>
+						积分奖励，
+					</view>
+					<view>
+						<span>10</span>
+						积分 =
+						<span>0.1</span>
+						元，
+					</view>
+					<view>邀请无上限，邀请越多赚的越多。</view>
+				</view>
+				<input class="input fs-26" type="text" placeholder="输入好友验证码" placeholder-class="fc-a" v-model="friendCode" />
+			</view>
+			<!-- <view class="fc-a fs-22 tip">输入朋友邀请码，朋友和你都能获得积分奖励</view> -->
 			<view v-if="isAuthorized" class="flex-center btnBox">
 				<view class="flex-center" @click="checkFriendCode">提交</view>
 				<view class="flex-center sc" @click="makePic">生成海报</view>
@@ -20,6 +37,18 @@
 					<view class="flex-center sc">生成海报</view>
 				</view>
 			</button>
+		</view>
+		<view class="my-friend">
+			<view class="fs-40 bold title">我邀请的好友</view>
+			<view v-if="invitationList.length>0" class="people-list flex">
+				<view v-for="(item,index) in invitationList" :key="index">
+					<image class="header" :src="item.user_head_sculpture" mode="aspectFill"></image>
+					<view class="fs-22 fc-6">{{item.user_nick_name}}</view>
+				</view>
+			</view>
+			<view class="no-people fs-24" v-else>
+				暂无邀请的好友，快来邀请赚赏金吧！
+			</view>
 		</view>
 		<!-- 海报 -->
 		<view v-if="showBannerFlag">
@@ -49,10 +78,25 @@ export default {
 			showBannerFlag: false,
 			code: '',
 			friendCode: '',
-			isAuthorized: false //授权否
+			isAuthorized: false ,//授权否
+			invitationList:[]
 		};
 	},
 	methods: {
+		getInvitationList(){
+			this.request({
+				url: this.apiUrl + 'user/invitation_list',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId'),
+				},
+				success: res => {
+					console.log("下级列表:",res);
+					this.invitationList = res.data.data;
+				},
+			});
+		},
 		saveBanner() {
 			uni.showLoading({
 				title: '加载中'
@@ -272,6 +316,7 @@ export default {
 		this.isAuthorized = this.beAuthorized();
 
 		this.getCode();
+		this.getInvitationList();
 	}
 };
 </script>
@@ -285,18 +330,67 @@ export default {
 		position: fixed;
 		left: 0;
 		top: 0;
+		z-index: -1;
 		width: 100%;
 		height: auto;
 	}
+	.my-friend{
+		background-color: #fff;
+		width: 690rpx;
+		margin: 40rpx auto;
+		box-shadow: 0 10rpx 70rpx 0 rgba(227, 50, 5, 0.74);
+		border-radius: 8rpx;
+		padding: 79rpx 34rpx 62rpx;
+		box-sizing: border-box;
+		.people-list{
+			padding-top: 59rpx;
+			display: -webkit-box;
+			overflow-x: scroll;
+			-webkit-overflow-scrolling:touch;
+			.header{
+				width:90rpx;
+				height:82rpx;
+				border-radius: 50%;
+			}
+		}
+		.no-people{
+			text-align: center;
+			padding-top: 59rpx;
+		}
+	}
 	.content {
 		width: 690rpx;
-		height: 700rpx;
 		background: #fff;
 		box-shadow: 0 10rpx 70rpx 0 rgba(227, 50, 5, 0.74);
 		border-radius: 8rpx;
-		position: fixed;
-		bottom: 32rpx;
-		left: calc(50% - 345rpx);
+		padding-bottom: 80rpx;
+		margin: 0 auto;
+		margin-top: 600rpx;
+		.input-group {
+			width: 552rpx;
+			background: rgba(254, 238, 232, 1);
+			border-radius: 8rpx;
+			margin: 0 auto;
+			color: #666;
+			line-height: 34rpx;
+			padding: 40rpx 70rpx;
+			box-sizing: border-box;
+			margin-top: 70rpx;
+			span {
+				color: #f6551e;
+				font-size: 28rpx;
+				font-weight: bold;
+				padding: 0 10rpx;
+			}
+			.input {
+				width: 290rpx;
+				height: 68rpx;
+				margin: 0 auto;
+				background: #fff;
+				border-radius: 34rpx;
+				margin-top: 36rpx;
+			}
+		}
 		.title {
 			padding-top: 80rpx;
 			padding-bottom: 30rpx;
@@ -310,14 +404,6 @@ export default {
 			border-radius: 54rpx;
 			font-size: 60rpx;
 			color: #f6551e;
-		}
-		.input {
-			width: 290rpx;
-			height: 68rpx;
-			margin: 0 auto;
-			background: rgba(238, 238, 238, 1);
-			border-radius: 34rpx;
-			margin-top: 90rpx;
 		}
 		.tip {
 			padding-top: 20rpx;
