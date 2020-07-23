@@ -260,7 +260,7 @@ export default {
 						openid: uni.getStorageSync('openid'),
 						id: this.circleId,
 						page: 'pagesA/circle/circle',
-						scene: '?id=' + this.circleId
+						scene: this.circleId
 					},
 					success: res => {
 						uni.hideLoading();
@@ -416,7 +416,12 @@ export default {
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
 		// 获取id请求
-		this.circleId = options.id;
+		if(options.scene){
+			this.circleId = options.scene;
+		}
+		if(options.id){
+			this.circleId = options.id;
+		}
 		this.$refs.loading.open();
 		this.getCircleInfo();
 		this.getTopArticle();

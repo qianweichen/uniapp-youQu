@@ -233,7 +233,7 @@ export default {
 					data: {
 						token: uni.getStorageSync('token'),
 						openid: uni.getStorageSync('openid'),
-						uid: uni.getStorageSync('userId')
+						uid: this.code
 					},
 					success: res => {
 						console.log('二维码:', res);
@@ -311,7 +311,10 @@ export default {
 			});
 		}
 	},
-	onLoad() {
+	onLoad(options) {
+		if(options.scene){
+			this.friendCode = options.scene;
+		}
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
 

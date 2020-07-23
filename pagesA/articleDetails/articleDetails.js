@@ -625,8 +625,12 @@ export default {
 	onLoad(options) {
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
-
-		this.articleId = options.id;
+		if (options.scene) {
+			this.articleId = options.scene.split('-')[0];
+		}
+		if(options.id){
+			this.articleId = options.id;
+		}
 		this.$refs.loading.open();
 		this.getArticleDetails();
 		this.getCommentList(true);

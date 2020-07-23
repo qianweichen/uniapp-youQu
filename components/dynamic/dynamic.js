@@ -39,7 +39,7 @@ export default {
 	computed: {
 		//是否显示删除按钮
 		deleteBtnFlag() {
-			if (this.list.length ==0 || !this.clickDynamicId) return false;
+			if (this.list.length == 0 || !this.clickDynamicId) return false;
 			var sameUser = this.list[this.clickDynamicIndex].user_id == uni.getStorageSync('userId');
 			var adAdmin = this.list[this.clickDynamicIndex]['check_qq'] == 'da';
 			var xiaoAdmin = this.list[this.clickDynamicIndex]['check_qq'] == 'xiao';
@@ -222,6 +222,7 @@ export default {
 		},
 		showAction(userId, index, dynamicId) {
 			this.clickDynamicId = dynamicId; //存储动态id
+			this.clickDynamicIndex = index; //存储动态下标
 			var itemList = ['举报'];
 			var sameUser = userId == uni.getStorageSync('userId');
 			var adAdmin = this.list[index]['check_qq'] == 'da';
@@ -361,7 +362,7 @@ export default {
 			this.delCommentQuery = {
 				paper_id,
 				id,
-				is_qq_text:''
+				is_qq_text: ''
 			}
 		},
 		delComment() {
