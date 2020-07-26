@@ -1,119 +1,282 @@
-.page-find{
+.page-find {
 	height: 100%;
 	overflow-y: auto;
 	background-color: $themeColor;
 	color: #fff;
+	.topTab{
+		box-sizing: border-box;
+	}
 	// 圈子
-	.myCircle{
-		.title{
+	.myCircle {
+		.title {
 			padding: 40rpx 30rpx;
-			.left{
-				image{
+			.left {
+				image {
 					width: 44rpx;
 					height: auto;
 					margin-right: 17rpx;
 				}
 			}
-			.right{
-				width:210rpx;
-				height:54rpx;
-				border:1px solid rgba(188,188,192,1);
-				border-radius:28rpx;
-				image{
+			.right {
+				width: 210rpx;
+				height: 54rpx;
+				border: 1px solid rgba(188, 188, 192, 1);
+				border-radius: 28rpx;
+				image {
 					width: 22rpx;
 					height: auto;
 					margin-right: 17rpx;
 				}
 			}
 		}
-		.list{
+		.list {
 			box-sizing: border-box;
 			padding-left: 30rpx;
 			white-space: nowrap;
-			.item{
+			.item {
 				display: inline-block;
 				margin-right: 10rpx;
 				box-sizing: border-box;
 				text-align: center;
-				width:220rpx;
-				height:380rpx;
-				background:$ornamentColor;
-				border-radius:8rpx;
+				width: 220rpx;
+				height: 380rpx;
+				background: $ornamentColor;
+				border-radius: 8rpx;
 				padding: 30rpx 21rpx;
-				.headerBox{
-					width:128rpx;
-					height:128rpx;
+				.headerBox {
+					width: 128rpx;
+					height: 128rpx;
 					border: 2rpx solid #fff;
 					margin: 0 auto;
-					image{
+					image {
 						width: 100%;
 						height: 100%;
 					}
 				}
-				.join{
+				.join {
 					margin: 0 auto;
 					margin-top: 27rpx;
-					width:134rpx;
-					height:46rpx;
-					border:2rpx solid rgba(134,133,141,1);
-					border-radius:24rpx;
+					width: 134rpx;
+					height: 46rpx;
+					border: 2rpx solid rgba(134, 133, 141, 1);
+					border-radius: 24rpx;
 				}
-				.bold{
+				.bold {
 					padding: 14rpx 0;
 				}
-				.fs-20{
+				.fs-20 {
 					height: 60rpx;
 					white-space: normal;
-					overflow : hidden;
+					overflow: hidden;
 					text-overflow: ellipsis;
 					display: -webkit-box;
 					-webkit-line-clamp: 2;
 					-webkit-box-orient: vertical;
 				}
-				.name{
+				.name {
 					overflow: hidden;
-					text-overflow:ellipsis;
+					text-overflow: ellipsis;
 					white-space: nowrap;
+				}
+				&.item-new {
+					width: unset;
+					height: auto;
+					background-color: unset;
+					padding: 0 27rpx 0 0;
+					.name {
+						color: #a9a9ae;
+						padding-top: 16rpx;
+					}
+				}
+			}
+		}
+		&.gift {
+			.title{
+				padding-bottom: 0;
+			}
+			.gift-right{
+				color: #FFC617;
+				.icon-gift{
+					width: 36rpx;
+					height: auto;
+				}
+				.fs-22{
+					padding: 0 12rpx;
+				}
+				.icon-right{
+					width: 12rpx;
+					height: auto;
 				}
 			}
 		}
 	}
-	.mid-banner{
+	.mid-banner {
 		width: 690rpx;
 		height: 202rpx;
 		display: block;
 		margin: 0 auto;
-		border-radius:8rpx;
+		border-radius: 8rpx;
 		margin-top: 42rpx;
 	}
-	.recommend{
-		.title{
-			.right{
-				width:180rpx;
-				height:54rpx;
+	.recommend {
+		.title {
+			.right {
+				width: 180rpx;
+				height: 54rpx;
 			}
 		}
-		.recommend-list{
+		.recommend-bubble{
+			position: relative;
+			width: 667rpx;
+			height: 476rpx;
+			margin: 0 auto;
+			.bubble{
+				border-radius:50%;
+				overflow: hidden;
+				position: absolute;
+				image{
+					width: 100%;
+					height: 100%;
+					display: block;
+				}
+				.bubble1-title{
+					width: 100%;
+					height: 100%;
+					background-color: rgba(0,0,0,0.5);
+					position: absolute;
+					left: 0;
+					top: 0;
+					view{
+						text-align: center;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						overflow : hidden;
+						text-overflow: ellipsis;
+						display: -webkit-box;
+						-webkit-line-clamp: 2;
+						-webkit-box-orient: vertical;
+					}
+				}
+			}
+			.bubble1{
+				width:196rpx;
+				height:196rpx;
+				top: 21rpx;
+				left: 0;
+				.bubble1-title{
+					view{
+						width: 118rpx;
+						font-size: 30rpx;
+					}
+				}
+			}
+			.bubble2{
+				width:120rpx;
+				height:120rpx;
+				top: 0;
+				left: 232rpx;
+				.bubble1-title{
+					view{
+						width: 55rpx;
+						font-size: 26rpx;
+					}
+				}
+			}
+			.bubble3{
+				width:172rpx;
+				height:172rpx;
+				top: 0;
+				left: 392rpx;
+				.bubble1-title{
+					view{
+						width: 118rpx;
+						font-size: 30rpx;
+					}
+				}
+			}
+			.bubble4{
+				width:220rpx;
+				height:220rpx;
+				top: 128rpx;
+				left: 192rpx;
+				.bubble1-title{
+					view{
+						width: 167rpx;
+						font-size: 34rpx;
+					}
+				}
+			}
+			.bubble5{
+				width:156rpx;
+				height:156rpx;
+				top: 255rpx;
+				left: 29rpx;
+				.bubble1-title{
+					view{
+						width: 87rpx;
+						font-size: 30rpx;
+					}
+				}
+			}
+			.bubble6{
+				width:120rpx;
+				height:120rpx;
+				top: 362rpx;
+				left: 219rpx;
+				.bubble1-title{
+					view{
+						width: 55rpx;
+						font-size: 26rpx;
+					}
+				}
+			}
+			.bubble7{
+				width:134rpx;
+				height:134rpx;
+				top: 323rpx;
+				left: 353rpx;
+				.bubble1-title{
+					view{
+						width: 79rpx;
+						font-size: 30rpx;
+					}
+				}
+			}
+			.bubble8{
+				width:194rpx;
+				height:194rpx;
+				top: 182rpx;
+				left: 474rpx;
+				.bubble1-title{
+					view{
+						width: 117rpx;
+						font-size: 30rpx;
+					}
+				}
+			}
+		}
+		.recommend-list {
 			padding: 0 30rpx;
-			.item{
+			.item {
 				padding-bottom: 40rpx;
-				.header{
-					width:50px;
-					height:50px;
-					border:2rpx solid #fff;
+				.header {
+					width: 50px;
+					height: 50px;
+					border: 2rpx solid #fff;
 					margin-right: 20rpx;
 				}
-				.join{
-					width:134rpx;
-					height:46rpx;
-					background:#7364BD;
-					border-radius:24rpx;
+				.join {
+					width: 134rpx;
+					height: 46rpx;
+					background: #7364bd;
+					border-radius: 24rpx;
 				}
-				.attention{
+				.attention {
 					width: 40rpx;
 					height: 40rpx;
 					font-size: 22rpx;
-					background-color: #7364BD;
+					background-color: #7364bd;
 					color: #fff;
 					border-radius: 8rpx;
 					margin-left: 20rpx;
@@ -121,20 +284,20 @@
 			}
 		}
 	}
-	.dynamic{
-		.banner{
+	.dynamic {
+		.banner {
 			margin: 32rpx 0;
 			width: 100%;
-			height:280rpx;
-			border-radius:8rpx;
+			height: 280rpx;
+			border-radius: 8rpx;
 			overflow: hidden;
 			background-color: $themeColor;
-			swiper-item{
+			swiper-item {
 				padding: 0 10rpx;
 				box-sizing: border-box;
 			}
-			image{
-				width: 100%; 
+			image {
+				width: 100%;
 				height: 100%;
 				border-radius: 20rpx;
 				transition: all ease 0.3s;
@@ -143,7 +306,7 @@
 		.tabBox {
 			padding: 0 30rpx;
 			color: rgba(255, 255, 255, 0.6);
-			> view {
+			> view,button {
 				width: 120rpx;
 				padding-top: 47rpx;
 				padding-bottom: 20rpx;

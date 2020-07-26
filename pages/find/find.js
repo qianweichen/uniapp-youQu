@@ -14,7 +14,8 @@ export default {
 			recommendList: [], //推荐的圈子
 			banners: [],
 			refreshFlag: false, //下拉刷新状态
-			swiperIndex: 0
+			swiperIndex: 0,
+			animationData:null
 		}
 	},
 	methods: {
@@ -28,7 +29,7 @@ export default {
 		},
 		//轮播图
 		getBanners() {
-			return new Promise((resolve, reject)=>{
+			return new Promise((resolve, reject) => {
 				this.request({
 					url: this.apiUrl + 'User/get_ad',
 					data: {
@@ -49,10 +50,10 @@ export default {
 			this.dynamicList[index]['info_zan_count'] = num; //修改点赞数
 		},
 		//评论后修改数据
-		commentFun(index, content , isDel) {
-			if(isDel){
+		commentFun(index, content, isDel) {
+			if (isDel) {
 				this.dynamicList[index].study_repount--; //评论数-1
-			}else{
+			} else {
 				this.dynamicList[index].study_repount++; //评论数+1
 			}
 		},
@@ -65,11 +66,11 @@ export default {
 			this.tabIndex = index;
 			this.$refs.loading.open();
 			if (index == 0) { //推荐
-				this.getDynamicList(true).then(()=>{
+				this.getDynamicList(true).then(() => {
 					this.$refs.loading.close();
 				});
 			} else { //关注
-				this.getAttentionList(true).then(()=>{
+				this.getAttentionList(true).then(() => {
 					this.$refs.loading.close();
 				});
 			}
@@ -87,18 +88,18 @@ export default {
 		getDynamic() {
 			this.$refs.loading.open();
 			if (this.tabIndex == 0) { //推荐
-				this.getDynamicList().then(()=>{
+				this.getDynamicList().then(() => {
 					this.$refs.loading.close();
 				});
 			} else { //关注
-				this.getAttentionList().then(()=>{
+				this.getAttentionList().then(() => {
 					this.$refs.loading.close();
 				});
 			}
 		},
 		// 我加入的圈子
 		getMyCircle(isFirstPage) {
-			return new Promise((resolve, reject)=>{
+			return new Promise((resolve, reject) => {
 				if (isFirstPage == true) {
 					this.myCirclePage = 1;
 					this.myCircleList = [];
@@ -130,9 +131,24 @@ export default {
 		// 推荐圈子
 		getRecommendCircle(isFirstPage, change = 0) { //change切换传1
 			return new Promise((resolve, reject) => {
+				// 动画
+				var animation = uni.createAnimation({
+					duration: 200,
+					timingFunction: 'ease',
+				})
+				animation.translate(80).opacity(0).step();
+				this.animationData = animation.export();
+				setTimeout(()=>{
+					var animation = uni.createAnimation({
+						duration: 500,
+						timingFunction: 'ease',
+					})
+					animation.translate(0).opacity(1).step();
+					this.animationData = animation.export();
+				},500);
+				
 				if (isFirstPage == true) {
 					this.recommendPage = 1;
-					this.recommendList = [];
 				}
 				this.request({
 					url: this.apiUrl + 'User/get_tj_list',
@@ -146,7 +162,7 @@ export default {
 					success: res => {
 						// console.log("推荐圈子:", res);
 						this.recommendPage++;
-						this.recommendList = this.recommendList.concat(res.data.info);
+						this.recommendList = res.data.info;
 						resolve();
 					}
 				});
@@ -154,7 +170,7 @@ export default {
 		},
 		// 动态列表
 		getDynamicList(isFirstPage) {
-			return new Promise((resolve, reject)=>{
+			return new Promise((resolve, reject) => {
 				if (isFirstPage == true) {
 					this.dynamicPage = 1;
 					this.dynamicList = [];
@@ -186,7 +202,7 @@ export default {
 		},
 		// 关注列表
 		getAttentionList(isFirstPage) {
-			return new Promise((resolve, reject)=>{
+			return new Promise((resolve, reject) => {
 				if (isFirstPage == true) {
 					this.dynamicPage = 1;
 					this.dynamicList = [];
@@ -236,12 +252,13 @@ export default {
 		this.isAuthorized = this.beAuthorized();
 		if (this.isAuthorized) {
 			this.$refs.loading.open();
-			Promise.all([this.getRecommendCircle(true),this.getDynamicList(true),this.getBanners(),this.getMyCircle(true)]).then(()=>{
-				this.$refs.loading.close();
-			});
-		}else{
+			Promise.all([this.getRecommendCircle(true), this.getDynamicList(true), this.getBanners(), this.getMyCircle(true)]).then(
+				() => {
+					this.$refs.loading.close();
+				});
+		} else {
 			this.$refs.loading.open();
-			Promise.all([this.getRecommendCircle(true),this.getDynamicList(true),this.getBanners()]).then(()=>{
+			Promise.all([this.getRecommendCircle(true), this.getDynamicList(true), this.getBanners()]).then(() => {
 				this.$refs.loading.close();
 			});
 		}
