@@ -145,10 +145,10 @@
 						</view>
 					</view>
 					<!-- 广告 -->
-					<!-- <view class="ad-group" :class="{show:showAd}">
+					<view class="ad-group" :class="{show:showAd}">
 						<view class="second" @click="closeAd">{{second}}秒后消失,点击关闭</view>
 						<ad unit-id="adunit-88a4f70853188f51" ad-type="video" ad-theme="white"></ad>
-					</view> -->
+					</view>
 				</view>
 				<!-- <view v-if="(index + 1) % 6 == 0" class="videoBox flex-center">
 					<ad unit-id="adunit-88a4f70853188f51" ad-type="video" ad-theme="white"></ad>

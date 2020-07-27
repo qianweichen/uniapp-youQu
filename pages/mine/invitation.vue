@@ -40,15 +40,13 @@
 		</view>
 		<view class="my-friend">
 			<view class="fs-40 bold title">我邀请的好友</view>
-			<view v-if="invitationList.length>0" class="people-list flex">
-				<view v-for="(item,index) in invitationList" :key="index">
+			<view v-if="invitationList.length > 0" class="people-list flex">
+				<view v-for="(item, index) in invitationList" :key="index">
 					<image class="header" :src="item.user_head_sculpture" mode="aspectFill"></image>
-					<view class="fs-22 fc-6">{{item.user_nick_name}}</view>
+					<view class="fs-22 fc-6">{{ item.user_nick_name }}</view>
 				</view>
 			</view>
-			<view class="no-people fs-24" v-else>
-				暂无邀请的好友，快来邀请赚赏金吧！
-			</view>
+			<view class="no-people fs-24" v-else>暂无邀请的好友，快来邀请赚赏金吧！</view>
 		</view>
 		<!-- 海报 -->
 		<view v-if="showBannerFlag">
@@ -72,29 +70,31 @@
 </template>
 
 <script>
+// 在页面中定义插屏广告
+let interstitialAd = null;
 export default {
 	data() {
 		return {
 			showBannerFlag: false,
 			code: '',
 			friendCode: '',
-			isAuthorized: false ,//授权否
-			invitationList:[]
+			isAuthorized: false, //授权否
+			invitationList: []
 		};
 	},
 	methods: {
-		getInvitationList(){
+		getInvitationList() {
 			this.request({
 				url: this.apiUrl + 'user/invitation_list',
 				data: {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId'),
+					uid: uni.getStorageSync('userId')
 				},
 				success: res => {
-					console.log("下级列表:",res);
+					console.log('下级列表:', res);
 					this.invitationList = res.data.data;
-				},
+				}
 			});
 		},
 		saveBanner() {
@@ -312,7 +312,7 @@ export default {
 		}
 	},
 	onLoad(options) {
-		if(options.scene){
+		if (options.scene) {
 			this.friendCode = options.scene;
 		}
 		//判断授权 已授权为true
@@ -320,6 +320,20 @@ export default {
 
 		this.getCode();
 		this.getInvitationList();
+
+		// 在页面onLoad回调事件中创建插屏广告实例
+		if (wx.createInterstitialAd) {
+			interstitialAd = wx.createInterstitialAd({ adUnitId: 'adunit-f4669b91d9da4f72' });
+			interstitialAd.onLoad(() => {});
+			interstitialAd.onError(err => {});
+			interstitialAd.onClose(() => {});
+		}
+		// 在适合的场景显示插屏广告
+		if (interstitialAd) {
+			interstitialAd.show().catch(err => {
+				console.error(err);
+			});
+		}
 	}
 };
 </script>
@@ -337,7 +351,7 @@ export default {
 		width: 100%;
 		height: auto;
 	}
-	.my-friend{
+	.my-friend {
 		background-color: #fff;
 		width: 690rpx;
 		margin: 40rpx auto;
@@ -345,18 +359,18 @@ export default {
 		border-radius: 8rpx;
 		padding: 79rpx 34rpx 62rpx;
 		box-sizing: border-box;
-		.people-list{
+		.people-list {
 			padding-top: 59rpx;
 			display: -webkit-box;
 			overflow-x: scroll;
-			-webkit-overflow-scrolling:touch;
-			.header{
-				width:90rpx;
-				height:82rpx;
+			-webkit-overflow-scrolling: touch;
+			.header {
+				width: 90rpx;
+				height: 82rpx;
 				border-radius: 50%;
 			}
 		}
-		.no-people{
+		.no-people {
 			text-align: center;
 			padding-top: 59rpx;
 		}

@@ -111,6 +111,10 @@ playVideoFun(index,oldIndex){
 					<!-- 圈子首页 -->
 					<image v-if="type == 'circle'" class="more" src="../../static/more.png" mode="widthFix" @click="showAction(item.user_id, index, item.id)"></image>
 				</view>
+				<!-- 广告 -->
+				<view class="ad-group" v-if="(index + 1) % 6 == 0">
+					<ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom>
+				</view>
 			</view>
 		</view>
 		<!-- 评论区域 -->
@@ -136,7 +140,7 @@ playVideoFun(index,oldIndex){
 								<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
 							</view>
-							<view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id,item.id)">
+							<view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id, item.id)">
 								<image class="like" src="../../static/del-cmt.png" mode="widthFix"></image>
 							</view>
 						</view>
@@ -213,10 +217,10 @@ playVideoFun(index,oldIndex){
 		</view>
 		<!-- 删除回复信息填写 -->
 		<view class="twoComment inform" v-if="showDelInfoFlag">
-			<view class="mask" @click="showDelInfoFlag=false;"></view>
+			<view class="mask" @click="showDelInfoFlag = false"></view>
 			<view class="inputAlt-cont">
 				<view class="inputAlt-cont-head flex-between">
-					<view @click="showDelInfoFlag=false;">取消</view>
+					<view @click="showDelInfoFlag = false">取消</view>
 					<view @click="delComment">删除</view>
 				</view>
 				<view class="inputAlt-cont-ipt">
