@@ -26,7 +26,7 @@
 		<!-- 视频 -->
 		<swiper @change="changeSwiper" :current="videoIndex" vertical>
 			<swiper-item v-for="(item, index) in videoList" :key="index">
-				<view class="videoBox" v-if="index == videoIndex">
+				<view class="videoBox" v-if="index == videoIndex && (index + 1) % 6 != 0">
 					<video
 						@click="pauseVideo"
 						id="myVideo"
@@ -103,7 +103,9 @@
 								<swiper-item v-for="(item, index) in item.pinglun" :key="index">
 									<view class="fs-24">{{ item.reply_content }}</view>
 								</swiper-item>
-								<swiper-item v-if="item.pinglun.length == 1"><view class="fs-24">{{item.pinglun[0].reply_content}}</view></swiper-item>
+								<swiper-item v-if="item.pinglun.length == 1">
+									<view class="fs-24">{{ item.pinglun[0].reply_content }}</view>
+								</swiper-item>
 								<swiper-item v-if="item.pinglun.length == 0"><view class="fs-24">暂无评论，期待您的精彩评论！</view></swiper-item>
 								<swiper-item v-if="item.pinglun.length == 0"><view class="fs-24">暂无评论，期待您的精彩评论！</view></swiper-item>
 							</swiper>
@@ -144,22 +146,19 @@
 							</button>
 						</view>
 					</view>
-					<!-- 广告 -->
-					<view class="ad-group" :class="{show:showAd}">
+					<!-- 左侧滑入的广告 -->
+					<!-- <view class="ad-group" :class="{show:showAd}">
 						<view class="second" @click="closeAd">{{second}}秒后消失,点击关闭</view>
 						<ad unit-id="adunit-88a4f70853188f51" ad-type="video" ad-theme="white"></ad>
-					</view>
+					</view> -->
 				</view>
-				<!-- <view v-if="(index + 1) % 6 == 0" class="videoBox flex-center">
-					<ad unit-id="adunit-88a4f70853188f51" ad-type="video" ad-theme="white"></ad>
-					<view class="contentBox">
+				<!-- 全屏广告 -->
+				<view v-if="(index + 1) % 6 == 0" class="videoBox flex-center">
+					<ad-custom class="ad-custom" unit-id="adunit-a556114efa3c01c5"></ad-custom>
+					<!-- <view class="contentBox">
 						<view class="userInfo flex">
-							<view class="header circle">
-								<image class="header-img circle" src="../../static/logo.png" mode="aspectFill"></image>
-							</view>
-							<view>
-								<view class="fs-28 bold">友趣vlog</view>
-							</view>
+							<view class="header circle"><image class="header-img circle" src="../../static/logo.png" mode="aspectFill"></image></view>
+							<view><view class="fs-28 bold">友趣vlog</view></view>
 						</view>
 						<view class="text fs-28"></view>
 						<view class="flex-between">
@@ -170,8 +169,8 @@
 								</view>
 							</view>
 						</view>
-					</view>
-				</view> -->
+					</view> -->
+				</view>
 			</swiper-item>
 		</swiper>
 		<!-- 评论区域 -->
@@ -197,7 +196,7 @@
 								<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
 							</view>
-							<view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id,item.id)">
+							<view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id, item.id)">
 								<image class="like" src="../../static/del-cmt.png" mode="widthFix"></image>
 							</view>
 						</view>
@@ -310,10 +309,10 @@
 		</view>
 		<!-- 删除回复信息填写 -->
 		<view class="twoComment inform" v-if="showDelInfoFlag">
-			<view class="mask" @click="showDelInfoFlag=false;"></view>
+			<view class="mask" @click="showDelInfoFlag = false"></view>
 			<view class="inputAlt-cont">
 				<view class="inputAlt-cont-head flex-between">
-					<view @click="showDelInfoFlag=false;">取消</view>
+					<view @click="showDelInfoFlag = false">取消</view>
 					<view @click="delComment">删除</view>
 				</view>
 				<view class="inputAlt-cont-ipt">
