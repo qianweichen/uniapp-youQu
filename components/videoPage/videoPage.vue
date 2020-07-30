@@ -28,14 +28,16 @@
 			<swiper-item v-for="(item, index) in videoList" :key="index">
 				<view class="videoBox" v-if="(index + 1) % 6 != 0">
 					<video
-						:autoplay="index==0"
-						@click="pauseVideo"
 						:id="'myVideo' + index"
 						:src="item.study_video"
+						:autoplay="index==0"
+						:show-center-play-btn="false"
 						:controls="false"
+						loop
+						@click="pauseVideo"
 						@timeupdate="videoTimeUpdate"
-						@ended="videoPlayEnd"
 						@play="videoPlayStard"
+						@ended="videoPlayEnd"
 						@error="videoPlayerror"
 					></video>
 					<!-- 播放结束 -->

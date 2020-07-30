@@ -507,13 +507,12 @@ export default {
 		},
 		//视频播放开始
 		videoPlayStard() {
-			this.showVideoEndShare = false;
+			// this.showVideoEndShare = false;
 			this.showVideoPlayBtn = false;
 		},
 		//视频播放结束
 		videoPlayEnd() {
-			this.showVideoEndShare = true;
-			this.videoContext.play();
+			// this.showVideoEndShare = true;
 		},
 		//视频播放错误
 		videoPlayerror() {
