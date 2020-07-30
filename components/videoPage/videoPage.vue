@@ -26,13 +26,13 @@
 		<!-- 视频 -->
 		<swiper @change="changeSwiper" :current="videoIndex" vertical>
 			<swiper-item v-for="(item, index) in videoList" :key="index">
-				<view class="videoBox" v-if="index == videoIndex && (index + 1) % 6 != 0">
+				<view class="videoBox" v-if="(index + 1) % 6 != 0">
 					<video
+						:autoplay="index==0"
 						@click="pauseVideo"
-						id="myVideo"
+						:id="'myVideo' + index"
 						:src="item.study_video"
 						:controls="false"
-						autoplay
 						@timeupdate="videoTimeUpdate"
 						@ended="videoPlayEnd"
 						@play="videoPlayStard"
@@ -61,7 +61,6 @@
 						</view>
 					</view>
 					<!-- 播放按钮 -->
-					<!-- <view v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle flex-center"><image src="../../static/play.png" mode="widthFix"></image></view> -->
 					<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
 					<!-- 文案区域 -->
 					<view class="contentBox">
@@ -71,7 +70,7 @@
 								<!-- <image class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
 							</view>
 							<view>
-								<view class="fs-28 bold">{{ item.user_nick_name }}</view>
+								<view class="fs-30 bold">{{ item.user_nick_name }}</view>
 								<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 							</view>
 							<view v-if="isAuthorized">
@@ -153,7 +152,7 @@
 					</view> -->
 				</view>
 				<!-- 全屏广告 -->
-				<view v-if="(index + 1) % 6 == 0" class="videoBox flex-center">
+				<view v-else class="videoBox flex-center">
 					<ad-custom class="ad-custom" unit-id="adunit-a556114efa3c01c5"></ad-custom>
 					<!-- <view class="contentBox">
 						<view class="userInfo flex">

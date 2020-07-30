@@ -464,34 +464,41 @@ export default {
 		},
 		//滑动视频
 		changeSwiper(e) {
-			this.progressNum = 0; //重置百分比
-			this.videoIndex = e.detail.current; //设置视频下标
-			this.videoContext = uni.createVideoContext('myVideo', this); //获取视频对象
-
+			//停止上一次播放的视频
+			this.videoContext = uni.createVideoContext('myVideo' + this.videoIndex, this);
+			this.videoContext.stop();
+			//播放当前视频
+			this.videoContext = uni.createVideoContext('myVideo' + e.detail.current, this);
+			this.videoContext.play();
+			//重置百分比
+			this.progressNum = 0;
+			//设置视频下标
+			this.videoIndex = e.detail.current;
+			//每12个获取下一组数据
 			if ((e.detail.current + 3) % 15 == 0) {
 				this.$emit('getNextPage'); //获取下一页
 			}
 
-			//广告
-			this.second = 5;
-			if ((e.detail.current + 1) % 6 == 0) {
-				clearTimeout(this.adShowTimer);
-				this.adShowTimer = setTimeout(() => {
-					this.showAd = true;
-					clearInterval(this.adTimer);
-					this.adTimer = setInterval(() => {
-						this.second--;
-						if (this.second == 0) {
-							this.showAd = false;
-							clearInterval(this.adTimer);
-						}
-					}, 1000);
-				}, 500);
-			} else {
-				clearTimeout(this.adShowTimer);
-				clearInterval(this.adTimer);
-				this.showAd = false;
-			}
+			//左侧滑入的广告
+			// this.second = 5;
+			// if ((e.detail.current + 1) % 6 == 0) {
+			// 	clearTimeout(this.adShowTimer);
+			// 	this.adShowTimer = setTimeout(() => {
+			// 		this.showAd = true;
+			// 		clearInterval(this.adTimer);
+			// 		this.adTimer = setInterval(() => {
+			// 			this.second--;
+			// 			if (this.second == 0) {
+			// 				this.showAd = false;
+			// 				clearInterval(this.adTimer);
+			// 			}
+			// 		}, 1000);
+			// 	}, 500);
+			// } else {
+			// 	clearTimeout(this.adShowTimer);
+			// 	clearInterval(this.adTimer);
+			// 	this.showAd = false;
+			// }
 		},
 		closeAd() {
 			clearTimeout(this.adShowTimer);
@@ -616,7 +623,7 @@ export default {
 			this.delCommentQuery = {
 				paper_id,
 				id,
-				is_qq_text:''
+				is_qq_text: ''
 			}
 		},
 		delComment() {
@@ -750,6 +757,6 @@ export default {
 		//初始视频下标
 		this.videoIndex = this.index;
 		//获取视频对象
-		this.videoContext = uni.createVideoContext('myVideo', this);
+		this.videoContext = uni.createVideoContext('myVideo0', this);
 	}
 }

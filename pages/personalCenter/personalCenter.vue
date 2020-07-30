@@ -9,7 +9,7 @@
 				<view class="flex numberBox">
 					<view>
 						<text class="bold fs-40">{{ personalInfo.trailing }}</text>
-						圈子
+						获赞
 					</view>
 					<!-- <view>
 						<text class="bold fs-40">2</text>
