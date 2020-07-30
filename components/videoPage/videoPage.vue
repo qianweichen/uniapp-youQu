@@ -26,137 +26,141 @@
 		<!-- 视频 -->
 		<swiper @change="changeSwiper" :current="videoIndex" vertical>
 			<swiper-item v-for="(item, index) in videoList" :key="index">
-				<view class="videoBox" v-if="(index + 1) % 6 != 0">
-					<video
-						:id="'myVideo' + index"
-						:src="item.study_video"
-						:autoplay="index==0"
-						:show-center-play-btn="false"
-						:controls="false"
-						loop
-						@click="pauseVideo"
-						@timeupdate="videoTimeUpdate"
-						@play="videoPlayStard"
-						@ended="videoPlayEnd"
-						@error="videoPlayerror"
-					></video>
-					<!-- 播放结束 -->
-					<view class="playEndBox flex-center" v-if="showVideoEndShare">
-						<view>
-							<view class="fxd flex-between">
-								<view class="line-left"></view>
-								<view class="mid fc-f">分享到</view>
-								<view class="line-right"></view>
-							</view>
-							<view class="flex-between endShareBox">
-								<button open-type="share" class="share" data-type="video" :data-id="item.id" :data-content="item.study_content" :data-img="item.image_part[0]">
-									<view class="endBtn flex-center"><image src="../../static/videoEnd1.png" mode="widthFix"></image></view>
-								</button>
-								<view class="endBtn flex-center" @click="goPage('/pages/mine/invitation')"><image src="../../static/videoEnd2.png" mode="widthFix"></image></view>
-							</view>
-							<view class="flex-center endShareBox">
-								<view @click="playVideo">
-									<view class="endBtn flex-center"><image src="../../static/videoEnd3.png" mode="widthFix"></image></view>
-									<view class="fc-f fs-24" style="text-align: center; padding-top: 20rpx;">重播</view>
-								</view>
-							</view>
-						</view>
-					</view>
-					<!-- 播放按钮 -->
-					<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
-					<!-- 文案区域 -->
-					<view class="contentBox">
-						<view class="userInfo flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
-							<view class="header circle">
-								<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
-								<!-- <image class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
-							</view>
+				<!-- 节流:只显示3个视频 -->
+				<view style="height: 100%;" v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
+					<view class="videoBox" v-if="(index + 1) % 6 != 0">
+						<video
+							:autoplay="index == 0"
+							:id="'myVideo' + index"
+							:src="item.study_video"
+							:show-center-play-btn="false"
+							:controls="false"
+							loop
+							@click="pauseVideo"
+							@timeupdate="videoTimeUpdate"
+							@play="videoPlayStard"
+							@ended="videoPlayEnd"
+							@error="videoPlayerror"
+						></video>
+						<!-- 播放结束 -->
+						<view class="playEndBox flex-center" v-if="showVideoEndShare">
 							<view>
-								<view class="fs-30 bold">{{ item.user_nick_name }}</view>
-								<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
-							</view>
-							<view v-if="isAuthorized">
-								<view
-									v-if="item.user_id != userId && item.is_follow != 1"
-									class="attention flex-center"
-									@click.stop="attention(item.user_id, item.is_follow, index)"
-								>
-									<image v-if="item.is_follow != 1" src="../../static/add.png" mode="widthFix"></image>
-									<view>关注</view>
+								<view class="fxd flex-between">
+									<view class="line-left"></view>
+									<view class="mid fc-f">分享到</view>
+									<view class="line-right"></view>
+								</view>
+								<view class="flex-between endShareBox">
+									<button open-type="share" class="share" data-type="video" :data-id="item.id" :data-content="item.study_content" :data-img="item.image_part[0]">
+										<view class="endBtn flex-center"><image src="../../static/videoEnd1.png" mode="widthFix"></image></view>
+									</button>
+									<view class="endBtn flex-center" @click="goPage('/pages/mine/invitation')">
+										<image src="../../static/videoEnd2.png" mode="widthFix"></image>
+									</view>
+								</view>
+								<view class="flex-center endShareBox">
+									<view @click="playVideo">
+										<view class="endBtn flex-center"><image src="../../static/videoEnd3.png" mode="widthFix"></image></view>
+										<view class="fc-f fs-24" style="text-align: center; padding-top: 20rpx;">重播</view>
+									</view>
 								</view>
 							</view>
-							<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
-								<view class="attention flex-center">
-									<image src="../../static/add.png" mode="widthFix"></image>
-									<view>关注</view>
-								</view>
-							</button>
 						</view>
-						<view class="text fs-28" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
-						<view class="flex-between">
-							<view class="circleName flex" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">
-								<view class="flex">
-									<image class="circle" :src="item.realm_icon" mode="aspectFill"></image>
-									<text class="fs-22">{{ item.realm_name }}</text>
+						<!-- 播放按钮 -->
+						<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
+						<!-- 文案区域 -->
+						<view class="contentBox">
+							<view class="userInfo flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
+								<view class="header circle">
+									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
+									<!-- <image class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
 								</view>
+								<view>
+									<view class="fs-30 bold">{{ item.user_nick_name }}</view>
+									<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
+								</view>
+								<view v-if="isAuthorized">
+									<view
+										v-if="item.user_id != userId && item.is_follow != 1"
+										class="attention flex-center"
+										@click.stop="attention(item.user_id, item.is_follow, index)"
+									>
+										<image v-if="item.is_follow != 1" src="../../static/add.png" mode="widthFix"></image>
+										<view>关注</view>
+									</view>
+								</view>
+								<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
+									<view class="attention flex-center">
+										<image src="../../static/add.png" mode="widthFix"></image>
+										<view>关注</view>
+									</view>
+								</button>
 							</view>
-							<swiper class="comment-swiper" vertical circular autoplay interval="1500">
-								<swiper-item v-for="(item, index) in item.pinglun" :key="index">
-									<view class="fs-24">{{ item.reply_content }}</view>
-								</swiper-item>
-								<swiper-item v-if="item.pinglun.length == 1">
-									<view class="fs-24">{{ item.pinglun[0].reply_content }}</view>
-								</swiper-item>
-								<swiper-item v-if="item.pinglun.length == 0"><view class="fs-24">暂无评论，期待您的精彩评论！</view></swiper-item>
-								<swiper-item v-if="item.pinglun.length == 0"><view class="fs-24">暂无评论，期待您的精彩评论！</view></swiper-item>
-							</swiper>
+							<view class="text fs-28" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
+							<view class="flex-between">
+								<view class="circleName flex" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">
+									<view class="flex">
+										<image class="circle" :src="item.realm_icon" mode="aspectFill"></image>
+										<text class="fs-22">{{ item.realm_name }}</text>
+									</view>
+								</view>
+								<swiper class="comment-swiper" vertical circular autoplay interval="1500">
+									<swiper-item v-for="(item, index) in item.pinglun" :key="index">
+										<view class="fs-24">{{ item.reply_content }}</view>
+									</swiper-item>
+									<swiper-item v-if="item.pinglun.length == 1">
+										<view class="fs-24">{{ item.pinglun[0].reply_content }}</view>
+									</swiper-item>
+									<swiper-item v-if="item.pinglun.length == 0"><view class="fs-24">暂无评论，期待您的精彩评论！</view></swiper-item>
+									<swiper-item v-if="item.pinglun.length == 0"><view class="fs-24">暂无评论，期待您的精彩评论！</view></swiper-item>
+								</swiper>
+							</view>
 						</view>
-					</view>
-					<!-- 进度条 -->
-					<view class="progress"><view :style="'width:' + progressNum + '%;'"></view></view>
-					<!-- 点赞区域 -->
-					<view class="btnBox fs-26">
-						<view v-if="isAuthorized" @click="goodFun(item.id, index)">
-							<image :src="'../../static/like' + (item.is_info_zan ? '' : '2') + '.png'" mode="widthFix"></image>
-							<view>{{ item.info_zan_count }}</view>
-						</view>
-						<view v-else>
-							<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+						<!-- 进度条 -->
+						<view class="progress"><view :style="'width:' + progressNum + '%;'"></view></view>
+						<!-- 点赞区域 -->
+						<view class="btnBox fs-26">
+							<view v-if="isAuthorized" @click="goodFun(item.id, index)">
 								<image :src="'../../static/like' + (item.is_info_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<view>{{ item.info_zan_count }}</view>
-							</button>
-						</view>
-						<view v-if="isAuthorized" @click="showCommentFun">
-							<image src="../../static/comment.png" mode="widthFix"></image>
-							<view>{{ item.study_repount }}</view>
-						</view>
-						<view v-else>
-							<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+							</view>
+							<view v-else>
+								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+									<image :src="'../../static/like' + (item.is_info_zan ? '' : '2') + '.png'" mode="widthFix"></image>
+									<view>{{ item.info_zan_count }}</view>
+								</button>
+							</view>
+							<view v-if="isAuthorized" @click="showCommentFun">
 								<image src="../../static/comment.png" mode="widthFix"></image>
 								<view>{{ item.study_repount }}</view>
-							</button>
-						</view>
-						<view v-if="isAuthorized" @click="toggleShareBox(true)">
-							<image src="../../static/wechat.png" mode="widthFix" :animation="animationData"></image>
-							<view>分享</view>
-						</view>
-						<view v-else>
-							<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+							</view>
+							<view v-else>
+								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+									<image src="../../static/comment.png" mode="widthFix"></image>
+									<view>{{ item.study_repount }}</view>
+								</button>
+							</view>
+							<view v-if="isAuthorized" @click="toggleShareBox(true)">
 								<image src="../../static/wechat.png" mode="widthFix" :animation="animationData"></image>
 								<view>分享</view>
-							</button>
+							</view>
+							<view v-else>
+								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+									<image src="../../static/wechat.png" mode="widthFix" :animation="animationData"></image>
+									<view>分享</view>
+								</button>
+							</view>
 						</view>
-					</view>
-					<!-- 左侧滑入的广告 -->
-					<!-- <view class="ad-group" :class="{show:showAd}">
+						<!-- 左侧滑入的广告 -->
+						<!-- <view class="ad-group" :class="{show:showAd}">
 						<view class="second" @click="closeAd">{{second}}秒后消失,点击关闭</view>
 						<ad unit-id="adunit-88a4f70853188f51" ad-type="video" ad-theme="white"></ad>
 					</view> -->
-				</view>
-				<!-- 全屏广告 -->
-				<view v-else class="videoBox flex-center">
-					<ad-custom class="ad-custom" unit-id="adunit-a556114efa3c01c5"></ad-custom>
-					<!-- <view class="contentBox">
+					</view>
+					<!-- 全屏广告 -->
+					<view v-else class="videoBox flex-center">
+						<ad-custom class="ad-custom" unit-id="adunit-a556114efa3c01c5"></ad-custom>
+						<!-- <view class="contentBox">
 						<view class="userInfo flex">
 							<view class="header circle"><image class="header-img circle" src="../../static/logo.png" mode="aspectFill"></image></view>
 							<view><view class="fs-28 bold">友趣vlog</view></view>
@@ -171,6 +175,7 @@
 							</view>
 						</view>
 					</view> -->
+					</view>
 				</view>
 			</swiper-item>
 		</swiper>
