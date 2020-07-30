@@ -126,12 +126,13 @@
 			margin-bottom: 30rpx;
 			.imgBox{
 				width: 100%;
-				height: 330rpx;
+				max-height: 430rpx;
+				overflow: hidden;
 				position: relative;
 				image{
 					display: block;
 					width: 100%;
-					height: 100%;
+					height: 300rpx;
 				}
 				.mask{
 					position: absolute;

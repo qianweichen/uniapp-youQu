@@ -85,7 +85,7 @@
 			<view>
 				<view v-if="index%2==0" class="item" v-for="(item, index) in dynamicList" :key="index" @click="goPlayPage(index)">
 					<view class="imgBox">
-						<image :src="item.image_part[0]" mode="aspectFill"></image>
+						<image :src="item.image_part[0]" mode="widthFix"></image>
 						<view class="mask"></view>
 					</view>
 					<view class="infoBox flex-column-between">
@@ -111,7 +111,7 @@
 			<view>
 				<view v-if="index%2==1" class="item" v-for="(item, index) in dynamicList" :key="index" @click="goPlayPage(index)">
 					<view class="imgBox">
-						<image :src="item.image_part[0]" mode="aspectFill"></image>
+						<image :src="item.image_part[0]" mode="widthFix"></image>
 						<view class="mask"></view>
 					</view>
 					<view class="infoBox flex-column-between">

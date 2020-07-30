@@ -115,7 +115,34 @@ export default {
 			this.search = playVideoPageData.search;	//搜索页跳转来的搜索内容
 			uni.removeStorageSync('playVideoPageData');
 		}
-	}
+	},
+	onShareAppMessage(res) {
+		// console.log(res);
+		// 系统菜单分享
+		if (res.from === 'menu') {
+			return {
+				title: this.miniProgramName,
+				path: '/pages/index/index',
+				imageUrl: '/static/logo.png'
+			};
+		}
+		// 页面内分享按钮
+		if (res.from === 'button') {
+			if(res.target.dataset.type=='persional'){
+				return {
+					title: this.personalInfo.user_nick_name || this.miniProgramName,
+					path: '/pages/personalCenter/personalCenter?id=' + this.personalId,
+					imageUrl: this.personalInfo.bg_img
+				};
+			}else{
+				return {
+					title: res.target.dataset.content || this.miniProgramName,
+					path: '/pagesA/articleDetails/articleDetails?id=' + res.target.dataset.id,
+					imageUrl: res.target.dataset.img
+				};
+			}
+		}
+	},
 };
 
 </script>
