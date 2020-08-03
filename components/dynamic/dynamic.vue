@@ -51,12 +51,12 @@ playVideoFun(index,oldIndex){
 				<!-- 文字 -->
 				<view class="content fs-28 padding" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 				<!-- 图片/视频 -->
-				<view v-if="item.study_type == 2" class="mediaBox" :style="'height:' + item.height + 'px;'">
+				<view v-if="item.study_type == 2" class="mediaBox" :style="'height:' + (item.height || 300) + 'px;'">
 					<video v-if="item.playVideoFlag" id="myVideo" :src="item.study_video" controls autoplay @error="videoError" @click="clickVideoFun"></video>
 					<image v-else class="poster" :src="item.image_part[0]" mode="aspectFill"></image>
 					<image v-if="!item.playVideoFlag" @click="playVideoFun(index)" class="circle play" src="../../static/icon-play.png" mode="widthFix"></image>
 				</view>
-				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox" :style="'height:' + imgHeightList[index] + 'px;'">
+				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox" :style="'height:' + (imgHeightList[index] || 300) + 'px;'">
 					<!-- 1 -->
 					<!-- <view class="one" v-if="item.image_part.length == 1"><image :src="item.image_part[0]" mode="widthFix" @click="browseImg(item.image_part, 0)"></image></view> -->
 					<!-- 2 -->
@@ -112,9 +112,7 @@ playVideoFun(index,oldIndex){
 					<image v-if="type == 'circle'" class="more" src="../../static/more.png" mode="widthFix" @click="showAction(item.user_id, index, item.id)"></image>
 				</view>
 				<!-- 广告 -->
-				<view class="ad-group" v-if="(index + 1) % 6 == 0">
-					<ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom>
-				</view>
+				<view class="ad-group" v-if="(index + 1) % 6 == 0"><ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom></view>
 			</view>
 		</view>
 		<!-- 评论区域 -->

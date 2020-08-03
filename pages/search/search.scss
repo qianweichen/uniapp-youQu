@@ -215,6 +215,10 @@
 			}
 			.bold {
 				padding-bottom: 20rpx;
+				width: 350rpx;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				white-space: nowrap;
 			}
 			.right {
 				width: 130rpx;

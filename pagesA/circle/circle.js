@@ -25,7 +25,7 @@ export default {
 			touchEnd: 0,
 			pageScroll: 0,
 			timer: null,
-			autoPlayFlag:false
+			autoPlayFlag: false
 		};
 	},
 	methods: {
@@ -44,10 +44,10 @@ export default {
 			this.dynamicList[index]['info_zan_count'] = num; //修改点赞数
 		},
 		//评论后修改数据
-		commentFun(index, content , isDel) {
-			if(isDel){
+		commentFun(index, content, isDel) {
+			if (isDel) {
 				this.dynamicList[index].study_repount--; //评论数-1
-			}else{
+			} else {
 				this.dynamicList[index].study_repount++; //评论数+1
 			}
 		},
@@ -64,59 +64,74 @@ export default {
 		},
 		// 帖子数据
 		getArticleList(isFirstPage) {
-			if (isFirstPage == true) {
-				this.page = 1;
-				this.dynamicList = [];
-			}
-			this.request({
-				url: this.apiUrl + 'User/get_index_list',
-				data: {
-					token: uni.getStorageSync('token'),
-					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId'),
-					tory_id: this.circleId,
-					index_page: this.page,
-					version: 3, // 0是文字 1是语音 2是视频 3是全部
-					startid: this.dynamicList.length ? this.dynamicList[0].id : 0,
-				},
-				success: res => {
-					// console.log("帖子数据:", res);
-					for (let i = 0; i < res.data.info.length; i++) {
-						let _item = res.data.info[i];
-						if (_item.study_type == 2) {
-							var src = this.httpsUrl(_item.image_part[0]);
-							uni.getImageInfo({
-								src,
-								success: (res) => {
-									var width = this.screenWidth - 30;
-									var height = width * res.height / res.width;
-									if (height > width) {
-										height /= 2;
-									}
-									// _item.height = height;	//不渲染
-									this.$set(_item, 'height', height); //渲染
-								}
+			return new Promise((resolve, reject) => {
+				if (isFirstPage == true) {
+					this.page = 1;
+					this.dynamicList = [];
+				}
+				this.request({
+					url: this.apiUrl + 'User/get_index_list',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId'),
+						tory_id: this.circleId,
+						index_page: this.page,
+						version: 3, // 0是文字 1是语音 2是视频 3是全部
+						startid: this.dynamicList.length ? this.dynamicList[0].id : 0,
+					},
+					success: res => {
+						// console.log("帖子数据:", res);
+						if(res.data.info.length==0){
+							uni.showToast({
+								title:'没有更多了',
+								icon:'none'
 							})
+							resolve();
+							return;
 						}
-					}
-					this.dynamicList = this.dynamicList.concat(res.data.info);
-					this.page++;
-				},
+						
+						for (let i = 0; i < res.data.info.length; i++) {
+							let _item = res.data.info[i];
+							if (_item.study_type == 2) {
+								var src = this.httpsUrl(_item.image_part[0]);
+								uni.getImageInfo({
+									src,
+									success: (res) => {
+										var width = this.screenWidth - 30;
+										var height = width * res.height / res.width;
+										if (height > width) {
+											height /= 2;
+										}
+										// _item.height = height;	//不渲染
+										this.$set(_item, 'height', height); //渲染
+									}
+								})
+							}
+						}
+						this.dynamicList = this.dynamicList.concat(res.data.info);
+						this.page++;
+						resolve();
+					},
+				});
 			});
 		},
 		// 获取置顶帖子
 		getTopArticle() {
-			this.request({
-				url: this.apiUrl + 'User/get_placement_top',
-				data: {
-					token: uni.getStorageSync('token'),
-					openid: uni.getStorageSync('openid'),
-					tory_id: this.circleId,
-				},
-				success: res => {
-					// console.log("置顶帖子:", res);
-					this.topList = res.data.info;
-				},
+			return new Promise((resolve, reject) => {
+				this.request({
+					url: this.apiUrl + 'User/get_placement_top',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						tory_id: this.circleId,
+					},
+					success: res => {
+						// console.log("置顶帖子:", res);
+						this.topList = res.data.info;
+						resolve();
+					},
+				});
 			});
 		},
 		//海报star----------------------------------------------------------------------------
@@ -341,36 +356,35 @@ export default {
 					trailing_text: this.erCode //邀请码
 				},
 				success: res => {
-					this.$refs.loading.close();
 					// console.log("加入:",res);
 					uni.showToast({
 						title: res.data.msg
 					});
 					this.showIptCodeFlag = false; //隐藏邀请码填写弹窗
 					//刷新信息
-					this.getCircleInfo();
-					this.getTopArticle();
-					this.getArticleList(true);
+					this.getData();
 				},
 			});
 		},
 		//获取圈子信息
 		getCircleInfo() {
-			this.request({
-				url: this.apiUrl + 'User/get_tory_info',
-				data: {
-					token: uni.getStorageSync('token'),
-					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId'),
-					id: this.circleId,
-				},
-				success: res => {
-					this.$refs.loading.close();
-					// console.log("获取圈子信息:", res);
-					this.circleData = res.data.info;
-					//私密圈子   并且   未加入
-					this.noJurisdiction = res.data.info.attention == 1 && res.data.info.is_trailing == false;
-				},
+			return new Promise((resolve, reject) => {
+				this.request({
+					url: this.apiUrl + 'User/get_tory_info',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId'),
+						id: this.circleId,
+					},
+					success: res => {
+						// console.log("获取圈子信息:", res);
+						this.circleData = res.data.info;
+						//私密圈子   并且   未加入
+						this.noJurisdiction = res.data.info.attention == 1 && res.data.info.is_trailing == false;
+						resolve();
+					},
+				});
 			});
 		},
 		// 粘贴
@@ -411,34 +425,36 @@ export default {
 		},
 		touchend(e) {
 			this.touchEnd = this.pageScroll;
+		},
+		//获取数据
+		getData(){
+			this.$refs.loading.open();
+			Promise.all([this.getCircleInfo(), this.getTopArticle(), this.getArticleList(true)]).then((res) => {
+				this.$refs.loading.close();
+				uni.stopPullDownRefresh();
+			});
 		}
 	},
 	onLoad(options) {
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
 		// 获取id请求
-		if(options.scene){
+		if (options.scene) {
 			this.circleId = options.scene;
 		}
-		if(options.id){
+		if (options.id) {
 			this.circleId = options.id;
 		}
-		this.$refs.loading.open();
-		this.getCircleInfo();
-		this.getTopArticle();
-		this.getArticleList(true);
+		this.getData();
 	},
 	onPullDownRefresh() {
-		this.$refs.loading.open();
-		this.getCircleInfo();
-		this.getTopArticle();
-		this.getArticleList(true);
-		setTimeout(() => {
-			uni.stopPullDownRefresh();
-		}, 2000);
+		this.getData();
 	},
 	onReachBottom() {
-		this.getArticleList();
+		this.$refs.loading.open();
+		this.getArticleList().then(()=>{
+			this.$refs.loading.close();
+		});
 	},
 	onShareAppMessage(res) {
 		// console.log(res);

@@ -197,8 +197,9 @@ export default {
 					for (let i = 0; i < res.data.info.length; i++) {
 						let _item = res.data.info[i];
 						if (_item.study_type == 2) {
+							var src = this.httpsUrl(_item.image_part[0]);
 							uni.getImageInfo({
-								src: _item.image_part[0],
+								src,
 								success: (res) => {
 									var width = this.screenWidth - 30;
 									var height = width * res.height / res.width;
