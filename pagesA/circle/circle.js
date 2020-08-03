@@ -84,8 +84,9 @@ export default {
 					for (let i = 0; i < res.data.info.length; i++) {
 						let _item = res.data.info[i];
 						if (_item.study_type == 2) {
+							var src = this.httpsUrl(_item.image_part[0]);
 							uni.getImageInfo({
-								src: _item.image_part[0],
+								src,
 								success: (res) => {
 									var width = this.screenWidth - 30;
 									var height = width * res.height / res.width;
@@ -227,9 +228,9 @@ export default {
 		},
 		getCircleHead() {
 			return new Promise((resolve, reject) => {
-				var src = this.circleData.realm_icon;
+				var src = this.httpsUrl(this.circleData.realm_icon);
 				uni.getImageInfo({
-					src: 'https' + src.substr(4, src.length - 1),
+					src,
 					success: function(image) {
 						resolve(image.path);
 					}
@@ -238,9 +239,9 @@ export default {
 		},
 		getCircleBanner() {
 			return new Promise((resolve, reject) => {
-				var src = this.circleData.realm_bg;
+				var src = this.httpsUrl(this.circleData.realm_bg);
 				uni.getImageInfo({
-					src: 'https' + src.substr(4, src.length - 1),
+					src,
 					success: function(image) {
 						resolve(image.path);
 					}

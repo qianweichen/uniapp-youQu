@@ -19,6 +19,14 @@ Vue.component("backCapsule", backCapsule);
 import wLoading from "@/components/loading/w-loading.vue";
 Vue.component('w-loading',wLoading);
 
+//修改http为https
+Vue.prototype.httpsUrl = function(url) {
+	if (url.indexOf("https") < 0) {
+		url = url.replace("http:", "https:");
+	}
+	return url;
+}
+
 //跳转页面
 Vue.prototype.goPage = function(url) {
 	uni.navigateTo({

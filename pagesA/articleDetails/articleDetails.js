@@ -216,8 +216,9 @@ export default {
 		},
 		getBg() {
 			return new Promise((resolve, reject) => {
+				var src = this.httpsUrl(this.articleData.image_part[0]);
 				uni.getImageInfo({
-					src: this.articleData.image_part[0],
+					src,
 					success: res => {
 						resolve(res.path);
 						this.bannerBg.width = res.width;
@@ -228,8 +229,9 @@ export default {
 		},
 		getAvater() {
 			return new Promise((resolve, reject) => {
+				var src = this.httpsUrl(this.articleData.user_head_sculpture);
 				uni.getImageInfo({
-					src: this.articleData.user_head_sculpture,
+					src,
 					success: res => {
 						resolve(res.path);
 					}
