@@ -69,7 +69,16 @@ export default {
 			if (curTime - lastTime > 0) {
 				if (curTime - lastTime < 300) {
 					// console.log("双击事件，用了：" + (curTime - lastTime));
-					this.$refs.homePage.getHomeList(true);
+					//每次双击触发刷新
+					if (this.tabIndex == 'home') {
+						this.$refs.homePage.getHomeList(true);
+					} else if (this.tabIndex == 'find') {
+						if (this.$refs.findPage) this.$refs.findPage.onShowFun();
+					} else if (this.tabIndex == 'message') {
+						if (this.$refs.messagePage) this.$refs.messagePage.onShowFun();
+					} else if (this.tabIndex == 'mine') {
+						if (this.$refs.minePage) this.$refs.minePage.onShowFun();
+					}
 				}
 			}
 			this.clickTime = curTime;
@@ -86,11 +95,9 @@ export default {
 		},
 		changeTabIndex(e) {
 			var index = e.currentTarget.dataset.name;
-			//点击时本身就在首页，则触发刷新首页视频（赋值之前执行）
-			if (index == 'home') {
-				if (this.tabIndex == 'home') {
-					this.doubleClick(e);
-				}
+			//点击当前页
+			if (index == this.tabIndex) {
+				this.doubleClick(e);
 			}
 
 			this.tabIndex = index;
@@ -107,16 +114,6 @@ export default {
 			}
 			if (index == 'mine' && !this.loadTabList[3]) {
 				this.loadTabList[3] = true;
-			}
-
-			//控制每次点击触发刷新
-			if (index == 'home') {
-			} else if (index == 'find') {
-				if (this.$refs.findPage) this.$refs.findPage.onShowFun();
-			} else if (index == 'message') {
-				if (this.$refs.messagePage) this.$refs.messagePage.onShowFun();
-			} else if (index == 'mine') {
-				if (this.$refs.minePage) this.$refs.minePage.onShowFun();
 			}
 
 			//切换tab暂停视频

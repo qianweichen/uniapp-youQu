@@ -166,7 +166,7 @@ export default {
 				},
 				success: res => {
 					this.$refs.loading.close();
-					console.log('获取用户信息:', res);
+					// console.log('获取用户信息:', res);
 					this.personalInfo = res.data.info;
 				}
 			});
