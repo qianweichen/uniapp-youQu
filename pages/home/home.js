@@ -11,9 +11,9 @@ export default {
 			isShowNotice: false,
 			isShowShare: false,
 			txList: [],
-			animation:'',
-			animation2:'',
-			isShowRed:false
+			animation: '',
+			animation2: '',
+			isShowRed: false
 		};
 	},
 	methods: {
@@ -103,7 +103,7 @@ export default {
 					uid: uni.getStorageSync('userId'),
 					version: 2, // 0是文字 1是语音 2是视频 3是全部
 					index_page: this.videoPage,
-					old_id: this.shareVideoId
+					old_id: this.videoPage == 1 ? this.shareVideoId : ''
 				},
 				success: res => {
 					this.$refs.loading.close();
@@ -205,7 +205,7 @@ export default {
 			//3: 将动画export导出，把动画数据传递组件animation的属性 
 			this.animation = animation.export();
 		}.bind(this), 2000)
-		
+
 		// 1: 创建动画实例animation:
 		var animation2 = uni.createAnimation({
 			duration: 1000,
