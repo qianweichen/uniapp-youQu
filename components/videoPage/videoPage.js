@@ -330,6 +330,9 @@ export default {
 		// 海报end-----------------------------------------------------------------------------------------------------
 		//关注
 		attention(uid, follow, index) {
+			if(follow===1){
+				return;
+			}
 			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',
@@ -755,9 +758,12 @@ export default {
 		this.shareAnimate();
 	},
 	mounted() {
-		//初始视频下标
-		this.videoIndex = this.index;
-		//获取视频对象
-		this.videoContext = uni.createVideoContext('myVideo0', this);
+		if(this.index!=0){	//有初始视频下标
+			this.videoIndex = this.index;
+		}else{	//默认下标0
+			//获取视频对象
+			this.videoContext = uni.createVideoContext('myVideo0', this);
+			this.videoContext.play();
+		}
 	}
 }

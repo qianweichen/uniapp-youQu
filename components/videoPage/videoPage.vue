@@ -30,7 +30,6 @@
 				<view style="height: 100%;" v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
 					<view class="videoBox" v-if="(index + 1) % 6 != 0">
 						<video
-							:autoplay="index == 0"
 							:id="'myVideo' + index"
 							:src="item.study_video"
 							:show-center-play-btn="false"
@@ -70,31 +69,19 @@
 						<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
 						<!-- 文案区域 -->
 						<view class="contentBox">
-							<view class="userInfo flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
-								<view class="header circle">
+							<view class="userInfo flex">
+								<view v-if="isAuthorized" class="header circle" @click.stop="attention(item.user_id, item.is_follow, index)">
 									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
-									<!-- <image class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
+									<image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image>
 								</view>
-								<view>
+								<button v-else open-type="getUserInfo" class="share header circle" @getuserinfo="getUserInfo" @click.stop="" style="overflow: unset;">
+									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
+									<image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image>
+								</button>
+								<view @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 									<view class="fs-30 bold">{{ item.user_nick_name }}</view>
 									<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 								</view>
-								<view v-if="isAuthorized">
-									<view
-										v-if="item.user_id != userId && item.is_follow != 1"
-										class="attention flex-center"
-										@click.stop="attention(item.user_id, item.is_follow, index)"
-									>
-										<image v-if="item.is_follow != 1" src="../../static/add.png" mode="widthFix"></image>
-										<view>关注</view>
-									</view>
-								</view>
-								<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
-									<view class="attention flex-center">
-										<image src="../../static/add.png" mode="widthFix"></image>
-										<view>关注</view>
-									</view>
-								</button>
 							</view>
 							<view class="text fs-28" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 							<view class="flex-between">
@@ -160,21 +147,6 @@
 					<!-- 全屏广告 -->
 					<view v-else class="videoBox flex-center">
 						<ad-custom class="ad-custom" unit-id="adunit-a556114efa3c01c5"></ad-custom>
-						<!-- <view class="contentBox">
-						<view class="userInfo flex">
-							<view class="header circle"><image class="header-img circle" src="../../static/logo.png" mode="aspectFill"></image></view>
-							<view><view class="fs-28 bold">友趣vlog</view></view>
-						</view>
-						<view class="text fs-28"></view>
-						<view class="flex-between">
-							<view class="circleName flex">
-								<view class="flex">
-									<image class="circle" src="../../static/logo.png" mode="aspectFill"></image>
-									<text class="fs-22">友趣vlog</text>
-								</view>
-							</view>
-						</view>
-					</view> -->
 					</view>
 				</view>
 			</swiper-item>
