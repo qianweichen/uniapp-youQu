@@ -27,7 +27,7 @@ export default {
 					uid: uni.getStorageSync('userId'),
 				},
 				success: res => {
-					console.log("获取红包开关:", res);
+					// console.log("获取红包开关:", res);
 					this.isShowRed = res.data.data.with_status;
 				},
 			});

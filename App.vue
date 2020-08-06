@@ -87,6 +87,10 @@ export default {
 	},
 	onShow: function() {
 		// console.log('App Show')
+		//屏幕长亮
+		uni.setKeepScreenOn({
+		    keepScreenOn: true
+		});
 
 		// 开始计算浏览时间
 		let inAppTime = Date.now(); //进入的时间

@@ -163,7 +163,8 @@ function getQiniuToken(callback) {
 function uploadURLFromRegionCode(code) {
     var uploadURL = null;
     switch(code) {
-        case 'ECN': uploadURL = 'https://up.qiniup.com'; break;
+		case 'ECN': uploadURL = 'https://up-z2.qiniup.com'; break;
+        // case 'ECN': uploadURL = 'https://up.qiniup.com'; break;
         case 'NCN': uploadURL = 'https://up-z1.qiniup.com'; break;
         case 'SCN': uploadURL = 'https://up-z2.qiniup.com'; break;
         case 'NA': uploadURL = 'https://up-na0.qiniup.com'; break;

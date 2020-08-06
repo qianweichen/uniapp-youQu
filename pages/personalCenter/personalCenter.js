@@ -6,8 +6,8 @@ export default {
 			personalId: '', //主页用户id
 			personalInfo: {}, //用户信息
 			uid: uni.getStorageSync('userId'), //用户id
-			videoPage: 1 ,//页码
-			isAuthorized: false ,//授权否
+			videoPage: 1, //页码
+			isAuthorized: false, //授权否
 			//自动播放数据
 			screenWidth: uni.getSystemInfoSync().windowWidth,
 			screenHeight: uni.getSystemInfoSync().windowHeight,
@@ -17,12 +17,12 @@ export default {
 			touchEnd: 0,
 			pageScroll: 0,
 			timer: null,
-			autoPlayFlag:false
+			autoPlayFlag: false
 		};
 	},
 	methods: {
 		//播放视频
-		playVideoFun(index,oldIndex){
+		playVideoFun(index, oldIndex) {
 			this.autoPlayFlag = true;
 			for (var i = 0; i < this.dynamicList.length; i++) {
 				this.$set(this.dynamicList[i], 'playVideoFlag', false);
@@ -57,7 +57,7 @@ export default {
 			});
 		},
 		//关注后修改数据
-		attentionFun(index,state) {
+		attentionFun(index, state) {
 			this.dynamicList[index].is_follow = state; //评论数+1
 			this.getPersonalInfo();
 		},
@@ -90,10 +90,10 @@ export default {
 			this.dynamicList[index]['info_zan_count'] = num; //修改点赞数
 		},
 		//评论后修改数据
-		commentFun(index, content , isDel) {
-			if(isDel){
+		commentFun(index, content, isDel) {
+			if (isDel) {
 				this.dynamicList[index].study_repount--; //评论数-1
-			}else{
+			} else {
 				this.dynamicList[index].study_repount++; //评论数+1
 			}
 		},
@@ -190,6 +190,7 @@ export default {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
 					id: this.personalId,
+					paper_id: this.personalId,
 					uid: uni.getStorageSync('userId'),
 					index_page: this.videoPage,
 					version
@@ -201,7 +202,7 @@ export default {
 					for (var j = 0; j < res.data.info.length; j++) {
 						for (var i = 0; i < res.data.info[j].list.length; i++) {
 							let _item = res.data.info[j].list[i];
-							if (_item.study_type == 2) {
+							if (_item.study_type == 2&&_item.image_part) {
 								var src = this.httpsUrl(_item.image_part[0]);
 								uni.getImageInfo({
 									src,
@@ -219,7 +220,6 @@ export default {
 						}
 						this.dynamicList = this.dynamicList.concat(res.data.info[j].list);
 					}
-					console.log(this.dynamicList);
 					if (res.data.info.length == 0) {
 						uni.showToast({
 							title: '没有更多数据了',
@@ -230,7 +230,7 @@ export default {
 			});
 		},
 		getUserInfo(e) {
-		    if(!e.detail.userInfo)	return;
+			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 				this.getPersonalInfo();
@@ -272,13 +272,13 @@ export default {
 		}
 		// 页面内分享按钮
 		if (res.from === 'button') {
-			if(res.target.dataset.type=='persional'){
+			if (res.target.dataset.type == 'persional') {
 				return {
 					title: this.personalInfo.user_nick_name || this.miniProgramName,
 					path: '/pages/personalCenter/personalCenter?id=' + this.personalId,
 					imageUrl: this.personalInfo.bg_img
 				};
-			}else{
+			} else {
 				return {
 					title: res.target.dataset.content || this.miniProgramName,
 					path: '/pagesA/articleDetails/articleDetails?id=' + res.target.dataset.id,
@@ -288,7 +288,7 @@ export default {
 		}
 	},
 	onPageScroll(e) {
-		if(this.tabIndex!=2){
+		if (this.tabIndex != 2) {
 			return;
 		}
 		this.pageScroll = e.scrollTop;
@@ -301,7 +301,7 @@ export default {
 					this.playIndex++;
 					this.firstTop = this.firstTop + rect.height;
 					// console.log("触发向下", this.playIndex)
-	
+
 					if (!this.autoPlayFlag) {
 						return;
 					}
@@ -311,12 +311,12 @@ export default {
 					}
 					this.$set(this.dynamicList[this.playIndex - 1], 'playVideoFlag', true);
 					//自动播放视频end
-	
+
 				} else if ((this.touchEnd - this.touchStar < 0) && (e.scrollTop <= (this.firstTop - rect2.height - spaceArea2))) {
 					this.playIndex--;
 					this.firstTop = this.firstTop - rect2.height;
 					// console.log("触发向上", this.playIndex)
-	
+
 					if (!this.autoPlayFlag) {
 						return;
 					}

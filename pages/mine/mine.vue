@@ -2,7 +2,7 @@
 	<view class="page-persionalC page-mine">
 		<navigationBar name="我的"></navigationBar>
 		<view class="banner" :style="'background-image: url(' + personalInfo.bg_img + ');'">
-			<view class="myPage flex-center" @click="goPage('/pages/personalCenter/personalCenter?id=' + uid)">
+			<view class="myPage flex-center" @click="goPage('/pages/personalCenter/personalCenter?id=' + personalInfo.id)">
 				<view class="fs-26">个人主页</view>
 				<image src="../../static/right.png" mode="widthFix"></image>
 			</view>
