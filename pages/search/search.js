@@ -203,11 +203,11 @@ export default {
 								success: (res) => {
 									var width = this.screenWidth - 30;
 									var height = width * res.height / res.width;
-									if(height>width){
-										height /=2; 
+									if (height > this.screenHeight / 2 + 30) {
+										height = this.screenHeight / 2 + 30;
 									}
 									// _item.height = height;	//不渲染
-									this.$set(_item, 'height', height);	//渲染
+									this.$set(_item, 'height', height); //渲染
 								}
 							})
 						}

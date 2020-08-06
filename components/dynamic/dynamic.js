@@ -33,7 +33,9 @@ export default {
 			imgHeightList: [], //轮播高度数组
 			screenWidth: uni.getSystemInfoSync().windowWidth, //屏幕宽度
 			screenHeight: uni.getSystemInfoSync().windowHeight, //屏幕宽度
-			bannerImgNumList: [] //轮播中图片总数
+			bannerImgNumList: [], //轮播中图片总数
+
+			progressNum: 0,
 		};
 	},
 	computed: {
@@ -50,6 +52,10 @@ export default {
 		}
 	},
 	methods: {
+		// 视频进度改变
+		videoTimeUpdate(e) {
+			this.progressNum = (e.detail.currentTime / e.detail.duration) * 100;
+		},
 		changeSwiper(e) {
 			var index = e.currentTarget.dataset.index;
 			this.bannerImgNumList[index] = e.detail.current + 1;
@@ -78,23 +84,33 @@ export default {
 			// console.log(this.imgHeightList);
 		},
 		clickVideoFun(e) {
-			var curTime = e.timeStamp; //本次点击时间
-			var lastTime = this.clickTime; //上次点击时间
-			if (curTime - lastTime > 0) {
-				if (curTime - lastTime < 300) {
-					// console.log("双击事件，用了：" + (curTime - lastTime));
-					var videoContext = uni.createVideoContext('myVideo', this);
-					if (this.isVideoFull) {
-						videoContext.exitFullScreen();
-						this.isVideoFull = false;
-					} else {
-						videoContext.requestFullScreen();
-						this.isVideoFull = true;
-					}
+			// 双击
+			// var curTime = e.timeStamp; //本次点击时间
+			// var lastTime = this.clickTime; //上次点击时间
+			// if (curTime - lastTime > 0) {
+			// 	if (curTime - lastTime < 300) {
+			// 		// console.log("双击事件，用了：" + (curTime - lastTime));
+			// 		var videoContext = uni.createVideoContext('myVideo', this);
+			// 		if (this.isVideoFull) {
+			// 			videoContext.exitFullScreen();
+			// 			this.isVideoFull = false;
+			// 		} else {
+			// 			videoContext.requestFullScreen();
+			// 			this.isVideoFull = true;
+			// 		}
+			// 	}
+			// }
+			// this.clickTime = curTime;
 
-				}
+			//单击
+			var videoContext = uni.createVideoContext('myVideo', this);
+			if (this.isVideoFull) {
+				videoContext.exitFullScreen();
+				this.isVideoFull = false;
+			} else {
+				videoContext.requestFullScreen();
+				this.isVideoFull = true;
 			}
-			this.clickTime = curTime;
 		},
 		playVideoFun(index) {
 			this.$emit('playVideoFun', index, this.oldIndex);
@@ -342,7 +358,6 @@ export default {
 				},
 				success: res => {
 					console.log("评论:", res);
-					this.commentContent = '';
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
@@ -352,7 +367,8 @@ export default {
 						return;
 					}
 					this.showCommentFun(); //重新加载评论
-					this.$emit('commentFun', this.clickDynamicIndex) //评论数+1
+					this.$emit('commentFun', this.clickDynamicIndex, this.commentContent); //评论数+1
+					this.commentContent = '';
 				},
 			});
 		},

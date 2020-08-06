@@ -198,9 +198,28 @@ export default {
 					this.$refs.loading.close();
 					// console.log("动态:", res);
 					this.videoPage++;
-					for (var i = 0; i < res.data.info.length; i++) {
-						this.dynamicList = this.dynamicList.concat(res.data.info[i].list);
+					for (var j = 0; j < res.data.info.length; j++) {
+						for (var i = 0; i < res.data.info[j].list.length; i++) {
+							let _item = res.data.info[j].list[i];
+							if (_item.study_type == 2) {
+								var src = this.httpsUrl(_item.image_part[0]);
+								uni.getImageInfo({
+									src,
+									success: (res) => {
+										var width = this.screenWidth - 30;
+										var height = width * res.height / res.width;
+										if (height > this.screenHeight / 2 + 30) {
+											height = this.screenHeight / 2 + 30;
+										}
+										// _item.height = height;	//不渲染
+										this.$set(_item, 'height', height); //渲染
+									}
+								})
+							}
+						}
+						this.dynamicList = this.dynamicList.concat(res.data.info[j].list);
 					}
+					console.log(this.dynamicList);
 					if (res.data.info.length == 0) {
 						uni.showToast({
 							title: '没有更多数据了',

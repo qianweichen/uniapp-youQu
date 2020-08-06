@@ -41,6 +41,22 @@
 			.mediaBox {
 				position: relative;
 				height: 600rpx;
+				.progress {
+					width: 100%;
+					height: 2rpx;
+					background-color: #999;
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					view {
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 50%;
+						height: 100%;
+						background-color: #fff;
+					}
+				}
 				.page-num{
 					width: 100rpx;
 					height: 50rpx;
@@ -132,9 +148,7 @@
 					margin-right: 11rpx;
 				}
 				.function {
-					.flex {
-						margin-left: 49rpx;
-					}
+					width: 320rpx;
 					image {
 						width: 32rpx;
 						height: auto;

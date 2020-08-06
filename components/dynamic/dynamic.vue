@@ -52,9 +52,11 @@ playVideoFun(index,oldIndex){
 				<view class="content fs-28 padding" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 				<!-- 图片/视频 -->
 				<view v-if="item.study_type == 2" class="mediaBox" :style="'height:' + (item.height || 300) + 'px;'">
-					<video v-if="item.playVideoFlag" id="myVideo" :src="item.study_video" controls autoplay @error="videoError" @click="clickVideoFun"></video>
+					<video v-if="item.playVideoFlag" id="myVideo" :src="item.study_video" :controls="false" autoplay loop danmu-btn enable-danmu :danmu-list="item.pinglun" :object-fit="isVideoFull?'':'cover'" @timeupdate="videoTimeUpdate" @error="videoError" @click="clickVideoFun"></video>
 					<image v-else class="poster" :src="item.image_part[0]" mode="aspectFill"></image>
 					<image v-if="!item.playVideoFlag" @click="playVideoFun(index)" class="circle play" src="../../static/icon-play.png" mode="widthFix"></image>
+					<!-- 进度条 -->
+					<view v-if="item.playVideoFlag" class="progress"><view :style="'width:' + progressNum + '%;'"></view></view>
 				</view>
 				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox" :style="'height:' + (imgHeightList[index] || 300) + 'px;'">
 					<!-- 1 -->
@@ -82,7 +84,7 @@ playVideoFun(index,oldIndex){
 						<view class="fs-22" style="color: #908E99;">{{ item.realm_name }}</view>
 					</view>
 					<!-- 公共部分 -->
-					<view class="flex function fs-22">
+					<view class="flex-between function fs-22">
 						<view v-if="isAuthorized" class="flex" @click="goodFun(item.id, index)">
 							<image :src="'../../static/like' + (item.is_info_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 							<text>{{ item.info_zan_count }}</text>

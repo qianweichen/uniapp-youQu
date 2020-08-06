@@ -49,6 +49,10 @@ export default {
 				this.dynamicList[index].study_repount--; //评论数-1
 			} else {
 				this.dynamicList[index].study_repount++; //评论数+1
+				this.dynamicList[index].pinglun.push({
+					text: content,
+					time: this.dynamicList[index].pinglun.length + 1
+				})
 			}
 		},
 		//动态视频播放
@@ -82,15 +86,15 @@ export default {
 					},
 					success: res => {
 						// console.log("帖子数据:", res);
-						if(res.data.info.length==0){
+						if (res.data.info.length == 0) {
 							uni.showToast({
-								title:'没有更多了',
-								icon:'none'
+								title: '没有更多了',
+								icon: 'none'
 							})
 							resolve();
 							return;
 						}
-						
+
 						for (let i = 0; i < res.data.info.length; i++) {
 							let _item = res.data.info[i];
 							if (_item.study_type == 2) {
@@ -100,8 +104,8 @@ export default {
 									success: (res) => {
 										var width = this.screenWidth - 30;
 										var height = width * res.height / res.width;
-										if (height > width) {
-											height /= 2;
+										if (height > this.screenHeight / 2 + 30) {
+											height = this.screenHeight / 2 + 30;
 										}
 										// _item.height = height;	//不渲染
 										this.$set(_item, 'height', height); //渲染
@@ -427,7 +431,7 @@ export default {
 			this.touchEnd = this.pageScroll;
 		},
 		//获取数据
-		getData(){
+		getData() {
 			this.$refs.loading.open();
 			Promise.all([this.getCircleInfo(), this.getTopArticle(), this.getArticleList(true)]).then((res) => {
 				this.$refs.loading.close();
@@ -452,7 +456,7 @@ export default {
 	},
 	onReachBottom() {
 		this.$refs.loading.open();
-		this.getArticleList().then(()=>{
+		this.getArticleList().then(() => {
 			this.$refs.loading.close();
 		});
 	},
