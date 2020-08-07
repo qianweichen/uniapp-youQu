@@ -28,7 +28,7 @@
 			<swiper-item v-for="(item, index) in videoList" :key="index">
 				<!-- 节流:只显示3个视频 -->
 				<view style="height: 100%;" v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
-					<view class="videoBox" v-if="(index + 1) % 6 != 0">
+					<view class="videoBox" v-if="((index + 1) % 6 != 0) || (parentPage != 'home')">
 						<video
 							:id="'myVideo' + index"
 							:src="item.study_video"
@@ -145,9 +145,7 @@
 					</view> -->
 					</view>
 					<!-- 全屏广告 -->
-					<view v-else class="videoBox flex-center">
-						<ad-custom class="ad-custom" unit-id="adunit-a556114efa3c01c5"></ad-custom>
-					</view>
+					<view v-else class="videoBox flex-center"><ad-custom class="ad-custom" unit-id="adunit-a556114efa3c01c5"></ad-custom></view>
 				</view>
 			</swiper-item>
 		</swiper>

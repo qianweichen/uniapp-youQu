@@ -90,7 +90,7 @@ playVideoFun(index,oldIndex){
 							<text>{{ item.info_zan_count }}</text>
 						</view>
 						<view v-else class="flex">
-							<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+							<button open-type="getUserInfo" class="share flex" @getuserinfo="getUserInfo">
 								<image :src="'../../static/like' + (item.is_info_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<text>{{ item.info_zan_count }}</text>
 							</button>
@@ -100,7 +100,7 @@ playVideoFun(index,oldIndex){
 							<text>{{ item.study_repount }}</text>
 						</view>
 						<view class="flex" v-else>
-							<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+							<button open-type="getUserInfo" class="share flex" @getuserinfo="getUserInfo">
 								<image src="../../static/comment.png" mode="widthFix"></image>
 								<text>{{ item.study_repount }}</text>
 							</button>

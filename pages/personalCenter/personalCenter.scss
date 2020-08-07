@@ -152,9 +152,9 @@
 					overflow : hidden;
 					text-overflow: ellipsis;
 					display: -webkit-box;
-					-webkit-line-clamp: 2;
+					-webkit-line-clamp: 3;
 					-webkit-box-orient: vertical;
-					padding-bottom: 30rpx;
+					margin-bottom: 30rpx;
 				}
 				.header{
 					width:40rpx;

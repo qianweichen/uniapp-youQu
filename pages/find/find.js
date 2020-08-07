@@ -243,6 +243,7 @@ export default {
 			this.isAuthorized = this.beAuthorized();
 			if (this.isAuthorized) {
 				this.getMyCircle(true);
+				this.refreshDynamic();
 			}
 		}
 	},

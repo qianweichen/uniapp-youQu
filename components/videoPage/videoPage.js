@@ -44,7 +44,11 @@ export default {
 		index: { //默认下标
 			type: Number,
 			default: 0
-		}
+		},
+		parentPage: { //父组件名字
+			type: String,
+			default: 'default'
+		},
 	},
 	watch: {
 		videoList(newName, oldName) {

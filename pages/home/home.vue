@@ -28,6 +28,7 @@
 			<videoBox
 				ref="videoBox"
 				:videoList="videoList"
+				:parentPage="home"
 				@loginFun="refreshList"
 				@getNextPage="getHomeList"
 				@goodFun="goodFun"
