@@ -1,4 +1,7 @@
 /* 样式 */
+page {
+	background-color: $themeColor;
+}
 
 .btn-big {
 	width: 690rpx;
@@ -66,9 +69,11 @@
 .bold {
 	font-weight: bold;
 }
+
 .fc-a {
 	color: #aaa;
 }
+
 .fc-f {
 	color: #fff;
 }
@@ -81,7 +86,7 @@
 	color: #999;
 }
 
-.fc-6{
+.fc-6 {
 	color: #666;
 }
 

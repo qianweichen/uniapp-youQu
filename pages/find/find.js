@@ -19,6 +19,29 @@ export default {
 		}
 	},
 	methods: {
+		//点赞
+		videoGoodFun(id, index) {
+			this.request({
+				url: this.apiUrl + 'User/add_user_zan',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					id,
+					uid: uni.getStorageSync('userId'),
+					applaud_type: 0,
+					zan_type: this.dynamicList[index]['is_info_zan'] == true ? 1 : 0
+				},
+				success: res => {
+					// console.log("点赞:", res);
+					this.dynamicList[index]['is_info_zan'] = !this.dynamicList[index]['is_info_zan']; //修改点赞状态
+					this.dynamicList[index]['info_zan_count'] = res.data.info_zan_count; //修改点赞数
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					});
+				},
+			});
+		},
 		swiperChange(e) {
 			// console.log(e.detail.current);
 			this.swiperIndex = e.detail.current;

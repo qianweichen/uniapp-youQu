@@ -24,11 +24,11 @@
 		</view>
 		<!-- <view :style="'height:' + (customBar + topCustomBar) + 'px;'"></view> -->
 		<!-- <view  :style="'height:calc(100% - ' + (customBar + topCustomBar) + 'px);'"> -->
-		<view style="height: 100%;">
+		<view style="height: 100%;" v-if="showVideoFlag">
 			<videoBox
 				ref="videoBox"
 				:videoList="videoList"
-				:parentPage="home"
+				:parentPage="'home'"
 				@loginFun="refreshList"
 				@getNextPage="getHomeList"
 				@goodFun="goodFun"

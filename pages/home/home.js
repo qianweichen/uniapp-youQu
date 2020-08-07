@@ -13,7 +13,8 @@ export default {
 			txList: [],
 			animation: '',
 			animation2: '',
-			isShowRed: false
+			isShowRed: false,
+			showVideoFlag:true
 		};
 	},
 	methods: {
@@ -70,7 +71,8 @@ export default {
 		// 切换顶部tab
 		changeTabs(flag) {
 			this.tabsFlag = flag;
-
+			//利用v-if切换时清除video，保证初始化播放
+			this.showVideoFlag = false;
 			//获取数据
 			this.$refs.loading.open();
 			if (flag) {
@@ -110,6 +112,7 @@ export default {
 					// console.log("首页视频列表:", res);
 					this.videoPage++;
 					this.videoList = this.videoList.concat(res.data.info);
+					this.showVideoFlag = true;
 				},
 			});
 		},
@@ -139,6 +142,7 @@ export default {
 					console.log("首页视频列表:", res);
 					this.videoPage++;
 					this.videoList = this.videoList.concat(res.data.info);
+					this.showVideoFlag = true;
 				},
 			});
 		},
