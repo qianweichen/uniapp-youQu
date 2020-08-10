@@ -24,11 +24,11 @@
 <template>
 	<view style="height: 100%;">
 		<!-- 视频 -->
-		<swiper @change="changeSwiper" :current="videoIndex" vertical>
+		<swiper class="video-swiper" @change="changeSwiper" :current="videoIndex" vertical>
 			<swiper-item v-for="(item, index) in videoList" :key="index">
 				<!-- 节流:只显示3个视频 -->
 				<view style="height: 100%;" v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
-					<view class="videoBox" v-if="((index + 1) % 6 != 0) || (parentPage != 'home')">
+					<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'">
 						<video
 							:id="'myVideo' + index"
 							:src="item.study_video"
@@ -68,7 +68,7 @@
 						<!-- 播放按钮 -->
 						<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
 						<!-- 文案区域 -->
-						<view class="contentBox">
+						<view class="contentBox" :class="isSmallScreen && parentPage == 'home' ? 'full-page' : ''">
 							<view class="userInfo flex">
 								<view v-if="isAuthorized" class="header circle" @click.stop="attention(item.user_id, item.is_follow, index)">
 									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
@@ -138,14 +138,9 @@
 								</button>
 							</view>
 						</view>
-						<!-- 左侧滑入的广告 -->
-						<!-- <view class="ad-group" :class="{show:showAd}">
-						<view class="second" @click="closeAd">{{second}}秒后消失,点击关闭</view>
-						<ad unit-id="adunit-88a4f70853188f51" ad-type="video" ad-theme="white"></ad>
-					</view> -->
 					</view>
 					<!-- 全屏广告 -->
-					<view v-else class="videoBox flex-center"><ad-custom class="ad-custom" unit-id="adunit-a556114efa3c01c5"></ad-custom></view>
+					<view v-else class="videoBox"><ad-custom class="ad-custom" :class="isSmallScreen?'smallScreen':''" unit-id="adunit-a556114efa3c01c5"></ad-custom></view>
 				</view>
 			</swiper-item>
 		</swiper>

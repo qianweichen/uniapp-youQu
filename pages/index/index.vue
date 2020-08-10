@@ -1,13 +1,13 @@
 <template>
 	<view class="page-index">
-		<view style="height: calc(100vh - 144rpx);">
+		<view :class="isSmallScreen && tabIndex == 'home' ? 'full-page' : 'normal-page'">
 			<home ref="homePage" v-if="loadTabList[0]" :class="{ hide: tabIndex != 'home' }"></home>
 			<find ref="findPage" v-if="loadTabList[1]" :class="{ hide: tabIndex != 'find' }"></find>
 			<message ref="messagePage" v-if="loadTabList[2]" :class="{ hide: tabIndex != 'message' }"></message>
 			<mine ref="minePage" v-if="loadTabList[3]" :class="{ hide: tabIndex != 'mine' }"></mine>
 		</view>
 		<!-- tabbar -->
-		<view class="tabbar flex-around">
+		<view class="tabbar flex-around" :class="isSmallScreen && tabIndex == 'home' ? 'lucency' : ''">
 			<view @click="changeTabIndex" data-name="home">
 				<image class="icon" :src="'../../static/tabbar/home' + (tabIndex == 'home' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'home' }">首页</view>
@@ -59,7 +59,8 @@ export default {
 			loadTabList: [true, false, false, false],
 			showPublishFlag: false,
 			messageNum: '',
-			clickTime: 0 //首页点击事件  控制双击
+			clickTime: 0, //首页点击事件  控制双击
+			isSmallScreen: uni.getSystemInfoSync().windowHeight <= 667 //小屏幕（是否小于iphone6高度）
 		};
 	},
 	methods: {
@@ -155,8 +156,8 @@ export default {
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
 		if (this.isAuthorized) this.getPersonalInfo(); //获取消息数
-		
-		wx.showShareMenu({menus: ['shareAppMessage', 'shareTimeline']});
+
+		wx.showShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] });
 	},
 	onShow() {
 		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();
@@ -208,6 +209,12 @@ export default {
 
 <style lang="scss">
 .page-index {
+	.full-page {
+		height: 100vh;
+	}
+	.normal-page {
+		height: calc(100vh - 144rpx);
+	}
 	.tabbar {
 		width: 100%;
 		height: 144rpx;
@@ -218,6 +225,9 @@ export default {
 		color: rgba(255, 255, 255, 0.7);
 		font-size: 22rpx;
 		text-align: center;
+		&.lucency {
+			background-color: rgba(0, 0, 0, 0);
+		}
 		.icon {
 			width: 60rpx;
 			height: auto;

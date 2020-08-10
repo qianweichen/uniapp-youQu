@@ -1,7 +1,7 @@
 <template>
 	<view class="page-persionalC page-mine">
 		<navigationBar name="我的"></navigationBar>
-		<view class="banner" :style="'background-image: url(' + personalInfo.bg_img + ');'">
+		<view class="banner" :style="'background-image: url(' + (personalInfo.bg_img || '') + ');'">
 			<view class="myPage flex-center" @click="goPage('/pages/personalCenter/personalCenter?id=' + personalInfo.id)">
 				<view class="fs-26">个人主页</view>
 				<image src="../../static/right.png" mode="widthFix"></image>
@@ -147,9 +147,9 @@ export default {
 								title: res.data.msg,
 								icon: 'none'
 							});
-							setTimeout(()=>{
+							setTimeout(() => {
 								this.getPersonalInfo();
-							},1500);
+							}, 1500);
 						}
 					});
 				}
@@ -178,18 +178,16 @@ export default {
 				this.getPersonalInfo();
 			});
 		},
-		onShowFun(){
+		onShowFun() {
 			this.isAuthorized = this.beAuthorized();
-			if(this.isAuthorized)
-				this.getPersonalInfo();
+			if (this.isAuthorized) this.getPersonalInfo();
 		}
 	},
 	mounted() {
 		// console.log('mineCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
-		if(this.isAuthorized)
-			this.getPersonalInfo();
+		if (this.isAuthorized) this.getPersonalInfo();
 	}
 };
 </script>

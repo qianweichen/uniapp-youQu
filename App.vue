@@ -3,8 +3,6 @@ import Vue from 'vue';
 var timer = '';
 export default {
 	onLaunch: function() {
-		// console.log('App Launch')
-
 		//登陆
 		uni.login({
 			provider: 'weixin',
@@ -28,34 +26,6 @@ export default {
 						}
 					}
 				});
-			}
-		});
-
-		//自定义导航栏高度封装CustomBar
-		uni.getSystemInfo({
-			success: function(e) {
-				// #ifndef MP
-				Vue.prototype.StatusBar = e.statusBarHeight;
-				if (e.platform == 'android') {
-					Vue.prototype.CustomBar = e.statusBarHeight + 50;
-				} else {
-					Vue.prototype.CustomBar = e.statusBarHeight + 45;
-				}
-				// #endif
-				// #ifdef MP-WEIXIN || MP-QQ
-				Vue.prototype.StatusBar = e.statusBarHeight;
-				let custom = wx.getMenuButtonBoundingClientRect();
-				Vue.prototype.Custom = custom;
-				Vue.prototype.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
-				console.log('看这里-------------------------------------↓');
-				console.log(e.statusBarHeight);
-				console.log(custom.bottom + custom.top - e.statusBarHeight);
-				console.log('看这里-------------------------------------↑');
-				// #endif
-				// #ifdef MP-ALIPAY
-				Vue.prototype.StatusBar = e.statusBarHeight;
-				Vue.prototype.CustomBar = e.statusBarHeight + e.titleBarHeight;
-				// #endif
 			}
 		});
 
@@ -86,10 +56,33 @@ export default {
 		});
 	},
 	onShow: function() {
-		// console.log('App Show')
 		//屏幕长亮
 		uni.setKeepScreenOn({
 		    keepScreenOn: true
+		});
+		
+		//自定义导航栏高度封装CustomBar
+		uni.getSystemInfo({
+			success: function(e) {
+				// #ifndef MP
+				Vue.prototype.StatusBar = e.statusBarHeight;
+				if (e.platform == 'android') {
+					Vue.prototype.CustomBar = e.statusBarHeight + 50;
+				} else {
+					Vue.prototype.CustomBar = e.statusBarHeight + 45;
+				}
+				// #endif
+				// #ifdef MP-WEIXIN || MP-QQ
+				Vue.prototype.StatusBar = e.statusBarHeight;
+				let custom = wx.getMenuButtonBoundingClientRect();
+				Vue.prototype.Custom = custom;
+				Vue.prototype.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+				// #endif
+				// #ifdef MP-ALIPAY
+				Vue.prototype.StatusBar = e.statusBarHeight;
+				Vue.prototype.CustomBar = e.statusBarHeight + e.titleBarHeight;
+				// #endif
+			}
 		});
 
 		// 开始计算浏览时间
@@ -128,8 +121,6 @@ export default {
 		}, 10000);
 	},
 	onHide: function() {
-		// console.log('App Hide')
-
 		//离开时存储这次的时间
 		let inAppTime = uni.getStorageSync('inAppTime');
 		let outAppTime = Date.now();

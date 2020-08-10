@@ -380,7 +380,7 @@ export default {
 		background: #fff;
 		box-shadow: 0 10rpx 70rpx 0 rgba(227, 50, 5, 0.74);
 		border-radius: 8rpx;
-		padding-bottom: 80rpx;
+		padding: 80rpx 0;
 		margin: 0 auto;
 		margin-top: 600rpx;
 		.input-group {
@@ -409,7 +409,6 @@ export default {
 			}
 		}
 		.title {
-			padding-top: 80rpx;
 			padding-bottom: 30rpx;
 		}
 		.code {

@@ -13,9 +13,9 @@
 			<view class="item flex-between">
 				<view>
 					<view class="fs-28">圈遇官方邮箱</view>
-					<view class="fs-24 fc-9">quanyu@163.com</view>
+					<view class="fs-24 fc-9">2314058122@qq.com</view>
 				</view>
-				<view class="flex" @click="setClip('quanyu@163.com')">
+				<view class="flex" @click="setClip('2314058122@qq.com')">
 					<view class="fs-28 fc-9">复制邮箱</view>
 					<image class="right" src="../../static/right-9.png" mode="widthFix"></image>
 				</view>
