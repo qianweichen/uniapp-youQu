@@ -76,7 +76,7 @@
 					},
 					success: res => {
 						uni.hideLoading();
-						console.log('获取明细:', res);
+						// console.log('获取明细:', res);
 						if(res.data.info.length==0&&this.page>1){
 							uni.showToast({
 								title:'没有更多了',
@@ -99,7 +99,7 @@
 					},
 					success: res => {
 						this.$refs.loading.close();
-						console.log('获取用户信息:', res);
+						// console.log('获取用户信息:', res);
 						this.personalInfo = res.data.info;
 					}
 				});

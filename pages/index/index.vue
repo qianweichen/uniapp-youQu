@@ -35,6 +35,7 @@
 		</view>
 		<publish v-if="showPublishFlag" @togglePublishFlag="togglePublishFlag"></publish>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
+		<view v-if="isAddProgramShow" class="add-program fs-24" :style="'top:' + (customBar + 10) + 'px;'">点击"添加到我的小程序",下次访问更便捷</view>
 	</view>
 </template>
 
@@ -60,7 +61,9 @@ export default {
 			showPublishFlag: false,
 			messageNum: '',
 			clickTime: 0, //首页点击事件  控制双击
-			isSmallScreen: uni.getSystemInfoSync().windowHeight <= 667 //小屏幕（是否小于iphone6高度）
+			isSmallScreen: uni.getSystemInfoSync().windowHeight <= 667, //小屏幕（是否小于iphone6高度）
+			customBar: this.CustomBar,
+			isAddProgramShow: true
 		};
 	},
 	methods: {
@@ -150,14 +153,19 @@ export default {
 		}
 	},
 	onLoad(options) {
+		//接收首页分享的视频id
 		if (options.id) {
 			uni.setStorageSync('shareVideoId', options.id);
 		}
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
 		if (this.isAuthorized) this.getPersonalInfo(); //获取消息数
-
+		//打开朋友圈分享
 		wx.showShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] });
+		//隐藏添加到小程序
+		setTimeout(() => {
+			this.isAddProgramShow = false;
+		}, 8000);
 	},
 	onShow() {
 		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();
@@ -179,7 +187,7 @@ export default {
 		}
 		// 页面内分享按钮
 		if (res.from === 'button') {
-			console.log(res);
+			// console.log(res);
 			if (res.target.dataset.type == 'video') {
 				//视频分享，打开首页
 				return {
@@ -209,6 +217,25 @@ export default {
 
 <style lang="scss">
 .page-index {
+	.add-program {
+		position: fixed;
+		right: 20rpx;
+		background-color: #9470dd;
+		color: #fff;
+		padding: 10rpx 20rpx;
+		border-radius: 20rpx;
+		&::after {
+			content: '';
+			width: 0;
+			height: 0;
+			border-right: 14px solid transparent;
+			border-left: 14px solid transparent;
+			border-bottom: 14px solid #9470dd;
+			position: absolute;
+			top: -20rpx;
+			right: 90rpx;
+		}
+	}
 	.full-page {
 		height: 100vh;
 	}

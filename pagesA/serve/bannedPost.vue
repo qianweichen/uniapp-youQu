@@ -69,7 +69,7 @@ export default {
 					uid: uni.getStorageSync('userId')
 				},
 				success: res => {
-					console.log('禁言:', res);
+					// console.log('禁言:', res);
 					this.$refs.loading.close();
 					this.list = res.data.info;
 				}
@@ -95,7 +95,7 @@ export default {
 					beget: this.twoComment
 				},
 				success: res => {
-					console.log('申诉:', res);
+					// console.log('申诉:', res);
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'

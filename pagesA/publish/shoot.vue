@@ -67,7 +67,7 @@ export default {
 				sourceType: ['album'],
 				success: res => {
 					this.$refs.loading.close();
-					console.log('选择视频',res);
+					// console.log('选择视频',res);
 					this.shootData = {
 						tempVideoPath:res.tempFilePath,
 						tempThumbPath:res.thumbTempFilePath,
@@ -99,7 +99,7 @@ export default {
 			clearInterval(this.myInterval);
 			this.cameraContext.startRecord({
 				success: e => {
-					console.log('开始录像', e);
+					// console.log('开始录像', e);
 					this.shootTime = 2;
 					this.myInterval = setInterval(() => {
 						this.timerNum += 0.1;
@@ -124,7 +124,7 @@ export default {
 		},
 		//拍摄完保存地址
 		saveVideo(e) {
-			console.log('录像结束', e);
+			// console.log('录像结束', e);
 			e.duration = this.timerNum;
 			this.shootData = e;
 			this.shootTime = 3;

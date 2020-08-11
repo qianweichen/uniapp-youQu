@@ -35,7 +35,7 @@
 		},
 		methods:{
 			getImageInfo(e) {
-				console.log('图片返回：', e)
+				// console.log('图片返回：', e)
 			}
 		}
 	}

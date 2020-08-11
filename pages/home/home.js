@@ -139,7 +139,7 @@ export default {
 							icon: 'none'
 						})
 					}
-					console.log("首页视频列表:", res);
+					// console.log("首页视频列表:", res);
 					this.videoPage++;
 					this.videoList = this.videoList.concat(res.data.info);
 					this.showVideoFlag = true;

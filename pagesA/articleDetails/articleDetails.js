@@ -34,7 +34,7 @@ export default {
 				title: '获取二维码'
 			});
 			Promise.all([this.getAvater(), this.getQrCode(), this.getBg()]).then(res => {
-				console.log(res);
+				// console.log(res);
 				this.sharePosteCanvas(res[0], res[1], res[2]);
 			});
 		},
@@ -203,7 +203,7 @@ export default {
 						id: this.articleId
 					},
 					success: res => {
-						console.log('二维码:', res);
+						// console.log('二维码:', res);
 						uni.getImageInfo({
 							src: res.data.data.url,
 							success: res => {
@@ -263,7 +263,7 @@ export default {
 							});
 						},
 						fail: function(res) {
-							console.log(res);
+							// console.log(res);
 							if (res.errMsg == 'saveImageToPhotosAlbum:fail auth deny') {
 								uni.showModal({
 									content: '检测到您未打开微信保存图片到相册，开启后即可保存图片',
@@ -281,7 +281,7 @@ export default {
 					});
 				},
 				fail: function(err) {
-					console.log(err);
+					// console.log(err);
 				}
 			});
 		},

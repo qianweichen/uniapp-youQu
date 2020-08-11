@@ -87,7 +87,7 @@ export default {
 					uid: uni.getStorageSync('userId')
 				},
 				success: res => {
-					console.log('上传七牛:', res);
+					// console.log('上传七牛:', res);
 					var token = res.data.token;
 					// 交给七牛上传
 					qiniuUploader.upload(
@@ -105,10 +105,10 @@ export default {
 							params.img_arr = ['https://' + res.imageURL + '?vframe/jpg/offset/0'];
 							params.video_duration = parseInt(this.videoData.duration);
 							this.submit(params);
-							console.log('file url is: ' + res.fileUrl);
+							// console.log('file url is: ' + res.fileUrl);
 						},
 						error => {
-							console.log('error: ' + error);
+							// console.log('error: ' + error);
 							params.user_file = '';
 							this.submit(params);
 						},
@@ -146,7 +146,7 @@ export default {
 				data: params,
 				method: 'POST',
 				success: res => {
-					console.log('发布:', res);
+					// console.log('发布:', res);
 					uni.showToast({
 						title: res.data.msg,
 						icon:'none'
@@ -171,7 +171,7 @@ export default {
 		},
 		// 上传图片
 		getImageInfo(e) {
-			console.log('图片返回：', e);
+			// console.log('图片返回：', e);
 		}
 		// 禁止转发
 		// noForward(e) {

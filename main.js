@@ -2,6 +2,8 @@ import Vue from 'vue';
 import App from './App';
 //阿拉丁
 import './static/ald-stat/ald-stat';
+//小神推
+import './static/xst-stat/push_sdk';
 //公共JS
 import '@/common/common.js';
 

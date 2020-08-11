@@ -84,7 +84,7 @@ export default {
 				title: '获取二维码'
 			});
 			Promise.all([this.getAvater(), this.getQrCode(), this.getBg()]).then(res => {
-				console.log(res);
+				// console.log(res);
 				this.sharePosteCanvas(res[0], res[1], res[2]);
 			});
 		},
@@ -247,7 +247,7 @@ export default {
 						id: this.videoList[this.videoIndex].id
 					},
 					success: res => {
-						console.log('二维码:', res);
+						// console.log('二维码:', res);
 						uni.getImageInfo({
 							src: res.data.data.url,
 							success: res => {
@@ -307,7 +307,7 @@ export default {
 							});
 						},
 						fail: function(res) {
-							console.log(res);
+							// console.log(res);
 							if (res.errMsg == 'saveImageToPhotosAlbum:fail auth deny') {
 								uni.showModal({
 									content: '检测到您未打开微信保存图片到相册，开启后即可保存图片',
@@ -325,7 +325,7 @@ export default {
 					});
 				},
 				fail: function(err) {
-					console.log(err);
+					// console.log(err);
 				}
 			}, this);
 		},
@@ -339,6 +339,7 @@ export default {
 			if (follow === 1) {
 				return;
 			}
+			this.subscription();	//小神推模板消息订阅
 			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',
@@ -400,7 +401,7 @@ export default {
 					is_qq_text: this.deleteContent
 				},
 				success: res => {
-					console.log("删除", res);
+					// console.log("删除", res);
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
@@ -553,7 +554,7 @@ export default {
 					text: this.commentContent
 				},
 				success: res => {
-					console.log("评论:", res);
+					// console.log("评论:", res);
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
@@ -591,7 +592,7 @@ export default {
 					duplex_content: this.twoComment
 				},
 				success: res => {
-					console.log("发送二级评论:", res);
+					// console.log("发送二级评论:", res);
 					this.twoComment = '';
 					this.showTwoLevCommentFlag = false;
 					uni.showToast({
@@ -623,7 +624,7 @@ export default {
 					...this.delCommentQuery,
 				},
 				success: res => {
-					console.log("删除评论:", res);
+					// console.log("删除评论:", res);
 					this.showDelInfoFlag = false;
 					uni.showToast({
 						title: res.data.msg,
@@ -648,7 +649,7 @@ export default {
 					show_type: 'all'
 				},
 				success: res => {
-					console.log("获取评论:", res);
+					// console.log("获取评论:", res);
 					this.commentPage++;
 					this.commentList = this.commentList.concat(res.data.huifu);
 				},
@@ -667,7 +668,7 @@ export default {
 					zan_type: this.videoList[index]['is_info_zan'] == true ? 1 : 0
 				},
 				success: res => {
-					console.log("点赞:", res);
+					// console.log("点赞:", res);
 					this.$emit('goodFun', this.videoIndex, res.data.info_zan_count) //修改点赞状态
 					uni.showToast({
 						title: res.data.msg,
@@ -688,7 +689,7 @@ export default {
 					hui_id: id
 				},
 				success: res => {
-					console.log("回复的消息点赞", res);
+					// console.log("回复的消息点赞", res);
 					this.commentList[index]['is_huifu_zan'] = !this.commentList[index]['is_huifu_zan'];
 					if (this.commentList[index]['is_huifu_zan']) {
 						this.commentList[index]['is_huifu_zan_count'] = this.commentList[index]['is_huifu_zan_count'] + 1;

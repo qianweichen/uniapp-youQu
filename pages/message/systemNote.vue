@@ -54,7 +54,7 @@ export default {
 					// type: this.type //类型  1点赞 2评论 3关注	不传 或者传其它的 默认全部
 				},
 				success: res => {
-					console.log('获取消息:', res);
+					// console.log('获取消息:', res);
 					this.$refs.loading.close();
 					if (this.page > 1 && res.data.data.length == 0) {
 						uni.showToast({

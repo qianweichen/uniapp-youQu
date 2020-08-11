@@ -147,7 +147,7 @@ export default {
 				},
 				success: res => {
 					this.$refs.loading.close();
-					console.log('获取用户信息:', res);
+					// console.log('获取用户信息:', res);
 					this.img = res.data.info.user_head_sculpture;
 					this.nick_name = res.data.info.user_nick_name;
 					this.autograph = res.data.info.autograph;

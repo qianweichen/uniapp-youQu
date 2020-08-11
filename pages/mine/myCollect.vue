@@ -42,7 +42,7 @@
 						page:this.page
 					},
 					success: res => {
-						console.log("关注:",res);
+						// console.log("关注:",res);
 						this.$refs.loading.close();
 						if(res.data.info.length==0&&this.page>1){
 							uni.showToast({

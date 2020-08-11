@@ -117,7 +117,7 @@ export default {
 					search: this.searchContent
 				},
 				success: res => {
-					console.log("搜用户:", res);
+					// console.log("搜用户:", res);
 					this.$refs.loading.close();
 					if(res.data.data.length==0&&this.page>1){
 						uni.showToast({
@@ -154,7 +154,7 @@ export default {
 						search: this.searchContent
 					},
 					success: res => {
-						console.log("搜索圈子:", res);
+						// console.log("搜索圈子:", res);
 						if(res.data.data.length==0&&this.circlePage>1){
 							uni.showToast({
 								title:'没有更多了',
@@ -186,7 +186,7 @@ export default {
 					version: this.version
 				},
 				success: res => {
-					console.log("搜索:", res);
+					// console.log("搜索:", res);
 					this.$refs.loading.close();
 					if(res.data.info.length==0&&this.page>1){
 						uni.showToast({

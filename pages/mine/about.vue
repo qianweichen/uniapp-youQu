@@ -63,7 +63,7 @@
 						openid: uni.getStorageSync('openid')
 					},
 					success: res => {
-						console.log("站点信息:",res);
+						// console.log("站点信息:",res);
 						this.info = res.data;
 						this.$refs.loading.close();
 					},

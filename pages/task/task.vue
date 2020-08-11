@@ -98,7 +98,7 @@ export default {
 					version: 1
 				},
 				success: res => {
-					console.log('任务信息:', res);
+					// console.log('任务信息:', res);
 					this.$refs.loading.close();
 					this.taskData = res.data.data;
 				}
@@ -118,7 +118,7 @@ export default {
 							uid: uni.getStorageSync('userId')
 						},
 						success: res => {
-							console.log('签到:', res);
+							// console.log('签到:', res);
 							uni.showToast({
 								title: res.data.msg,
 								icon: 'none'
@@ -156,7 +156,7 @@ export default {
 						.load()
 						.then(() => rewardedVideoAd.show())
 						.catch(err => {
-							console.log('激励视频 广告显示失败');
+							// console.log('激励视频 广告显示失败');
 						});
 				});
 			}
@@ -166,13 +166,13 @@ export default {
 		if (uni.createRewardedVideoAd) {
 			rewardedVideoAd = uni.createRewardedVideoAd({ adUnitId: 'adunit-838a47bd221802de' });
 			rewardedVideoAd.onLoad(() => {
-				console.log('onLoad event');
+				// console.log('onLoad event');
 			});
 			rewardedVideoAd.onError(err => {
-				console.log('onError event', err);
+				// console.log('onError event', err);
 			});
 			rewardedVideoAd.onClose(res => {
-				console.log('onClose event', res);
+				// console.log('onClose event', res);
 				if ((res && res.isEnded) || res === undefined) {
 					this.$refs.loading.open();
 					this.request({

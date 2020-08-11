@@ -53,7 +53,7 @@
 					},
 					success: res => {
 						this.$refs.loading.close();
-						console.log("获取所有圈子:",res);
+						// console.log("获取所有圈子:",res);
 						if (this.page > 1 && res.data.info.length == 0) {
 							uni.showToast({
 								title: '没有更多了',

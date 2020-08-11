@@ -284,7 +284,7 @@ export default {
 					},
 					success: res => {
 						uni.hideLoading();
-						console.log("获取圈子二维码:", res);
+						// console.log("获取圈子二维码:", res);
 						this.qrCode = res.data.data.url;
 						uni.getImageInfo({
 							src: this.qrCode,
@@ -320,7 +320,7 @@ export default {
 							});
 						},
 						fail: function(res) {
-							console.log(res);
+							// console.log(res);
 							if (res.errMsg == 'saveImageToPhotosAlbum:fail auth deny') {
 								uni.showModal({
 									content: '检测到您未打开微信保存图片到相册，开启后即可保存图片',
@@ -338,7 +338,7 @@ export default {
 					});
 				},
 				fail: function(err) {
-					console.log(err);
+					// console.log(err);
 				}
 			});
 		},
@@ -472,11 +472,21 @@ export default {
 		}
 		// 页面内分享按钮
 		if (res.from === 'button') {
-			return {
-				title: res.target.dataset.content || this.miniProgramName,
-				path: '/pagesA/articleDetails/articleDetails?id=' + res.target.dataset.id,
-				imageUrl: res.target.dataset.img
-			};
+			if (res.target.dataset.type == 2) {
+				//视频类型去主页
+				return {
+					title: res.target.dataset.content || this.miniProgramName,
+					path: '/pages/index/index?id=' + res.target.dataset.id,
+					imageUrl: res.target.dataset.img
+				};
+			} else {
+				//图文类型去详情
+				return {
+					title: res.target.dataset.content || this.miniProgramName,
+					path: '/pagesA/articleDetails/articleDetails?id=' + res.target.dataset.id,
+					imageUrl: res.target.dataset.img
+				};
+			}
 		}
 	},
 	onPageScroll(e) {

@@ -42,7 +42,7 @@ export default {
 					withdraw_number: ''
 				},
 				success: res => {
-					console.log('提现:', res);
+					// console.log('提现:', res);
 					uni.showToast({
 						title: res.data.msg,
 						duration:3000
@@ -71,7 +71,7 @@ export default {
 					uid: uni.getStorageSync('userId')
 				},
 				success: res => {
-					console.log('提现次数:', res);
+					// console.log('提现次数:', res);
 					this.$refs.loading.close();
 					if (res.data.num >= 1) {
 						this.moneyList[0].num = 0.7;

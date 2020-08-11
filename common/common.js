@@ -58,13 +58,13 @@ Vue.prototype.doLogin = function(userInfo, callBack) {
 				uni.setStorageSync('token', res.data.token);
 				uni.showToast({
 					title: '登陆成功'
-				})
+				});
 				callBack();
 			} else {
 				uni.showToast({
 					title: '登陆失败，请稍后再试',
 					icon: 'none'
-				})
+				});
 			}
 		}
 	});
@@ -103,7 +103,7 @@ Vue.prototype.request = function(obj) {
 			typeof obj.success == "function" && obj.success(res);
 		},
 		fail: (res) => {
-			console.log('request错误：', res);
+			// console.log('request错误：', res);
 			uni.showToast({
 				title: '网络错误,请稍后再试',
 				icon: 'none'
@@ -122,7 +122,7 @@ Vue.prototype.uploadFile = function(obj) {
 			typeof obj.success == "function" && obj.success(res);
 		},
 		fail: function() {
-			console.log('uploadFile错误：', res);
+			// console.log('uploadFile错误：', res);
 			uni.showToast({
 				title: '网络错误,请稍后再试',
 				icon: 'none'
@@ -145,5 +145,19 @@ Vue.prototype.browseImg = function(urls, current) {
 		// 		console.log(err.errMsg);
 		// 	}
 		// }
+	});
+}
+
+//小神推模板消息订阅
+Vue.prototype.subscription = function(){
+	wx.aldPushSubscribeMessage({
+		eventId: '5f32100290fcd68beee4d501',
+		success(res) {
+			// console.log(res)
+		},
+		fail(res, e) {
+			// console.log(res)
+			// console.log(e)
+		}
 	});
 }

@@ -105,7 +105,7 @@ playVideoFun(index,oldIndex){
 								<text>{{ item.study_repount }}</text>
 							</button>
 						</view>
-						<button class="share flex" open-type="share" :data-id="item.id" :data-content="item.study_content" :data-img="item.image_part[0]">
+						<button class="share flex" open-type="share" :data-id="item.id" :data-content="item.study_content" :data-img="item.image_part[0]" :data-type="item.study_type">
 							<image src="../../static/wechat.png" mode="widthFix"></image>
 							<text>分享</text>
 						</button>

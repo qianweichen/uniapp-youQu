@@ -222,7 +222,7 @@ export default {
 					is_qq_text: this.deleteContent
 				},
 				success: res => {
-					console.log("删除", res);
+					// console.log("删除", res);
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
@@ -282,7 +282,7 @@ export default {
 					duplex_content: this.twoComment
 				},
 				success: res => {
-					console.log("发送二级评论:", res);
+					// console.log("发送二级评论:", res);
 					this.$refs.loading.close();
 					this.twoComment = '';
 					this.showTwoLevCommentFlag = false;
@@ -306,7 +306,7 @@ export default {
 					hui_id: id
 				},
 				success: res => {
-					console.log("回复的消息点赞", res);
+					// console.log("回复的消息点赞", res);
 					this.commentList[index]['is_huifu_zan'] = !this.commentList[index]['is_huifu_zan'];
 					if (this.commentList[index]['is_huifu_zan']) {
 						this.commentList[index]['is_huifu_zan_count'] = this.commentList[index]['is_huifu_zan_count'] + 1;
@@ -357,7 +357,7 @@ export default {
 					text: this.commentContent
 				},
 				success: res => {
-					console.log("评论:", res);
+					// console.log("评论:", res);
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
@@ -392,7 +392,7 @@ export default {
 					...this.delCommentQuery,
 				},
 				success: res => {
-					console.log("删除评论:", res);
+					// console.log("删除评论:", res);
 					this.showDelInfoFlag = false;
 					uni.showToast({
 						title: res.data.msg,
@@ -421,7 +421,7 @@ export default {
 					show_type: 'all'
 				},
 				success: res => {
-					console.log("获取评论:", res);
+					// console.log("获取评论:", res);
 					this.commentPage++;
 					this.commentList = this.commentList.concat(res.data.huifu);
 				},
@@ -455,7 +455,7 @@ export default {
 					zan_type: this.list[index]['is_info_zan'] == true ? 1 : 0
 				},
 				success: res => {
-					console.log("点赞:", res);
+					// console.log("点赞:", res);
 					this.$emit('goodFun', index, res.data.info_zan_count) //修改点赞状态
 					uni.showToast({
 						title: res.data.msg,

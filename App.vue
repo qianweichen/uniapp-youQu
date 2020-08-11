@@ -17,7 +17,8 @@ export default {
 						if (res.data.code == 0) {
 							uni.setStorageSync('openid', res.data.info.openid);
 							uni.setStorageSync('session_key', res.data.info.session_key);
-							wx.aldstat.sendOpenid(res.data.info.openid);
+							wx.aldstat.sendOpenid(res.data.info.openid); //阿拉丁
+							wx.aldPushSendOpenid(res.data.info.openid); //小神推
 						} else {
 							uni.showToast({
 								title: '登陆失败，请稍后再试',

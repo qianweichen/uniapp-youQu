@@ -30,6 +30,7 @@
 				<view style="height: 100%;" v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
 					<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'">
 						<video
+							:custom-cache="false"
 							:id="'myVideo' + index"
 							:src="item.study_video"
 							:show-center-play-btn="false"
@@ -42,7 +43,7 @@
 							@error="videoPlayerror"
 						></video>
 						<!-- 播放结束 -->
-						<view class="playEndBox flex-center" v-if="showVideoEndShare">
+						<!-- <view class="playEndBox flex-center" v-if="showVideoEndShare">
 							<view>
 								<view class="fxd flex-between">
 									<view class="line-left"></view>
@@ -64,7 +65,7 @@
 									</view>
 								</view>
 							</view>
-						</view>
+						</view> -->
 						<!-- 播放按钮 -->
 						<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
 						<!-- 文案区域 -->

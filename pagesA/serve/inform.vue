@@ -48,7 +48,7 @@ export default {
 					is_type: 'tab' + (this.tabIndex + 1)
 				},
 				success: res => {
-					console.log('记录:', res);
+					// console.log('记录:', res);
 					this.$refs.loading.close();
 					this.list = res.data.info;
 				}

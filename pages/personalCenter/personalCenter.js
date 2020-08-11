@@ -43,7 +43,7 @@ export default {
 							uid: uni.getStorageSync('userId')
 						},
 						success: res => {
-							console.log('签到:', res);
+							// console.log('签到:', res);
 							uni.showToast({
 								title: res.data.msg,
 								icon: 'none'

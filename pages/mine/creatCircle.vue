@@ -37,7 +37,7 @@ export default {
 					openid: uni.getStorageSync('openid'),
 				},
 				success: res => {
-					console.log("圈子:",res);
+					// console.log("圈子:",res);
 					this.$refs.loading.close();
 					this.list = this.list.concat(res.data.info);
 				}
