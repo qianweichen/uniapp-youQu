@@ -21,7 +21,7 @@
 				<!-- 文字 -->
 				<view class="content fs-28">{{ articleData.study_content }}</view>
 				<!-- 图片/视频 -->
-				<view v-if="articleData.study_type == 2" class="mediaBox"><video :src="articleData.study_video" autoplay="" controls :poster="articleData.image_part[0]"></video></view>
+				<view v-if="articleData.study_type == 2" class="mediaBox"><video :src="articleData.study_video" autoplay controls :poster="articleData.image_part[0]"></video></view>
 				<view v-else class="mediaBox">
 					<!-- <view class="one" v-if="articleData.image_part.length == 1">
 						<image :src="articleData.image_part[0]" mode="aspectFill" @click="browseImg(articleData.image_part,0)"></image>

@@ -30,7 +30,6 @@
 				<view style="height: 100%;" v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
 					<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'">
 						<video
-							:custom-cache="false"
 							:id="'myVideo' + index"
 							:src="item.study_video"
 							:show-center-play-btn="false"
