@@ -83,6 +83,8 @@ export default {
 		},
 		//授权后刷新数据
 		refreshList() {
+			//利用v-if切换时清除video，保证初始化播放
+			this.showVideoFlag = false;
 			//获取数据
 			this.$refs.loading.open();
 			if (this.tabsFlag) {
