@@ -30,8 +30,7 @@ export default {
 			showBannerFlag: false, //显示海报
 			bannerBg: {}, //canvas动态图宽高
 
-			//小屏幕（是否小于iphone6高度）
-			isSmallScreen: uni.getSystemInfoSync().windowHeight <= 667
+			isSmallScreen: true, //是否开启底部透明
 		}
 	},
 	props: {
