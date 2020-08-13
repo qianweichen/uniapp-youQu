@@ -106,7 +106,7 @@
 						<!-- 进度条 -->
 						<view class="progress"><view :style="'width:' + progressNum + '%;'"></view></view>
 						<!-- 点赞区域 -->
-						<view class="btnBox fs-26">
+						<view class="btnBox fs-26" :class="isSmallScreen && parentPage == 'home' ? 'btnBox-full-page' : ''">
 							<view v-if="isAuthorized" @click="goodFun(item.id, index)">
 								<image :src="'../../static/like' + (item.is_info_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<view>{{ item.info_zan_count }}</view>

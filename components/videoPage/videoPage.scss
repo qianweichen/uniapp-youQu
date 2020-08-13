@@ -97,6 +97,9 @@
 		right: 24rpx;
 		bottom: 70rpx;
 		color: #fff;
+		&.btnBox-full-page{
+			bottom: 180rpx;
+		}
 		> view {
 			padding-bottom: 40rpx;
 		}

@@ -63,30 +63,28 @@ export default {
 		});
 
 		//自定义导航栏高度封装CustomBar
-		setTimeout(() => {
-			uni.getSystemInfo({
-				success: function(e) {
-					// #ifndef MP
-					Vue.prototype.StatusBar = e.statusBarHeight;
-					if (e.platform == 'android') {
-						Vue.prototype.CustomBar = e.statusBarHeight + 50;
-					} else {
-						Vue.prototype.CustomBar = e.statusBarHeight + 45;
-					}
-					// #endif
-					// #ifdef MP-WEIXIN || MP-QQ
-					Vue.prototype.StatusBar = e.statusBarHeight;
-					let custom = wx.getMenuButtonBoundingClientRect();
-					Vue.prototype.Custom = custom;
-					Vue.prototype.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
-					// #endif
-					// #ifdef MP-ALIPAY
-					Vue.prototype.StatusBar = e.statusBarHeight;
-					Vue.prototype.CustomBar = e.statusBarHeight + e.titleBarHeight;
-					// #endif
+		uni.getSystemInfo({
+			success: function(e) {
+				// #ifndef MP
+				Vue.prototype.StatusBar = e.statusBarHeight;
+				if (e.platform == 'android') {
+					Vue.prototype.CustomBar = e.statusBarHeight + 50;
+				} else {
+					Vue.prototype.CustomBar = e.statusBarHeight + 45;
 				}
-			});
-		}, 200);
+				// #endif
+				// #ifdef MP-WEIXIN || MP-QQ
+				Vue.prototype.StatusBar = e.statusBarHeight;
+				let custom = wx.getMenuButtonBoundingClientRect();
+				Vue.prototype.Custom = custom;
+				Vue.prototype.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+				// #endif
+				// #ifdef MP-ALIPAY
+				Vue.prototype.StatusBar = e.statusBarHeight;
+				Vue.prototype.CustomBar = e.statusBarHeight + e.titleBarHeight;
+				// #endif
+			}
+		});
 
 		// 开始计算浏览时间
 		let inAppTime = Date.now(); //进入的时间

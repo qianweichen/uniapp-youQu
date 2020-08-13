@@ -39,7 +39,7 @@
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
 
 		<!-- 公告 -->
-		<view v-if="isShowNotice">
+		<!-- <view v-if="isShowNotice">
 			<view class="mask">
 				<view class="notice">
 					<image src="@/static/notice.png" mode="widthFix"></image>
@@ -50,7 +50,8 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
+		
 		<!-- 分享 -->
 		<view v-if="isShowShare">
 			<view class="mask" @click="isShowShare = false">
