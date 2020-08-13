@@ -104,33 +104,6 @@ export default {
 				}
 			});
 		},
-		//签到
-		signIn() {
-			uni.requestSubscribeMessage({
-				tmplIds: ['eouzl8p41dm6RqLnP1EJwn22CFomD67vIc8nXezyMI4'],
-				success: res => {
-					// console.log(res);
-					this.request({
-						url: this.apiUrl + 'User/add_user_punch',
-						data: {
-							token: uni.getStorageSync('token'),
-							openid: uni.getStorageSync('openid'),
-							uid: uni.getStorageSync('userId')
-						},
-						success: res => {
-							// console.log('签到:', res);
-							uni.showToast({
-								title: res.data.msg,
-								icon: 'none'
-							});
-							setTimeout(() => {
-								this.getPersonalInfo();
-							}, 1500);
-						}
-					});
-				}
-			});
-		},
 		//获取用户信息
 		getPersonalInfo() {
 			this.$refs.loading.open();

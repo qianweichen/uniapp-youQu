@@ -2,23 +2,27 @@
 	<view class="page-persionalC page-mine">
 		<navigationBar name="我的"></navigationBar>
 		<view class="banner" :style="'background-image: url(' + (personalInfo.bg_img || '') + ');'">
-			<view class="myPage flex-center" @click="goPage('/pages/personalCenter/personalCenter?id=' + personalInfo.id)">
+			<view v-if="isAuthorized" class="myPage flex-center" @click="goPage('/pages/personalCenter/personalCenter?id=' + personalInfo.id)">
 				<view class="fs-26">个人主页</view>
 				<image src="../../static/right.png" mode="widthFix"></image>
 			</view>
+			<button v-else open-type="getUserInfo" class="share myPage flex-center" @getuserinfo="getUserInfo">
+				<view class="fs-26">个人主页</view>
+				<image src="../../static/right.png" mode="widthFix"></image>
+			</button>
 			<image v-if="isAuthorized" class="header circle" :src="personalInfo.user_head_sculpture || ''" mode="aspectFill"></image>
 			<view v-else class="header circle" style="background-color: #363441;">
 				<button open-type="getUserInfo" class="share flex-center" @getuserinfo="getUserInfo" style="width: 100%; height: 100%;">点我登陆</button>
 			</view>
 			<view v-if="isAuthorized" class="btnBox flex-between fs-26">
 				<view class="flex-center gz" @click="goPage('/pages/mine/editInformation')">编辑资料</view>
-				<view v-if="!personalInfo.is_sign" class="flex-center sx" @click="signIn">签到</view>
+				<view v-if="!personalInfo.is_sign" class="flex-center sx" @click="signIn">打卡</view>
 				<view v-else class="flex-center sx" @click="signIn">{{ personalInfo.fraction }}积分</view>
 			</view>
 			<view v-else>
 				<button open-type="getUserInfo" class="share btnBox flex-between" @getuserinfo="getUserInfo">
 					<view class="flex-center gz fs-26">编辑资料</view>
-					<view class="flex-center sx fs-26">签到</view>
+					<view class="flex-center sx fs-26">打卡</view>
 				</button>
 			</view>
 		</view>
@@ -130,28 +134,23 @@ export default {
 	methods: {
 		//签到
 		signIn() {
-			uni.requestSubscribeMessage({
-				tmplIds: ['eouzl8p41dm6RqLnP1EJwn22CFomD67vIc8nXezyMI4'],
+			this.subscription(); //小神推模板消息订阅
+			this.request({
+				url: this.apiUrl + 'User/add_user_punch',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
 				success: res => {
-					// console.log(res);
-					this.request({
-						url: this.apiUrl + 'User/add_user_punch',
-						data: {
-							token: uni.getStorageSync('token'),
-							openid: uni.getStorageSync('openid'),
-							uid: uni.getStorageSync('userId')
-						},
-						success: res => {
-							// console.log('签到:', res);
-							uni.showToast({
-								title: res.data.msg,
-								icon: 'none'
-							});
-							setTimeout(() => {
-								this.getPersonalInfo();
-							}, 1500);
-						}
+					// console.log('签到:', res);
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
 					});
+					setTimeout(() => {
+						this.getPersonalInfo();
+					}, 1500);
 				}
 			});
 		},

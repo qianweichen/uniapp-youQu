@@ -6,25 +6,27 @@
 			<view class="infoBox">
 				<image class="header circle" :src="personalInfo.user_head_sculpture" mode="aspectFill"></image>
 				<view class="name fs-40">{{ personalInfo.user_nick_name }}</view>
-				<view class="flex numberBox">
-					<view>
-						<text class="bold fs-40">{{ personalInfo.trailing }}</text>
-						获赞
+				<view v-if="personalId==uid">
+					<view class="flex numberBox">
+						<view>
+							<text class="bold fs-40">{{ personalInfo.trailing }}</text>
+							获赞
+						</view>
+						<!-- <view>
+							<text class="bold fs-40">2</text>
+							赞
+						</view> -->
+						<view>
+							<text class="bold fs-40">{{ personalInfo.user_track }}</text>
+							关注
+						</view>
+						<view>
+							<text class="bold fs-40">{{ personalInfo.user_fs }}</text>
+							粉丝
+						</view>
 					</view>
-					<!-- <view>
-						<text class="bold fs-40">2</text>
-						赞
-					</view> -->
-					<view>
-						<text class="bold fs-40">{{ personalInfo.user_track }}</text>
-						关注
-					</view>
-					<view>
-						<text class="bold fs-40">{{ personalInfo.user_fs }}</text>
-						粉丝
-					</view>
+					<view class="autograph fs-26">{{ personalInfo.autograph || '这个人很懒，什么都没说' }}</view>
 				</view>
-				<view class="autograph fs-26">{{ personalInfo.autograph || '这个人很懒，什么都没说' }}</view>
 				<view class="myBtnBox flex-between fs-26">
 					<view class="flex-center" style="background-color: rgba(255,255,255,0.1);">
 						<button open-type="share" class="share flex-center" data-type="persional" style="width: 100%; height: 100%;">分享</button>
@@ -33,7 +35,7 @@
 					<view v-if="isAuthorized" style="width: 312rpx;">
 						<view class="flex-center" style="width: 100%; height: 100%;" v-if="personalInfo.is_user == 0 && personalInfo.id != uid" @click="attention">关注</view>
 						<view class="flex-center" style="width: 100%; height: 100%;" v-if="personalInfo.is_user == 1 && personalInfo.id != uid" @click="attention">取消关注</view>
-						<view class="flex-center" style="width: 100%; height: 100%;" v-if="personalInfo.id == uid" @click="signIn">签到</view>
+						<view class="flex-center" style="width: 100%; height: 100%;" v-if="personalInfo.id == uid" @click="signIn">打卡</view>
 					</view>
 					<view v-else style="width: 312rpx;">
 						<button open-type="getUserInfo" class="share flex-center" @getuserinfo="getUserInfo" @click.stop="" style="width: 100%; height: 100%;">
@@ -44,7 +46,6 @@
 					<view class="flex-center">举报</view>
 				</view>
 			</view>
-
 			<!-- <image class="header circle" :src="personalInfo.user_head_sculpture" mode="aspectFill"></image>
 			<view class="btnBox flex-between fs-26">
 				<view class="flex-center gz" v-if="personalInfo.is_user == 0 && personalInfo.id != uid" @click="attention">关注</view>
@@ -52,7 +53,9 @@
 				<view class="flex-center sx">私信</view>
 			</view> -->
 		</view>
-		<view style="height: 320rpx;"></view>
+		
+		<view v-if="personalId==uid" style="height: 320rpx;"></view>
+		<view v-else style="height: 160rpx;"></view>
 
 		<!-- <view class="info">
 			<view class="fs-46 bold">{{ personalInfo.user_nick_name }}</view>

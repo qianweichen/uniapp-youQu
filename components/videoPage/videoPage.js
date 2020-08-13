@@ -338,7 +338,10 @@ export default {
 			if (follow === 1) {
 				return;
 			}
-			this.subscription();	//小神推模板消息订阅
+			uni.requestSubscribeMessage({
+				tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
+				success: res => {}
+			});
 			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',

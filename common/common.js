@@ -151,7 +151,7 @@ Vue.prototype.browseImg = function(urls, current) {
 //小神推模板消息订阅
 Vue.prototype.subscription = function(){
 	wx.aldPushSubscribeMessage({
-		eventId: '5f32100290fcd68beee4d501',
+		eventId: '5f34cf2190fcd68beee4d506',
 		success(res) {
 			// console.log(res)
 		},
