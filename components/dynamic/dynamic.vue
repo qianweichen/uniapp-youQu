@@ -52,11 +52,26 @@ playVideoFun(index,oldIndex){
 				<view class="content fs-28 padding" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 				<!-- 图片/视频 -->
 				<view v-if="item.study_type == 2" class="mediaBox" :style="'height:' + (item.height || 300) + 'px;'">
-					<video v-if="item.playVideoFlag" id="myVideo" :src="item.study_video" :controls="false" autoplay loop danmu-btn enable-danmu :danmu-list="item.pinglun" :object-fit="isVideoFull?'':'cover'" @timeupdate="videoTimeUpdate" @error="videoError" @click="clickVideoFun"></video>
+					<video
+						v-if="item.playVideoFlag"
+						id="myVideo"
+						:src="item.study_video"
+						:controls="true"
+						autoplay
+						loop
+						danmu-btn
+						enable-danmu
+						:danmu-list="item.pinglun"
+						:object-fit="isVideoFull ? '' : 'cover'"
+						@fullscreenchange="videoFullScreenChange"
+						@timeupdate="videoTimeUpdate"
+						@error="videoError"
+						@click="clickVideoFun"
+					></video>
 					<image v-else class="poster" :src="item.image_part[0]" mode="aspectFill"></image>
 					<image v-if="!item.playVideoFlag" @click="playVideoFun(index)" class="circle play" src="../../static/icon-play.png" mode="widthFix"></image>
 					<!-- 进度条 -->
-					<view v-if="item.playVideoFlag" class="progress"><view :style="'width:' + progressNum + '%;'"></view></view>
+					<!-- <view v-if="item.playVideoFlag" class="progress"><view :style="'width:' + progressNum + '%;'"></view></view> -->
 				</view>
 				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox" :style="'height:' + (imgHeightList[index] || 300) + 'px;'">
 					<!-- 1 -->
@@ -105,7 +120,14 @@ playVideoFun(index,oldIndex){
 								<text>{{ item.study_repount }}</text>
 							</button>
 						</view>
-						<button class="share flex" open-type="share" :data-id="item.id" :data-content="item.study_content" :data-img="item.image_part[0]" :data-type="item.study_type">
+						<button
+							class="share flex"
+							open-type="share"
+							:data-id="item.id"
+							:data-content="item.study_content"
+							:data-img="item.image_part[0]"
+							:data-type="item.study_type"
+						>
 							<image src="../../static/wechat.png" mode="widthFix"></image>
 							<text>分享</text>
 						</button>

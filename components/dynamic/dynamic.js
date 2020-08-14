@@ -52,15 +52,13 @@ export default {
 		}
 	},
 	methods: {
-		// 视频进度改变
-		videoTimeUpdate(e) {
-			this.progressNum = (e.detail.currentTime / e.detail.duration) * 100;
-		},
+		//图文动态切换swiper
 		changeSwiper(e) {
 			var index = e.currentTarget.dataset.index;
 			this.bannerImgNumList[index] = e.detail.current + 1;
 			this.bannerImgNumList.splice(index, 1, e.detail.current + 1);
 		},
+		//图文动态获取图片高度
 		imgLoad(e) {
 			var index = e.currentTarget.dataset.index,
 				imgwidth = e.detail.width,
@@ -83,40 +81,51 @@ export default {
 			}
 			// console.log(this.imgHeightList);
 		},
+		//点击视频
 		clickVideoFun(e) {
 			// 双击
-			// var curTime = e.timeStamp; //本次点击时间
-			// var lastTime = this.clickTime; //上次点击时间
-			// if (curTime - lastTime > 0) {
-			// 	if (curTime - lastTime < 300) {
-			// 		// console.log("双击事件，用了：" + (curTime - lastTime));
-			// 		var videoContext = uni.createVideoContext('myVideo', this);
-			// 		if (this.isVideoFull) {
-			// 			videoContext.exitFullScreen();
-			// 			this.isVideoFull = false;
-			// 		} else {
-			// 			videoContext.requestFullScreen();
-			// 			this.isVideoFull = true;
-			// 		}
-			// 	}
-			// }
-			// this.clickTime = curTime;
+			var curTime = e.timeStamp; //本次点击时间
+			var lastTime = this.clickTime; //上次点击时间
+			if (curTime - lastTime > 0) {
+				if (curTime - lastTime < 300) {
+					// console.log("双击事件，用了：" + (curTime - lastTime));
+					var videoContext = uni.createVideoContext('myVideo', this);
+					if (this.isVideoFull) {
+						videoContext.exitFullScreen();
+					} else {
+						videoContext.requestFullScreen();
+					}
+				}
+			}
+			this.clickTime = curTime;
 
 			//单击
-			var videoContext = uni.createVideoContext('myVideo', this);
-			if (this.isVideoFull) {
-				videoContext.exitFullScreen();
-				this.isVideoFull = false;
-			} else {
-				videoContext.requestFullScreen();
+			// var videoContext = uni.createVideoContext('myVideo', this);
+			// if (this.isVideoFull) {
+			// 	videoContext.exitFullScreen();
+			// } else {
+			// 	videoContext.requestFullScreen();
+			// }
+		},
+		// 当视频进入和退出全屏时触发
+		videoFullScreenChange(e){
+			if(e.detail.fullscreen){
 				this.isVideoFull = true;
+			}else{
+				this.isVideoFull = false;
 			}
 		},
+		// 视频进度改变
+		videoTimeUpdate(e) {
+			this.progressNum = (e.detail.currentTime / e.detail.duration) * 100;
+		},
+		//点击播放视频
 		playVideoFun(index) {
 			this.$emit('playVideoFun', index, this.oldIndex);
 			this.oldIndex = index;
 			this.isVideoFull = false;
 		},
+		//视频播放出错
 		videoError(e) {
 			// console.log(e);
 			uni.showToast({
