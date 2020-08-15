@@ -40,6 +40,7 @@
 							@play="videoPlayStard"
 							@ended="videoPlayEnd"
 							@error="videoPlayerror"
+							@loadedmetadata="loadEdmetaData"
 						></video>
 						<!-- 播放结束 -->
 						<!-- <view class="playEndBox flex-center" v-if="showVideoEndShare">
@@ -65,6 +66,8 @@
 								</view>
 							</view>
 						</view> -->
+						<!-- 载入中动画 -->
+						<!-- <view v-if="isLoadVideoShow" class="donut"></view> -->
 						<!-- 播放按钮 -->
 						<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
 						<!-- 文案区域 -->
@@ -140,7 +143,7 @@
 						</view>
 					</view>
 					<!-- 全屏广告 -->
-					<view v-else class="videoBox"><ad-custom class="ad-custom" :class="isSmallScreen?'smallScreen':''" unit-id="adunit-a556114efa3c01c5"></ad-custom></view>
+					<view v-else class="videoBox"><ad-custom class="ad-custom" :class="isSmallScreen ? 'smallScreen' : ''" unit-id="adunit-a556114efa3c01c5"></ad-custom></view>
 				</view>
 			</swiper-item>
 		</swiper>

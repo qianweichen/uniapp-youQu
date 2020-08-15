@@ -4,6 +4,7 @@ export default {
 			videoIndex: 0, //当前视频下标
 			videoContext: '', //视频对象
 			progressNum: 0, //视频播放进度百分比
+			isLoadVideoShow: true, //控制视频载入中
 			showVideoPlayBtn: false, //控制播放按钮
 			showVideoEndShare: false, //控制播放结束后的分享模块
 			showCommentFlag: false, //评论弹窗
@@ -31,6 +32,7 @@ export default {
 			bannerBg: {}, //canvas动态图宽高
 
 			isSmallScreen: true, //是否开启底部透明
+			timer:null	//切换定时器
 		}
 	},
 	props: {
@@ -478,7 +480,8 @@ export default {
 		},
 		//滑动视频
 		changeSwiper(e) {
-			setTimeout(() => {
+			clearTimeout(this.timer);
+			this.timer = setTimeout(()=>{
 				//停止上一次播放的视频
 				this.videoContext = uni.createVideoContext('myVideo' + this.videoIndex, this);
 				this.videoContext.stop();
@@ -489,11 +492,16 @@ export default {
 				this.progressNum = 0;
 				//设置视频下标
 				this.videoIndex = e.detail.current;
+				//打开加载中
+				this.isLoadVideoShow = true;
 				//每12个获取下一组数据
 				if ((e.detail.current + 3) % 15 == 0) {
 					this.$emit('getNextPage'); //获取下一页
 				}
-			}, 500);
+			},500);
+		},
+		loadEdmetaData(e) {
+			this.isLoadVideoShow = false;
 		},
 		//视频播放开始
 		videoPlayStard() {
