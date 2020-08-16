@@ -1,6 +1,7 @@
 export default {
 	data() {
 		return {
+			personalInfo:'',
 			shareVideoId: '', //接收分享来的id
 			customBar: this.CustomBar,
 			topCustomBar: this.StatusBar, //顶部状态栏高度
@@ -18,6 +19,44 @@ export default {
 		};
 	},
 	methods: {
+		//签到
+		signIn() {
+			this.subscription(); //小神推模板消息订阅
+			this.request({
+				url: this.apiUrl + 'User/add_user_punch',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					// console.log('签到:', res);
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					});
+					setTimeout(() => {
+						this.getPersonalInfo();
+					}, 3000);
+				}
+			});
+		},
+		//获取用户信息
+		getPersonalInfo() {
+			this.$refs.loading.open();
+			this.request({
+				url: this.apiUrl + 'User/get_user_info',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid')
+				},
+				success: res => {
+					this.$refs.loading.close();
+					// console.log('获取用户信息:', res);
+					this.personalInfo = res.data.info;
+				}
+			});
+		},
 		//获取红包开关
 		getRed() {
 			this.request({
@@ -158,6 +197,7 @@ export default {
 			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
+				this.getPersonalInfo();
 			});
 		}
 	},
@@ -172,6 +212,7 @@ export default {
 		// console.log('homeCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
+		if (this.isAuthorized) this.getPersonalInfo();
 		//接收分享id
 		var shareVideoId = uni.getStorageSync('shareVideoId');
 		if (shareVideoId) {
