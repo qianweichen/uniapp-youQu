@@ -27,9 +27,11 @@
 		<swiper class="video-swiper" @change="changeSwiper" :current="videoIndex" vertical>
 			<swiper-item v-for="(item, index) in videoList" :key="index">
 				<!-- 节流:只显示3个视频 -->
-				<view style="height: 100%;" v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
+				<!-- <view style="height: 100%;" v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index"> -->
+				<view style="height: 100%;">
 					<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'">
 						<video
+							v-if="videoIndex == index"
 							:id="'myVideo' + index"
 							:src="item.study_video"
 							:show-center-play-btn="false"
@@ -42,6 +44,9 @@
 							@error="videoPlayerror"
 							@loadedmetadata="loadEdmetaData"
 						></video>
+						<view v-if="videoIndex != index || isLoadVideoShow" class="cover-img-group">
+							<image class="cover-img" :src="item.image_part[0]" mode="aspectFit"></image>
+						</view>
 						<!-- 播放结束 -->
 						<!-- <view class="playEndBox flex-center" v-if="showVideoEndShare">
 							<view>
@@ -67,7 +72,7 @@
 							</view>
 						</view> -->
 						<!-- 载入中动画 -->
-						<!-- <view v-if="isLoadVideoShow" class="donut"></view> -->
+						<view v-if="isLoadVideoShow" class="donut"></view>
 						<!-- 播放按钮 -->
 						<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
 						<!-- 文案区域 -->
