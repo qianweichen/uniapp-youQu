@@ -26,24 +26,24 @@
 		<!-- 视频 -->
 		<swiper class="video-swiper" @change="changeSwiper" :current="videoIndex" vertical>
 			<swiper-item v-for="(item, index) in videoList" :key="index">
-				<!-- 节流:只显示3个视频 -->
-				<!-- <view style="height: 100%;" v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index"> -->
-				<view style="height: 100%;">
-					<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'">
-						<video
-							v-if="videoIndex == index"
-							:id="'myVideo' + index"
-							:src="item.study_video"
-							:show-center-play-btn="false"
-							:controls="false"
-							loop
-							@click="pauseVideo"
-							@timeupdate="videoTimeUpdate"
-							@play="videoPlayStard"
-							@ended="videoPlayEnd"
-							@error="videoPlayerror"
-							@loadedmetadata="loadEdmetaData"
-						></video>
+				<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'">
+					<!-- 只显示一个视频，ios缓存有问题，没法同时放3个，遇到长视频会卡 -->
+					<video
+						v-if="videoIndex == index"
+						:id="'myVideo' + index"
+						:src="item.study_video"
+						:show-center-play-btn="false"
+						:controls="false"
+						loop
+						@click="clickVideo(item.id,index)"
+						@timeupdate="videoTimeUpdate"
+						@play="videoPlayStard"
+						@ended="videoPlayEnd"
+						@error="videoPlayerror"
+						@loadedmetadata="loadEdmetaData"
+					></video>
+					<!-- 节流:只显示3个swiper中的内容 -->
+					<view v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
 						<view v-if="videoIndex != index || isLoadVideoShow" class="cover-img-group">
 							<image class="cover-img" :src="item.image_part[0]" mode="aspectFit"></image>
 						</view>
@@ -78,18 +78,16 @@
 						<!-- 文案区域 -->
 						<view class="contentBox" :class="isSmallScreen && parentPage == 'home' ? 'full-page' : ''">
 							<view class="userInfo flex">
-								<view v-if="isAuthorized" class="header circle" @click.stop="attention(item.user_id, item.is_follow, index)">
+								<view class="header circle" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
-									<image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image>
+									<!-- <image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
 								</view>
-								<button v-else open-type="getUserInfo" class="share header circle" @getuserinfo="getUserInfo" @click.stop="" style="overflow: unset;">
-									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
-									<image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image>
-								</button>
 								<view @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 									<view class="fs-30 bold">{{ item.user_nick_name }}</view>
 									<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 								</view>
+								<view v-if="isAuthorized" class="attention flex-center" @click.stop="attention(item.user_id, item.is_follow, index)">+关注</view>
+								<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view class="attention flex-center">+关注</view></button>
 							</view>
 							<view class="text fs-28" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 							<view class="flex-between">
@@ -147,9 +145,9 @@
 							</view>
 						</view>
 					</view>
-					<!-- 全屏广告 -->
-					<view v-else class="videoBox"><ad-custom class="ad-custom" :class="isSmallScreen ? 'smallScreen' : ''" unit-id="adunit-a556114efa3c01c5"></ad-custom></view>
 				</view>
+				<!-- 全屏广告 -->
+				<view v-else class="videoBox"><ad-custom class="ad-custom" :class="isSmallScreen ? 'smallScreen' : ''" unit-id="adunit-a556114efa3c01c5"></ad-custom></view>
 			</swiper-item>
 		</swiper>
 		<!-- 评论区域 -->

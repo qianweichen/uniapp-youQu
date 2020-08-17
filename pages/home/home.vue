@@ -24,18 +24,34 @@
 		</view>
 		<!-- <view :style="'height:' + (customBar + topCustomBar) + 'px;'"></view> -->
 		<!-- <view  :style="'height:calc(100% - ' + (customBar + topCustomBar) + 'px);'"> -->
-		<view style="height: 100%;" v-if="showVideoFlag">
-			<videoBox
-				ref="videoBox"
-				:videoList="videoList"
-				:parentPage="'home'"
-				@loginFun="refreshList"
-				@getNextPage="getHomeList"
-				@goodFun="goodFun"
-				@commentFun="commentFun"
-				@attentionFun="attentionFun"
-			></videoBox>
-		</view>
+		<swiper class="video-swiper" @animationfinish="changeVideo" :current="tabsFlag ? 0 : 1">
+			<!-- 推荐 -->
+			<swiper-item>
+				<videoBox
+					ref="recommendVideo"
+					:videoList="videoList"
+					:parentPage="'home'"
+					@loginFun="refreshList"
+					@getNextPage="getHomeList"
+					@goodFun="goodFun"
+					@commentFun="commentFun"
+					@attentionFun="attentionFun"
+				></videoBox>
+			</swiper-item>
+			<!-- 关注 -->
+			<swiper-item>
+				<videoBox
+					ref="attentionVideo"
+					:videoList="attentionVideoList"
+					:parentPage="'home'"
+					@loginFun="refreshList"
+					@getNextPage="getHomeList"
+					@goodFun="goodFun"
+					@commentFun="commentFun"
+					@attentionFun="attentionFun"
+				></videoBox>
+			</swiper-item>
+		</swiper>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
 
 		<!-- 公告 -->
@@ -51,7 +67,7 @@
 				</view>
 			</view>
 		</view> -->
-		
+
 		<!-- 分享 -->
 		<view v-if="isShowShare">
 			<view class="mask" @click="isShowShare = false">
@@ -62,21 +78,22 @@
 						<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">提现</button>
 						<image @click="isShowShare = false" src="@/static/share-close.png" mode="widthFix"></image>
 					</view>
-					
+
 					<view v-if="!personalInfo.is_sign" class="tip">打卡单次最高得2元，秒体现秒到账</view>
 					<view v-else class="tip">邀请一个好友最高可得2元，秒体现秒到账。</view>
-					
+
 					<view v-if="isAuthorized">
 						<view v-if="!personalInfo.is_sign" :animation="animation2" class="sign-in fs-40 flex-center" @click="signIn">点击打卡</view>
 						<view v-else>
 							<image :animation="animation2" @click="goPage('/pages/mine/invitation')" class="share-btn" src="@/static/share-btn.png" mode="widthFix"></image>
+							<view class="tip" style="padding-top: 20rpx;">今日已打卡,余额约{{(personalInfo.fraction/100).toFixed(2)}}</view>
 							<view class="sign-in fs-40 flex-center" @click="goPage('/pages/mine/wallet')">立即提现</view>
 						</view>
 					</view>
 					<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share" style="overflow: unset;">
 						<view :animation="animation2" class="sign-in fs-40 flex-center">点击打卡</view>
 					</button>
-					
+
 					<view v-if="isAuthorized" class="btn-group flex-between" @click="goPage('/pages/task/task')">
 						<view>
 							<view class="img-box flex-center"><image src="@/static/share-fsp.png" mode="widthFix"></image></view>

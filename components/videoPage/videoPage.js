@@ -32,7 +32,10 @@ export default {
 			bannerBg: {}, //canvas动态图宽高
 
 			isSmallScreen: true, //是否开启底部透明
-			timer:null	//切换定时器
+			timer: null, //切换定时器
+
+			clickNum: 0, //点击次数，控制单击双击
+			clickTimer: null
 		}
 	},
 	props: {
@@ -481,7 +484,7 @@ export default {
 		//滑动视频
 		changeSwiper(e) {
 			clearTimeout(this.timer);
-			this.timer = setTimeout(()=>{
+			this.timer = setTimeout(() => {
 				//停止上一次播放的视频
 				this.videoContext = uni.createVideoContext('myVideo' + this.videoIndex, this);
 				this.videoContext.stop();
@@ -498,7 +501,7 @@ export default {
 				if ((e.detail.current + 3) % 15 == 0) {
 					this.$emit('getNextPage'); //获取下一页
 				}
-			},500);
+			}, 500);
 		},
 		loadEdmetaData(e) {
 			this.isLoadVideoShow = false;
@@ -523,10 +526,27 @@ export default {
 		videoTimeUpdate(e) {
 			this.progressNum = (e.detail.currentTime / e.detail.duration) * 100;
 		},
+		clickVideo(id, index) {
+			this.clickNum++;
+			if (this.clickNum == 2) {
+				clearTimeout(this.clickTimer);
+				this.goodFun(id, index);
+				this.clickNum = 0;
+			} else if (this.clickNum == 1) {
+				this.clickTimer = setTimeout(() => {
+					this.pauseVideo();
+					this.clickNum = 0;
+				}, 300);
+			}
+		},
 		//暂停视频
 		pauseVideo() {
 			this.videoContext.pause();
 			this.showVideoPlayBtn = true;
+		},
+		//暂停视频(不显示播放图标，首页调取)
+		onlyPauseVideo() {
+			this.videoContext.pause();
 		},
 		//播放视频
 		playVideo() {

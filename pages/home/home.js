@@ -1,13 +1,15 @@
 export default {
 	data() {
 		return {
-			personalInfo:'',
+			personalInfo: '',
 			shareVideoId: '', //接收分享来的id
 			customBar: this.CustomBar,
 			topCustomBar: this.StatusBar, //顶部状态栏高度
 			tabsFlag: true, //推荐/喜欢
 			videoPage: 1, //视频页码
 			videoList: [], //视频列表
+			attentionVideoPage: 1,
+			attentionVideoList: [],
 			isAuthorized: false, //授权否
 			isShowNotice: false,
 			isShowShare: false,
@@ -15,10 +17,34 @@ export default {
 			animation: '',
 			animation2: '',
 			isShowRed: false,
-			showVideoFlag:true
 		};
 	},
 	methods: {
+		//左右滑动查看推荐和关注
+		changeVideo(e) {
+			if (e.detail.current == 1 && !this.isAuthorized) {
+				uni.showToast({
+					title: '请先授权',
+					icon: 'none'
+				});
+				return;
+			}
+			//当前下标0为推荐，tabsFlag为true
+			this.tabsFlag = e.detail.current == 0;
+			//没数据时加载
+			if (e.detail.current == 1 && this.attentionVideoList.length == 0) {
+				this.$refs.loading.open();
+				this.getAttentionList(true);
+			}
+			//切换时暂停另一侧视频
+			if (this.tabsFlag) {
+				this.$refs.recommendVideo.playVideo();
+				this.$refs.attentionVideo.onlyPauseVideo();
+			} else {
+				this.$refs.recommendVideo.onlyPauseVideo();
+				this.$refs.attentionVideo.playVideo();
+			}
+		},
 		//签到
 		signIn() {
 			this.subscription(); //小神推模板消息订阅
@@ -110,27 +136,17 @@ export default {
 		// 切换顶部tab
 		changeTabs(flag) {
 			this.tabsFlag = flag;
-			//利用v-if切换时清除video，保证初始化播放
-			this.showVideoFlag = false;
-			//获取数据
-			this.$refs.loading.open();
-			if (flag) {
-				this.getHomeList(true);
-			} else {
-				this.getAttentionList(true);
-			}
 		},
 		//授权后刷新数据
 		refreshList() {
-			//利用v-if切换时清除video，保证初始化播放
-			this.showVideoFlag = false;
 			//获取数据
-			this.$refs.loading.open();
-			if (this.tabsFlag) {
-				this.getHomeList(true);
-			} else {
-				this.getAttentionList(true);
-			}
+			// this.$refs.loading.open();
+			// if (this.tabsFlag) {
+			// 	this.getHomeList(true);
+			// } else {
+			// 	this.getAttentionList(true);
+			// }
+			this.isAuthorized = this.beAuthorized();
 		},
 		//获取首页视频列表
 		getHomeList(isFirstPage) {
@@ -153,15 +169,14 @@ export default {
 					// console.log("首页视频列表:", res);
 					this.videoPage++;
 					this.videoList = this.videoList.concat(res.data.info);
-					this.showVideoFlag = true;
 				},
 			});
 		},
 		//获取首页关注
 		getAttentionList(isFirstPage) {
 			if (isFirstPage) {
-				this.videoPage = 1;
-				this.videoList = [];
+				this.attentionVideoPage = 1;
+				this.attentionVideoList = [];
 			}
 			this.request({
 				url: this.apiUrl + 'User/get_my_index_list',
@@ -170,7 +185,7 @@ export default {
 					openid: uni.getStorageSync('openid'),
 					uid: uni.getStorageSync('userId'),
 					version: 2, // 0是文字 1是语音 2是视频 3是全部
-					index_page: this.videoPage
+					index_page: this.attentionVideoPage
 				},
 				success: res => {
 					this.$refs.loading.close();
@@ -181,9 +196,8 @@ export default {
 						})
 					}
 					// console.log("首页视频列表:", res);
-					this.videoPage++;
-					this.videoList = this.videoList.concat(res.data.info);
-					this.showVideoFlag = true;
+					this.attentionVideoPage++;
+					this.attentionVideoList = this.attentionVideoList.concat(res.data.info);
 				},
 			});
 		},

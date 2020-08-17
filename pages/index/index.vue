@@ -94,7 +94,11 @@ export default {
 		//暂停视频
 		stopHomeVideo() {
 			if (this.$refs.homePage) {
-				this.$refs.homePage.$refs.videoBox.videoContext.pause();
+				if(this.$refs.homePage.$refs.recommendVideo){
+					this.$refs.homePage.$refs.recommendVideo.videoContext.pause();
+				}else if(this.$refs.homePage.$refs.attentionVideo){
+					this.$refs.homePage.$refs.attentionVideo.videoContext.pause();
+				}
 			}
 		},
 		changeTabIndex(e) {
@@ -124,7 +128,11 @@ export default {
 			if (index == 'find' || index == 'message' || index == 'mine') {
 				this.stopHomeVideo(); //暂停视频
 			} else {
-				this.$refs.homePage.$refs.videoBox.videoContext.play();
+				if(this.$refs.homePage.$refs.recommendVideo){
+					this.$refs.homePage.$refs.recommendVideo.videoContext.play();
+				}else if(this.$refs.homePage.$refs.attentionVideo){
+					this.$refs.homePage.$refs.attentionVideo.videoContext.play();
+				}
 			}
 		},
 		getUserInfo(e) {
