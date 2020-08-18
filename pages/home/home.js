@@ -17,34 +17,10 @@ export default {
 			animation: '',
 			animation2: '',
 			isShowRed: false,
+			screenWidth: uni.getSystemInfoSync().windowWidth, //屏幕宽度
 		};
 	},
 	methods: {
-		//左右滑动查看推荐和关注
-		changeVideo(e) {
-			if (e.detail.current == 1 && !this.isAuthorized) {
-				uni.showToast({
-					title: '请先授权',
-					icon: 'none'
-				});
-				return;
-			}
-			//当前下标0为推荐，tabsFlag为true
-			this.tabsFlag = e.detail.current == 0;
-			//没数据时加载
-			if (e.detail.current == 1 && this.attentionVideoList.length == 0) {
-				this.$refs.loading.open();
-				this.getAttentionList(true);
-			}
-			//切换时暂停另一侧视频
-			if (this.tabsFlag) {
-				this.$refs.recommendVideo.playVideo();
-				this.$refs.attentionVideo.onlyPauseVideo();
-			} else {
-				this.$refs.recommendVideo.onlyPauseVideo();
-				this.$refs.attentionVideo.playVideo();
-			}
-		},
 		//签到
 		signIn() {
 			this.subscription(); //小神推模板消息订阅
@@ -115,26 +91,66 @@ export default {
 		},
 		//关注后修改数据
 		attentionFun(index, state) {
-			this.videoList[index].is_follow = state; //评论数+1
+			if (this.tabsFlag) {
+				//推荐
+				this.videoList[index].is_follow = state; //评论数+1
+			} else {
+				// 关注
+				this.attentionVideoList[index].is_follow = state; //评论数+1
+			}
 		},
 		//点赞后修改数据
 		goodFun(index, num) {
-			this.videoList[index]['is_info_zan'] = !this.videoList[index]['is_info_zan']; //修改点赞状态
-			this.videoList[index]['info_zan_count'] = num; //修改点赞数
+			if (this.tabsFlag) {
+				//推荐
+				this.videoList[index]['is_info_zan'] = !this.videoList[index]['is_info_zan']; //修改点赞状态
+				this.videoList[index]['info_zan_count'] = num; //修改点赞数
+			} else {
+				// 关注
+				this.attentionVideoList[index]['is_info_zan'] = !this.attentionVideoList[index]['is_info_zan']; //修改点赞状态
+				this.attentionVideoList[index]['info_zan_count'] = num; //修改点赞数
+			}
 		},
 		//评论后修改数据
 		commentFun(index, content, isDel) {
-			if (isDel) {
-				this.videoList[index].study_repount--; //评论数-1
+			if (this.tabsFlag) {
+				//推荐
+				if (isDel) {
+					this.videoList[index].study_repount--; //评论数-1
+				} else {
+					this.videoList[index].study_repount++; //评论数+1
+					this.videoList[index].pinglun.push({
+						reply_content: content
+					});
+				}
 			} else {
-				this.videoList[index].study_repount++; //评论数+1
-				this.videoList[index].pinglun.push({
-					reply_content: content
-				});
+				// 关注
+				if (isDel) {
+					this.attentionVideoList[index].study_repount--; //评论数-1
+				} else {
+					this.attentionVideoList[index].study_repount++; //评论数+1
+					this.attentionVideoList[index].pinglun.push({
+						reply_content: content
+					});
+				}
 			}
 		},
 		// 切换顶部tab
 		changeTabs(flag) {
+			//没数据时加载
+			if (!flag && this.attentionVideoList.length == 0) {
+				this.$refs.loading.open();
+				this.getAttentionList(true);
+			}
+			//切换时暂停另一侧视频
+			if (flag) {
+				this.$refs.attentionVideo.stopVideo();
+				this.$refs.recommendVideo.playVideo();
+			} else {
+				this.$refs.recommendVideo.stopVideo();
+				this.$refs.attentionVideo.playVideo();
+			}
+			//切换
 			this.tabsFlag = flag;
 		},
 		//授权后刷新数据

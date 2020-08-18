@@ -1,5 +1,14 @@
-.video-swiper{
+.video-swiper-group{
 	height: 100%;
+	white-space:nowrap;
+	position: relative;
+	left: 0;
+	transition: all ease 0.3s;
+	>view{
+		width: 100%;
+		height: 100%;
+		display: inline-block;
+	}
 }
 .red-icon {
 	width: 156rpx;

@@ -32,7 +32,7 @@ export default {
 
 			imgHeightList: [], //轮播高度数组
 			screenWidth: uni.getSystemInfoSync().windowWidth, //屏幕宽度
-			screenHeight: uni.getSystemInfoSync().windowHeight, //屏幕宽度
+			screenHeight: uni.getSystemInfoSync().windowHeight, //屏幕高度
 			bannerImgNumList: [], //轮播中图片总数
 
 			progressNum: 0,

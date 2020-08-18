@@ -86,7 +86,9 @@
 									<view class="fs-30 bold">{{ item.user_nick_name }}</view>
 									<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 								</view>
-								<view v-if="isAuthorized" class="attention flex-center" @click.stop="attention(item.user_id, item.is_follow, index)">+关注</view>
+								<view v-if="isAuthorized">
+									<view v-if="item.is_follow==0" class="attention flex-center" @click.stop="attention(item.user_id, item.is_follow, index)">+关注</view>
+								</view>
 								<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view class="attention flex-center">+关注</view></button>
 							</view>
 							<view class="text fs-28" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
@@ -151,59 +153,61 @@
 			</swiper-item>
 		</swiper>
 		<!-- 评论区域 -->
-		<view class="mask" @click="hideCommentFun" v-if="showCommentFlag"></view>
-		<view class="comment" v-if="showCommentFlag">
-			<view class="title flex-center">
-				<text class="fs-26">全部评论 ({{ videoList[videoIndex].study_repount }})</text>
-				<image @click="hideCommentFun" src="../../static/close.png" mode="widthFix"></image>
-			</view>
-			<scroll-view class="listBox" scroll-y="true" @scrolltolower="getCommentList">
-				<view class="list" v-if="commentList.length > 0">
-					<block v-for="(item, index) in commentList" :key="index">
-						<view class="item flex" @click="toggleTwoLevComment(true, item.id, item.user_id)">
-							<image class="header circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
-							<view class="content">
-								<view class="fs-26 bold" style="color: #777;">{{ item.user_nick_name }}</view>
-								<view>
-									<text class="fs-30">{{ item.reply_content }}</text>
-									<text class="fs-26" style="color: #999;">{{ item.apter_time }}</text>
-								</view>
-							</view>
-							<view class="likeBox" @click.stop="commentGoodFun(item.id, index)">
-								<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
-								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
-							</view>
-							<view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id, item.id)">
-								<image class="like" src="../../static/del-cmt.png" mode="widthFix"></image>
-							</view>
-						</view>
-						<!-- 二级评论 -->
-						<view class="secondaryComment item flex" v-for="(items, indexs) in item.huifu_info_list" :key="indexs">
-							<image class="header circle" :src="items.user_head_sculpture" mode="aspectFill"></image>
-							<view class="content">
-								<view class="fs-26 bold" style="color: #777;">{{ items.user_nick_name }}</view>
-								<view>
-									<text class="fs-30">{{ items.duplex_content }}</text>
-									<text class="fs-26" style="color: #999;">{{ items.duplex_time }}</text>
-								</view>
-							</view>
-							<!-- <view class="likeBox">
-								<image class="like" src="../../static/like2.png" mode="widthFix"></image>
-								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">205</view>
-							</view> -->
-						</view>
-						<!-- 查看全部 -->
-						<view class="more flex" v-if="item.huifu_count > 2" @click="getMoreComment(item.id, item.user_id)">
-							<view class="line"></view>
-							<text class="fs-26" style="color: #999;">查看全部{{ item.huifu_count }}条评论</text>
-						</view>
-					</block>
+		<view v-if="showCommentFlag">
+			<view class="mask" @click="hideCommentFun"></view>
+			<view class="comment">
+				<view class="title flex-center">
+					<text class="fs-26">全部评论 ({{ videoList[videoIndex].study_repount }})</text>
+					<image @click="hideCommentFun" src="../../static/close.png" mode="widthFix"></image>
 				</view>
-				<view v-else style="text-align: center; padding-top: 200rpx;">暂无评论</view>
-			</scroll-view>
-			<view class="sendComment flex-between">
-				<input type="text" placeholder="留下你的精彩评论吧" maxlength="30" v-model="commentContent" />
-				<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
+				<scroll-view class="listBox" scroll-y="true" @scrolltolower="getCommentList">
+					<view class="list" v-if="commentList.length > 0">
+						<block v-for="(item, index) in commentList" :key="index">
+							<view class="item flex" @click="toggleTwoLevComment(true, item.id, item.user_id)">
+								<image class="header circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
+								<view class="content">
+									<view class="fs-26 bold" style="color: #777;">{{ item.user_nick_name }}</view>
+									<view>
+										<text class="fs-30">{{ item.reply_content }}</text>
+										<text class="fs-26" style="color: #999;">{{ item.apter_time }}</text>
+									</view>
+								</view>
+								<view class="likeBox" @click.stop="commentGoodFun(item.id, index)">
+									<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
+									<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
+								</view>
+								<view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id, item.id)">
+									<image class="like" src="../../static/del-cmt.png" mode="widthFix"></image>
+								</view>
+							</view>
+							<!-- 二级评论 -->
+							<view class="secondaryComment item flex" v-for="(items, indexs) in item.huifu_info_list" :key="indexs">
+								<image class="header circle" :src="items.user_head_sculpture" mode="aspectFill"></image>
+								<view class="content">
+									<view class="fs-26 bold" style="color: #777;">{{ items.user_nick_name }}</view>
+									<view>
+										<text class="fs-30">{{ items.duplex_content }}</text>
+										<text class="fs-26" style="color: #999;">{{ items.duplex_time }}</text>
+									</view>
+								</view>
+								<!-- <view class="likeBox">
+									<image class="like" src="../../static/like2.png" mode="widthFix"></image>
+									<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">205</view>
+								</view> -->
+							</view>
+							<!-- 查看全部 -->
+							<view class="more flex" v-if="item.huifu_count > 2" @click="getMoreComment(item.id, item.user_id)">
+								<view class="line"></view>
+								<text class="fs-26" style="color: #999;">查看全部{{ item.huifu_count }}条评论</text>
+							</view>
+						</block>
+					</view>
+					<view v-else style="text-align: center; padding-top: 200rpx;">暂无评论</view>
+				</scroll-view>
+				<view class="sendComment flex-between">
+					<input type="text" placeholder="留下你的精彩评论吧" maxlength="30" v-model="commentContent" />
+					<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
+				</view>
 			</view>
 		</view>
 		<!-- 二级评论 -->

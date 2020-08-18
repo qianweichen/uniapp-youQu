@@ -24,9 +24,9 @@
 		</view>
 		<!-- <view :style="'height:' + (customBar + topCustomBar) + 'px;'"></view> -->
 		<!-- <view  :style="'height:calc(100% - ' + (customBar + topCustomBar) + 'px);'"> -->
-		<swiper class="video-swiper" @animationfinish="changeVideo" :current="tabsFlag ? 0 : 1">
+		<view class="video-swiper-group" :style="!tabsFlag ? 'left:' + -screenWidth + 'px;' : '0'">
 			<!-- 推荐 -->
-			<swiper-item>
+			<view>
 				<videoBox
 					ref="recommendVideo"
 					:videoList="videoList"
@@ -37,9 +37,9 @@
 					@commentFun="commentFun"
 					@attentionFun="attentionFun"
 				></videoBox>
-			</swiper-item>
+			</view>
 			<!-- 关注 -->
-			<swiper-item>
+			<view>
 				<videoBox
 					ref="attentionVideo"
 					:videoList="attentionVideoList"
@@ -50,8 +50,9 @@
 					@commentFun="commentFun"
 					@attentionFun="attentionFun"
 				></videoBox>
-			</swiper-item>
-		</swiper>
+			</view>
+		</view>
+
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
 
 		<!-- 公告 -->
@@ -86,7 +87,7 @@
 						<view v-if="!personalInfo.is_sign" :animation="animation2" class="sign-in fs-40 flex-center" @click="signIn">点击打卡</view>
 						<view v-else>
 							<image :animation="animation2" @click="goPage('/pages/mine/invitation')" class="share-btn" src="@/static/share-btn.png" mode="widthFix"></image>
-							<view class="tip" style="padding-top: 20rpx;">今日已打卡,余额约{{(personalInfo.fraction/100).toFixed(2)}}</view>
+							<view class="tip" style="padding-top: 20rpx;">今日已打卡,余额约{{ (personalInfo.fraction / 100).toFixed(2) }}</view>
 							<view class="sign-in fs-40 flex-center" @click="goPage('/pages/mine/wallet')">立即提现</view>
 						</view>
 					</view>

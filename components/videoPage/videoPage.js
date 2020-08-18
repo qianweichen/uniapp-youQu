@@ -544,8 +544,8 @@ export default {
 			this.videoContext.pause();
 			this.showVideoPlayBtn = true;
 		},
-		//暂停视频(不显示播放图标，首页调取)
-		onlyPauseVideo() {
+		//暂停视频(不显示播放图标，首页切换调取)
+		stopVideo() {
 			this.videoContext.pause();
 		},
 		//播放视频
