@@ -18,6 +18,9 @@ export default {
 			animation2: '',
 			isShowRed: false,
 			screenWidth: uni.getSystemInfoSync().windowWidth, //屏幕宽度
+			
+			refreshRecommendFlag:true,
+			refreshAttentionFlag:true
 		};
 	},
 	methods: {
@@ -185,6 +188,7 @@ export default {
 					// console.log("首页视频列表:", res);
 					this.videoPage++;
 					this.videoList = this.videoList.concat(res.data.info);
+					this.refreshRecommendFlag = true;
 				},
 			});
 		},
@@ -214,8 +218,21 @@ export default {
 					// console.log("首页视频列表:", res);
 					this.attentionVideoPage++;
 					this.attentionVideoList = this.attentionVideoList.concat(res.data.info);
+					this.refreshAttentionFlag = true;
 				},
 			});
+		},
+		//index页刷新用
+		onShowFun(){
+			if (this.tabsFlag) {
+				//推荐
+				this.refreshRecommendFlag = false;
+				this.getHomeList(true);
+			} else {
+				// 关注
+				this.refreshAttentionFlag = false;
+				this.getAttentionList(true);
+			}
 		},
 		//关闭公告
 		closeNotice() {

@@ -63,7 +63,7 @@ export default {
 			clickTime: 0, //首页点击事件  控制双击
 			isSmallScreen: true, //是否开启底部透明
 			customBar: this.CustomBar,
-			isAddProgramShow: true	//是否显示添加到小程序
+			isAddProgramShow: true //是否显示添加到小程序
 		};
 	},
 	methods: {
@@ -75,7 +75,7 @@ export default {
 					// console.log("双击事件，用了：" + (curTime - lastTime));
 					//每次双击触发刷新
 					if (this.tabIndex == 'home') {
-						this.$refs.homePage.getHomeList(true);
+						this.$refs.homePage.onShowFun();
 					} else if (this.tabIndex == 'find') {
 						if (this.$refs.findPage) this.$refs.findPage.onShowFun();
 					} else if (this.tabIndex == 'message') {
@@ -94,9 +94,9 @@ export default {
 		//暂停视频
 		stopHomeVideo() {
 			if (this.$refs.homePage) {
-				if(this.$refs.homePage.$refs.recommendVideo){
+				if (this.$refs.homePage.$refs.recommendVideo) {
 					this.$refs.homePage.$refs.recommendVideo.videoContext.pause();
-				}else if(this.$refs.homePage.$refs.attentionVideo){
+				} else if (this.$refs.homePage.$refs.attentionVideo) {
 					this.$refs.homePage.$refs.attentionVideo.videoContext.pause();
 				}
 			}
@@ -107,8 +107,6 @@ export default {
 			if (index == this.tabIndex) {
 				this.doubleClick(e);
 			}
-
-			this.tabIndex = index;
 
 			//控制第一次点击加载
 			if (index == 'home' && !this.loadTabList[0]) {
@@ -127,13 +125,16 @@ export default {
 			//切换tab暂停视频
 			if (index == 'find' || index == 'message' || index == 'mine') {
 				this.stopHomeVideo(); //暂停视频
-			} else {
-				if(this.$refs.homePage.$refs.recommendVideo){
+			} else if (this.tabIndex != index) {
+				if (this.$refs.homePage.$refs.recommendVideo) {
 					this.$refs.homePage.$refs.recommendVideo.videoContext.play();
-				}else if(this.$refs.homePage.$refs.attentionVideo){
+				} else if (this.$refs.homePage.$refs.attentionVideo) {
 					this.$refs.homePage.$refs.attentionVideo.videoContext.play();
 				}
 			}
+
+			//标记
+			this.tabIndex = index;
 		},
 		getUserInfo(e) {
 			if (!e.detail.userInfo) return;

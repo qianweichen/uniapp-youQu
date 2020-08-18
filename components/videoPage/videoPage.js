@@ -343,10 +343,8 @@ export default {
 			if (follow === 1) {
 				return;
 			}
-			uni.requestSubscribeMessage({
-				tmplIds: ['h2WXfb886d0u4REloFOdW6L3LrXILAZT3INRequJOOE'],
-				success: res => {}
-			});
+			//小神推关注
+			this.subscription('attention');
 			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',

@@ -149,9 +149,13 @@ Vue.prototype.browseImg = function(urls, current) {
 }
 
 //小神推模板消息订阅
-Vue.prototype.subscription = function(){
+Vue.prototype.subscription = function(type){
+	var eventId = '5f34cf2190fcd68beee4d506';	//默认是打卡
+	if(type=='attention'){
+		eventId = '5f32100290fcd68beee4d501';	//关注
+	}
 	wx.aldPushSubscribeMessage({
-		eventId: '5f34cf2190fcd68beee4d506',
+		eventId,
 		success(res) {
 			// console.log(res)
 		},

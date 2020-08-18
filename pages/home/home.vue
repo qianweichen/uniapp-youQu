@@ -28,6 +28,7 @@
 			<!-- 推荐 -->
 			<view>
 				<videoBox
+					v-if="refreshRecommendFlag"
 					ref="recommendVideo"
 					:videoList="videoList"
 					:parentPage="'home'"
@@ -41,6 +42,7 @@
 			<!-- 关注 -->
 			<view>
 				<videoBox
+					v-if="refreshAttentionFlag"
 					ref="attentionVideo"
 					:videoList="attentionVideoList"
 					:parentPage="'home'"

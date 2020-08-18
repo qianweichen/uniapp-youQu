@@ -35,7 +35,7 @@
 						:show-center-play-btn="false"
 						:controls="false"
 						loop
-						@click="clickVideo(item.id,index)"
+						@click="clickVideo(item.id, index)"
 						@timeupdate="videoTimeUpdate"
 						@play="videoPlayStard"
 						@ended="videoPlayEnd"
@@ -87,7 +87,9 @@
 									<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 								</view>
 								<view v-if="isAuthorized">
-									<view v-if="item.is_follow==0" class="attention flex-center" @click.stop="attention(item.user_id, item.is_follow, index)">+关注</view>
+									<view v-if="item.is_follow == 0 || !item.is_follow" class="attention flex-center" @click.stop="attention(item.user_id, item.is_follow, index)">
+										+关注
+									</view>
 								</view>
 								<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view class="attention flex-center">+关注</view></button>
 							</view>

@@ -185,7 +185,6 @@ export default {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
 					id: this.personalId,
-					paper_id: this.personalId,
 					uid: uni.getStorageSync('userId'),
 					index_page: this.videoPage,
 					version
