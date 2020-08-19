@@ -175,6 +175,8 @@ export default {
 		setTimeout(() => {
 			this.isAddProgramShow = false;
 		}, 8000);
+		//收录小程序的页面信息
+		this.submitPages('pages/index/index', '');
 	},
 	onShow() {
 		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();

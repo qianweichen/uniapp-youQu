@@ -450,6 +450,9 @@ export default {
 			this.circleId = options.id;
 		}
 		this.getData();
+
+		//收录小程序的页面信息
+		this.submitPages('pagesA/circle/circle', 'id=' + options.id);
 	},
 	onPullDownRefresh() {
 		this.getData();

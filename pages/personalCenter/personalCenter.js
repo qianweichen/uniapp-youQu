@@ -196,7 +196,7 @@ export default {
 					for (var j = 0; j < res.data.info.length; j++) {
 						for (var i = 0; i < res.data.info[j].list.length; i++) {
 							let _item = res.data.info[j].list[i];
-							if (_item.study_type == 2&&_item.image_part) {
+							if (_item.study_type == 2 && _item.image_part) {
 								var src = this.httpsUrl(_item.image_part[0]);
 								uni.getImageInfo({
 									src,
@@ -267,18 +267,28 @@ export default {
 		// 页面内分享按钮
 		if (res.from === 'button') {
 			if (res.target.dataset.type == 'persional') {
+				//分享个人页
 				return {
 					title: this.personalInfo.user_nick_name || this.miniProgramName,
 					path: '/pages/personalCenter/personalCenter?id=' + this.personalId,
 					imageUrl: this.personalInfo.bg_img
 				};
+			} else if (res.target.dataset.type == 2) {
+				//视频类型去主页
+				return {
+					title: res.target.dataset.content || this.miniProgramName,
+					path: '/pages/index/index?id=' + res.target.dataset.id,
+					imageUrl: res.target.dataset.img
+				};
 			} else {
+				//图文类型去详情
 				return {
 					title: res.target.dataset.content || this.miniProgramName,
 					path: '/pagesA/articleDetails/articleDetails?id=' + res.target.dataset.id,
 					imageUrl: res.target.dataset.img
 				};
 			}
+
 		}
 	},
 	onPageScroll(e) {
