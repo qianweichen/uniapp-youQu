@@ -1,7 +1,9 @@
 <template>
 	<view class="page-home">
 		<!-- 红包广告 -->
-		<image v-if="isShowRed" @click="isShowShare = true" class="red-icon" src="@/static/share-icon.png" mode="widthFix" :animation="animation"></image>
+		<view v-if="isShowRed" class="red-icon-group">
+			<image @click="isShowShare = true" class="red-icon" src="@/static/share-icon.png" mode="widthFix" :animation="animation"></image>
+		</view>
 		<!-- tab -->
 		<view class="topTab flex-center" :style="'height:' + (customBar + topCustomBar) + 'px;'">
 			<view class="tabs flex-between fs-32">

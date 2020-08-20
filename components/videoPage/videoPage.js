@@ -1,15 +1,19 @@
 export default {
 	data() {
 		return {
+			isAuthorized: false, //是否授权过
+			userId: uni.getStorageSync('userId'),
+
 			videoIndex: 0, //当前视频下标
 			videoContext: '', //视频对象
 			progressNum: 0, //视频播放进度百分比
+
 			isLoadVideoShow: true, //控制视频载入中
 			showVideoPlayBtn: false, //控制播放按钮
 			showVideoEndShare: false, //控制播放结束后的分享模块
 			showCommentFlag: false, //评论弹窗
 			showShareFlag: false, //控制分享弹出
-			isAuthorized: false, //是否授权过
+
 			commentPage: 1, //评论页码
 			commentList: [], //评论列表
 			commentContent: '', //评论内容
@@ -17,13 +21,15 @@ export default {
 			showTwoLevCommentFlag: false, //控制二级评论box
 			twoCommentId: '', //二级评论的回复id
 			twoCommentUserId: '', //二级评论的回复用户id
+
 			informContent: '', //举报输入内容
 			showInformFlag: false, //控制举报弹出
 			deleteContent: '', //删除输入内容
 			showDeleteFlag: false, //控制删除弹出
-			animation: '', //分享动画
+
+			//动画
 			animationData: '',
-			userId: uni.getStorageSync('userId'),
+			redAnimationData: '',
 
 			showDelInfoFlag: false, //删除回复弹窗
 			delCommentQuery: {}, //删除参数
@@ -35,7 +41,22 @@ export default {
 			timer: null, //切换定时器
 
 			clickNum: 0, //点击次数，控制单击双击
-			clickTimer: null
+			clickTimer: null,
+
+			getRedNum: 0, //第几个红包
+			getRedList: [{ //每一个红包对应的浏览时间（固定值）
+				time: 60,
+			}, {
+				time: 60 * 5,
+			}, {
+				time: 60 * 15,
+			}, {
+				time: 60 * 30,
+			}],
+			watchTime: 0, //当前红包累计的时间
+			refillTime: 30, //每次滑动可以累计加的时间（固定值）
+			watchTimeTimer: null, //浏览计时器存储对象
+			watchTimeNumber: 0 //浏览计时计数器
 		}
 	},
 	props: {
@@ -479,6 +500,68 @@ export default {
 		toggleShareBox(flag) {
 			this.showShareFlag = flag;
 		},
+		// 红包star--------------------------------------------------------------------------------------------------
+		//领取红包累加时间函数
+		getRedPacket() {
+			clearInterval(this.watchTimeTimer); //每次滑动，重置定时器 防止叠加
+			this.watchTimeNumber = 0; //每次滑动，可累计时间都重置到refillTime的值
+			this.watchTimeTimer = setInterval(() => {
+				this.watchTime++;
+				this.watchTimeNumber++;
+				//滑动一次的时间到时
+				if (this.refillTime <= this.watchTimeNumber) {
+					clearInterval(this.watchTimeTimer);
+					this.watchTimeNumber = 0;
+				}
+				//进度条满时停止
+				if (this.getRedList[this.getRedNum].time <= this.watchTime) {
+					clearInterval(this.watchTimeTimer);
+					this.watchTimeNumber = 0;
+				}
+			}, 1000);
+		},
+		//点击红包领取
+		clickRed() {
+			if (this.getRedList[this.getRedNum].time > this.watchTime) {
+				return;
+			}
+			this.request({
+				url: this.apiUrl + 'user/set_inc_ji_fen',
+				data: {
+					openid: uni.getStorageSync('openid'),
+					token: uni.getStorageSync('token'),
+					uid: uni.getStorageSync('userId'),
+					type: 1	//1:增加积分 2:查询次数
+				},
+				success:(res)=> {
+					console.log(res);
+					this.getRedNum++; //下一个红包
+					this.watchTime = 0; //重置时间
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					});
+					//累计增加红包时间
+					this.getRedPacket();
+				}
+			});
+		},
+		//获取 领过的红包次数
+		getRedTimes(){
+			this.request({
+				url: this.apiUrl + 'user/set_inc_ji_fen',
+				data: {
+					openid: uni.getStorageSync('openid'),
+					token: uni.getStorageSync('token'),
+					uid: uni.getStorageSync('userId'),
+					type: 2	//1:增加积分 2:查询次数
+				},
+				success:(res)=> {
+					this.getRedNum = res.data.data;
+				}
+			});
+		},
+		// 红包end-----------------------------------------------------------------------------------------------
 		//滑动视频
 		changeSwiper(e) {
 			clearTimeout(this.timer);
@@ -499,8 +582,11 @@ export default {
 				if ((e.detail.current + 3) % 15 == 0) {
 					this.$emit('getNextPage'); //获取下一页
 				}
+				//累计增加红包时间
+				this.getRedPacket();
 			}, 500);
 		},
+		//视频加载完成
 		loadEdmetaData(e) {
 			this.isLoadVideoShow = false;
 		},
@@ -524,6 +610,7 @@ export default {
 		videoTimeUpdate(e) {
 			this.progressNum = (e.detail.currentTime / e.detail.duration) * 100;
 		},
+		// 单击双击视频
 		clickVideo(id, index) {
 			this.clickNum++;
 			if (this.clickNum == 2) {
@@ -742,31 +829,60 @@ export default {
 				this.isAuthorized = true;
 				this.userId = uni.getStorageSync('userId');
 				this.$emit('loginFun', true);
+				this.getRedPacket(); //授权后累计增加红包时间
+				//首页的话获取红包次数
+				if(this.parentPage == 'home'){
+					this.getRedTimes();
+				}
 			});
 		},
-		shareAnimate() {
+		createdAnimate() {
+			//左右晃动动画
 			var animation = uni.createAnimation({
+				duration: 200,
+				timingFunction: 'ease',
+			})
+			var next = true;
+			//连续动画关键步骤
+			setInterval(function() {
+				//2: 调用动画实例方法来描述动画
+				if (next) {
+					animation.rotate(8).step()
+					animation.rotate(-8).step()
+					animation.rotate(0).step()
+					next = !next;
+				} else {
+					animation.rotate(-8).step()
+					animation.rotate(8).step()
+					animation.rotate(0).step()
+					next = !next;
+				}
+				//3: 将动画export导出，把动画数据传递组件animation的属性 
+				this.redAnimationData = animation.export();
+			}.bind(this), 2000)
+
+			//分享放大缩小动画
+			var animation2 = uni.createAnimation({
 				duration: 1000,
 				timingFunction: 'linear',
 			})
-
 			var count = 1;
 			setInterval(function() {
 				if (count++ % 2 == 1) {
-					animation.scale(1.1).step()
+					animation2.scale(1.1).step()
 				} else {
-					animation.scale(0.9).step()
+					animation2.scale(0.9).step()
 				}
-				this.animationData = animation.export()
-			}.bind(this), 1000)
+				this.animationData = animation2.export()
+			}.bind(this), 1000);
 		}
 	},
 	created() {
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
 
-		//分享动画
-		this.shareAnimate();
+		//创建动画
+		this.createdAnimate();
 	},
 	mounted() {
 		if (this.index != 0) { //有初始视频下标
@@ -776,6 +892,14 @@ export default {
 			//获取视频对象
 			this.videoContext = uni.createVideoContext('myVideo0', this);
 			this.videoContext.play();
+			//授权的话，累计增加红包时间
+			if (this.isAuthorized) {
+				this.getRedPacket();
+				//首页的话获取红包次数
+				if(this.parentPage == 'home'){
+					this.getRedTimes();
+				}
+			}
 		}
 	}
 }

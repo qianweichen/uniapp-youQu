@@ -176,7 +176,7 @@ Vue.prototype.submitPages = function(path, query) {
 			query
 		},
 		success: res => {
-			console.log('收录小程序的页面信息:', res);
+			// console.log('收录小程序的页面信息:', res);
 		}
 	});
 }

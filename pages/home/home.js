@@ -246,6 +246,58 @@ export default {
 				this.isAuthorized = true;
 				this.getPersonalInfo();
 			});
+		},
+		//创建动画
+		createAnimation(){
+			// 1: 创建动画实例animation:
+			var animation = uni.createAnimation({
+				duration: 200,
+				timingFunction: 'ease',
+			})
+			this.animation = animation
+			var next = true;
+			//连续动画关键步骤
+			setInterval(function() {
+				//2: 调用动画实例方法来描述动画
+				if (next) {
+					// animation.translateX(4).step();
+					animation.rotate(8).step()
+					animation.rotate(-8).step()
+					animation.rotate(0).step()
+					next = !next;
+				} else {
+					// animation.translateX(-4).step();
+					animation.rotate(-8).step()
+					animation.rotate(8).step()
+					animation.rotate(0).step()
+					next = !next;
+				}
+				//3: 将动画export导出，把动画数据传递组件animation的属性 
+				this.animation = animation.export();
+			}.bind(this), 2000)
+			
+			// 1: 创建动画实例animation:
+			var animation2 = uni.createAnimation({
+				duration: 1000,
+				timingFunction: 'linear',
+			})
+			this.animation2 = animation2
+			var next2 = true;
+			//连续动画关键步骤
+			setInterval(function() {
+				//2: 调用动画实例方法来描述动画
+				if (next2) {
+					// animation2.translateX(4).step();
+					animation2.scale(1.1).step()
+					next2 = !next2;
+				} else {
+					// animation2.translateX(-4).step();
+					animation2.scale(0.9).step()
+					next2 = !next2;
+				}
+				//3: 将动画export导出，把动画数据传递组件animation2的属性 
+				this.animation2 = animation2.export();
+			}.bind(this), 1000)
 		}
 	},
 	mounted() {
@@ -272,55 +324,7 @@ export default {
 		this.getTxList();
 		this.getRed();
 
-
-		// 1: 创建动画实例animation:
-		var animation = uni.createAnimation({
-			duration: 200,
-			timingFunction: 'ease',
-		})
-		this.animation = animation
-		var next = true;
-		//连续动画关键步骤
-		setInterval(function() {
-			//2: 调用动画实例方法来描述动画
-			if (next) {
-				// animation.translateX(4).step();
-				animation.rotate(8).step()
-				animation.rotate(-8).step()
-				animation.rotate(0).step()
-				next = !next;
-			} else {
-				// animation.translateX(-4).step();
-				animation.rotate(-8).step()
-				animation.rotate(8).step()
-				animation.rotate(0).step()
-				next = !next;
-			}
-			//3: 将动画export导出，把动画数据传递组件animation的属性 
-			this.animation = animation.export();
-		}.bind(this), 2000)
-
-		// 1: 创建动画实例animation:
-		var animation2 = uni.createAnimation({
-			duration: 1000,
-			timingFunction: 'linear',
-		})
-		this.animation2 = animation2
-		var next2 = true;
-		//连续动画关键步骤
-		setInterval(function() {
-			//2: 调用动画实例方法来描述动画
-			if (next2) {
-				// animation2.translateX(4).step();
-				animation2.scale(1.1).step()
-				next2 = !next2;
-			} else {
-				// animation2.translateX(-4).step();
-				animation2.scale(0.9).step()
-				next2 = !next2;
-			}
-			//3: 将动画export导出，把动画数据传递组件animation2的属性 
-			this.animation2 = animation2.export();
-		}.bind(this), 1000)
+		//创建动画
+		this.createAnimation();
 	}
 };

@@ -1,3 +1,6 @@
+/*
+	七牛上传js
+*/
 // created by gpake
 (function() {
 

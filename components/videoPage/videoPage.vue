@@ -117,23 +117,32 @@
 						<view class="progress"><view :style="'width:' + progressNum + '%;'"></view></view>
 						<!-- 点赞区域 -->
 						<view class="btnBox fs-26" :class="isSmallScreen && parentPage == 'home' ? 'btnBox-full-page' : ''">
+							<view
+								v-if="isAuthorized && parentPage == 'home'"
+								class="progress-group"
+								@click="clickRed"
+								:animation="getRedList[getRedNum].time <= watchTime ? redAnimationData : ''"
+							>
+								<cmd-progress width="40" status="success" type="circle" :percent="(watchTime / getRedList[getRedNum].time) * 100" :showInfo="false"></cmd-progress>
+								<image src="../../static/redpak.png" mode="widthFix"></image>
+							</view>
 							<view v-if="isAuthorized" @click="goodFun(item.id, index)">
-								<image :src="'../../static/like' + (item.is_info_zan ? '' : '2') + '.png'" mode="widthFix"></image>
+								<image class="opcity" :src="'../../static/like' + (item.is_info_zan ? '' : '_w') + '.png'" mode="widthFix"></image>
 								<view>{{ item.info_zan_count }}</view>
 							</view>
 							<view v-else>
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
-									<image :src="'../../static/like' + (item.is_info_zan ? '' : '2') + '.png'" mode="widthFix"></image>
+									<image class="opcity" :src="'../../static/like_w.png'" mode="widthFix"></image>
 									<view>{{ item.info_zan_count }}</view>
 								</button>
 							</view>
 							<view v-if="isAuthorized" @click="showCommentFun">
-								<image src="../../static/comment.png" mode="widthFix"></image>
+								<image class="opcity" src="../../static/comment.png" mode="widthFix"></image>
 								<view>{{ item.study_repount }}</view>
 							</view>
 							<view v-else>
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
-									<image src="../../static/comment.png" mode="widthFix"></image>
+									<image class="opcity" src="../../static/comment.png" mode="widthFix"></image>
 									<view>{{ item.study_repount }}</view>
 								</button>
 							</view>
@@ -327,7 +336,11 @@
 
 <script>
 import videoPageJs from './videoPage.js';
+import cmdProgress from '@/components/cmd-progress/cmd-progress';
 export default {
+	components: {
+		cmdProgress
+	},
 	...videoPageJs
 };
 </script>

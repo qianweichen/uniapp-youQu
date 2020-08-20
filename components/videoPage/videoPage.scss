@@ -134,11 +134,26 @@
 			bottom: 180rpx;
 		}
 		> view {
-			padding-bottom: 40rpx;
+			margin-bottom: 40rpx;
 		}
 		image {
 			width: 68rpx;
 			height: auto;
+			&.opcity{
+				opacity: 0.7;
+			}
+		}
+		.progress-group{
+			position: relative;
+			border-radius: 50%;
+			image{
+				position: absolute;
+				left: calc(50% - 30rpx);
+				top: calc(50% - 30rpx);
+				width: 60rpx;
+				height: auto;
+				opacity: 0.7;
+			}
 		}
 	}
 	.contentBox {
