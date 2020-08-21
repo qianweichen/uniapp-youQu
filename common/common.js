@@ -41,8 +41,10 @@ Vue.prototype.beAuthorized = function() {
 }
 
 //用户登陆 获取token
-Vue.prototype.doLogin = function(userInfo, callBack) {
-	this.$refs.loading.open();
+Vue.prototype.doLogin = function(userInfo, callBack ,type) {
+	if(this.$refs.loading){
+		this.$refs.loading.open();
+	}
 	uni.setStorageSync('userInfo', userInfo);
 	this.request({
 		url: this.apiUrl + 'Login/do_login',
@@ -51,15 +53,21 @@ Vue.prototype.doLogin = function(userInfo, callBack) {
 			wx_openid: uni.getStorageSync('openid')
 		},
 		success: res => {
-			this.$refs.loading.close();
+			if(this.$refs.loading){
+				this.$refs.loading.close();
+			}
 			// console.log("登陆获取token：",res);
 			if (res.data.code == 0) {
 				uni.setStorageSync('userId', res.data.id);
 				uni.setStorageSync('token', res.data.token);
-				uni.showToast({
-					title: '登陆成功'
-				});
-				callBack();
+				if(type!="refresh"){
+					uni.showToast({
+						title: '登陆成功'
+					});
+				}
+				if(callBack){
+					callBack();
+				}
 			} else {
 				uni.showToast({
 					title: '登陆失败，请稍后再试',

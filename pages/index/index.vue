@@ -96,8 +96,12 @@ export default {
 			if (this.$refs.homePage) {
 				if (this.$refs.homePage.$refs.recommendVideo) {
 					this.$refs.homePage.$refs.recommendVideo.videoContext.pause();
+					//解决ios分享按钮动画放大到白屏问题
+					this.$refs.homePage.$refs.recommendVideo.isAnimationDataShow = false;
 				} else if (this.$refs.homePage.$refs.attentionVideo) {
 					this.$refs.homePage.$refs.attentionVideo.videoContext.pause();
+					//解决ios分享按钮动画放大到白屏问题
+					this.$refs.homePage.$refs.attentionVideo.isAnimationDataShow = false;
 				}
 			}
 		},
@@ -182,6 +186,15 @@ export default {
 		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();
 		// if (this.$refs.messagePage) this.$refs.messagePage.onShowFun();
 		// if (this.$refs.minePage) this.$refs.minePage.onShowFun();
+		
+		//解决ios分享按钮动画放大到白屏问题
+		if (this.$refs.homePage) {
+			if (this.$refs.homePage.$refs.recommendVideo) {
+				this.$refs.homePage.$refs.recommendVideo.isAnimationDataShow = true;
+			} else if (this.$refs.homePage.$refs.attentionVideo) {
+				this.$refs.homePage.$refs.attentionVideo.isAnimationDataShow = true;
+			}
+		}
 	},
 	onHide() {
 		this.stopHomeVideo(); //打开其他页面暂停视频

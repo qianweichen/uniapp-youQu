@@ -3,22 +3,29 @@ import Vue from 'vue';
 var timer = '';
 export default {
 	onLaunch: function() {
-		//登陆
+		//登陆1.获取code
 		uni.login({
 			provider: 'weixin',
 			success: res => {
+				//2.获取openid
 				this.request({
 					url: this.apiUrl + 'Login/index',
 					data: {
 						code: res.code
 					},
 					success: res => {
-						// console.log("openid:",res);
 						if (res.data.code == 0) {
 							uni.setStorageSync('openid', res.data.info.openid);
 							uni.setStorageSync('session_key', res.data.info.session_key);
 							wx.aldstat.sendOpenid(res.data.info.openid); //阿拉丁
 							wx.aldPushSendOpenid(res.data.info.openid); //小神推
+							//3.授权过时刷新token
+							uni.getUserInfo({
+								provider: 'weixin',
+								success: res => {
+									this.doLogin(res.userInfo, '', 'refresh');
+								}
+							});
 						} else {
 							uni.showToast({
 								title: '登陆失败，请稍后再试',

@@ -29,6 +29,7 @@ export default {
 
 			//动画
 			animationData: '',
+			isAnimationDataShow:true,	//解决ios分享按钮动画放大到白屏问题
 			redAnimationData: '',
 
 			showDelInfoFlag: false, //删除回复弹窗

@@ -77,6 +77,9 @@
 						<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
 						<!-- 文案区域 -->
 						<view class="contentBox" :class="isSmallScreen && parentPage == 'home' ? 'full-page' : ''">
+							<view class="flex">
+								<view class="realm-name-top" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">#{{ item.realm_name }}</view>
+							</view>
 							<view class="userInfo flex">
 								<view class="header circle" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
@@ -95,13 +98,14 @@
 							</view>
 							<view class="text fs-28" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 							<view class="flex-between">
-								<view class="circleName flex" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">
+								<!-- <view class="circleName flex" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">
 									<view class="flex">
 										<image class="circle" :src="item.realm_icon" mode="aspectFill"></image>
 										<text class="fs-22">{{ item.realm_name }}</text>
 									</view>
-								</view>
-								<swiper class="comment-swiper" vertical circular autoplay interval="1500">
+								</view> -->
+								<!-- 评论滚动 -->
+								<!-- <swiper class="comment-swiper" vertical circular autoplay interval="1500">
 									<swiper-item v-for="(item, index) in item.pinglun" :key="index">
 										<view class="fs-24">{{ item.reply_content }}</view>
 									</swiper-item>
@@ -110,7 +114,7 @@
 									</swiper-item>
 									<swiper-item v-if="item.pinglun.length == 0"><view class="fs-24">暂无评论，期待您的精彩评论！</view></swiper-item>
 									<swiper-item v-if="item.pinglun.length == 0"><view class="fs-24">暂无评论，期待您的精彩评论！</view></swiper-item>
-								</swiper>
+								</swiper> -->
 							</view>
 						</view>
 						<!-- 进度条 -->
@@ -147,12 +151,12 @@
 								</button>
 							</view>
 							<view v-if="isAuthorized" @click="toggleShareBox(true)">
-								<image src="../../static/wechat.png" mode="widthFix" :animation="animationData"></image>
+								<image src="../../static/wechat.png" mode="widthFix" :animation="isAnimationDataShow?animationData:''"></image>
 								<view>分享</view>
 							</view>
 							<view v-else>
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
-									<image src="../../static/wechat.png" mode="widthFix" :animation="animationData"></image>
+									<image src="../../static/wechat.png" mode="widthFix" :animation="isAnimationDataShow?animationData:''"></image>
 									<view>分享</view>
 								</button>
 							</view>
