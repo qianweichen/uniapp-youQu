@@ -21,6 +21,12 @@
 				.fs-26 {
 					color: #aaa;
 				}
+				.user-nick-name{
+					width: 340rpx;
+					overflow: hidden;
+					text-overflow:ellipsis;
+					white-space: nowrap;
+				}
 			}
 			.btn {
 				width: 100rpx;

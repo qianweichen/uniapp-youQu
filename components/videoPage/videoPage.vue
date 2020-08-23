@@ -86,7 +86,7 @@
 									<!-- <image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
 								</view>
 								<view @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
-									<view class="fs-30 bold">{{ item.user_nick_name }}</view>
+									<view class="fs-30 bold nick-name">{{ item.user_nick_name }}</view>
 									<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 								</view>
 								<view v-if="isAuthorized">

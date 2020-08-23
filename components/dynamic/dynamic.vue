@@ -38,7 +38,7 @@ playVideoFun(index,oldIndex){
 				<view class="flex-between padding">
 					<view class="header flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 						<image class="circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
-						<view class="fs-28">{{ item.user_nick_name }}</view>
+						<view class="fs-28 user-nick-name">{{ item.user_nick_name }}</view>
 						<view class="fs-26">{{ item.adapter_time }}</view>
 					</view>
 					<view v-if="item.user_id != userId">

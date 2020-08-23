@@ -199,6 +199,12 @@
 					left: calc(50% - 17rpx);
 				}
 			}
+			.nick-name{
+				width: 360rpx;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				white-space: nowrap;
+			}
 		}
 		.text {
 			width: 600rpx;
