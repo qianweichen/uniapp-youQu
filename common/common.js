@@ -41,31 +41,32 @@ Vue.prototype.beAuthorized = function() {
 }
 
 //用户登陆 获取token
-Vue.prototype.doLogin = function(userInfo, callBack ,type) {
-	if(this.$refs.loading){
+Vue.prototype.doLogin = function(userInfo, callBack, type) {
+	if (this.$refs.loading) {
 		this.$refs.loading.open();
 	}
 	uni.setStorageSync('userInfo', userInfo);
 	this.request({
 		url: this.apiUrl + 'Login/do_login',
+		method: 'POST',
 		data: {
 			userInfo,
 			wx_openid: uni.getStorageSync('openid')
 		},
 		success: res => {
-			if(this.$refs.loading){
+			if (this.$refs.loading) {
 				this.$refs.loading.close();
 			}
 			// console.log("登陆获取token：",res);
 			if (res.data.code == 0) {
 				uni.setStorageSync('userId', res.data.id);
 				uni.setStorageSync('token', res.data.token);
-				if(type!="refresh"){
+				if (type != "refresh") {
 					uni.showToast({
 						title: '登陆成功'
 					});
 				}
-				if(callBack){
+				if (callBack) {
 					callBack();
 				}
 			} else {
