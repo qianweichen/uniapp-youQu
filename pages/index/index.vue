@@ -191,13 +191,23 @@ export default {
 		if (this.$refs.homePage) {
 			if (this.$refs.homePage.$refs.recommendVideo) {
 				this.$refs.homePage.$refs.recommendVideo.isAnimationDataShow = true;
+				this.$refs.homePage.$refs.recommendVideo.watchTime = uni.getStorageSync('recommendVideoWatchTime');
 			} else if (this.$refs.homePage.$refs.attentionVideo) {
 				this.$refs.homePage.$refs.attentionVideo.isAnimationDataShow = true;
+				this.$refs.homePage.$refs.attentionVideo.watchTime = uni.getStorageSync('attentionVideoWatchTime');
 			}
 		}
 	},
 	onHide() {
 		this.stopHomeVideo(); //打开其他页面暂停视频
+		//存储观看时间
+		if (this.$refs.homePage) {
+			if (this.$refs.homePage.$refs.recommendVideo) {
+				uni.setStorageSync('recommendVideoWatchTime',this.$refs.homePage.$refs.recommendVideo.watchTime);
+			} else if (this.$refs.homePage.$refs.attentionVideo) {
+				uni.setStorageSync('attentionVideoWatchTime',this.$refs.homePage.$refs.attentionVideo.watchTime);
+			}
+		}
 	},
 	onShareAppMessage(res) {
 		// console.log(res);

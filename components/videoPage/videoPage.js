@@ -29,7 +29,7 @@ export default {
 
 			//动画
 			animationData: '',
-			isAnimationDataShow:true,	//解决ios分享按钮动画放大到白屏问题
+			isAnimationDataShow: true, //解决ios分享按钮动画放大到白屏问题
 			redAnimationData: '',
 
 			showDelInfoFlag: false, //删除回复弹窗
@@ -504,6 +504,9 @@ export default {
 		// 红包star--------------------------------------------------------------------------------------------------
 		//领取红包累加时间函数
 		getRedPacket() {
+			if (this.getRedNum > 3) {
+				return;
+			}
 			clearInterval(this.watchTimeTimer); //每次滑动，重置定时器 防止叠加
 			this.watchTimeNumber = 0; //每次滑动，可累计时间都重置到refillTime的值
 			this.watchTimeTimer = setInterval(() => {
@@ -523,7 +526,14 @@ export default {
 		},
 		//点击红包领取
 		clickRed() {
-			if (this.getRedList[this.getRedNum].time > this.watchTime) {
+			if (this.getRedNum > 3) {
+				uni.showToast({
+					title: '今天的红包领完啦',
+					icon: 'none'
+				});
+				return;
+			}
+			if (this.getRedList[this.getRedNum] && (this.getRedList[this.getRedNum].time > this.watchTime)) {
 				return;
 			}
 			this.request({
@@ -532,33 +542,33 @@ export default {
 					openid: uni.getStorageSync('openid'),
 					token: uni.getStorageSync('token'),
 					uid: uni.getStorageSync('userId'),
-					type: 1	//1:增加积分 2:查询次数
+					type: 1 //1:增加积分 2:查询次数
 				},
-				success:(res)=> {
-					console.log(res);
-					this.getRedNum++; //下一个红包
-					this.watchTime = 0; //重置时间
+				success: (res) => {
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
 					});
-					//累计增加红包时间
-					this.getRedPacket();
+					this.getRedNum++; //下一个红包
+					this.watchTime = 0; //重置时间
+					this.getRedPacket(); //累计增加红包时间
 				}
 			});
 		},
 		//获取 领过的红包次数
-		getRedTimes(){
+		getRedTimes() {
 			this.request({
 				url: this.apiUrl + 'user/set_inc_ji_fen',
 				data: {
 					openid: uni.getStorageSync('openid'),
 					token: uni.getStorageSync('token'),
 					uid: uni.getStorageSync('userId'),
-					type: 2	//1:增加积分 2:查询次数
+					type: 2 //1:增加积分 2:查询次数
 				},
-				success:(res)=> {
+				success: (res) => {
 					this.getRedNum = res.data.data;
+					//获取次数后跑红包
+					this.getRedPacket();
 				}
 			});
 		},
@@ -830,9 +840,8 @@ export default {
 				this.isAuthorized = true;
 				this.userId = uni.getStorageSync('userId');
 				this.$emit('loginFun', true);
-				this.getRedPacket(); //授权后累计增加红包时间
 				//首页的话获取红包次数
-				if(this.parentPage == 'home'){
+				if (this.parentPage == 'home') {
 					this.getRedTimes();
 				}
 			});
@@ -895,9 +904,8 @@ export default {
 			this.videoContext.play();
 			//授权的话，累计增加红包时间
 			if (this.isAuthorized) {
-				this.getRedPacket();
 				//首页的话获取红包次数
-				if(this.parentPage == 'home'){
+				if (this.parentPage == 'home') {
 					this.getRedTimes();
 				}
 			}

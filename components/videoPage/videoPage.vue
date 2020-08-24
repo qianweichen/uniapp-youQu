@@ -121,14 +121,25 @@
 						<view class="progress"><view :style="'width:' + progressNum + '%;'"></view></view>
 						<!-- 点赞区域 -->
 						<view class="btnBox fs-26" :class="isSmallScreen && parentPage == 'home' ? 'btnBox-full-page' : ''">
-							<view
-								v-if="isAuthorized && parentPage == 'home'"
-								class="progress-group"
-								@click="clickRed"
-								:animation="getRedList[getRedNum].time <= watchTime ? redAnimationData : ''"
-							>
-								<cmd-progress width="40" status="success" type="circle" :percent="(watchTime / getRedList[getRedNum].time) * 100" :showInfo="false"></cmd-progress>
-								<image src="../../static/redpak.png" mode="widthFix"></image>
+							<view v-if="isAuthorized && parentPage == 'home'">
+								<view
+									v-if="getRedNum<4"
+									class="progress-group"
+									@click="clickRed"
+									:animation="getRedList[getRedNum].time <= watchTime ? redAnimationData : ''"
+								>
+									<cmd-progress width="40" status="success" type="circle" :percent="(watchTime / getRedList[getRedNum].time) * 100" :showInfo="false"></cmd-progress>
+									<image src="../../static/redpak.png" mode="widthFix"></image>
+								</view>
+								<view
+									v-else
+									class="progress-group"
+									@click="clickRed"
+									:animation="redAnimationData"
+								>
+									<cmd-progress width="40" status="success" type="circle" :percent="100" :showInfo="false"></cmd-progress>
+									<image src="../../static/redpak.png" mode="widthFix"></image>
+								</view>
 							</view>
 							<view v-if="isAuthorized" @click="goodFun(item.id, index)">
 								<image class="opcity" :src="'../../static/like' + (item.is_info_zan ? '' : '_w') + '.png'" mode="widthFix"></image>
