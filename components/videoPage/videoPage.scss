@@ -200,7 +200,7 @@
 				}
 			}
 			.nick-name{
-				width: 360rpx;
+				max-width: 360rpx;
 				overflow: hidden;
 				text-overflow:ellipsis;
 				white-space: nowrap;
