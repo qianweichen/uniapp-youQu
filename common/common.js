@@ -48,10 +48,10 @@ Vue.prototype.doLogin = function(userInfo, callBack, type) {
 	uni.setStorageSync('userInfo', userInfo);
 	this.request({
 		url: this.apiUrl + 'Login/do_login',
-		method: 'POST',
 		data: {
 			userInfo,
-			wx_openid: uni.getStorageSync('openid')
+			wx_openid: uni.getStorageSync('openid'),
+			uniacid:1
 		},
 		success: res => {
 			if (this.$refs.loading) {
