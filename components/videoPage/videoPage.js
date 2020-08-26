@@ -10,7 +10,7 @@ export default {
 
 			isLoadVideoShow: true, //控制视频载入中
 			showVideoPlayBtn: false, //控制播放按钮
-			showVideoEndShare: false, //控制播放结束后的分享模块
+			// showVideoEndShare: false, //控制播放结束后的分享模块
 			showCommentFlag: false, //评论弹窗
 			showShareFlag: false, //控制分享弹出
 
@@ -82,7 +82,7 @@ export default {
 		videoList(newName, oldName) {
 			if (newName.length == 0) {
 				//重置数据
-				this.showVideoEndShare = false; //重置结束弹窗
+				// this.showVideoEndShare = false; //重置结束弹窗
 				this.showVideoPlayBtn = false; //重置暂停按钮
 				this.progressNum = 0; //重置百分比
 				this.videoIndex = 0; //设置视频下标
@@ -601,19 +601,16 @@ export default {
 				this.getRedPacket();
 			}, 500);
 		},
-		//视频加载完成
-		loadEdmetaData(e) {
-			this.isLoadVideoShow = false;
-		},
 		//视频播放开始
 		videoPlayStard() {
 			// this.showVideoEndShare = false;
-			this.showVideoPlayBtn = false;
+			this.isLoadVideoShow = false;	//关闭加载中
+			this.showVideoPlayBtn = false;	//隐藏暂停时的播放按钮
 		},
 		//视频播放结束
-		videoPlayEnd() {
-			// this.showVideoEndShare = true;
-		},
+		// videoPlayEnd() {
+		// 	this.showVideoEndShare = true;
+		// },
 		//视频播放错误
 		videoPlayerror() {
 			uni.showToast({

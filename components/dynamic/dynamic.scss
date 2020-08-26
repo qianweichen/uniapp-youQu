@@ -22,7 +22,7 @@
 					color: #aaa;
 				}
 				.user-nick-name{
-					width: 340rpx;
+					max-width: 340rpx;
 					overflow: hidden;
 					text-overflow:ellipsis;
 					white-space: nowrap;

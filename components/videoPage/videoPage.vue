@@ -37,12 +37,11 @@
 						loop
 						@timeupdate="videoTimeUpdate"
 						@play="videoPlayStard"
-						@ended="videoPlayEnd"
 						@error="videoPlayerror"
-						@loadedmetadata="loadEdmetaData"
 					></video>
 					<!-- 节流:只显示3个swiper中的内容 -->
 					<view v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
+						<!-- 封面图 -->
 						<view v-if="videoIndex != index || isLoadVideoShow" class="cover-img-group">
 							<image class="cover-img" :src="item.image_part[0]" mode="aspectFit"></image>
 						</view>
@@ -121,7 +120,12 @@
 						<!-- 点赞区域 -->
 						<view class="btnBox fs-26" :class="isSmallScreen && parentPage == 'home' ? 'btnBox-full-page' : ''">
 							<view v-if="isAuthorized && parentPage == 'home' && parentPageVideoType == 'recommend'">
-								<view v-if="getRedNum < 4" class="progress-group" @click.stop="clickRed" :animation="getRedList[getRedNum].time <= watchTime ? redAnimationData : ''">
+								<view
+									v-if="getRedNum < 4"
+									class="progress-group"
+									@click.stop="clickRed"
+									:animation="getRedList[getRedNum].time <= watchTime ? redAnimationData : ''"
+								>
 									<cmd-progress
 										width="40"
 										status="success"
@@ -170,7 +174,9 @@
 					</view>
 				</view>
 				<!-- 全屏广告 -->
-				<view v-else class="videoBox"><ad-custom class="ad-custom" :class="isSmallScreen ? 'smallScreen' : ''" unit-id="adunit-a556114efa3c01c5"></ad-custom></view>
+				<view v-else-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index" class="videoBox">
+					<ad-custom class="ad-custom" :class="isSmallScreen ? 'smallScreen' : ''" unit-id="adunit-a556114efa3c01c5"></ad-custom>
+				</view>
 			</swiper-item>
 		</swiper>
 		<!-- 评论区域 -->

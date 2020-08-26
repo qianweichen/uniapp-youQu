@@ -21,7 +21,9 @@
 				<!-- 文字 -->
 				<view class="content fs-28">{{ articleData.study_content }}</view>
 				<!-- 图片/视频 -->
-				<view v-if="articleData.study_type == 2" class="mediaBox"><video :src="articleData.study_video" autoplay controls :poster="articleData.image_part[0]"></video></view>
+				<view v-if="articleData.study_type == 2" class="mediaBox">
+					<video :src="articleData.study_video" autoplay controls :poster="articleData.image_part[0]"></video>
+				</view>
 				<view v-else class="mediaBox">
 					<!-- <view class="one" v-if="articleData.image_part.length == 1">
 						<image :src="articleData.image_part[0]" mode="aspectFill" @click="browseImg(articleData.image_part,0)"></image>
@@ -32,7 +34,14 @@
 					<view class="more" v-if="articleData.image_part.length > 2">
 						<image v-for="(items, indexs) in articleData.image_part" :key="indexs" :src="items" mode="aspectFill" @click="browseImg(articleData.image_part,indexs)"></image>
 					</view> -->
-					<image v-for="(items, indexs) in articleData.image_part" :key="indexs" :src="items" mode="widthFix" style="width: 100%;"></image>
+					<image
+						v-for="(items, indexs) in articleData.image_part"
+						:key="indexs"
+						:src="items"
+						mode="widthFix"
+						style="width: 100%;"
+						@click="browseImg(articleData.image_part, indexs)"
+					></image>
 				</view>
 				<!-- 底部按钮 -->
 				<view class="bottom flex-between">
@@ -85,7 +94,7 @@
 					<view>
 						<view class="fc-9">
 							<text class="fs-26">{{ item.user_nick_name }}</text>
-							<text class="fs-22">{{ item.apter_time }}</text>
+							<text class="fs-22" style="padding-left: 10rpx;">{{ item.apter_time }}</text>
 						</view>
 						<view class="fs-30">{{ item.reply_content }}</view>
 					</view>
@@ -167,7 +176,7 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="isAuthorized" class="shareBox flex-column-between" :style="shareOpen?'height:350rpx;':''">
+		<view v-if="isAuthorized" class="shareBox flex-column-between" :style="shareOpen ? 'height:350rpx;' : ''">
 			<view v-if="!shareOpen" @click="toggleShare(true)">
 				<image class="icon-share" src="../../static/share-r.png" mode="widthFix"></image>
 				<view class="fs-22">分享</view>
@@ -182,12 +191,12 @@
 			</view>
 			<image v-if="shareOpen" @click="toggleShare(false)" src="../../static/arrow-down.png" mode="widthFix" style="width: 26rpx; height: auto;"></image>
 		</view>
-		<button v-else open-type="getUserInfo" class="share shareBox flex-column-between" @getuserinfo="getUserInfo" :style="shareOpen?'height:350rpx;':''">
+		<button v-else open-type="getUserInfo" class="share shareBox flex-column-between" @getuserinfo="getUserInfo" :style="shareOpen ? 'height:350rpx;' : ''">
 			<view v-if="!shareOpen">
 				<image class="icon-share" src="../../static/share-r.png" mode="widthFix"></image>
 				<view class="fs-22">分享</view>
 			</view>
-			<view v-if="shareOpen" >
+			<view v-if="shareOpen">
 				<image src="../../static/share-hy.png" mode="widthFix"></image>
 				<view class="fs-22">好友</view>
 			</view>
@@ -197,7 +206,7 @@
 			</view>
 			<image v-if="shareOpen" @click="toggleShare(false)" src="../../static/arrow-down.png" mode="widthFix" style="width: 26rpx; height: auto;"></image>
 		</button>
-		
+
 		<!-- 海报 -->
 		<view v-if="showBannerFlag">
 			<view class="mask"></view>
@@ -207,7 +216,7 @@
 						<view class="modal-content" id="canvas-container" style="padding:0px; width:100%; height: 100%;">
 							<canvas canvas-id="myCanvas" style="width:100%; background-color:#ffffff; height:100%;"></canvas>
 						</view>
-		
+
 						<image @click="toggleBannerFlag(false)" class="close" src="../../static/close.png" mode="widthFix"></image>
 					</view>
 					<view class="btn-big fc-f flex-center" @click="saveBanner">保存图片</view>
