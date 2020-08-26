@@ -34,6 +34,7 @@
 					ref="recommendVideo"
 					:videoList="videoList"
 					:parentPage="'home'"
+					:parentPageVideoType="'recommend'"
 					@loginFun="refreshList"
 					@getNextPage="getHomeList"
 					@goodFun="goodFun"

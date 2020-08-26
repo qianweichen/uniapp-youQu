@@ -96,15 +96,13 @@ export default {
 			if (this.$refs.homePage) {
 				if (this.$refs.homePage.$refs.recommendVideo) {
 					this.$refs.homePage.$refs.recommendVideo.videoContext.pause();
-					//解决ios分享按钮动画放大到白屏问题
-					this.$refs.homePage.$refs.recommendVideo.isAnimationDataShow = false;
-				} else if (this.$refs.homePage.$refs.attentionVideo) {
+				}
+				if (this.$refs.homePage.$refs.attentionVideo) {
 					this.$refs.homePage.$refs.attentionVideo.videoContext.pause();
-					//解决ios分享按钮动画放大到白屏问题
-					this.$refs.homePage.$refs.attentionVideo.isAnimationDataShow = false;
 				}
 			}
 		},
+		//切换底部tabbar
 		changeTabIndex(e) {
 			var index = e.currentTarget.dataset.name;
 			//点击当前页
@@ -140,6 +138,7 @@ export default {
 			//标记
 			this.tabIndex = index;
 		},
+		//授权
 		getUserInfo(e) {
 			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
@@ -186,26 +185,39 @@ export default {
 		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();
 		// if (this.$refs.messagePage) this.$refs.messagePage.onShowFun();
 		// if (this.$refs.minePage) this.$refs.minePage.onShowFun();
-		
-		//解决ios分享按钮动画放大到白屏问题
+
+		//打开小程序时的操作
 		if (this.$refs.homePage) {
 			if (this.$refs.homePage.$refs.recommendVideo) {
+				//解决ios分享按钮动画放大到白屏问题
 				this.$refs.homePage.$refs.recommendVideo.isAnimationDataShow = true;
-				this.$refs.homePage.$refs.recommendVideo.watchTime = uni.getStorageSync('recommendVideoWatchTime');
-			} else if (this.$refs.homePage.$refs.attentionVideo) {
+				//载入存储的观看时间
+				var nowDate = new Date().toLocaleDateString(),
+					oldDate = uni.getStorageSync('saveRecommendVideoWatchTimeDate');
+				//如果是当天则载入，第二天的话就默认从0开始
+				if (nowDate == oldDate) {
+					this.$refs.homePage.$refs.recommendVideo.watchTime = uni.getStorageSync('recommendVideoWatchTime');
+				}
+			}
+			if (this.$refs.homePage.$refs.attentionVideo) {
 				this.$refs.homePage.$refs.attentionVideo.isAnimationDataShow = true;
-				this.$refs.homePage.$refs.attentionVideo.watchTime = uni.getStorageSync('attentionVideoWatchTime');
 			}
 		}
 	},
 	onHide() {
 		this.stopHomeVideo(); //打开其他页面暂停视频
-		//存储观看时间
+
+		//关闭小程序时的操作
 		if (this.$refs.homePage) {
 			if (this.$refs.homePage.$refs.recommendVideo) {
-				uni.setStorageSync('recommendVideoWatchTime',this.$refs.homePage.$refs.recommendVideo.watchTime);
-			} else if (this.$refs.homePage.$refs.attentionVideo) {
-				uni.setStorageSync('attentionVideoWatchTime',this.$refs.homePage.$refs.attentionVideo.watchTime);
+				//解决ios分享按钮动画放大到白屏问题
+				this.$refs.homePage.$refs.recommendVideo.isAnimationDataShow = false;
+				//存储观看时间和当天日期
+				uni.setStorageSync('saveRecommendVideoWatchTimeDate', new Date().toLocaleDateString());
+				uni.setStorageSync('recommendVideoWatchTime', this.$refs.homePage.$refs.recommendVideo.watchTime);
+			}
+			if (this.$refs.homePage.$refs.attentionVideo) {
+				this.$refs.homePage.$refs.attentionVideo.isAnimationDataShow = false;
 			}
 		}
 	},

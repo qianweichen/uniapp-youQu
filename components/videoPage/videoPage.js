@@ -73,6 +73,10 @@ export default {
 			type: String,
 			default: 'default'
 		},
+		parentPageVideoType: { //首页视频类型（推荐或者关注）
+			type: String,
+			default: 'default'
+		}
 	},
 	watch: {
 		videoList(newName, oldName) {
@@ -626,7 +630,7 @@ export default {
 			this.clickNum++;
 			if (this.clickNum == 2) {
 				clearTimeout(this.clickTimer);
-				this.goodFun(id, index);
+				this.goodFun(id, index, 'doubleClick');
 				this.clickNum = 0;
 			} else if (this.clickNum == 1) {
 				this.clickTimer = setTimeout(() => {
@@ -782,7 +786,11 @@ export default {
 			});
 		},
 		//点赞
-		goodFun(id, index) {
+		goodFun(id, index, type) {
+			// 双击只能触发点赞 不能取消
+			if (type == 'doubleClick' && this.videoList[index]['is_info_zan']) {
+				return;
+			}
 			this.request({
 				url: this.apiUrl + 'User/add_user_zan',
 				data: {

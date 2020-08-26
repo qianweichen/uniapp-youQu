@@ -26,7 +26,7 @@
 		<!-- 视频 -->
 		<swiper class="video-swiper" @change="changeSwiper" :current="videoIndex" vertical>
 			<swiper-item v-for="(item, index) in videoList" :key="index">
-				<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'">
+				<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'" @click="clickVideo(item.id, index)">
 					<!-- 只显示一个视频，ios缓存有问题，没法同时放3个，遇到长视频会卡 -->
 					<video
 						v-if="videoIndex == index"
@@ -35,7 +35,6 @@
 						:show-center-play-btn="false"
 						:controls="false"
 						loop
-						@click="clickVideo(item.id, index)"
 						@timeupdate="videoTimeUpdate"
 						@play="videoPlayStard"
 						@ended="videoPlayEnd"
@@ -74,18 +73,18 @@
 						<!-- 载入中动画 -->
 						<view v-if="isLoadVideoShow" class="donut"></view>
 						<!-- 播放按钮 -->
-						<image v-if="showVideoPlayBtn" @click="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
+						<image v-if="showVideoPlayBtn" @click.stop="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
 						<!-- 文案区域 -->
 						<view class="contentBox" :class="isSmallScreen && parentPage == 'home' ? 'full-page' : ''">
 							<view class="flex">
-								<view class="realm-name-top" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">#{{ item.realm_name }}</view>
+								<view class="realm-name-top" @click.stop="goPage('/pagesA/circle/circle?id=' + item.tory_id)">#{{ item.realm_name }}</view>
 							</view>
 							<view class="userInfo flex">
-								<view class="header circle" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
+								<view class="header circle" @click.stop="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 									<!-- <image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
 								</view>
-								<view @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
+								<view @click.stop="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 									<view class="fs-30 bold nick-name">{{ item.user_nick_name }}</view>
 									<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 								</view>
@@ -96,7 +95,7 @@
 								</view>
 								<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view class="attention flex-center">+关注</view></button>
 							</view>
-							<view class="text fs-28" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
+							<view class="text fs-28" @click.stop="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 							<view class="flex-between">
 								<!-- <view class="circleName flex" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">
 									<view class="flex">
@@ -121,27 +120,23 @@
 						<view class="progress"><view :style="'width:' + progressNum + '%;'"></view></view>
 						<!-- 点赞区域 -->
 						<view class="btnBox fs-26" :class="isSmallScreen && parentPage == 'home' ? 'btnBox-full-page' : ''">
-							<view v-if="isAuthorized && parentPage == 'home'">
-								<view
-									v-if="getRedNum<4"
-									class="progress-group"
-									@click="clickRed"
-									:animation="getRedList[getRedNum].time <= watchTime ? redAnimationData : ''"
-								>
-									<cmd-progress width="40" status="success" type="circle" :percent="(watchTime / getRedList[getRedNum].time) * 100" :showInfo="false"></cmd-progress>
+							<view v-if="isAuthorized && parentPage == 'home' && parentPageVideoType == 'recommend'">
+								<view v-if="getRedNum < 4" class="progress-group" @click.stop="clickRed" :animation="getRedList[getRedNum].time <= watchTime ? redAnimationData : ''">
+									<cmd-progress
+										width="40"
+										status="success"
+										type="circle"
+										:percent="(watchTime / getRedList[getRedNum].time) * 100"
+										:showInfo="false"
+									></cmd-progress>
 									<image src="../../static/redpak.png" mode="widthFix"></image>
 								</view>
-								<view
-									v-else
-									class="progress-group"
-									@click="clickRed"
-									:animation="redAnimationData"
-								>
+								<view v-else class="progress-group" @click.stop="clickRed" :animation="redAnimationData">
 									<cmd-progress width="40" status="success" type="circle" :percent="100" :showInfo="false"></cmd-progress>
 									<image src="../../static/redpak.png" mode="widthFix"></image>
 								</view>
 							</view>
-							<view v-if="isAuthorized" @click="goodFun(item.id, index)">
+							<view v-if="isAuthorized" @click.stop="goodFun(item.id, index)">
 								<image class="opcity" :src="'../../static/like' + (item.is_info_zan ? '' : '_w') + '.png'" mode="widthFix"></image>
 								<view>{{ item.info_zan_count }}</view>
 							</view>
@@ -151,7 +146,7 @@
 									<view>{{ item.info_zan_count }}</view>
 								</button>
 							</view>
-							<view v-if="isAuthorized" @click="showCommentFun">
+							<view v-if="isAuthorized" @click.stop="showCommentFun">
 								<image class="opcity" src="../../static/comment.png" mode="widthFix"></image>
 								<view>{{ item.study_repount }}</view>
 							</view>
@@ -161,13 +156,13 @@
 									<view>{{ item.study_repount }}</view>
 								</button>
 							</view>
-							<view v-if="isAuthorized" @click="toggleShareBox(true)">
-								<image src="../../static/wechat.png" mode="widthFix" :animation="isAnimationDataShow?animationData:''"></image>
+							<view v-if="isAuthorized" @click.stop="toggleShareBox(true)">
+								<image src="../../static/wechat.png" mode="widthFix" :animation="isAnimationDataShow ? animationData : ''"></image>
 								<view>分享</view>
 							</view>
 							<view v-else>
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
-									<image src="../../static/wechat.png" mode="widthFix" :animation="isAnimationDataShow?animationData:''"></image>
+									<image src="../../static/wechat.png" mode="widthFix" :animation="isAnimationDataShow ? animationData : ''"></image>
 									<view>分享</view>
 								</button>
 							</view>
