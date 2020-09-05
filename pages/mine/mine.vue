@@ -1,6 +1,6 @@
 <template>
 	<view class="page-persionalC page-mine">
-		<navigationBar name="我的"></navigationBar>
+		<navigationBar name="我的" tabbarPage></navigationBar>
 		<view class="banner" :style="'background-image: url(' + (personalInfo.bg_img || '') + ');'">
 			<view v-if="isAuthorized" class="myPage flex-center" @click="goPage('/pages/personalCenter/personalCenter?id=' + personalInfo.id)">
 				<view class="fs-26">个人主页</view>
@@ -103,11 +103,11 @@ export default {
 					img: '../../static/wallet.png',
 					url: '/pages/mine/wallet'
 				},
-				{
-					name: '邀请好友',
-					img: '../../static/share.png',
-					url: '/pages/mine/invitation'
-				},
+				// {
+				// 	name: '邀请好友',
+				// 	img: '../../static/share.png',
+				// 	url: '/pages/mine/invitation'
+				// },
 				{
 					name: '服务中心',
 					img: '../../static/service.png',

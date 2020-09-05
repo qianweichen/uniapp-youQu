@@ -117,7 +117,89 @@
 		}
 	}
 	.list-zp{
-		padding: 0 30rpx;
+		align-items: flex-start;
+		flex-wrap: wrap;
+		.item{
+			overflow: hidden;
+			background:rgba(115,99,189,0.1);
+			width:249rpx;
+			// height:492rpx;
+			margin-bottom: 2rpx;
+			margin-right: 2rpx;
+			&:nth-child(3n){
+				margin-right: 0;
+			}
+			.imgBox{
+				width: 100%;
+				max-height: 430rpx;
+				overflow: hidden;
+				position: relative;
+				.type{
+					width: 40rpx;
+					height: 40rpx;
+					position: absolute;
+					right: 20rpx;
+					top: 20rpx;
+					&.video{
+						width: 24rpx;
+						height: 24rpx;
+					}
+				}
+				.poster{
+					display: block;
+					width: 100%;
+					height: 360rpx;
+				}
+				.mask{
+					position: absolute;
+					height: 144rpx;
+					top: unset;
+					left: 0;
+					bottom: 0;
+					background:linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0));
+					align-items: flex-end;
+					padding: 10rpx;
+					box-sizing: border-box;
+					image{
+						width: 40rpx;
+						height: 40rpx;
+					}
+				}
+			}
+			.infoBox{
+				width: 100%;
+				// height: 162rpx;
+				padding: 20rpx;
+				box-sizing: border-box;
+				.cont{
+					overflow : hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 3;
+					-webkit-box-orient: vertical;
+					margin-bottom: 30rpx;
+				}
+				.header{
+					width:40rpx;
+					height:40rpx;
+					margin-right: 14rpx;
+				}
+				.nickName{
+					color: rgba(255,255,255,0.6);
+				}
+				.good{
+					width: 30rpx;
+					height: auto;
+					margin-right: 11rpx;
+				}
+			}
+		}
+		.item:nth-child(3n){
+			margin-right: 0;
+		}
+	}
+	.list-zp-dynamic{
+		padding: 20rpx 30rpx;
 		align-items: flex-start;
 		.item{
 			border-radius: 8rpx;

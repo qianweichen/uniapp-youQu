@@ -1,10 +1,18 @@
 <template>
 	<view class="page-index">
-		<view :class="isSmallScreen && tabIndex == 'home' ? 'full-page' : 'normal-page'">
+		<view v-if="platform == 'ios'" :class="isSmallScreen && tabIndex == 'home' ? 'full-page' : 'normal-page'">
 			<home ref="homePage" v-if="loadTabList[0]" :class="{ hide: tabIndex != 'home' }"></home>
 			<find ref="findPage" v-if="loadTabList[1]" :class="{ hide: tabIndex != 'find' }"></find>
 			<message ref="messagePage" v-if="loadTabList[2]" :class="{ hide: tabIndex != 'message' }"></message>
 			<mine ref="minePage" v-if="loadTabList[3]" :class="{ hide: tabIndex != 'mine' }"></mine>
+		</view>
+		<view v-else>
+			<view class="page-group" :style="'left:-' + tabIndexList.indexOf(tabIndex) * 375 * 2 + 'rpx;'">
+				<view :class="isSmallScreen && tabIndex == 'home' ? 'full-page' : 'normal-page'"><home ref="homePage" v-if="loadTabList[0]"></home></view>
+				<view class="normal-page"><find ref="findPage" v-if="loadTabList[1]"></find></view>
+				<view class="normal-page"><message ref="messagePage" v-if="loadTabList[2]"></message></view>
+				<view class="normal-page"><mine ref="minePage" v-if="loadTabList[3]"></mine></view>
+			</view>
 		</view>
 		<!-- tabbar -->
 		<view class="tabbar flex-around" :class="isSmallScreen && tabIndex == 'home' ? 'lucency' : ''">
@@ -55,8 +63,10 @@ export default {
 	},
 	data() {
 		return {
+			platform: 'ios',
 			isAuthorized: false, //授权否
 			tabIndex: 'home',
+			tabIndexList: ['home', 'find', 'message', 'mine'],
 			loadTabList: [true, false, false, false],
 			showPublishFlag: false,
 			messageNum: '',
@@ -180,6 +190,19 @@ export default {
 		}, 8000);
 		//收录小程序的页面信息
 		this.submitPages('pages/index/index', '');
+		//判断安卓/ios
+		uni.getSystemInfo({
+			success: res => {
+				this.platform = res.platform;
+				// if (res.platform == 'devtools') {
+				// 	PC;
+				// } else if (res.platform == 'ios') {
+				// 	IOS;
+				// } else if (res.platform == 'android') {
+				// 	android;
+				// }
+			}
+		});
 	},
 	onShow() {
 		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();
@@ -263,6 +286,10 @@ export default {
 
 <style lang="scss">
 .page-index {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	overflow-x: hidden;
 	.add-program {
 		position: fixed;
 		right: 20rpx;
@@ -287,6 +314,20 @@ export default {
 	}
 	.normal-page {
 		height: calc(100vh - 144rpx);
+	}
+	.page-group {
+		width: 400%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		white-space: nowrap;
+		transition: all ease 0.3s;
+		> view {
+			width: 750rpx;
+			display: inline-block;
+			position: relative;
+			overflow-x: hidden;
+		}
 	}
 	.tabbar {
 		width: 100%;

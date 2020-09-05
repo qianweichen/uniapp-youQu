@@ -291,50 +291,50 @@ export default {
 
 		}
 	},
-	onPageScroll(e) {
-		if (this.tabIndex != 2) {
-			return;
-		}
-		this.pageScroll = e.scrollTop;
-		uni.createSelectorQuery().in(this.$refs.dynamicList).select("#videoGroup" + this.playIndex).boundingClientRect(rect => {
-			uni.createSelectorQuery().in(this.$refs.dynamicList).select("#videoGroup" + (this.playIndex - 1 < 0 ? 0 : this.playIndex -
-				1)).boundingClientRect(rect2 => {
-				let spaceArea = (this.screenHeight - rect.height) / 2; //留白区域
-				let spaceArea2 = (this.screenHeight - rect2.height) / 2; //上一个留白区域
-				if ((this.touchEnd - this.touchStar > 0) && (e.scrollTop > (this.firstTop - spaceArea))) {
-					this.playIndex++;
-					this.firstTop = this.firstTop + rect.height;
-					// console.log("触发向下", this.playIndex)
+	// onPageScroll(e) {
+	// 	if (this.tabIndex != 2) {
+	// 		return;
+	// 	}
+	// 	this.pageScroll = e.scrollTop;
+	// 	uni.createSelectorQuery().in(this.$refs.dynamicList).select("#videoGroup" + this.playIndex).boundingClientRect(rect => {
+	// 		uni.createSelectorQuery().in(this.$refs.dynamicList).select("#videoGroup" + (this.playIndex - 1 < 0 ? 0 : this.playIndex -
+	// 			1)).boundingClientRect(rect2 => {
+	// 			let spaceArea = (this.screenHeight - rect.height) / 2; //留白区域
+	// 			let spaceArea2 = (this.screenHeight - rect2.height) / 2; //上一个留白区域
+	// 			if ((this.touchEnd - this.touchStar > 0) && (e.scrollTop > (this.firstTop - spaceArea))) {
+	// 				this.playIndex++;
+	// 				this.firstTop = this.firstTop + rect.height;
+	// 				// console.log("触发向下", this.playIndex)
 
-					if (!this.autoPlayFlag) {
-						return;
-					}
-					//自动播放视频
-					if (this.playIndex - 2 >= 0) {
-						this.$set(this.dynamicList[this.playIndex - 2], 'playVideoFlag', false);
-					}
-					this.$set(this.dynamicList[this.playIndex - 1], 'playVideoFlag', true);
-					//自动播放视频end
+	// 				if (!this.autoPlayFlag) {
+	// 					return;
+	// 				}
+	// 				//自动播放视频
+	// 				if (this.playIndex - 2 >= 0) {
+	// 					this.$set(this.dynamicList[this.playIndex - 2], 'playVideoFlag', false);
+	// 				}
+	// 				this.$set(this.dynamicList[this.playIndex - 1], 'playVideoFlag', true);
+	// 				//自动播放视频end
 
-				} else if ((this.touchEnd - this.touchStar < 0) && (e.scrollTop <= (this.firstTop - rect2.height - spaceArea2))) {
-					this.playIndex--;
-					this.firstTop = this.firstTop - rect2.height;
-					// console.log("触发向上", this.playIndex)
+	// 			} else if ((this.touchEnd - this.touchStar < 0) && (e.scrollTop <= (this.firstTop - rect2.height - spaceArea2))) {
+	// 				this.playIndex--;
+	// 				this.firstTop = this.firstTop - rect2.height;
+	// 				// console.log("触发向上", this.playIndex)
 
-					if (!this.autoPlayFlag) {
-						return;
-					}
-					//自动播放视频
-					// if (this.playIndex - 2 >= 0) {
-					// 	this.$set(this.dynamicList[this.playIndex + 1], 'playVideoFlag', false);
-					// }
-					for (var i = 0; i < this.dynamicList.length; i++) {
-						this.$set(this.dynamicList[i], 'playVideoFlag', false);
-					}
-					this.$set(this.dynamicList[this.playIndex], 'playVideoFlag', true);
-					//自动播放视频end
-				}
-			}).exec();
-		}).exec();
-	}
+	// 				if (!this.autoPlayFlag) {
+	// 					return;
+	// 				}
+	// 				//自动播放视频
+	// 				// if (this.playIndex - 2 >= 0) {
+	// 				// 	this.$set(this.dynamicList[this.playIndex + 1], 'playVideoFlag', false);
+	// 				// }
+	// 				for (var i = 0; i < this.dynamicList.length; i++) {
+	// 					this.$set(this.dynamicList[i], 'playVideoFlag', false);
+	// 				}
+	// 				this.$set(this.dynamicList[this.playIndex], 'playVideoFlag', true);
+	// 				//自动播放视频end
+	// 			}
+	// 		}).exec();
+	// 	}).exec();
+	// }
 };

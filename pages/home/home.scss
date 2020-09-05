@@ -14,7 +14,7 @@
 .red-icon-group{
 	width: 156rpx;
 	height: 156rpx;
-	position: fixed;
+	position: absolute;
 	left: 28rpx;
 	top: 186rpx;
 	z-index: 1;
@@ -42,6 +42,7 @@
 	.title {
 		color: #986964;
 		font-size: 28rpx;
+		padding-bottom: 120rpx;
 		image {
 			width: 36rpx;
 			height: 36rpx;
@@ -49,7 +50,6 @@
 	}
 	.tip {
 		text-align: center;
-		padding-top: 120rpx;
 		font-size: 28rpx;
 		color: #7e0c00;
 	}
@@ -114,7 +114,7 @@
 }
 .topTab {
 	width: 100%;
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	z-index: 1;

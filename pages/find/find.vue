@@ -12,7 +12,7 @@
 					<view v-if="tabsFlag" class="line"></view>
 				</view>
 			</view> -->
-			<view>圈子</view>
+			<view class="fs-32">圈子</view>
 			<image
 				@click="goPage('/pages/search/search')"
 				class="search"

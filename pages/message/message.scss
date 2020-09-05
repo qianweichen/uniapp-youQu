@@ -3,13 +3,13 @@
 	background-color: #1f1d2b;
 	color: #fff;
 	padding: 0 30rpx;
-	padding-bottom: 150rpx;
 	.bg-theme{
 		width: 100%;
 		background-color: $themeColor;
 	}
 	.btnBox{
 		text-align: center;
+		padding-top: 40rpx;
 		padding-bottom: 50rpx;
 		border-bottom: 2rpx solid rgba(255,255,255,0.1);
 		image{
