@@ -459,6 +459,9 @@ export default {
 		this.getData();
 	},
 	onReachBottom() {
+		if(this.loadStatus == 'nomore'){
+			return;
+		}
 		this.loadStatus = 'loading';
 		this.getArticleList().then((res) => {
 			if(res=='nomore'){

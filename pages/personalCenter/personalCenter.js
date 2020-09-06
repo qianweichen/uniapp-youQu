@@ -258,7 +258,7 @@ export default {
 		this.getVideoList(true);
 	},
 	onReachBottom() {
-		if(this.loadStatus = "nomore"){
+		if(this.loadStatus == "nomore"){
 			return;
 		}
 		this.getVideoList();
