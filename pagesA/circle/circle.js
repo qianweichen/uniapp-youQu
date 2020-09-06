@@ -25,7 +25,8 @@ export default {
 			touchEnd: 0,
 			pageScroll: 0,
 			timer: null,
-			autoPlayFlag: false
+			autoPlayFlag: false,
+			loadStatus:'loadmore'
 		};
 	},
 	methods: {
@@ -90,8 +91,8 @@ export default {
 							uni.showToast({
 								title: '没有更多了',
 								icon: 'none'
-							})
-							resolve();
+							});
+							resolve('nomore');
 							return;
 						}
 
@@ -458,9 +459,13 @@ export default {
 		this.getData();
 	},
 	onReachBottom() {
-		this.$refs.loading.open();
-		this.getArticleList().then(() => {
-			this.$refs.loading.close();
+		this.loadStatus = 'loading';
+		this.getArticleList().then((res) => {
+			if(res=='nomore'){
+				this.loadStatus = 'nomore';
+			}else{
+				this.loadStatus = 'loadmore';
+			}
 		});
 	},
 	onShareAppMessage(res) {

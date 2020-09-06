@@ -17,7 +17,8 @@ export default {
 			touchEnd: 0,
 			pageScroll: 0,
 			timer: null,
-			autoPlayFlag: false
+			autoPlayFlag: false,
+			loadStatus:'loadmore'
 		};
 	},
 	methods: {
@@ -143,7 +144,6 @@ export default {
 		},
 		//获取用户信息
 		getPersonalInfo() {
-			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_info_my',
 				data: {
@@ -153,7 +153,6 @@ export default {
 					this_uid: uni.getStorageSync('userId')
 				},
 				success: res => {
-					this.$refs.loading.close();
 					// console.log("获取用户信息:", res);
 					this.personalInfo = res.data.info;
 				},
@@ -161,10 +160,12 @@ export default {
 		},
 		//获取作品数据
 		getVideoList(isFirstPage) {
-			this.$refs.loading.open();
 			if (isFirstPage) {
 				this.videoPage = 1;
 				this.dynamicList = [];
+				this.$refs.loading.open();
+			}else{
+				this.loadStatus = "loading";
 			}
 			//动态访问User/get_my_list，喜欢访问User/get_my_list4
 			var urlEnd = '';
@@ -190,7 +191,11 @@ export default {
 					version
 				},
 				success: res => {
-					this.$refs.loading.close();
+					if (isFirstPage) {
+						this.$refs.loading.close();
+					}else{
+						this.loadStatus = "loadmore";
+					}
 					// console.log("动态:", res);
 					this.videoPage++;
 					for (var j = 0; j < res.data.info.length; j++) {
@@ -218,7 +223,8 @@ export default {
 						uni.showToast({
 							title: '没有更多数据了',
 							icon: 'none'
-						})
+						});
+						this.loadStatus = "nomore";
 					}
 				},
 			});
@@ -252,6 +258,9 @@ export default {
 		this.getVideoList(true);
 	},
 	onReachBottom() {
+		if(this.loadStatus = "nomore"){
+			return;
+		}
 		this.getVideoList();
 	},
 	onShareAppMessage(res) {

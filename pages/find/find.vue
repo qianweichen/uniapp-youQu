@@ -191,7 +191,8 @@
 					</view>
 				</view>
 				<!-- <dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun"></dynamicList> -->
-				<view v-if="dynamicList.length == 0" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
+				<view v-if="dynamicList.length == 0 && loadStatus=='nomore'" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
+				<loadMore v-else :status="loadStatus"></loadMore>
 			</scroll-view>
 		</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>

@@ -15,7 +15,8 @@ export default {
 			banners: [],
 			refreshFlag: false, //下拉刷新状态
 			swiperIndex: 0,
-			animationData:null
+			animationData:null,
+			loadStatus:'loadmore'
 		}
 	},
 	methods: {
@@ -109,14 +110,25 @@ export default {
 		},
 		// 触底获取
 		getDynamic() {
-			this.$refs.loading.open();
+			if(this.loadStatus == "nomore"){
+				return;
+			}
+			this.loadStatus = "loading";
 			if (this.tabIndex == 0) { //推荐
-				this.getDynamicList().then(() => {
-					this.$refs.loading.close();
+				this.getDynamicList().then((res) => {
+					if(res=='nomore'){
+						this.loadStatus = "nomore";
+					}else{
+						this.loadStatus = "loadmore";
+					}
 				});
 			} else { //关注
-				this.getAttentionList().then(() => {
-					this.$refs.loading.close();
+				this.getAttentionList().then((res) => {
+					if(res=='nomore'){
+						this.loadStatus = "nomore";
+					}else{
+						this.loadStatus = "loadmore";
+					}
 				});
 			}
 		},
@@ -213,7 +225,8 @@ export default {
 							uni.showToast({
 								title: '没有更多了',
 								icon: 'none'
-							})
+							});
+							resolve('nomore');
 						}
 						this.dynamicPage++;
 						this.dynamicList = this.dynamicList.concat(res.data.info);
@@ -246,11 +259,13 @@ export default {
 							uni.showToast({
 								title: '没有更多了',
 								icon: 'none'
-							})
+							});
+							resolve('nomore');
 						}
 						this.dynamicPage++;
 						this.dynamicList = this.dynamicList.concat(res.data.info);
 						this.refreshFlag = false;
+						resolve();
 					}
 				});
 			});

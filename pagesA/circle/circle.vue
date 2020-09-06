@@ -104,6 +104,8 @@
 				@attentionFun="attentionFun"
 				@playVideoFun="playVideoFun"
 			></dynamicList>
+			<view v-if="dynamicList.length == 0 && loadStatus=='nomore'" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
+			<loadMore v-else :status="loadStatus"></loadMore>
 			<!-- 发布按钮 -->
 			<image @click="togglePublishFlag(true)" class="sendDynamic" src="../../static/tabbar/publish.png" mode="widthFix"></image>
 		</view>

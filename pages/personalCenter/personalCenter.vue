@@ -201,7 +201,8 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="dynamicList.length == 0" style="text-align: center; padding-top: 100rpx;">暂无数据</view>
+		<view v-if="dynamicList.length == 0  && loadStatus=='nomore'" style="text-align: center; padding-top: 100rpx;">暂无数据</view>
+		<loadMore v-else :status="loadStatus"></loadMore>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>

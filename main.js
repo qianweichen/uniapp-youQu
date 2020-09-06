@@ -16,6 +16,9 @@ Vue.component("backCapsule", backCapsule);
 //加载动画
 import wLoading from "@/components/loading/w-loading.vue";
 Vue.component('w-loading',wLoading);
+//上拉加载状态
+import loadMore from "@/components/load-more/load-more.vue";
+Vue.component('loadMore',loadMore);
 
 Vue.config.productionTip = false;
 App.mpType = 'app';
