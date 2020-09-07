@@ -110,7 +110,7 @@ export default {
 		},
 		// 触底获取
 		getDynamic() {
-			if(this.loadStatus == "nomore"){
+			if(this.loadStatus != "loadmore"){
 				return;
 			}
 			this.loadStatus = "loading";
@@ -154,7 +154,7 @@ export default {
 							uni.showToast({
 								title: '没有更多了',
 								icon: 'none'
-							})
+							});
 						}
 						this.myCirclePage++;
 						this.myCircleList = this.myCircleList.concat(res.data.info);
@@ -209,6 +209,7 @@ export default {
 				if (isFirstPage == true) {
 					this.dynamicPage = 1;
 					this.dynamicList = [];
+					this.loadStatus = 'loadmore';
 				}
 				this.request({
 					url: this.apiUrl + 'User/get_index_list',
@@ -222,10 +223,10 @@ export default {
 					success: res => {
 						// console.log("动态列表:", res);
 						if (res.data.info.length == 0 && this.dynamicPage > 1) {
-							uni.showToast({
-								title: '没有更多了',
-								icon: 'none'
-							});
+							// uni.showToast({
+							// 	title: '没有更多了',
+							// 	icon: 'none'
+							// });
 							resolve('nomore');
 						}
 						this.dynamicPage++;
@@ -242,6 +243,7 @@ export default {
 				if (isFirstPage == true) {
 					this.dynamicPage = 1;
 					this.dynamicList = [];
+					this.loadStatus = 'loadmore';
 				}
 				this.request({
 					url: this.apiUrl + 'User/get_my_index_list',
@@ -256,10 +258,10 @@ export default {
 						this.$refs.loading.close();
 						// console.log("关注列表:", res);
 						if (res.data.info.length == 0 && this.dynamicPage > 1) {
-							uni.showToast({
-								title: '没有更多了',
-								icon: 'none'
-							});
+							// uni.showToast({
+							// 	title: '没有更多了',
+							// 	icon: 'none'
+							// });
 							resolve('nomore');
 						}
 						this.dynamicPage++;

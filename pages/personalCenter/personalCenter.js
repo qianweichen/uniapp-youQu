@@ -164,6 +164,7 @@ export default {
 				this.videoPage = 1;
 				this.dynamicList = [];
 				this.$refs.loading.open();
+				this.loadStatus = "loadmore";
 			}else{
 				this.loadStatus = "loading";
 			}
@@ -220,10 +221,10 @@ export default {
 						this.dynamicList = this.dynamicList.concat(res.data.info[j].list);
 					}
 					if (res.data.info.length == 0) {
-						uni.showToast({
-							title: '没有更多数据了',
-							icon: 'none'
-						});
+						// uni.showToast({
+						// 	title: '没有更多数据了',
+						// 	icon: 'none'
+						// });
 						this.loadStatus = "nomore";
 					}
 				},
@@ -258,7 +259,7 @@ export default {
 		this.getVideoList(true);
 	},
 	onReachBottom() {
-		if(this.loadStatus == "nomore"){
+		if(this.loadStatus != "loadmore"){
 			return;
 		}
 		this.getVideoList();

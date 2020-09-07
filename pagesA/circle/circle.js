@@ -73,6 +73,7 @@ export default {
 				if (isFirstPage == true) {
 					this.page = 1;
 					this.dynamicList = [];
+					this.loadStatus = 'loadmore';
 				}
 				this.request({
 					url: this.apiUrl + 'User/get_index_list',
@@ -88,10 +89,10 @@ export default {
 					success: res => {
 						// console.log("帖子数据:", res);
 						if (res.data.info.length == 0) {
-							uni.showToast({
-								title: '没有更多了',
-								icon: 'none'
-							});
+							// uni.showToast({
+							// 	title: '没有更多了',
+							// 	icon: 'none'
+							// });
 							resolve('nomore');
 							return;
 						}
@@ -459,7 +460,7 @@ export default {
 		this.getData();
 	},
 	onReachBottom() {
-		if(this.loadStatus == 'nomore'){
+		if(this.loadStatus != 'loadmore'){
 			return;
 		}
 		this.loadStatus = 'loading';
