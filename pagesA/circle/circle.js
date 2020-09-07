@@ -93,6 +93,7 @@ export default {
 							// 	title: '没有更多了',
 							// 	icon: 'none'
 							// });
+							this.loadStatus = 'nomore';
 							resolve('nomore');
 							return;
 						}
