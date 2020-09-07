@@ -11,7 +11,7 @@
 		</view>
 		<view v-if="status == 'nomore'" class="flex-center">
 			<view class="line"></view>
-			<view>我是有底线的</view>
+			<view>没有更多内容了</view>
 			<view class="line"></view>
 		</view>
 	</view>
