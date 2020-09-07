@@ -24,7 +24,7 @@
 <template>
 	<view style="height: 100%;">
 		<!-- 视频 -->
-		<swiper class="video-swiper" @change="changeSwiper" :current="videoIndex" vertical>
+		<swiper class="video-swiper" @change="changeSwiper" :current="videoIndex" vertical duration="300">
 			<swiper-item v-for="(item, index) in videoList" :key="index">
 				<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'" @click="clickVideo(item.id, index)">
 					<!-- 只显示一个视频，ios缓存有问题，没法同时放3个，遇到长视频会卡 -->

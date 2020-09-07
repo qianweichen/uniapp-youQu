@@ -599,7 +599,7 @@ export default {
 				}
 				//累计增加红包时间
 				this.getRedPacket();
-			}, 500);
+			}, 300);
 		},
 		//视频播放开始
 		videoPlayStard() {
