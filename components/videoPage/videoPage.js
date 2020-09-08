@@ -366,11 +366,12 @@ export default {
 		// 海报end-----------------------------------------------------------------------------------------------------
 		//关注
 		attention(uid, follow, index) {
-			if (follow === 1) {
-				return;
+			if (follow === 1) {	//取消关注
+				// return;
+			}else{	//关注
+				//小神推订阅
+				this.subscription('attention');
 			}
-			//小神推关注
-			this.subscription('attention');
 			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_cancel',

@@ -87,12 +87,12 @@
 									<view class="fs-30 bold nick-name">{{ item.user_nick_name }}</view>
 									<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 								</view>
-								<view v-if="isAuthorized">
+								<!-- <view v-if="isAuthorized">
 									<view v-if="item.is_follow == 0 || !item.is_follow" class="attention flex-center" @click.stop="attention(item.user_id, item.is_follow, index)">
 										+关注
 									</view>
 								</view>
-								<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view class="attention flex-center">+关注</view></button>
+								<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view class="attention flex-center">+关注</view></button> -->
 							</view>
 							<view class="text fs-28" @click.stop="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 							<view class="flex-between">
@@ -158,6 +158,16 @@
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
 									<image class="opcity" src="../../static/comment.png" mode="widthFix"></image>
 									<view>{{ item.study_repount }}</view>
+								</button>
+							</view>
+							<view v-if="isAuthorized" @click.stop="attention(item.user_id, item.is_follow, index)">
+								<image class="opcity" :src="'../../static/attention' + (item.is_follow == 0 || !item.is_follow ? '-w' : '') + '.png'" mode="widthFix"></image>
+								<view>关注</view>
+							</view>
+							<view v-else>
+								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+									<image class="opcity" src="../../static/comment.png" mode="widthFix"></image>
+									<view>关注</view>
 								</button>
 							</view>
 							<view v-if="isAuthorized" @click.stop="toggleShareBox(true)">
