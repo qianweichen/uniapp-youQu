@@ -17,6 +17,7 @@
 					</view>
 				</uni-swipe-action-item>
 			</uni-swipe-action>
+			<view v-if="circleInfo.xiao_qq.length == 0" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
 		</view>
 		<!-- 投诉弹窗 -->
 		<view v-if="showComplaintFlag" @click="toggleComplaint(false)" class="mask"></view>

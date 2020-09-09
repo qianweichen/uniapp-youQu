@@ -174,20 +174,20 @@ export default {
 				this.videoList = [];
 			}
 			this.request({
-				url: this.apiUrl + 'User/get_index_list2',
+				url: this.apiUrl + 'user/ceshi',
 				data: {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
 					uid: uni.getStorageSync('userId'),
 					version: 2, // 0是文字 1是语音 2是视频 3是全部
-					index_page: this.videoPage,
+					page: this.videoPage,
 					old_id: this.videoPage == 1 ? this.shareVideoId : ''
 				},
 				success: res => {
 					this.$refs.loading.close();
-					// console.log("首页视频列表:", res);
+					console.log("首页视频列表:", res);
 					this.videoPage++;
-					this.videoList = this.videoList.concat(res.data.info);
+					this.videoList = this.videoList.concat(res.data.data);
 					this.refreshRecommendFlag = true;
 				},
 			});
