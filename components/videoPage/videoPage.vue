@@ -162,7 +162,7 @@
 							</view>
 							<view v-if="isAuthorized" @click.stop="attention(item.user_id, item.is_follow, index)">
 								<image class="opcity" :src="'../../static/attention' + (item.is_follow == 0 || !item.is_follow ? '-w' : '') + '.png'" mode="widthFix"></image>
-								<view>关注</view>
+								<view>{{item.is_follow == 0 || !item.is_follow ? '' : '已'}}关注</view>
 							</view>
 							<view v-else>
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
