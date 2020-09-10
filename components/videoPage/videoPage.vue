@@ -37,6 +37,7 @@
 						loop
 						@timeupdate="videoTimeUpdate"
 						@play="videoPlayStard"
+						@ended="videoPlayEnd"
 						@error="videoPlayerror"
 					></video>
 					<!-- 节流:只显示3个swiper中的内容 -->

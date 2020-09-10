@@ -6,7 +6,7 @@
 			<message ref="messagePage" v-if="loadTabList[2]" :class="{ hide: tabIndex != 'message' }"></message>
 			<mine ref="minePage" v-if="loadTabList[3]" :class="{ hide: tabIndex != 'mine' }"></mine>
 		</view>
-		<view v-else>
+		<view v-else-if="platform">
 			<view class="page-group" :style="'left:-' + tabIndexList.indexOf(tabIndex) * 375 * 2 + 'rpx;'">
 				<view :class="isSmallScreen && tabIndex == 'home' ? 'full-page' : 'normal-page'"><home ref="homePage" v-if="loadTabList[0]"></home></view>
 				<view class="normal-page"><find ref="findPage" v-if="loadTabList[1]"></find></view>
@@ -63,7 +63,7 @@ export default {
 	},
 	data() {
 		return {
-			platform: 'ios',
+			platform: null, //系统类型
 			isAuthorized: false, //授权否
 			tabIndex: 'home',
 			tabIndexList: ['home', 'find', 'message', 'mine'],

@@ -366,9 +366,9 @@ export default {
 		// 海报end-----------------------------------------------------------------------------------------------------
 		//关注
 		attention(uid, follow, index) {
-			if (follow === 1) {	//取消关注
+			if (follow === 1) { //取消关注
 				// return;
-			}else{	//关注
+			} else { //关注
 				//小神推订阅
 				this.subscription('attention');
 			}
@@ -594,8 +594,8 @@ export default {
 				this.videoIndex = e.detail.current;
 				//打开加载中
 				this.isLoadVideoShow = true;
-				//每12个获取下一组数据
-				if ((e.detail.current + 3) % 15 == 0) {
+				//提前3个获取下一组数据
+				if ((e.detail.current + 3) == this.videoList.length) {
 					this.$emit('getNextPage'); //获取下一页
 				}
 				//累计增加红包时间
@@ -605,13 +605,14 @@ export default {
 		//视频播放开始
 		videoPlayStard() {
 			// this.showVideoEndShare = false;
-			this.isLoadVideoShow = false;	//关闭加载中
-			this.showVideoPlayBtn = false;	//隐藏暂停时的播放按钮
+			this.isLoadVideoShow = false; //关闭加载中
+			this.showVideoPlayBtn = false; //隐藏暂停时的播放按钮
 		},
 		//视频播放结束
-		// videoPlayEnd() {
-		// 	this.showVideoEndShare = true;
-		// },
+		videoPlayEnd() {
+			// this.showVideoEndShare = true;
+			this.videoContext.play();
+		},
 		//视频播放错误
 		videoPlayerror() {
 			uni.showToast({

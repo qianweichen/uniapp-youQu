@@ -185,7 +185,7 @@ export default {
 				},
 				success: res => {
 					this.$refs.loading.close();
-					console.log("首页视频列表:", res);
+					// console.log("首页视频列表:", res);
 					this.videoPage++;
 					this.videoList = this.videoList.concat(res.data.data);
 					this.refreshRecommendFlag = true;
