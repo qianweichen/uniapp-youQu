@@ -18,9 +18,9 @@ export default {
 			animation2: '',
 			isShowRed: false,
 			screenWidth: uni.getSystemInfoSync().windowWidth, //屏幕宽度
-			
-			refreshRecommendFlag:true,
-			refreshAttentionFlag:true
+
+			refreshRecommendFlag: true,
+			refreshAttentionFlag: true
 		};
 	},
 	methods: {
@@ -175,6 +175,7 @@ export default {
 			}
 			this.request({
 				url: this.apiUrl + 'user/ceshi',
+				method: 'POST',
 				data: {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
@@ -223,7 +224,7 @@ export default {
 			});
 		},
 		//index页刷新用
-		onShowFun(){
+		onShowFun() {
 			if (this.tabsFlag) {
 				//推荐
 				this.refreshRecommendFlag = false;
@@ -248,7 +249,7 @@ export default {
 			});
 		},
 		//创建动画
-		createAnimation(){
+		createAnimation() {
 			// 1: 创建动画实例animation:
 			var animation = uni.createAnimation({
 				duration: 200,
@@ -275,7 +276,7 @@ export default {
 				//3: 将动画export导出，把动画数据传递组件animation的属性 
 				this.animation = animation.export();
 			}.bind(this), 2000)
-			
+
 			// 1: 创建动画实例animation:
 			var animation2 = uni.createAnimation({
 				duration: 1000,

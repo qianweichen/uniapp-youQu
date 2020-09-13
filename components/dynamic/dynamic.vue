@@ -35,7 +35,7 @@ playVideoFun(index,oldIndex){
 		<view class="dynamicList">
 			<view class="item" v-for="(item, index) in list" :key="index" :id="'videoGroup' + index">
 				<!-- 头部 -->
-				<view class="flex-between padding">
+				<view class="flex-between padding" style="padding-bottom: 40rpx;">
 					<view class="header flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 						<image class="circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 						<view class="fs-28 user-nick-name">{{ item.user_nick_name }}</view>
@@ -48,8 +48,6 @@ playVideoFun(index,oldIndex){
 						<button v-else open-type="getUserInfo" class="share btn flex-center" @getuserinfo="getUserInfo" style="font-size: 22rpx;">关注</button>
 					</view>
 				</view>
-				<!-- 文字 -->
-				<view class="content fs-28 padding" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">{{ item.study_content }}</view>
 				<!-- 图片/视频 -->
 				<view v-if="item.study_type == 2" class="mediaBox" :style="'height:' + (item.height || 300) + 'px;'">
 					<video
@@ -91,6 +89,13 @@ playVideoFun(index,oldIndex){
 					</swiper>
 					<view class="page-num flex-center">{{ bannerImgNumList[index] || 1 }}/{{ item.image_part.length }}</view>
 				</view>
+				<!-- 文字 -->
+				<view class="content fs-28 padding" :class="{hide:item.hideText}" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
+					<view class="text-group">
+						{{ item.study_content }}
+					</view>
+					<view v-if="item.hideText">全文</view>
+				</view>
 				<!-- 底部按钮 -->
 				<view class="bottom flex-between padding">
 					<!-- 动态列表 -->
@@ -98,6 +103,8 @@ playVideoFun(index,oldIndex){
 						<image class="header circle" :src="item.realm_icon" mode="aspectFill"></image>
 						<view class="fs-22" style="color: #908E99;">{{ item.realm_name }}</view>
 					</view>
+					<!-- 圈子首页 -->
+					<image v-if="type == 'circle'" class="more" src="../../static/more.png" mode="widthFix" @click="showAction(item.user_id, index, item.id)"></image>
 					<!-- 公共部分 -->
 					<view class="flex-between function fs-22">
 						<view v-if="isAuthorized" class="flex" @click="goodFun(item.id, index)">
@@ -132,8 +139,6 @@ playVideoFun(index,oldIndex){
 							<text>分享</text>
 						</button>
 					</view>
-					<!-- 圈子首页 -->
-					<image v-if="type == 'circle'" class="more" src="../../static/more.png" mode="widthFix" @click="showAction(item.user_id, index, item.id)"></image>
 				</view>
 				<!-- 广告 -->
 				<view class="ad-group" v-if="(index + 1) % 6 == 0"><ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom></view>

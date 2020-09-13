@@ -56,11 +56,20 @@
 	.sign-in{
 		width: 580rpx;
 		height: 110rpx;
-		background: linear-gradient(to right, #FF883E , #FF113C);
+		// background: linear-gradient(to right, #FF883E , #FF113C);
 		color: #fff;
 		border-radius: 80rpx;
 		margin: 0 auto;
 		margin-top: 20rpx;
+		position: relative;
+		.red-btn{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: auto;
+			z-index: -1;
+		}
 	}
 	.share-btn {
 		width: 600rpx;

@@ -89,7 +89,10 @@
 					<!-- <view v-else class="tip">邀请一个好友最高可得2元，秒体现秒到账。</view> -->
 
 					<view v-if="isAuthorized">
-						<view v-if="!personalInfo.is_sign" :animation="animation2" class="sign-in fs-40 flex-center" @click="signIn">点击打卡</view>
+						<view v-if="!personalInfo.is_sign" :animation="animation2" class="sign-in fs-40 flex-center" @click="signIn">
+							<view>点击打卡</view>
+							<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
+						</view>
 						<view v-else>
 							<!-- <image :animation="animation2" @click="goPage('/pages/mine/invitation')" class="share-btn" src="@/static/share-btn.png" mode="widthFix"></image> -->
 							<view class="tip" style="padding-top: 20rpx;">今日已打卡,余额约{{ (personalInfo.fraction / 100).toFixed(2) }}</view>
@@ -97,7 +100,10 @@
 						</view>
 					</view>
 					<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share" style="overflow: unset;">
-						<view :animation="animation2" class="sign-in fs-40 flex-center">点击打卡</view>
+						<view :animation="animation2" class="sign-in fs-40 flex-center">
+							<view>点击打卡</view>
+							<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
+						</view>
 					</button>
 
 					<view v-if="isAuthorized" class="btn-group flex-between" @click="goPage('/pages/task/task')">

@@ -38,7 +38,7 @@ export default {
 			showBannerFlag: false, //显示海报
 			bannerBg: {}, //canvas动态图宽高
 
-			isSmallScreen: true, //是否开启底部透明
+			isSmallScreen: (uni.getSystemInfoSync().windowHeight <= 667) || true, //是否开启底部透明
 			timer: null, //切换定时器
 
 			clickNum: 0, //点击次数，控制单击双击

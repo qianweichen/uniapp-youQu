@@ -3,6 +3,21 @@ export default {
 		type: String, //dynamic:动态  circle:圈子
 		list: Array //列表数据
 	},
+	watch: {
+		'list.length': {
+			handler(newValue, oldValue) {
+				if (newValue !== oldValue) {
+					// 操作
+					// const query = uni.createSelectorQuery().in(this);
+					// query.selectAll('.text-group').boundingClientRect(data => {
+					// 	data.forEach((item,index)=>{
+					// 		this.list[index].hideText = item.height>10;
+					// 	});
+					// }).exec();
+				}
+			}
+		}
+	},
 	data() {
 		return {
 			clickDynamicId: '', //点击评论的动态id
@@ -108,10 +123,10 @@ export default {
 			// }
 		},
 		// 当视频进入和退出全屏时触发
-		videoFullScreenChange(e){
-			if(e.detail.fullscreen){
+		videoFullScreenChange(e) {
+			if (e.detail.fullscreen) {
 				this.isVideoFull = true;
-			}else{
+			} else {
 				this.isVideoFull = false;
 			}
 		},
