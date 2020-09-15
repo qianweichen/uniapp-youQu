@@ -99,6 +99,7 @@
 				ref="dynamicList"
 				type="circle"
 				:list="dynamicList"
+				@toggleAllText="toggleAllText"
 				@goodFun="goodFun"
 				@commentFun="commentFun"
 				@attentionFun="attentionFun"

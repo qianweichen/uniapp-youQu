@@ -30,6 +30,14 @@ export default {
 		};
 	},
 	methods: {
+		//点击展开收起全文按钮
+		toggleAllText(index,flag,init){
+			this.$set(this.dynamicList[index], 'hideText', flag);
+			//初始化时 控制是否显示 全文/隐藏 按钮
+			if(init=="init"){
+				this.$set(this.dynamicList[index], 'hasHideBtn', flag);
+			}
+		},
 		//关注后修改数据
 		attentionFun(index, state) {
 			this.dynamicList[index].is_follow = state; //评论数+1

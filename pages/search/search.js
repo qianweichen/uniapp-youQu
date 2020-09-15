@@ -31,6 +31,14 @@ export default {
 		}
 	},
 	methods: {
+		//点击展开收起全文按钮
+		toggleAllText(index,flag,init){
+			this.$set(this.dynamicList[index], 'hideText', flag);
+			//初始化时 控制是否显示 全文/隐藏 按钮
+			if(init=="init"){
+				this.$set(this.dynamicList[index], 'hasHideBtn', flag);
+			}
+		},
 		//播放视频
 		playVideoFun(index,oldIndex){
 			// if(typeof oldIndex == 'number'){

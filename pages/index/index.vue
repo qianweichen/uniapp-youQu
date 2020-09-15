@@ -71,7 +71,7 @@ export default {
 			showPublishFlag: false,
 			messageNum: '',
 			clickTime: 0, //首页点击事件  控制双击
-			isSmallScreen: uni.getSystemInfoSync().windowHeight <= 667 || true, //是否开启底部透明
+			isSmallScreen: uni.getSystemInfoSync().windowHeight <= 667, //是否开启底部透明
 			customBar: this.CustomBar,
 			isAddProgramShow: true //是否显示添加到小程序
 		};

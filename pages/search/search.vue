@@ -67,7 +67,7 @@
 					<view>暂时没有{{searchContent}}的圈子</view>
 					<view class="btn flex-center" @click="goPage('/pagesA/circle/creatCircle')">抢先申请</view>
 				</view>
-				<dynamicList ref="dynamicList" type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList> 
+				<dynamicList ref="dynamicList" type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun" @toggleAllText="toggleAllText"></dynamicList> 
 				<view v-if="dynamicList.length==0" style="text-align: center; padding-top: 300rpx; color: #999;">暂无数据</view>
 			</view>
 			<!-- 视频 -->
@@ -96,7 +96,7 @@
 			</view>
 			<!-- 动态 -->
 			<view v-if="tabIndex == 2">
-				<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun"></dynamicList> 
+				<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @toggleAllText="toggleAllText"></dynamicList> 
 				<view v-if="dynamicList.length==0" style="text-align: center; padding-top: 300rpx; color: #999;">暂无数据</view>
 			</view>
 			<!-- 用户 -->

@@ -34,6 +34,7 @@
 						:src="item.study_video"
 						:show-center-play-btn="false"
 						:controls="false"
+						:object-fit="item.cover ? 'cover' : ''"
 						loop
 						@timeupdate="videoTimeUpdate"
 						@play="videoPlayStard"
@@ -44,7 +45,7 @@
 					<view v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
 						<!-- 封面图 -->
 						<view v-if="videoIndex != index || isLoadVideoShow" class="cover-img-group">
-							<image class="cover-img" :src="item.image_part[0]" mode="aspectFit"></image>
+							<image class="cover-img" :src="item.image_part[0]" :mode="item.cover ? 'aspectFill' : 'aspectFit'"></image>
 						</view>
 						<!-- 播放结束 -->
 						<!-- <view class="playEndBox flex-center" v-if="showVideoEndShare">
@@ -163,7 +164,7 @@
 							</view>
 							<view v-if="isAuthorized" @click.stop="attention(item.user_id, item.is_follow, index)">
 								<image class="opcity" :src="'../../static/attention' + (item.is_follow == 0 || !item.is_follow ? '-w' : '') + '.png'" mode="widthFix"></image>
-								<view>{{item.is_follow == 0 || !item.is_follow ? '' : '已'}}关注</view>
+								<view>{{ item.is_follow == 0 || !item.is_follow ? '' : '已' }}关注</view>
 							</view>
 							<view v-else>
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">

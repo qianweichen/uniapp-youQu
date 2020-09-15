@@ -2,7 +2,7 @@
 import dynamicList from '@/components/dynamic/dynamic.vue';
 
 //dynamic:动态  circle:圈子
-<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun"></dynamicList> 
+<dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun" @toggleAllText="toggleAllText"></dynamicList> 
 
  components:{
  	dynamicList
@@ -28,6 +28,14 @@ playVideoFun(index,oldIndex){
 	}
 	this.$set(this.dynamicList[index], 'playVideoFlag', true);
 },
+//点击展开收起全文按钮
+toggleAllText(index,flag,init){
+	this.$set(this.dynamicList[index], 'hideText', flag);
+	//初始化时 控制是否显示 全文/隐藏 按钮
+	if(init=="init"){
+		this.$set(this.dynamicList[index], 'hasHideBtn', flag);
+	}
+},
  
 -->
 <template>
@@ -35,7 +43,7 @@ playVideoFun(index,oldIndex){
 		<view class="dynamicList">
 			<view class="item" v-for="(item, index) in list" :key="index" :id="'videoGroup' + index">
 				<!-- 头部 -->
-				<view class="flex-between padding" style="padding-bottom: 40rpx;">
+				<view class="flex-between" style="padding: 20rpx;">
 					<view class="header flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 						<image class="circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 						<view class="fs-28 user-nick-name">{{ item.user_nick_name }}</view>
@@ -94,8 +102,8 @@ playVideoFun(index,oldIndex){
 					<view class="text-group">
 						{{ item.study_content }}
 					</view>
-					<view v-if="item.hideText">全文</view>
 				</view>
+				<view v-if="item.hasHideBtn" @click="toggleAllText(index,item.hideText)" class="padding fs-28" style="color: #1890FF;">{{item.hideText?'全文':'收起'}}</view>
 				<!-- 底部按钮 -->
 				<view class="bottom flex-between padding">
 					<!-- 动态列表 -->

@@ -5,7 +5,7 @@
 	}
 	.dynamicList {
 		.item {
-			padding: 40rpx 0;
+			padding-bottom: 40rpx;
 			border-bottom: 2rpx solid $ornamentColor;
 			.ad-group{
 				padding-top: 40rpx;
@@ -35,18 +35,18 @@
 				border-radius: 24rpx;
 			}
 			.content {
-				margin: 30rpx 0;
-				line-height: 40rpx;
+				margin: 30rpx 0 10rpx;
+				line-height: 20px;
 				&.hide{
 					overflow : hidden;
-					max-height: 120rpx;
+					max-height: 60px;
 				}
 				.text-group{
-					overflow : hidden;
-					text-overflow: ellipsis;
-					display: -webkit-box;
-					-webkit-line-clamp: 3;//规定几行显示省略号
-					-webkit-box-orient: vertical;
+					// overflow : hidden;
+					// text-overflow: ellipsis;
+					// display: -webkit-box;
+					// -webkit-line-clamp: 3;//规定几行显示省略号
+					// -webkit-box-orient: vertical;
 				}
 			}
 			.mediaBox {

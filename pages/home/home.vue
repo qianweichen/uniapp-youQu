@@ -96,7 +96,10 @@
 						<view v-else>
 							<!-- <image :animation="animation2" @click="goPage('/pages/mine/invitation')" class="share-btn" src="@/static/share-btn.png" mode="widthFix"></image> -->
 							<view class="tip" style="padding-top: 20rpx;">今日已打卡,余额约{{ (personalInfo.fraction / 100).toFixed(2) }}</view>
-							<view class="sign-in fs-40 flex-center" @click="goPage('/pages/mine/wallet')">立即提现</view>
+							<view class="sign-in fs-40 flex-center" @click="goPage('/pages/mine/wallet')">
+								<view>立即提现</view>
+								<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
+							</view>
 						</view>
 					</view>
 					<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share" style="overflow: unset;">

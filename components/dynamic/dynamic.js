@@ -8,12 +8,15 @@ export default {
 			handler(newValue, oldValue) {
 				if (newValue !== oldValue) {
 					// 操作
-					// const query = uni.createSelectorQuery().in(this);
-					// query.selectAll('.text-group').boundingClientRect(data => {
-					// 	data.forEach((item,index)=>{
-					// 		this.list[index].hideText = item.height>10;
-					// 	});
-					// }).exec();
+					const query = uni.createSelectorQuery().in(this);
+					query.selectAll('.text-group').boundingClientRect(data => {
+						data.forEach((item, index) => {
+							if (index < oldValue) {
+								return;
+							}
+							this.$emit('toggleAllText', index, item.height > 60, 'init');
+						});
+					}).exec();
 				}
 			}
 		}
@@ -67,6 +70,10 @@ export default {
 		}
 	},
 	methods: {
+		// 全部/收起
+		toggleAllText(index, flag) {
+			this.$emit('toggleAllText', index, !flag);
+		},
 		//图文动态切换swiper
 		changeSwiper(e) {
 			var index = e.currentTarget.dataset.index;

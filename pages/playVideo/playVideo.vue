@@ -89,6 +89,22 @@ export default {
 							icon: 'none'
 						});
 					}
+					//获取 封面图/视频 高度
+					res.data.info.forEach((_item) => {
+						if (_item.study_type == 2) {
+							var src = this.httpsUrl(_item.image_part[0]);
+							uni.getImageInfo({
+								src,
+								success: (res) => {
+									var width = this.screenWidth;
+									var height = width * res.height / res.width;
+									if (height / this.screenHeight > 0.8) { //高度在90%以上
+										this.$set(_item, 'cover', true);
+									}
+								}
+							})
+						}
+					});
 				}
 			});
 		},
@@ -109,6 +125,22 @@ export default {
 					uni.hideLoading();
 					this.videoPage++;
 					this.videoList = this.videoList.concat(res.data.info);
+					//获取 封面图/视频 高度
+					res.data.info.forEach((_item) => {
+						if (_item.study_type == 2) {
+							var src = this.httpsUrl(_item.image_part[0]);
+							uni.getImageInfo({
+								src,
+								success: (res) => {
+									var width = this.screenWidth;
+									var height = width * res.height / res.width;
+									if (height / this.screenHeight > 0.8) { //高度在90%以上
+										this.$set(_item, 'cover', true);
+									}
+								}
+							})
+						}
+					});
 				}
 			});
 		}
