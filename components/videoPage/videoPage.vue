@@ -26,7 +26,7 @@
 		<!-- 视频 -->
 		<swiper class="video-swiper" @change="changeSwiper" :current="videoIndex" vertical duration="300">
 			<swiper-item v-for="(item, index) in videoList" :key="index">
-				<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'" @click="clickVideo(item.id, index)">
+				<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'" @click="clickVideo(item.id, index)" @longpress="longPress">
 					<!-- 只显示一个视频，ios缓存有问题，没法同时放3个，遇到长视频会卡 -->
 					<video
 						v-if="videoIndex == index"
@@ -286,7 +286,7 @@
 						</button>
 					</view>
 				</view>
-				<view class="line"></view>
+				<!-- <view class="line"></view>
 				<view :class="deleteBtnFlag ? 'flex-between' : 'flex-center'">
 					<view @click="toggleInform(true)">
 						<image src="../../static/icon-jb.png" mode="widthFix"></image>
@@ -296,7 +296,7 @@
 						<image src="../../static/icon-del.png" mode="widthFix"></image>
 						<view class="fs-22">删除</view>
 					</view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<!-- 举报信息填写 -->
@@ -341,7 +341,23 @@
 				</view>
 			</view>
 		</view>
-
+		<!-- 长按操作按钮 -->
+		<view v-if="isLongPressShow" class="long-press flex-center" @click="isLongPressShow = false;">
+			<view>
+				<view @click="dislike" class="flex-center">
+					<image src="../../static/long-dislike.png" mode="widthFix"></image>
+					<text>内容不感兴趣</text>
+				</view>
+				<view @click="toggleInform(true)" class="flex-center">
+					<image src="../../static/long-jb.png" mode="widthFix"></image>
+					<text>举报作品</text>
+				</view>
+				<view v-if="deleteBtnFlag" @click="toggleDelete(true)" class="flex-center">
+					<image src="../../static/long-delete.png" mode="widthFix"></image>
+					<text>删除该作品</text>
+				</view>
+			</view>
+		</view>
 		<!-- 海报 -->
 		<view v-if="showBannerFlag">
 			<view class="mask"></view>

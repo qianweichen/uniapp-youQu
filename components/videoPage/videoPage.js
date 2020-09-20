@@ -57,7 +57,9 @@ export default {
 			watchTime: 0, //当前红包累计的时间
 			refillTime: 30, //每次滑动可以累计加的时间（固定值）
 			watchTimeTimer: null, //浏览计时器存储对象
-			watchTimeNumber: 0 //浏览计时计数器
+			watchTimeNumber: 0 ,//浏览计时计数器
+			
+			isLongPressShow:false
 		}
 	},
 	props: {
@@ -107,6 +109,31 @@ export default {
 		}
 	},
 	methods: {
+		//长按
+		longPress(){
+			this.isLongPressShow = true;
+		},
+		//不喜欢
+		dislike(){
+			this.$refs.loading.open();
+			this.request({
+				url: this.apiUrl + 'user/no_interest',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					paperid: this.videoList[this.videoIndex].id,
+					uid:uni.getStorageSync('userId')
+				},
+				success: res => {
+					this.$refs.loading.close();
+					console.log('不喜欢', res);
+					uni.showToast({
+						title:res.data.msg,
+						icon:"none"
+					});
+				}
+			});
+		},
 		//生成海报---------------------------------------------------------------------
 		makeBanner() {
 			this.toggleBannerFlag(true);

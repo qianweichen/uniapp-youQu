@@ -93,12 +93,25 @@ Vue.prototype.request = function(obj) {
 		success: (res) => {
 			var pages = getCurrentPages();
 			var page = pages[pages.length - 1];
+			var pageIndex = pages[0];
 			if (res.status && res.status == "error") {
 				uni.showToast({
 					title: res.msg,
 					icon: 'none'
 				});
 				page.$vm.$refs.loading.close();
+				if (pageIndex.$vm.$refs.homePage) {
+					pageIndex.$vm.$refs.homePage.$refs.loading.close();
+				}
+				if (pageIndex.$vm.$refs.findPage) {
+					pageIndex.$vm.$refs.findPage.$refs.loading.close();
+				}
+				if (pageIndex.$vm.$refs.messagePage) {
+					pageIndex.$vm.$refs.messagePage.$refs.loading.close();
+				}
+				if (pageIndex.$vm.$refs.minePage) {
+					pageIndex.$vm.$refs.minePage.$refs.loading.close();
+				}
 				return;
 			}
 			if (res.data.status && res.data.status == "error") {
@@ -107,6 +120,18 @@ Vue.prototype.request = function(obj) {
 					icon: 'none'
 				});
 				page.$vm.$refs.loading.close();
+				if (pageIndex.$vm.$refs.homePage) {
+					pageIndex.$vm.$refs.homePage.$refs.loading.close();
+				}
+				if (pageIndex.$vm.$refs.findPage) {
+					pageIndex.$vm.$refs.findPage.$refs.loading.close();
+				}
+				if (pageIndex.$vm.$refs.messagePage) {
+					pageIndex.$vm.$refs.messagePage.$refs.loading.close();
+				}
+				if (pageIndex.$vm.$refs.minePage) {
+					pageIndex.$vm.$refs.minePage.$refs.loading.close();
+				}
 				return;
 			}
 			typeof obj.success == "function" && obj.success(res);

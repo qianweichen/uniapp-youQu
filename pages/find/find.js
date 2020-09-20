@@ -15,11 +15,48 @@ export default {
 			banners: [],
 			refreshFlag: false, //下拉刷新状态
 			swiperIndex: 0,
-			animationData:null,
-			loadStatus:'loadmore'
+			animationData: null,
+			loadStatus: 'loadmore',
+			showMoreCircle: false //默认显示3条推荐圈子
 		}
 	},
 	methods: {
+		//换一批或者更多圈子
+		getMoreCircle() {
+			if (!this.showMoreCircle) {
+				this.showMoreCircle = true;
+			} else {
+				this.getCircleCList();
+			}
+		},
+		//加入圈子
+		join(id, trailing, index) {
+			this.$refs.loading.open();
+			this.request({
+				url: this.apiUrl + 'User/set_user_trailing',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId'),
+					tory_id: id,
+					is_trailing: trailing == 0 ? 0 : 1,
+					// trailing_type: 1, //0申请（干掉） 1邀请码
+					// trailing_text: this.erCode //邀请码
+				},
+				success: res => {
+					// console.log("加入:",res);
+					uni.showToast({
+						title: res.data.msg
+					});
+					if (res.data.msg == "加入成功！") {
+						this.$set(this.recommendList[index], 'is_gzqz', 1);
+					}else if(res.data.msg == "取消成功！"){
+						this.$set(this.recommendList[index], 'is_gzqz', 0);
+					}
+					this.$refs.loading.close();
+				},
+			});
+		},
 		//点赞
 		videoGoodFun(id, index) {
 			this.request({
@@ -110,23 +147,23 @@ export default {
 		},
 		// 触底获取
 		getDynamic() {
-			if(this.loadStatus != "loadmore"){
+			if (this.loadStatus != "loadmore") {
 				return;
 			}
 			this.loadStatus = "loading";
 			if (this.tabIndex == 0) { //推荐
 				this.getDynamicList().then((res) => {
-					if(res=='nomore'){
+					if (res == 'nomore') {
 						this.loadStatus = "nomore";
-					}else{
+					} else {
 						this.loadStatus = "loadmore";
 					}
 				});
 			} else { //关注
 				this.getAttentionList().then((res) => {
-					if(res=='nomore'){
+					if (res == 'nomore') {
 						this.loadStatus = "nomore";
-					}else{
+					} else {
 						this.loadStatus = "loadmore";
 					}
 				});
@@ -164,6 +201,23 @@ export default {
 			});
 		},
 		// 推荐圈子
+		getCircleCList() {
+			return new Promise((resolve, reject) => {
+				this.request({
+					url: this.apiUrl + 'user/rand_territory_six',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId'),
+					},
+					success: res => {
+						console.log("推荐圈子:", res);
+						this.recommendList = res.data.data;
+						resolve();
+					}
+				});
+			});
+		},
 		getRecommendCircle(isFirstPage, change = 0) { //change切换传1
 			return new Promise((resolve, reject) => {
 				// 动画
@@ -173,15 +227,15 @@ export default {
 				})
 				animation.translate(80).opacity(0).step();
 				this.animationData = animation.export();
-				setTimeout(()=>{
+				setTimeout(() => {
 					var animation = uni.createAnimation({
 						duration: 500,
 						timingFunction: 'ease',
 					})
 					animation.translate(0).opacity(1).step();
 					this.animationData = animation.export();
-				},500);
-				
+				}, 500);
+
 				if (isFirstPage == true) {
 					this.recommendPage = 1;
 				}
@@ -293,13 +347,13 @@ export default {
 		this.isAuthorized = this.beAuthorized();
 		if (this.isAuthorized) {
 			this.$refs.loading.open();
-			Promise.all([this.getRecommendCircle(true), this.getDynamicList(true), this.getBanners(), this.getMyCircle(true)]).then(
+			Promise.all([this.getCircleCList(), this.getDynamicList(true), this.getBanners(), this.getMyCircle(true)]).then(
 				() => {
 					this.$refs.loading.close();
 				});
 		} else {
 			this.$refs.loading.open();
-			Promise.all([this.getRecommendCircle(true), this.getDynamicList(true), this.getBanners()]).then(() => {
+			Promise.all([this.getCircleCList(), this.getDynamicList(true), this.getBanners()]).then(() => {
 				this.$refs.loading.close();
 			});
 		}

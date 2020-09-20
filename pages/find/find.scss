@@ -3,7 +3,7 @@
 	overflow-y: auto;
 	background-color: $themeColor;
 	color: #fff;
-	.topTab{
+	.topTab {
 		box-sizing: border-box;
 	}
 	// 圈子
@@ -91,19 +91,19 @@
 			}
 		}
 		&.gift {
-			.title{
+			.title {
 				padding-bottom: 0;
 			}
-			.gift-right{
-				color: #FFC617;
-				.icon-gift{
+			.gift-right {
+				color: #ffc617;
+				.icon-gift {
 					width: 36rpx;
 					height: auto;
 				}
-				.fs-22{
+				.fs-22 {
 					padding: 0 12rpx;
 				}
-				.icon-right{
+				.icon-right {
 					width: 12rpx;
 					height: auto;
 				}
@@ -125,33 +125,33 @@
 				height: 54rpx;
 			}
 		}
-		.recommend-bubble{
+		.recommend-bubble {
 			position: relative;
 			width: 667rpx;
 			height: 476rpx;
 			margin: 0 auto;
-			.bubble{
-				border-radius:50%;
+			.bubble {
+				border-radius: 50%;
 				overflow: hidden;
 				position: absolute;
-				image{
+				image {
 					width: 100%;
 					height: 100%;
 					display: block;
 				}
-				.bubble1-title{
+				.bubble1-title {
 					width: 100%;
 					height: 100%;
-					background-color: rgba(0,0,0,0.5);
+					background-color: rgba(0, 0, 0, 0.5);
 					position: absolute;
 					left: 0;
 					top: 0;
-					view{
+					view {
 						text-align: center;
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						overflow : hidden;
+						overflow: hidden;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						-webkit-line-clamp: 2;
@@ -159,97 +159,97 @@
 					}
 				}
 			}
-			.bubble1{
-				width:196rpx;
-				height:196rpx;
+			.bubble1 {
+				width: 196rpx;
+				height: 196rpx;
 				top: 21rpx;
 				left: 0;
-				.bubble1-title{
-					view{
+				.bubble1-title {
+					view {
 						width: 118rpx;
 						font-size: 30rpx;
 					}
 				}
 			}
-			.bubble2{
-				width:120rpx;
-				height:120rpx;
+			.bubble2 {
+				width: 120rpx;
+				height: 120rpx;
 				top: 0;
 				left: 232rpx;
-				.bubble1-title{
-					view{
+				.bubble1-title {
+					view {
 						width: 55rpx;
 						font-size: 26rpx;
 					}
 				}
 			}
-			.bubble3{
-				width:172rpx;
-				height:172rpx;
+			.bubble3 {
+				width: 172rpx;
+				height: 172rpx;
 				top: 0;
 				left: 392rpx;
-				.bubble1-title{
-					view{
+				.bubble1-title {
+					view {
 						width: 118rpx;
 						font-size: 30rpx;
 					}
 				}
 			}
-			.bubble4{
-				width:220rpx;
-				height:220rpx;
+			.bubble4 {
+				width: 220rpx;
+				height: 220rpx;
 				top: 128rpx;
 				left: 192rpx;
-				.bubble1-title{
-					view{
+				.bubble1-title {
+					view {
 						width: 167rpx;
 						font-size: 34rpx;
 					}
 				}
 			}
-			.bubble5{
-				width:156rpx;
-				height:156rpx;
+			.bubble5 {
+				width: 156rpx;
+				height: 156rpx;
 				top: 255rpx;
 				left: 29rpx;
-				.bubble1-title{
-					view{
+				.bubble1-title {
+					view {
 						width: 87rpx;
 						font-size: 30rpx;
 					}
 				}
 			}
-			.bubble6{
-				width:120rpx;
-				height:120rpx;
+			.bubble6 {
+				width: 120rpx;
+				height: 120rpx;
 				top: 362rpx;
 				left: 219rpx;
-				.bubble1-title{
-					view{
+				.bubble1-title {
+					view {
 						width: 55rpx;
 						font-size: 26rpx;
 					}
 				}
 			}
-			.bubble7{
-				width:134rpx;
-				height:134rpx;
+			.bubble7 {
+				width: 134rpx;
+				height: 134rpx;
 				top: 323rpx;
 				left: 353rpx;
-				.bubble1-title{
-					view{
+				.bubble1-title {
+					view {
 						width: 79rpx;
 						font-size: 30rpx;
 					}
 				}
 			}
-			.bubble8{
-				width:194rpx;
-				height:194rpx;
+			.bubble8 {
+				width: 194rpx;
+				height: 194rpx;
 				top: 182rpx;
 				left: 474rpx;
-				.bubble1-title{
-					view{
+				.bubble1-title {
+					view {
 						width: 117rpx;
 						font-size: 30rpx;
 					}
@@ -257,20 +257,22 @@
 			}
 		}
 		.recommend-list {
-			padding: 0 30rpx;
+			margin-top: 50rpx;
+			padding: 40rpx 30rpx;
+			border-top: 20rpx solid rgba(238, 238, 238, 0.1);
+			border-bottom: 20rpx solid rgba(238, 238, 238, 0.1);
 			.item {
-				padding-bottom: 40rpx;
 				.header {
 					width: 50px;
 					height: 50px;
-					border: 2rpx solid #fff;
+					// border: 2rpx solid #fff;
 					margin-right: 20rpx;
 				}
 				.join {
-					width: 134rpx;
-					height: 46rpx;
-					background: #7364bd;
-					border-radius: 24rpx;
+					width: 160rpx;
+					height: 60rpx;
+					background: #7464be;
+					border-radius: 8rpx;
 				}
 				.attention {
 					width: 40rpx;
@@ -280,6 +282,45 @@
 					color: #fff;
 					border-radius: 8rpx;
 					margin-left: 20rpx;
+				}
+				.synopsis {
+					color: #9a989e;
+					padding-top: 10rpx;
+					width: 410rpx;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+				.list {
+					box-sizing: border-box;
+					white-space: nowrap;
+					padding-left: 0;
+					.video-item {
+						position: relative;
+						display: inline-block;
+						margin: 40rpx 16rpx 40rpx 0;
+						width: 280rpx;
+						height: 370rpx;
+						border-radius: 8rpx;
+						overflow: hidden;
+						.poster {
+							width: 100%;
+							height: 100%;
+						}
+						.info {
+							width: 100%;
+							font-size: 22rpx;
+							position: absolute;
+							left: 0;
+							bottom: 0;
+							padding: 14rpx;
+							box-sizing: border-box;
+							image {
+								width: 35rpx;
+								height: auto;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -306,7 +347,8 @@
 		.tabBox {
 			padding: 0 30rpx;
 			color: rgba(255, 255, 255, 0.6);
-			> view,button {
+			> view,
+			button {
 				width: 120rpx;
 				padding-top: 47rpx;
 				padding-bottom: 20rpx;
@@ -319,64 +361,64 @@
 				border-bottom: 4rpx solid #7364bd;
 			}
 		}
-		.list-zp{
+		.list-zp {
 			padding: 20rpx 30rpx;
 			align-items: flex-start;
-			.item{
+			.item {
 				border-radius: 8rpx;
 				overflow: hidden;
-				background:rgba(115,99,189,0.1);
-				width:330rpx;
+				background: rgba(115, 99, 189, 0.1);
+				width: 330rpx;
 				// height:492rpx;
 				margin-bottom: 30rpx;
-				.imgBox{
+				.imgBox {
 					width: 100%;
 					max-height: 430rpx;
 					overflow: hidden;
 					position: relative;
-					image{
+					image {
 						display: block;
 						width: 100%;
 						height: 300rpx;
 					}
-					.mask{
+					.mask {
 						position: absolute;
 						height: 144rpx;
 						top: unset;
 						left: 0;
 						bottom: 0;
-						background:linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0));
+						background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
 					}
 				}
-				.infoBox{
+				.infoBox {
 					width: 100%;
 					// height: 162rpx;
 					padding: 20rpx;
 					box-sizing: border-box;
-					.cont{
-						overflow : hidden;
+					.cont {
+						overflow: hidden;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						-webkit-line-clamp: 3;
 						-webkit-box-orient: vertical;
 						margin-bottom: 30rpx;
 					}
-					.header{
-						width:40rpx;
-						height:40rpx;
+					.header {
+						width: 40rpx;
+						height: 40rpx;
 						margin-right: 14rpx;
 					}
-					.nickName{
-						color: rgba(255,255,255,0.6);
+					.nickName {
+						color: rgba(255, 255, 255, 0.6);
 					}
-					.good{
+					.good {
 						width: 30rpx;
 						height: auto;
 						margin-right: 11rpx;
 					}
 				}
 			}
-			.item:nth-child(3n){
+			.item:nth-child(3n) {
 				margin-right: 0;
 			}
 		}

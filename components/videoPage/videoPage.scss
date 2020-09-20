@@ -199,10 +199,10 @@
 					left: calc(50% - 17rpx);
 				}
 			}
-			.nick-name{
+			.nick-name {
 				max-width: 360rpx;
 				overflow: hidden;
-				text-overflow:ellipsis;
+				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
 		}
@@ -405,5 +405,28 @@
 	.btn-big {
 		width: 650rpx;
 		margin-top: 60rpx;
+	}
+}
+// 长按按钮
+.long-press {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+	color: #fff;
+	font-size: 34rpx;
+	.flex-center {
+		width: 460rpx;
+		height: 100rpx;
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 50rpx;
+		margin-bottom: 60rpx;
+	}
+	image {
+		width: 42rpx;
+		height: auto;
+		margin-right: 32rpx;
 	}
 }
