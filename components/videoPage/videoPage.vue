@@ -74,7 +74,9 @@
 						<!-- 载入中动画 -->
 						<view v-if="isLoadVideoShow" class="donut"></view>
 						<!-- 播放按钮 -->
-						<image v-if="showVideoPlayBtn" @click.stop="playVideo" class="playBtn circle" src="../../static/icon-play.png" mode="widthFix"></image>
+						<view v-if="showVideoPlayBtn" @click.stop="playVideo" class="playBtn circle flex-center">
+							<image src="../../static/play.png" mode="widthFix"></image>
+						</view>
 						<!-- 文案区域 -->
 						<view class="contentBox" :class="isSmallScreen && parentPage == 'home' ? 'full-page' : ''">
 							<view class="flex">
@@ -172,7 +174,8 @@
 									<view>关注</view>
 								</button>
 							</view>
-							<view v-if="isAuthorized" @click.stop="toggleShareBox(true)">
+							<!-- 点击分享 弹窗 -->
+							<!-- <view v-if="isAuthorized" @click.stop="toggleShareBox(true)">
 								<image src="../../static/wechat.png" mode="widthFix" :animation="isAnimationDataShow ? animationData : ''"></image>
 								<view>分享</view>
 							</view>
@@ -180,6 +183,19 @@
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
 									<image src="../../static/wechat.png" mode="widthFix" :animation="isAnimationDataShow ? animationData : ''"></image>
 									<view>分享</view>
+								</button>
+							</view> -->
+							<view>
+								<button
+									open-type="share"
+									class="share"
+									data-type="video"
+									:data-id="videoList[videoIndex].id"
+									:data-content="videoList[videoIndex].study_content"
+									:data-img="videoList[videoIndex].image_part[0]"
+								>
+									<image src="../../static/wechat.png" mode="widthFix" :animation="isAnimationDataShow ? animationData : ''"></image>
+									<view class="fs-22">分享</view>
 								</button>
 							</view>
 						</view>

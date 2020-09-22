@@ -75,7 +75,9 @@ toggleAllText(index,flag,init){
 						@click="clickVideoFun"
 					></video>
 					<image v-else class="poster" :src="item.image_part[0]" mode="aspectFill"></image>
-					<image v-if="!item.playVideoFlag" @click="playVideoFun(index)" class="circle play" src="../../static/icon-play.png" mode="widthFix"></image>
+					<view v-if="!item.playVideoFlag" @click="playVideoFun(index)" class="circle play flex-center">
+						<image src="../../static/play.png" mode="widthFix"></image>
+					</view>
 					<!-- 进度条 -->
 					<!-- <view v-if="item.playVideoFlag" class="progress"><view :style="'width:' + progressNum + '%;'"></view></view> -->
 				</view>

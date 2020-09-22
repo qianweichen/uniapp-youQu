@@ -104,6 +104,12 @@
 					height: 110rpx;
 					left: calc(50% - 55rpx);
 					top: calc(50% - 55rpx);
+					background-color: rgba(0,0,0,0.5);
+					image{
+						width: 40rpx;
+						margin-left: 16rpx;
+						height: auto;
+					}
 				}
 				video {
 					width: 100%;

@@ -4,7 +4,13 @@
 		<navigationBar name="发布" haveHeight></navigationBar>
 		<view class="iptBox flex-between">
 			<textarea class="fs-26" placeholder="写下你的想法，让更多的人看见~" placeholder-class="fc-9" maxlength="140" v-model="content" />
-			<video :src="videoData.tempVideoPath" controls :poster="videoData.tempThumbPath"></video>
+			<video class="media" v-if="videoData.tempVideoPath" :src="videoData.tempVideoPath" controls :poster="videoData.tempThumbPath"></video>
+			<view @click="chooseVideo" class="media border flex-center" v-else>
+				<view>
+					<view style="font-size: 66rpx;">+</view>
+					<view class="fs-24">上传视频</view>
+				</view>
+			</view>
 		</view>
 		<view class="chooseBox fs-26">
 			<!-- <view class="item flex-between">
@@ -40,6 +46,22 @@ export default {
 		};
 	},
 	methods: {
+		//选择视频
+		chooseVideo() {
+			uni.chooseVideo({
+				count: 1,
+				sourceType: ['album'],
+				success: res => {
+					this.$refs.loading.close();
+					// console.log('选择视频',res);
+					this.videoData = {
+						tempVideoPath:res.tempFilePath,
+						tempThumbPath:res.thumbTempFilePath,
+						duration:res.duration
+					}
+				}
+			});
+		},
 		// 第一步:订阅
 		send() {
 			if (!this.chooseCirce.id) {
@@ -199,10 +221,15 @@ export default {
 		width: 460rpx;
 		height: 262rpx;
 	}
-	video {
+	.media {
 		width: 188rpx;
 		height: 262rpx;
 		border-radius: 8rpx;
+		color: #999;
+		text-align: center;
+		&.border{
+			border: 2rpx dashed #999;
+		}
 	}
 }
 .chooseBox {

@@ -17,36 +17,6 @@
 				<!-- <image v-if="item.checked" class="yes" src="../../static/yes.png" mode="widthFix"></image> -->
 			</view>
 			<view v-if="list.length == 0" style="text-align: center; padding: 200rpx 0;">您还没加入任何圈子，请先加入</view>
-			<view>
-				<!-- 为我推荐 -->
-				<view class="myCircle recommend">
-					<view class="title flex-between">
-						<view class="left flex">
-							<image src="../../static/good-c.png" mode="widthFix"></image>
-							<text class="fs-32">为我推荐</text>
-						</view>
-						<view class="right flex-center" @click="getRecommendCircle(true, 1)">
-							<image src="../../static/refresh.png" mode="widthFix"></image>
-							<text class="fs-22">换一批</text>
-						</view>
-					</view>
-					<view class="recommend-bubble" :animation="animationData">
-						<view
-							v-if="index < 8"
-							@click="goPage('/pagesA/circle/circle?id=' + item.id)"
-							class="bubble"
-							:class="'bubble' + (index + 1)"
-							v-for="(item, index) in recommendList"
-							:key="index"
-						>
-							<image :src="item.realm_icon" mode="aspectFill"></image>
-							<view class="bubble1-title fc-f flex-center">
-								<view>{{ item.realm_name }}</view>
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
 		</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
@@ -57,59 +27,10 @@ export default {
 	data() {
 		return {
 			list: [],
-			page: 1,
-			recommendList: [],
-			recommendPage: 1,
-			animationData: ''
+			page: 1
 		};
 	},
 	methods: {
-		getRecommendCircle(isFirstPage, change = 0) {
-			//change切换传1
-			return new Promise((resolve, reject) => {
-				// 动画
-				var animation = uni.createAnimation({
-					duration: 200,
-					timingFunction: 'ease'
-				});
-				animation
-					.translate(80)
-					.opacity(0)
-					.step();
-				this.animationData = animation.export();
-				setTimeout(() => {
-					var animation = uni.createAnimation({
-						duration: 500,
-						timingFunction: 'ease'
-					});
-					animation
-						.translate(0)
-						.opacity(1)
-						.step();
-					this.animationData = animation.export();
-				}, 500);
-
-				if (isFirstPage == true) {
-					this.recommendPage = 1;
-				}
-				this.request({
-					url: this.apiUrl + 'User/get_tj_list',
-					data: {
-						token: uni.getStorageSync('token'),
-						openid: uni.getStorageSync('openid'),
-						uid: uni.getStorageSync('userId'),
-						change,
-						page: this.recommendPage
-					},
-					success: res => {
-						// console.log("推荐圈子:", res);
-						this.recommendPage++;
-						this.recommendList = res.data.info;
-						resolve();
-					}
-				});
-			});
-		},
 		choose(data) {
 			//修改上一个页面的发布圈子信息
 			var pages = getCurrentPages();
@@ -151,7 +72,6 @@ export default {
 	},
 	onShow() {
 		this.getCircle(true);
-		this.getRecommendCircle(true);
 	},
 	onReachBottom() {
 		this.getCircle();

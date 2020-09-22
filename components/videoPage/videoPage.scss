@@ -112,14 +112,14 @@
 		}
 	}
 	.playBtn {
-		width: 125rpx;
-		height: 125rpx;
+		width: 126rpx;
+		height: 126rpx;
 		background: rgba(0, 0, 0, 0.5);
 		position: absolute;
 		left: calc(50% - 63rpx);
-		top: calc(50% - 75rpx);
+		top: calc(50% - 63rpx);
 		image {
-			width: 39rpx;
+			width: 48rpx;
 			margin-left: 8rpx;
 			height: auto;
 		}

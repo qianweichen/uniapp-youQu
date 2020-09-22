@@ -660,7 +660,11 @@ export default {
 				this.clickNum = 0;
 			} else if (this.clickNum == 1) {
 				this.clickTimer = setTimeout(() => {
-					this.pauseVideo();
+					if(this.showVideoPlayBtn){
+						this.playVideo();
+					}else{
+						this.pauseVideo();
+					}
 					this.clickNum = 0;
 				}, 300);
 			}

@@ -20,6 +20,10 @@
 					<image src="../../static/send-v.png" mode="widthFix"></image>
 					<view class="fs-26">发视频</view>
 				</view>
+				<view @click="upV">
+					<image src="../../static/send-up.png" mode="widthFix"></image>
+					<view class="fs-26">上传视频</view>
+				</view>
 				<view @click="sendI">
 					<image src="../../static/send-i.png" mode="widthFix"></image>
 					<view class="fs-26">发动态</view>
@@ -33,6 +37,10 @@
 					<view>
 						<image src="../../static/send-v.png" mode="widthFix"></image>
 						<view class="fs-26">发视频</view>
+					</view>
+					<view>
+						<image src="../../static/send-up.png" mode="widthFix"></image>
+						<view class="fs-26">上传视频</view>
 					</view>
 					<view>
 						<image src="../../static/send-i.png" mode="widthFix"></image>
@@ -63,6 +71,10 @@ export default {
 			this.close();
 			this.goPage('/pagesA/publish/shoot');
 		},
+		upV(){
+			this.close();
+			this.goPage('/pagesA/publish/publish-v');
+		},
 		sendI() {
 			this.close();
 			this.goPage('/pagesA/publish/publish-i');
@@ -82,10 +94,10 @@ export default {
 .page-publish {
 	background-color: rgba(0, 0, 0, 0.8);
 	.btnBox {
-		width: 388rpx;
+		width: 580rpx;
 		position: absolute;
 		bottom: 132rpx;
-		left: calc(50% - 194rpx);
+		left: calc(50% - 290rpx);
 		text-align: center;
 		.send {
 			margin: 0 auto;
