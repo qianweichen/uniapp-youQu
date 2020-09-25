@@ -1,8 +1,10 @@
 .page-circle {
 	.topInfoBox {
+		padding-top: 200rpx;
+		padding-bottom: 30rpx;
 		width: 100%;
-		height: 400rpx;
-		position: relative;
+		// height: 460rpx;
+		// position: relative;
 		background-repeat: no-repeat;
 		background-position: 0 0;
 		background-size: cover;
@@ -14,17 +16,18 @@
 			padding-left: 70rpx;
 			padding-right: 35rpx;
 			width: 100%;
-			position: absolute;
-			left: 0;
-			bottom: 51rpx;
+			// position: absolute;
+			// left: 0;
+			// top: 200rpx;
 			.info-left {
-				height: 140rpx;
+				align-items: flex-start;
 				.user {
 					height: 100%;
 					.header {
 						width: 88rpx;
 						height: 88rpx;
 						border: 2rpx solid #fff;
+						margin-bottom: 20rpx;
 					}
 				}
 				.nameBox {
@@ -33,6 +36,9 @@
 					padding: 6rpx 0;
 					height: 100%;
 					padding-left: 21rpx;
+					.fs-24{
+						padding: 20rpx 0;
+					}
 				}
 			}
 			.join {

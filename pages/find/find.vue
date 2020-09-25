@@ -110,7 +110,7 @@
 										</view>
 										<view @click="join(item.id, item.is_gzqz, index)" class="fs-28 join flex-center">{{ item.is_gzqz == 0 ? '加入' : '已加入' }}</view>
 									</div>
-									<scroll-view class="list" scroll-x="true">
+									<scroll-view v-if="item.paper_list.length>0" class="list" scroll-x="true">
 										<view
 											class="video-item"
 											v-for="(items, indexs) in item.paper_list"
@@ -127,6 +127,9 @@
 											</view>
 										</view>
 									</scroll-view>
+									<view v-else class="no-data fs-26 fc-6">
+										暂无作品展示
+									</view>
 								</view>
 							</view>
 							<view v-if="!showMoreCircle" class="fs-26 fc-a text-center" @click="getMoreCircle">查看更多＞</view>

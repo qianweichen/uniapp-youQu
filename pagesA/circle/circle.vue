@@ -19,15 +19,15 @@
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view class="fs-22 join flex-center">加入</view></button>
 							</view>
 						</view>
-						<view v-if="isAuthorized" class="nameBox fc-f flex-column-between" @click="goPage('/pagesA/circle/circleInfo?id=' + circleId)">
+						<view v-if="isAuthorized" class="nameBox fc-f" @click="goPage('/pagesA/circle/circleInfo?id=' + circleId)">
 							<view class="fs-32 bold">{{ circleData.realm_name || '' }}</view>
 							<view class="fs-24" style="color: #ddd;">{{ circleData.realm_synopsis || '' }}</view>
-							<view class="fs-20">关注 {{ circleData.concern || '' }} | 帖子 {{ circleData.is_paper_count || '' }}</view>
+							<view class="fs-20">关注 {{ circleData.concern || 0 }} | 帖子 {{ circleData.is_paper_count || 0 }}</view>
 						</view>
-						<button v-else open-type="getUserInfo" class="share nameBox fc-f flex-column-between" @getuserinfo="getUserInfo" style="text-align: left;">
+						<button v-else open-type="getUserInfo" class="share nameBox fc-f" @getuserinfo="getUserInfo" style="text-align: left;">
 							<view class="fs-32 bold">{{ circleData.realm_name || '' }}</view>
 							<view class="fs-24" style="color: #ddd;">{{ circleData.realm_synopsis || '' }}</view>
-							<view class="fs-20">关注 {{ circleData.concern || '' }} | 帖子 {{ circleData.is_paper_count || '' }}</view>
+							<view class="fs-20">关注 {{ circleData.concern || 0 }} | 帖子 {{ circleData.is_paper_count || 0 }}</view>
 						</button>
 					</view>
 					<view v-if="isAuthorized" class="share" @click="shareQrCode">

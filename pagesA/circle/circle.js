@@ -394,6 +394,8 @@ export default {
 					},
 					success: res => {
 						// console.log("获取圈子信息:", res);
+						//去除换行符
+						res.data.info.realm_synopsis = res.data.info.realm_synopsis.replace(/[\r\n]/g,"");
 						this.circleData = res.data.info;
 						//私密圈子   并且   未加入
 						this.noJurisdiction = res.data.info.attention == 1 && res.data.info.is_trailing == false;
