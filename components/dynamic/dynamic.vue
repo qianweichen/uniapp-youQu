@@ -151,7 +151,7 @@ toggleAllText(index,flag,init){
 					</view>
 				</view>
 				<!-- 广告 -->
-				<view class="ad-group" v-if="(index + 1) % 6 == 0"><ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom></view>
+				<!-- <view class="ad-group" v-if="(index + 1) % 6 == 0"><ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom></view> -->
 			</view>
 		</view>
 		<!-- 评论区域 -->

@@ -4,6 +4,22 @@
 		<view v-if="isShowRed" class="red-icon-group">
 			<image @click="isShowShare = true" class="red-icon" src="@/static/share-icon.png" mode="widthFix" :animation="animation"></image>
 		</view>
+		<!-- 新人红包 -->
+		<view v-if="isNewRedShow" class="new-red flex-center">
+			<view>
+				<image v-if="isAuthorized" @click="signIn" class="red" src="../../static/new-red.png" mode="widthFix"></image>
+				<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share"><image class="red" src="../../static/new-red.png" mode="widthFix"></image></button>
+				<image @click="isNewRedShow = false; closedRed = true;" class="close" src="../../static/close-r.png" mode="widthFix"></image>
+			</view>
+		</view>
+		<!-- 签到toast -->
+		<view v-if="isSignToastShow" class="sign-toast flex-center">
+			<view style="position: relative;">
+				<image class="img" src="../../static/sign-toast.png" mode="widthFix"></image>
+				<view class="success">今日签到成功</view>
+				<view class="number">+{{ isSignToastShow }}积分</view>
+			</view>
+		</view>
 		<!-- tab -->
 		<view class="topTab flex-center" :style="'height:' + (customBar + topCustomBar) + 'px;'">
 			<view class="tabs flex-between fs-32">
@@ -74,7 +90,7 @@
 			</view>
 		</view> -->
 
-		<!-- 分享 -->
+		<!-- 红包-签到 -->
 		<view v-if="isShowShare">
 			<view class="mask" @click="isShowShare = false">
 				<view class="share-group" @click.stop="">
@@ -95,7 +111,13 @@
 						</view>
 						<view v-else>
 							<!-- <image :animation="animation2" @click="goPage('/pages/mine/invitation')" class="share-btn" src="@/static/share-btn.png" mode="widthFix"></image> -->
-							<view class="tip" style="padding-top: 20rpx;">今日已打卡,余额约{{ (personalInfo.fraction / 100).toFixed(2) }}</view>
+							<view class="tip" style="padding-top: 20rpx;">
+								<view class="flex-center">
+									<image style="width: 30rpx; height: auto; margin-right: 12rpx;" src="../../static/sign-ok.png" mode="widthFix"></image>
+									<text>今日已打卡</text>
+								</view>
+								<view>我的余额：{{ (personalInfo.fraction / 100).toFixed(2) }}元</view>
+							</view>
 							<view class="sign-in fs-40 flex-center" @click="goPage('/pages/mine/wallet')">
 								<view>立即提现</view>
 								<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>

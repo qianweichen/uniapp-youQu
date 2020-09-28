@@ -44,6 +44,8 @@ export default {
 			clickNum: 0, //点击次数，控制单击双击
 			clickTimer: null,
 
+
+			isVideoRedShow: null,	//视频红包积分提醒
 			getRedNum: 0, //第几个红包
 			getRedList: [{ //每一个红包对应的浏览时间（固定值）
 				time: 60,
@@ -57,9 +59,14 @@ export default {
 			watchTime: 0, //当前红包累计的时间
 			refillTime: 30, //每次滑动可以累计加的时间（固定值）
 			watchTimeTimer: null, //浏览计时器存储对象
-			watchTimeNumber: 0 ,//浏览计时计数器
-			
-			isLongPressShow:false
+			watchTimeNumber: 0, //浏览计时计数器
+
+			isLongPressShow: false,
+
+			likeImgLeft: 0,
+			likeImgTop: 0,
+			isLikeShow: false,
+			likeAnimation: null
 		}
 	},
 	props: {
@@ -110,11 +117,11 @@ export default {
 	},
 	methods: {
 		//长按
-		longPress(){
+		longPress() {
 			this.isLongPressShow = true;
 		},
 		//不喜欢
-		dislike(){
+		dislike() {
 			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'user/no_interest',
@@ -122,14 +129,14 @@ export default {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
 					paperid: this.videoList[this.videoIndex].id,
-					uid:uni.getStorageSync('userId')
+					uid: uni.getStorageSync('userId')
 				},
 				success: res => {
 					this.$refs.loading.close();
 					console.log('不喜欢', res);
 					uni.showToast({
-						title:res.data.msg,
-						icon:"none"
+						title: res.data.msg,
+						icon: "none"
 					});
 				}
 			});
@@ -577,10 +584,14 @@ export default {
 					type: 1 //1:增加积分 2:查询次数
 				},
 				success: (res) => {
-					uni.showToast({
-						title: res.data.msg,
-						icon: 'none'
-					});
+					// uni.showToast({
+					// 	title: res.data.msg,
+					// 	icon: 'none'
+					// });
+					this.isVideoRedShow = res.data.msg.replace(/[^\d|^\.|^\-]/g,""); 	//积分提示
+					setTimeout(()=>{
+						this.isVideoRedShow = null;
+					},2000);
 					this.getRedNum++; //下一个红包
 					this.watchTime = 0; //重置时间
 					this.getRedPacket(); //累计增加红包时间
@@ -652,17 +663,49 @@ export default {
 			this.progressNum = (e.detail.currentTime / e.detail.duration) * 100;
 		},
 		// 单击双击视频
-		clickVideo(id, index) {
-			this.clickNum++;
-			if (this.clickNum == 2) {
+		clickVideo(e) {
+			//参数
+			var id = e.currentTarget.dataset.id;
+			var index = e.currentTarget.dataset.index;
+
+			this.clickNum++; //统计300ms内的点击数量
+
+			if (this.clickNum == 2) { //双击
+				//点赞图标位置
+				this.likeImgLeft = e.detail.x - 50;
+				this.likeImgTop = e.detail.y - 50;
+				this.isLikeShow = true;
+				
+				//点赞图标动画1
+				var animation = uni.createAnimation({
+					duration: 100,
+					timingFunction: 'ease-out'
+				});
+				animation.opacity(0.5).scale(0.5).step();
+				this.likeAnimation = animation.export();
+				//点赞图标动画1结束后 开始动画2
+				setTimeout(() => {
+					var animation = uni.createAnimation({
+						duration: 500,
+						timingFunction: 'ease-out'
+					});
+					animation.opacity(1).scale(1, 1).step();
+					this.likeAnimation = animation.export();
+					//动画2结束后 隐藏点赞图标
+					setTimeout(() => {
+						this.isLikeShow = false;
+					}, 500);
+				}, 100);
+
+				//点赞执行方法
 				clearTimeout(this.clickTimer);
 				this.goodFun(id, index, 'doubleClick');
 				this.clickNum = 0;
-			} else if (this.clickNum == 1) {
+			} else if (this.clickNum == 1) { //单击
 				this.clickTimer = setTimeout(() => {
-					if(this.showVideoPlayBtn){
+					if (this.showVideoPlayBtn) {
 						this.playVideo();
-					}else{
+					} else {
 						this.pauseVideo();
 					}
 					this.clickNum = 0;

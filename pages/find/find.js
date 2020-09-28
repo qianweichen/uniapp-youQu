@@ -17,7 +17,8 @@ export default {
 			swiperIndex: 0,
 			animationData: null,
 			loadStatus: 'loadmore',
-			showMoreCircle: false //默认显示3条推荐圈子
+			showMoreCircle: false ,//默认显示3条推荐圈子
+			scrollTop:0
 		}
 	},
 	methods: {
@@ -26,6 +27,10 @@ export default {
 			if (!this.showMoreCircle) {
 				this.showMoreCircle = true;
 			} else {
+				this.scrollTop = 0;
+				setTimeout(()=>{
+					this.scrollTop = uni.upx2px(420);
+				},0);
 				this.getCircleCList();
 			}
 		},

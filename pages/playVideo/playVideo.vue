@@ -28,7 +28,9 @@ export default {
 			videoIndex: 0, //初始下标
 			videoPage: 1, //初始页码
 			userId: '', //个人页跳转来的用户id
-			search: '' //搜索页跳转来的搜索内容
+			search: '' ,//搜索页跳转来的搜索内容
+			screenWidth: uni.getSystemInfoSync().windowWidth, //屏幕宽度
+			screenHeight: uni.getSystemInfoSync().windowHeight,
 		};
 	},
 	methods: {

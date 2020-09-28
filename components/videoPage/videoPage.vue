@@ -26,7 +26,7 @@
 		<!-- 视频 -->
 		<swiper class="video-swiper" @change="changeSwiper" :current="videoIndex" vertical duration="300">
 			<swiper-item v-for="(item, index) in videoList" :key="index">
-				<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'" @click="clickVideo(item.id, index)" @longpress="longPress">
+				<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'" @click="clickVideo" :data-id="item.id" :data-index="index" @longpress="longPress">
 					<!-- 只显示一个视频，ios缓存有问题，没法同时放3个，遇到长视频会卡 -->
 					<video
 						v-if="videoIndex == index"
@@ -74,9 +74,7 @@
 						<!-- 载入中动画 -->
 						<view v-if="isLoadVideoShow" class="donut"></view>
 						<!-- 播放按钮 -->
-						<view v-if="showVideoPlayBtn" @click.stop="playVideo" class="playBtn circle flex-center">
-							<image src="../../static/play.png" mode="widthFix"></image>
-						</view>
+						<view v-if="showVideoPlayBtn" @click.stop="playVideo" class="playBtn circle flex-center"><image src="../../static/play.png" mode="widthFix"></image></view>
 						<!-- 文案区域 -->
 						<view class="contentBox" :class="isSmallScreen && parentPage == 'home' ? 'full-page' : ''">
 							<view class="flex">
@@ -170,7 +168,7 @@
 							</view>
 							<view v-else>
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
-									<image class="opcity" src="../../static/comment.png" mode="widthFix"></image>
+									<image class="opcity" src="../../static/attention-w.png" mode="widthFix"></image>
 									<view>关注</view>
 								</button>
 							</view>
@@ -207,6 +205,8 @@
 				</view>
 			</swiper-item>
 		</swiper>
+		<!-- 双击点赞动画 -->
+		<image v-if="isLikeShow" :animation="isLikeShow?likeAnimation:''" :style="'left:' + likeImgLeft + 'px; top:' + likeImgTop + 'px;'" class="like-img" src="../../static/like.png" mode="widthFix"></image>
 		<!-- 评论区域 -->
 		<view v-if="showCommentFlag">
 			<view class="mask" @click="hideCommentFun"></view>
@@ -358,7 +358,7 @@
 			</view>
 		</view>
 		<!-- 长按操作按钮 -->
-		<view v-if="isLongPressShow" class="long-press flex-center" @click="isLongPressShow = false;">
+		<view v-if="isLongPressShow" class="long-press flex-center" @click="isLongPressShow = false">
 			<view>
 				<view @click="dislike" class="flex-center">
 					<image src="../../static/long-dislike.png" mode="widthFix"></image>
@@ -388,6 +388,13 @@
 					<view class="btn-big fc-f flex-center" @click="saveBanner">保存图片</view>
 					<view class="btn-big fc-f flex-center" style="margin-top: 20rpx;" @click="toggleBannerFlag(false)">关闭</view>
 				</view>
+			</view>
+		</view>
+		<!-- 视频红包toast -->
+		<view v-if="isVideoRedShow" class="video-toast flex-center">
+			<view style="position: relative;">
+				<image class="img" src="../../static/video-red.png" mode="widthFix"></image>
+				<view class="number">+{{ isVideoRedShow }}积分</view>
 			</view>
 		</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>

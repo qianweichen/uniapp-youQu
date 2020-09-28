@@ -18,33 +18,46 @@ export default {
 			animation2: '',
 			isShowRed: false,
 			screenWidth: uni.getSystemInfoSync().windowWidth, //屏幕宽度
-			screenHeight: uni.getSystemInfoSync().windowHeight,
+			screenHeight: uni.getSystemInfoSync().windowHeight - (uni.getSystemInfoSync().windowHeight <= 667 ? 0 : uni.upx2px(
+				144)), //大屏减去底部tabbar高度
 
+			// 重置组件
 			refreshRecommendFlag: true,
-			refreshAttentionFlag: true
+			refreshAttentionFlag: true,
+
+
+			isNewRedShow: false, //新人红包
+			isSignToastShow: null, //签到积分提醒
+			closedRed: false //是否关闭过红包
 		};
 	},
 	methods: {
 		//签到
 		signIn() {
-			this.subscription(); //小神推模板消息订阅
-			this.request({
-				url: this.apiUrl + 'User/add_user_punch',
-				data: {
-					token: uni.getStorageSync('token'),
-					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId')
-				},
-				success: res => {
-					// console.log('签到:', res);
-					uni.showToast({
-						title: res.data.msg,
-						icon: 'none'
-					});
-					setTimeout(() => {
+			//小神推模板消息订阅
+			this.subscription('', (res) => {
+				this.request({
+					url: this.apiUrl + 'User/add_user_punch',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId')
+					},
+					success: res => {
+						// console.log('签到:', res);
+						// uni.showToast({
+						// 	title: res.data.msg,
+						// 	icon: 'none'
+						// });
+						this.isNewRedShow = false;
+						this.isSignToastShow = res.data.msg.replace(/[^\d|^\.|^\-]/g, ""); //提示
+						setTimeout(() => {
+							this.isShowShare = true;
+							this.isSignToastShow = null;
+						}, 2000);
 						this.getPersonalInfo();
-					}, 3000);
-				}
+					}
+				});
 			});
 		},
 		//获取用户信息
@@ -157,7 +170,7 @@ export default {
 			//切换
 			this.tabsFlag = flag;
 		},
-		//授权后刷新数据
+		//视频模块中授权后刷新数据
 		refreshList() {
 			//获取数据
 			// this.$refs.loading.open();
@@ -167,6 +180,8 @@ export default {
 			// 	this.getAttentionList(true);
 			// }
 			this.isAuthorized = this.beAuthorized();
+			this.getPersonalInfo(); //获取用户信息
+			this.getNewUser(); //获取是否新人
 		},
 		//获取首页视频列表
 		getHomeList(isFirstPage) {
@@ -278,7 +293,11 @@ export default {
 			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
-				this.getPersonalInfo();
+				this.getPersonalInfo(); //获取用户信息
+				this.getNewUser(); //获取是否新人
+				//更新组件中的登录状态
+				if (this.$refs.recommendVideo) this.$refs.recommendVideo.isAuthorized = true;
+				if (this.$refs.refreshAttentionFlag) this.$refs.refreshAttentionFlag.isAuthorized = true;
 			});
 		},
 		//创建动画
@@ -332,6 +351,20 @@ export default {
 				//3: 将动画export导出，把动画数据传递组件animation2的属性 
 				this.animation2 = animation2.export();
 			}.bind(this), 1000)
+		},
+		getNewUser() {
+			this.request({
+				url: this.apiUrl + 'user/is_qd_check',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					// data = 1  有签到数据   data = 0 是没有
+					this.isNewRedShow = (res.data.data == 0) && !this.closedRed;
+				}
+			})
 		}
 	},
 	mounted() {
@@ -345,7 +378,15 @@ export default {
 		// console.log('homeCreated');
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
-		if (this.isAuthorized) this.getPersonalInfo();
+		if (this.isAuthorized) {
+			this.getPersonalInfo(); //获取用户信息
+			this.getNewUser(); //获取是否新人
+		} else {
+			setTimeout(()=>{
+				this.isNewRedShow = true;
+			},3000);
+		}
+
 		//接收分享id
 		var shareVideoId = uni.getStorageSync('shareVideoId');
 		if (shareVideoId) {

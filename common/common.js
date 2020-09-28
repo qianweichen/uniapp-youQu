@@ -183,7 +183,7 @@ Vue.prototype.browseImg = function(urls, current) {
 }
 
 //小神推模板消息订阅
-Vue.prototype.subscription = function(type) {
+Vue.prototype.subscription = function(type,callBack) {
 	var eventId = '5f34cf2190fcd68beee4d506'; //默认是打卡
 	if (type == 'attention') {
 		eventId = '5f32100290fcd68beee4d501'; //关注
@@ -192,10 +192,16 @@ Vue.prototype.subscription = function(type) {
 		eventId,
 		success(res) {
 			// console.log(res)
+			if(callBack){
+				callBack(res)
+			}
 		},
 		fail(res, e) {
 			// console.log(res)
 			// console.log(e)
+			if(callBack){
+				callBack(res)
+			}
 		}
 	});
 }

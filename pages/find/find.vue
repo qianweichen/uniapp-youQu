@@ -25,7 +25,7 @@
 
 		<view class="dynamic" :style="'height: calc(100% - ' + (customBar + topCustomBar) + 'px);'">
 			<!-- <scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic" refresher-enabled @refresherrefresh="refreshDynamic" :refresher-triggered="refreshFlag"> -->
-			<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic">
+			<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic" :scroll-top="scrollTop" scroll-with-animation>
 				<view>
 					<!-- 我加入的圈子 -->
 					<view class="myCircle">
@@ -94,7 +94,7 @@
 								<text class="fs-22">换一批</text>
 							</view>
 						</view> -->
-						<view class="recommend-list">
+						<view id="recommendCircle" class="recommend-list">
 							<view class="item" v-for="(item, index) in recommendList" :key="index">
 								<view v-if="index < (showMoreCircle ? 6 : 3)">
 									<div class="flex-between">
