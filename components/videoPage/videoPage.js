@@ -899,7 +899,7 @@ export default {
 					// console.log("回复的消息点赞", res);
 					this.commentList[index]['is_huifu_zan'] = !this.commentList[index]['is_huifu_zan'];
 					if (this.commentList[index]['is_huifu_zan']) {
-						this.commentList[index]['is_huifu_zan_count'] = this.commentList[index]['is_huifu_zan_count'] + 1;
+						this.commentList[index]['is_huifu_zan_count'] = Number(this.commentList[index]['is_huifu_zan_count']) + 1;
 						uni.showToast({
 							title: '点赞成功',
 							icon: 'none'

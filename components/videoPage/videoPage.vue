@@ -152,16 +152,16 @@
 									<view>{{ item.info_zan_count }}</view>
 								</button>
 							</view>
-							<view v-if="isAuthorized" @click.stop="showCommentFun">
+							<view @click.stop="showCommentFun">
 								<image class="opcity" src="../../static/comment.png" mode="widthFix"></image>
 								<view>{{ item.study_repount }}</view>
 							</view>
-							<view v-else>
+							<!-- <view v-else>
 								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
 									<image class="opcity" src="../../static/comment.png" mode="widthFix"></image>
 									<view>{{ item.study_repount }}</view>
 								</button>
-							</view>
+							</view> -->
 							<view v-if="isAuthorized" @click.stop="attention(item.user_id, item.is_follow, index)">
 								<image class="opcity" :src="'../../static/attention' + (item.is_follow == 0 || !item.is_follow ? '-w' : '') + '.png'" mode="widthFix"></image>
 								<view>{{ item.is_follow == 0 || !item.is_follow ? '' : '已' }}关注</view>
@@ -206,7 +206,14 @@
 			</swiper-item>
 		</swiper>
 		<!-- 双击点赞动画 -->
-		<image v-if="isLikeShow" :animation="isLikeShow?likeAnimation:''" :style="'left:' + likeImgLeft + 'px; top:' + likeImgTop + 'px;'" class="like-img" src="../../static/like.png" mode="widthFix"></image>
+		<image
+			v-if="isLikeShow"
+			:animation="isLikeShow ? likeAnimation : ''"
+			:style="'left:' + likeImgLeft + 'px; top:' + likeImgTop + 'px;'"
+			class="like-img"
+			src="../../static/like.png"
+			mode="widthFix"
+		></image>
 		<!-- 评论区域 -->
 		<view v-if="showCommentFlag">
 			<view class="mask" @click="hideCommentFun"></view>
@@ -227,10 +234,14 @@
 										<text class="fs-26" style="color: #999;">{{ item.apter_time }}</text>
 									</view>
 								</view>
-								<view class="likeBox" @click.stop="commentGoodFun(item.id, index)">
+								<view v-if="isAuthorized" class="likeBox" @click.stop="commentGoodFun(item.id, index)">
 									<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 									<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
 								</view>
+								<button v-else open-type="getUserInfo" class="share likeBox" @getuserinfo="getUserInfo" @click.stop="">
+									<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
+									<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
+								</button>
 								<view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id, item.id)">
 									<image class="like" src="../../static/del-cmt.png" mode="widthFix"></image>
 								</view>
@@ -261,7 +272,10 @@
 				</scroll-view>
 				<view class="sendComment flex-between">
 					<input type="text" placeholder="留下你的精彩评论吧" maxlength="30" v-model="commentContent" />
-					<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
+					<image v-if="isAuthorized" class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
+					<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
+						<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
+					</button>
 				</view>
 			</view>
 		</view>
@@ -271,7 +285,8 @@
 			<view class="inputAlt-cont">
 				<view class="inputAlt-cont-head flex-between">
 					<view @click="toggleTwoLevComment(false)">取消</view>
-					<view @click="sendTwoLevComment">发布</view>
+					<view v-if="isAuthorized" @click="sendTwoLevComment">发布</view>
+					<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view @click="sendTwoLevComment">发布</view></button>
 				</view>
 				<view class="inputAlt-cont-ipt">
 					<view style="text-align:right; font-size:24rpx;">{{ twoComment.length }}/200</view>
