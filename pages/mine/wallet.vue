@@ -72,7 +72,7 @@
 						openid: uni.getStorageSync('openid'),
 						uid: uni.getStorageSync('userId'),
 						page:this.page,
-						evaluate:"tab2"
+						// evaluate:"tab2"
 					},
 					success: res => {
 						uni.hideLoading();

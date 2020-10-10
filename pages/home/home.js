@@ -273,15 +273,7 @@ export default {
 		},
 		//index页刷新用
 		onShowFun() {
-			if (this.tabsFlag) {
-				//推荐
-				this.refreshRecommendFlag = false;
-				this.getHomeList(true);
-			} else {
-				// 关注
-				this.refreshAttentionFlag = false;
-				this.getAttentionList(true);
-			}
+			this.getPersonalInfo(); //获取用户信息
 		},
 		//关闭公告
 		closeNotice() {

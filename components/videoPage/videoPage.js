@@ -44,7 +44,7 @@ export default {
 			clickNum: 0, //点击次数，控制单击双击
 			clickTimer: null,
 
-
+			// 视频红包
 			isVideoRedShow: null,	//视频红包积分提醒
 			getRedNum: 0, //第几个红包
 			getRedList: [{ //每一个红包对应的浏览时间（固定值）
@@ -61,12 +61,18 @@ export default {
 			watchTimeTimer: null, //浏览计时器存储对象
 			watchTimeNumber: 0, //浏览计时计数器
 
+			//长按
 			isLongPressShow: false,
 
+			//双击点赞特效
 			likeImgLeft: 0,
 			likeImgTop: 0,
 			isLikeShow: false,
-			likeAnimation: null
+			likeAnimation: null,
+			
+			//头像反转
+			isRotateHeader:false,
+			rotateHeaderTimer:null
 		}
 	},
 	props: {
@@ -618,8 +624,15 @@ export default {
 		// 红包end-----------------------------------------------------------------------------------------------
 		//滑动视频
 		changeSwiper(e) {
+			this.isRotateHeader = false;	//反转头像
 			clearTimeout(this.timer);
 			this.timer = setTimeout(() => {
+				//反转头像
+				clearTimeout(this.rotateHeaderTimer);
+				this.rotateHeaderTimer = setTimeout(()=>{
+					this.isRotateHeader = true;
+				},2000);
+				
 				//停止上一次播放的视频
 				this.videoContext = uni.createVideoContext('myVideo' + this.videoIndex, this);
 				this.videoContext.stop();
@@ -983,6 +996,9 @@ export default {
 			//获取视频对象
 			this.videoContext = uni.createVideoContext('myVideo0', this);
 			this.videoContext.play();
+			this.rotateHeaderTimer = setTimeout(()=>{
+				this.isRotateHeader = true;
+			},2000);
 			//授权的话，累计增加红包时间
 			if (this.isAuthorized) {
 				//首页的话获取红包次数

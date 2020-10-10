@@ -213,11 +213,42 @@
 				width: 60rpx;
 				height: 60rpx;
 				position: relative;
-				border: 2rpx solid #fff;
 				margin-right: 24rpx;
 				.header-img {
+					border: 2rpx solid #fff;
+					position: absolute;
+					left: 0;
+					top: 0;
 					width: 100%;
 					height: 100%;
+					transform: scale(1);
+					backface-visibility:hidden;
+					transform-style: preserve-3d;
+				}
+				.ai-te{
+					font-size: 36rpx;
+					font-weight: bold;
+					position: absolute;
+					left: 0;
+					top: 0;
+					width: 100%;
+					height: 100%;
+					transform: scale(0);
+					backface-visibility:hidden;
+					transform-style: preserve-3d;
+				}
+				&.rotate{
+					width: 30rpx;
+					height: 50rpx;
+					margin-right: 10rpx;
+					.header-img {
+						transform: scale(0);
+						transition:all 0.3s;
+					}
+					.ai-te{
+						transform: scale(1);
+						transition:all 0.3s;
+					}
 				}
 				.add {
 					width: 34rpx;
@@ -237,7 +268,7 @@
 		.text {
 			width: 600rpx;
 			color: #fff;
-			margin: 30rpx 0 20rpx;
+			margin: 20rpx 0 20rpx;
 			white-space: normal;
 			overflow: hidden;
 			text-overflow: ellipsis;

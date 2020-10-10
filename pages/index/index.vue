@@ -205,6 +205,7 @@ export default {
 		});
 	},
 	onShow() {
+		if (this.$refs.homePage) this.$refs.homePage.onShowFun();
 		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();
 		// if (this.$refs.messagePage) this.$refs.messagePage.onShowFun();
 		if (this.$refs.minePage) this.$refs.minePage.onShowFun();

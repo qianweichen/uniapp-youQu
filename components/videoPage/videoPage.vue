@@ -81,8 +81,9 @@
 								<view class="realm-name-top" @click.stop="goPage('/pagesA/circle/circle?id=' + item.tory_id)">#{{ item.realm_name }}</view>
 							</view>
 							<view class="userInfo flex">
-								<view class="header circle" @click.stop="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
+								<view :class="{'rotate':isRotateHeader}" class="header circle" @click.stop="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
+									<view class="ai-te flex-center">@</view>
 									<!-- <image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
 								</view>
 								<view @click.stop="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
