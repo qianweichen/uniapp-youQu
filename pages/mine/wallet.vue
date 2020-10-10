@@ -26,8 +26,8 @@
 			</view>
 		</view>
 		<view class="tabBox flex-around fs-30">
-			<view :class="{ active: tabIndex == 0 }" @click="changeTab(0)"><text>积分明细</text></view>
-			<!-- <view :class="{ active: tabIndex == 1 }" @click="changeTab(1)"><text>积分明细</text></view> -->
+			<view :class="{ active: tabIndex == 'tab2' }" @click="changeTab('tab2')"><text>积分明细</text></view>
+			<view :class="{ active: tabIndex == 'tab1' }" @click="changeTab('tab1')"><text>提现记录</text></view>
 		</view>
 		<view class="list">
 			<view class="item flex-between" v-for="(item,index) in list" :key="index">
@@ -50,7 +50,7 @@
 	export default {
 		data() {
 			return {
-				tabIndex: 0,
+				tabIndex: 'tab2',
 				personalInfo:'',
 				page:1,
 				list:[]
@@ -59,6 +59,7 @@
 		methods: {
 			changeTab(index) {
 				this.tabIndex = index;
+				this.getList(true);
 			},
 			getList(isFirstPage){
 				if(isFirstPage==true){
@@ -72,7 +73,7 @@
 						openid: uni.getStorageSync('openid'),
 						uid: uni.getStorageSync('userId'),
 						page:this.page,
-						// evaluate:"tab2"
+						evaluate:this.tabIndex
 					},
 					success: res => {
 						uni.hideLoading();
@@ -105,7 +106,7 @@
 				});
 			},
 		},
-		onLoad() {
+		onShow() {
 			this.getPersonalInfo();
 			this.getList(true);
 		},
