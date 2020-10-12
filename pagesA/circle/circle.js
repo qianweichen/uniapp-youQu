@@ -467,6 +467,18 @@ export default {
 		//收录小程序的页面信息
 		this.submitPages('pagesA/circle/circle', 'id=' + options.id);
 	},
+	onShow(){
+		// 发布视频后返回检测id
+		var publishCircleId = uni.getStorageSync('publishCircleId');
+		if (publishCircleId) {
+			console.log('发布视频的id:',publishCircleId);
+			this.$refs.loading.open();
+			this.getArticleList(true).then((res) => {
+				this.$refs.loading.close();
+			});
+			uni.removeStorageSync('publishCircleId');
+		}
+	},
 	onPullDownRefresh() {
 		this.getData();
 	},

@@ -271,9 +271,22 @@ export default {
 				},
 			});
 		},
-		//index页刷新用
+		//index触发onshow页用
 		onShowFun() {
 			this.getPersonalInfo(); //获取用户信息
+		},
+		//index页刷新视频用
+		refreshVideo(id) {	//双击底部按钮刷新时id为空，发布视频返回刷新时id为发布的视频id
+			console.log("发布视频的id：",id);
+			if (this.tabsFlag) {
+				//推荐
+				this.refreshRecommendFlag = false;
+				this.getHomeList(true);
+			} else {
+				// 关注
+				this.refreshAttentionFlag = false;
+				this.getAttentionList(true);
+			}
 		},
 		//关闭公告
 		closeNotice() {
@@ -374,9 +387,9 @@ export default {
 			this.getPersonalInfo(); //获取用户信息
 			this.getNewUser(); //获取是否新人
 		} else {
-			setTimeout(()=>{
+			setTimeout(() => {
 				this.isNewRedShow = true;
-			},3000);
+			}, 3000);
 		}
 
 		//接收分享id

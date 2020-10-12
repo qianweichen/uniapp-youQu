@@ -42,7 +42,8 @@ export default {
 			// noForwardFlag: false, //是否允许转发
 			videoData: {}, //视频数据
 			content: '', //内容
-			chooseCirce: {} //圈子信息
+			chooseCirce: {} ,//圈子信息
+			parentPage:''
 		};
 	},
 	methods: {
@@ -174,10 +175,17 @@ export default {
 						icon:'none'
 					});
 					this.$refs.loading.close();
+					uni.setStorageSync('publishCircleId','video-id');
 					setTimeout(() => {
-						uni.navigateBack({
-							delta:2
-						});
+						if(this.parentPage=='shoot'){
+							uni.navigateBack({
+								delta:2
+							});
+						}else{
+							uni.navigateBack({
+								delta:1
+							});
+						}
 					}, 1500);
 				}
 			});
@@ -200,7 +208,7 @@ export default {
 		// 	this.noForwardFlag = e.detail.value;
 		// }
 	},
-	onLoad() {
+	onLoad(options) {
 		//获取拍摄或选择的视频
 		this.videoData = uni.getStorageSync('shootData');
 		uni.removeStorageSync('shootData');
@@ -209,6 +217,10 @@ export default {
 		if(sendCircleData){
 			this.chooseCirce = sendCircleData;
 			uni.removeStorageSync('sendCircleData');
+		}
+		
+		if(options&&options.parentPage){
+			this.parentPage = options.parentPage;
 		}
 	}
 };

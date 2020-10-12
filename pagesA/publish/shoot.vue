@@ -1,7 +1,7 @@
 <template>
 	<view class="dark-bg">
 		<backCapsule v-if="shootTime == 1 || shootTime == 3" type="normal"></backCapsule>
-		<camera class="camera" @error="cameraError" :device-position="devicePosition?'back':'front'"></camera>
+		<camera class="camera" @error="cameraError" :device-position="devicePosition ? 'back' : 'front'"></camera>
 		<view class="btnBox flex-between">
 			<view class="item" v-if="shootTime == 2"></view>
 			<view class="item" v-if="shootTime == 1 || shootTime == 3" @click="chooseMusic">
@@ -37,27 +37,28 @@
 export default {
 	data() {
 		return {
-			devicePosition:true,//前置或后置，值为front, back
+			devicePosition: true, //前置或后置，值为front, back
 			cameraContext: '', //视频对象
 			shootTime: 1, //拍摄状态 1开始 2拍摄中 3结束
 			timerNum: 0, //拍摄时长
 			myInterval: '', //定时器
 			shootData: {
-				tempVideoPath:'',	//视频地址
-				tempThumbPath:''	//封面地址
-			} //拍摄信息
+				tempVideoPath: '', //视频地址
+				tempThumbPath: '' //封面地址
+			}, //拍摄信息
+			parentPage: ''
 		};
 	},
 	methods: {
-		chooseMusic(){
+		chooseMusic() {
 			// 	/pagesA/publish/chooseMusic
 			uni.showToast({
-				title:'功能正在开发，敬请期待！',
-				icon:'none'
-			})
+				title: '功能正在开发，敬请期待！',
+				icon: 'none'
+			});
 		},
 		// 翻转摄像头
-		overturn(){
+		overturn() {
 			this.devicePosition = !this.devicePosition;
 		},
 		//选择视频
@@ -69,13 +70,13 @@ export default {
 					this.$refs.loading.close();
 					// console.log('选择视频',res);
 					this.shootData = {
-						tempVideoPath:res.tempFilePath,
-						tempThumbPath:res.thumbTempFilePath,
-						duration:res.duration
-					}
+						tempVideoPath: res.tempFilePath,
+						tempThumbPath: res.thumbTempFilePath,
+						duration: res.duration
+					};
 					uni.setStorageSync('shootData', this.shootData);
 					uni.navigateTo({
-						url: '/pagesA/publish/publish-v'
+						url: '/pagesA/publish/publish-v?parentPage=shoot'
 					});
 				}
 			});
@@ -84,7 +85,7 @@ export default {
 		nextStep() {
 			uni.setStorageSync('shootData', this.shootData);
 			uni.navigateTo({
-				url: '/pagesA/publish/publish-v'
+				url: '/pagesA/publish/publish-v?parentPage=shoot'
 			});
 		},
 		//摄像头禁用
@@ -135,7 +136,7 @@ export default {
 			this.shootTime = 1;
 		}
 	},
-	onLoad() {
+	onLoad(options) {
 		this.cameraContext = uni.createCameraContext();
 		//自动调用一下获得权限
 		this.cameraContext.startRecord({
@@ -143,6 +144,10 @@ export default {
 				this.cameraContext.stopRecord();
 			}
 		});
+
+		if (options && options.parentPage) {
+			this.parentPage = options.parentPage;
+		}
 	}
 };
 </script>
@@ -200,12 +205,12 @@ export default {
 .camera {
 	height: 100vh;
 }
-.overturn{
+.overturn {
 	position: fixed;
 	right: 40rpx;
 	top: 200rpx;
 	text-align: center;
-	image{
+	image {
 		width: 50rpx;
 		height: auto;
 	}

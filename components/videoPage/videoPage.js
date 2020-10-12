@@ -45,7 +45,7 @@ export default {
 			clickTimer: null,
 
 			// 视频红包
-			isVideoRedShow: null,	//视频红包积分提醒
+			isVideoRedShow: null, //视频红包积分提醒
 			getRedNum: 0, //第几个红包
 			getRedList: [{ //每一个红包对应的浏览时间（固定值）
 				time: 60,
@@ -69,10 +69,10 @@ export default {
 			likeImgTop: 0,
 			isLikeShow: false,
 			likeAnimation: null,
-			
+
 			//头像反转
-			isRotateHeader:false,
-			rotateHeaderTimer:null
+			isRotateHeader: false,
+			rotateHeaderTimer: null
 		}
 	},
 	props: {
@@ -125,6 +125,11 @@ export default {
 		//长按
 		longPress() {
 			this.isLongPressShow = true;
+			uni.vibrateShort({
+			    success: function () {
+			        // console.log('震动');
+			    }
+			});
 		},
 		//不喜欢
 		dislike() {
@@ -594,10 +599,10 @@ export default {
 					// 	title: res.data.msg,
 					// 	icon: 'none'
 					// });
-					this.isVideoRedShow = res.data.msg.replace(/[^\d|^\.|^\-]/g,""); 	//积分提示
-					setTimeout(()=>{
+					this.isVideoRedShow = res.data.msg.replace(/[^\d|^\.|^\-]/g, ""); //积分提示
+					setTimeout(() => {
 						this.isVideoRedShow = null;
-					},2000);
+					}, 2000);
 					this.getRedNum++; //下一个红包
 					this.watchTime = 0; //重置时间
 					this.getRedPacket(); //累计增加红包时间
@@ -624,15 +629,15 @@ export default {
 		// 红包end-----------------------------------------------------------------------------------------------
 		//滑动视频
 		changeSwiper(e) {
-			this.isRotateHeader = false;	//反转头像
+			this.isRotateHeader = false; //反转头像
 			clearTimeout(this.timer);
 			this.timer = setTimeout(() => {
 				//反转头像
 				clearTimeout(this.rotateHeaderTimer);
-				this.rotateHeaderTimer = setTimeout(()=>{
+				this.rotateHeaderTimer = setTimeout(() => {
 					this.isRotateHeader = true;
-				},2000);
-				
+				}, 2000);
+
 				//停止上一次播放的视频
 				this.videoContext = uni.createVideoContext('myVideo' + this.videoIndex, this);
 				this.videoContext.stop();
@@ -688,7 +693,7 @@ export default {
 				this.likeImgLeft = e.detail.x - 50;
 				this.likeImgTop = e.detail.y - 50;
 				this.isLikeShow = true;
-				
+
 				//点赞图标动画1
 				var animation = uni.createAnimation({
 					duration: 100,
@@ -894,6 +899,11 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					uni.vibrateShort({
+					    success: function () {
+					        // console.log('震动');
+					    }
+					});
 				},
 			});
 		},
@@ -945,7 +955,7 @@ export default {
 			var animation = uni.createAnimation({
 				duration: 200,
 				timingFunction: 'ease',
-			})
+			});
 			var next = true;
 			//连续动画关键步骤
 			setInterval(function() {
@@ -963,13 +973,13 @@ export default {
 				}
 				//3: 将动画export导出，把动画数据传递组件animation的属性 
 				this.redAnimationData = animation.export();
-			}.bind(this), 2000)
+			}.bind(this), 2000);
 
 			//分享放大缩小动画
 			var animation2 = uni.createAnimation({
 				duration: 1000,
 				timingFunction: 'linear',
-			})
+			});
 			var count = 1;
 			setInterval(function() {
 				if (count++ % 2 == 1) {
@@ -996,9 +1006,9 @@ export default {
 			//获取视频对象
 			this.videoContext = uni.createVideoContext('myVideo0', this);
 			this.videoContext.play();
-			this.rotateHeaderTimer = setTimeout(()=>{
+			this.rotateHeaderTimer = setTimeout(() => {
 				this.isRotateHeader = true;
-			},2000);
+			}, 2000);
 			//授权的话，累计增加红包时间
 			if (this.isAuthorized) {
 				//首页的话获取红包次数

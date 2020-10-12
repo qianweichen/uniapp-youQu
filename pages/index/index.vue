@@ -85,7 +85,7 @@ export default {
 					// console.log("双击事件，用了：" + (curTime - lastTime));
 					//每次双击触发刷新
 					if (this.tabIndex == 'home') {
-						this.$refs.homePage.onShowFun();
+						this.$refs.homePage.refreshVideo();
 					} else if (this.tabIndex == 'find') {
 						if (this.$refs.findPage) this.$refs.findPage.onShowFun();
 					} else if (this.tabIndex == 'message') {
@@ -205,6 +205,14 @@ export default {
 		});
 	},
 	onShow() {
+		// 发布视频后返回检测id
+		var publishCircleId = uni.getStorageSync('publishCircleId');
+		if (publishCircleId) {
+			if (this.$refs.homePage) this.$refs.homePage.refreshVideo(publishCircleId);
+			uni.removeStorageSync('publishCircleId');
+		}
+		
+		//触发子组件onshow函数
 		if (this.$refs.homePage) this.$refs.homePage.onShowFun();
 		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();
 		// if (this.$refs.messagePage) this.$refs.messagePage.onShowFun();
