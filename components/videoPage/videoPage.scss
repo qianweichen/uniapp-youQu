@@ -365,6 +365,15 @@
 				}
 				.content {
 					width: 510rpx;
+					.tag{
+						font-size: 20rpx;
+						color: #fff;
+						background-color: #7464be;
+						padding: 2rpx 10rpx;
+						font-weight: normal;
+						border-radius: 6rpx;
+						margin-left: 10rpx;
+					}
 				}
 				.likeBox {
 					text-align: center;
@@ -376,7 +385,11 @@
 				}
 			}
 			.secondaryComment {
-				padding: 0 21rpx 0 87rpx;
+				padding: 0 21rpx 6rpx 87rpx;
+				.header{
+					width: 50rpx;
+					height: 50rpx;
+				}
 				.content {
 					width: 454rpx;
 				}

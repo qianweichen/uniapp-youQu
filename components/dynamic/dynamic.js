@@ -25,6 +25,7 @@ export default {
 		return {
 			clickDynamicId: '', //点击评论的动态id
 			clickDynamicIndex: '', //点击评论的下标
+			clickDynamicUid:'',//点击评论的用户id
 			showCommentFlag: false, //评论弹窗
 			isAuthorized: false, //是否授权过
 			commentPage: 1, //评论页码
@@ -70,6 +71,20 @@ export default {
 		}
 	},
 	methods: {
+		//长按评论
+		showCommentAction(pid, id) {
+			if (!this.deleteBtnFlag) {
+				return;
+			}
+			uni.showActionSheet({
+				itemList: ['删除'],
+				success: (res) => {
+					if (res.tapIndex == 0) {
+						this.delInfoIpt(pid, id);
+					}
+				}
+			});
+		},
 		// 全部/收起
 		toggleAllText(index, flag) {
 			this.$emit('toggleAllText', index, !flag);
@@ -459,12 +474,15 @@ export default {
 			});
 		},
 		//评论弹窗
-		showCommentFun(id, index) {
+		showCommentFun(id, index, uid) {
 			if (id) {
 				this.clickDynamicId = id; //保存id
 			}
 			if (index || index == 0) {
 				this.clickDynamicIndex = index; //保存index
+			}
+			if (uid) {
+				this.clickDynamicUid = uid; //保存uid
 			}
 			this.showCommentFlag = true;
 			// 请求第一页

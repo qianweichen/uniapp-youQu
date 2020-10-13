@@ -75,9 +75,7 @@ toggleAllText(index,flag,init){
 						@click="clickVideoFun"
 					></video>
 					<image v-else class="poster" :src="item.image_part[0]" mode="aspectFill"></image>
-					<view v-if="!item.playVideoFlag" @click="playVideoFun(index)" class="circle play flex-center">
-						<image src="../../static/play.png" mode="widthFix"></image>
-					</view>
+					<view v-if="!item.playVideoFlag" @click="playVideoFun(index)" class="circle play flex-center"><image src="../../static/play.png" mode="widthFix"></image></view>
 					<!-- 进度条 -->
 					<!-- <view v-if="item.playVideoFlag" class="progress"><view :style="'width:' + progressNum + '%;'"></view></view> -->
 				</view>
@@ -100,12 +98,10 @@ toggleAllText(index,flag,init){
 					<view class="page-num flex-center">{{ bannerImgNumList[index] || 1 }}/{{ item.image_part.length }}</view>
 				</view>
 				<!-- 文字 -->
-				<view class="content fs-28 padding" :class="{hide:item.hideText}" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
-					<view class="text-group">
-						{{ item.study_content }}
-					</view>
+				<view class="content fs-28 padding" :class="{ hide: item.hideText }" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
+					<view class="text-group">{{ item.study_content }}</view>
 				</view>
-				<view v-if="item.hasHideBtn" @click="toggleAllText(index,item.hideText)" class="padding fs-28" style="color: #1890FF;">{{item.hideText?'全文':'收起'}}</view>
+				<view v-if="item.hasHideBtn" @click="toggleAllText(index, item.hideText)" class="padding fs-28" style="color: #1890FF;">{{ item.hideText ? '全文' : '收起' }}</view>
 				<!-- 底部按钮 -->
 				<view class="bottom flex-between padding">
 					<!-- 动态列表 -->
@@ -127,7 +123,7 @@ toggleAllText(index,flag,init){
 								<text>{{ item.info_zan_count }}</text>
 							</button>
 						</view>
-						<view class="flex" v-if="isAuthorized" @click="showCommentFun(item.id, index)">
+						<view class="flex" v-if="isAuthorized" @click="showCommentFun(item.id, index, item.user_id)">
 							<image src="../../static/comment.png" mode="widthFix"></image>
 							<text>{{ item.study_repount }}</text>
 						</view>
@@ -167,28 +163,48 @@ toggleAllText(index,flag,init){
 						<view class="item flex" @click="toggleTwoLevComment(true, item.id, item.user_id)">
 							<image class="header circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 							<view class="content">
-								<view class="fs-26 bold" style="color: #777;">{{ item.user_nick_name }}</view>
+								<view class="fs-26 bold flex" style="color: #777;">
+									<text>{{ item.user_nick_name }}</text>
+									<text class="tag" v-if="item.user_id == clickDynamicUid">作者</text>
+								</view>
 								<view>
-									<text class="fs-30">{{ item.reply_content }}</text>
+									<text style="min-width: 160rpx; display: inline-block;" class="fs-30" @longpress="showCommentAction(item.paper_id, item.id)">
+										{{ item.reply_content }}
+									</text>
+								</view>
+								<view>
 									<text class="fs-26" style="color: #999;">{{ item.apter_time }}</text>
+									<text v-if="isAuthorized" @click="toggleTwoLevComment(true, item.id, item.user_id)" class="fs-26" style="color: #888; padding-left: 14rpx;">
+										回复
+									</text>
+									<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="" style="display: inline;">
+										<text class="fs-26" style="color: #888; padding-left: 14rpx;">回复</text>
+									</button>
 								</view>
 							</view>
-							<view class="likeBox" @click.stop="commentGoodFun(item.id, index)">
+							<view v-if="isAuthorized" class="likeBox" @click.stop="commentGoodFun(item.id, index)">
 								<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
 							</view>
-							<view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id, item.id)">
+							<button v-else open-type="getUserInfo" class="share likeBox" @getuserinfo="getUserInfo" @click.stop="">
+								<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
+								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
+							</button>
+							<!-- <view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id, item.id)">
 								<image class="like" src="../../static/del-cmt.png" mode="widthFix"></image>
-							</view>
+							</view> -->
 						</view>
 						<!-- 二级评论 -->
 						<view class="secondaryComment item flex" v-for="(items, indexs) in item.huifu_info_list" :key="indexs">
 							<image class="header circle" :src="items.user_head_sculpture" mode="aspectFill"></image>
 							<view class="content">
-								<view class="fs-26 bold" style="color: #777;">{{ items.user_nick_name }}</view>
+								<view class="fs-26 flex" style="color: #777;">
+									<text>{{ items.user_nick_name }}</text>
+									<text class="tag" v-if="items.user_id == clickDynamicUid">作者</text>
+								</view>
 								<view>
 									<text class="fs-30">{{ items.duplex_content }}</text>
-									<text class="fs-26" style="color: #999;">{{ items.duplex_time }}</text>
+									<text class="fs-26" style="color: #999; padding-left: 14rpx;">{{ items.duplex_time }}</text>
 								</view>
 							</view>
 							<!-- <view class="likeBox">

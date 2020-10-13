@@ -226,13 +226,22 @@
 				<scroll-view class="listBox" scroll-y="true" @scrolltolower="getCommentList">
 					<view class="list" v-if="commentList.length > 0">
 						<block v-for="(item, index) in commentList" :key="index">
-							<view class="item flex" @click="toggleTwoLevComment(true, item.id, item.user_id)">
+							<view class="item flex">
 								<image class="header circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 								<view class="content">
-									<view class="fs-26 bold" style="color: #777;">{{ item.user_nick_name }}</view>
+									<view class="fs-26 bold flex" style="color: #777;">
+										<text>{{ item.user_nick_name }}</text>
+										<text class="tag" v-if="item.user_id==videoList[videoIndex].user_id">作者</text>
+									</view>
 									<view>
-										<text class="fs-30">{{ item.reply_content }}</text>
+										<text style="min-width: 160rpx; display: inline-block;" class="fs-30" @longpress="showCommentAction(item.paper_id, item.id)">{{ item.reply_content }}</text>
+									</view>
+									<view>
 										<text class="fs-26" style="color: #999;">{{ item.apter_time }}</text>
+										<text v-if="isAuthorized" @click="toggleTwoLevComment(true, item.id, item.user_id)" class="fs-26" style="color: #888; padding-left: 14rpx;">回复</text>
+										<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="" style="display: inline;">
+											<text class="fs-26" style="color: #888; padding-left: 14rpx;">回复</text>
+										</button>
 									</view>
 								</view>
 								<view v-if="isAuthorized" class="likeBox" @click.stop="commentGoodFun(item.id, index)">
@@ -243,18 +252,21 @@
 									<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 									<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
 								</button>
-								<view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id, item.id)">
+								<!-- <view v-if="deleteBtnFlag" class="likeBox" @click.stop="delInfoIpt(item.paper_id, item.id)">
 									<image class="like" src="../../static/del-cmt.png" mode="widthFix"></image>
-								</view>
+								</view> -->
 							</view>
 							<!-- 二级评论 -->
 							<view class="secondaryComment item flex" v-for="(items, indexs) in item.huifu_info_list" :key="indexs">
 								<image class="header circle" :src="items.user_head_sculpture" mode="aspectFill"></image>
 								<view class="content">
-									<view class="fs-26 bold" style="color: #777;">{{ items.user_nick_name }}</view>
+									<view class="fs-26 flex" style="color: #777;">
+										<text>{{ items.user_nick_name }}</text>
+										<text class="tag" v-if="items.user_id==videoList[videoIndex].user_id">作者</text>
+									</view>
 									<view>
 										<text class="fs-30">{{ items.duplex_content }}</text>
-										<text class="fs-26" style="color: #999;">{{ items.duplex_time }}</text>
+										<text class="fs-26" style="color: #999; padding-left: 14rpx;">{{ items.duplex_time }}</text>
 									</view>
 								</view>
 								<!-- <view class="likeBox">

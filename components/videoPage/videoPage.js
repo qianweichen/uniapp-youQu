@@ -122,13 +122,27 @@ export default {
 		}
 	},
 	methods: {
-		//长按
+		//长按评论
+		showCommentAction(pid, id) {
+			if (!this.deleteBtnFlag) {
+				return;
+			}
+			uni.showActionSheet({
+				itemList: ['删除'],
+				success: (res) => {
+					if (res.tapIndex == 0) {
+						this.delInfoIpt(pid, id);
+					}
+				}
+			});
+		},
+		//长按视频
 		longPress() {
 			this.isLongPressShow = true;
 			uni.vibrateShort({
-			    success: function () {
-			        // console.log('震动');
-			    }
+				success: function() {
+					// console.log('震动');
+				}
 			});
 		},
 		//不喜欢
@@ -900,9 +914,9 @@ export default {
 						icon: 'none'
 					});
 					uni.vibrateShort({
-					    success: function () {
-					        // console.log('震动');
-					    }
+						success: function() {
+							// console.log('震动');
+						}
 					});
 				},
 			});

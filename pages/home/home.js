@@ -278,6 +278,12 @@ export default {
 		//index页刷新视频用
 		refreshVideo(id) {	//双击底部按钮刷新时id为空，发布视频返回刷新时id为发布的视频id
 			console.log("发布视频的id：",id);
+			if(id){
+				this.shareVideoId = id;
+			}else{
+				this.shareVideoId = '';
+			}
+			
 			if (this.tabsFlag) {
 				//推荐
 				this.refreshRecommendFlag = false;
@@ -398,6 +404,7 @@ export default {
 			this.shareVideoId = shareVideoId;
 			uni.removeStorageSync('shareVideoId');
 		}
+		
 		//获取首页视频列表
 		this.$refs.loading.open();
 		this.getHomeList(true);
