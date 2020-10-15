@@ -175,7 +175,7 @@ export default {
 						icon:'none'
 					});
 					this.$refs.loading.close();
-					uni.setStorageSync('publishCircleId','video-id');
+					uni.setStorageSync('publishCircleId',res.data.id);
 					setTimeout(() => {
 						if(this.parentPage=='shoot'){
 							uni.navigateBack({

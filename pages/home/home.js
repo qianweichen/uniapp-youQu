@@ -62,7 +62,6 @@ export default {
 		},
 		//获取用户信息
 		getPersonalInfo() {
-			this.$refs.loading.open();
 			this.request({
 				url: this.apiUrl + 'User/get_user_info',
 				data: {
@@ -70,7 +69,6 @@ export default {
 					openid: uni.getStorageSync('openid')
 				},
 				success: res => {
-					this.$refs.loading.close();
 					// console.log('获取用户信息:', res);
 					this.personalInfo = res.data.info;
 				}
@@ -277,7 +275,7 @@ export default {
 		},
 		//index页刷新视频用
 		refreshVideo(id) {	//双击底部按钮刷新时id为空，发布视频返回刷新时id为发布的视频id
-			console.log("发布视频的id：",id);
+			// console.log("发布视频的id：",id);
 			if(id){
 				this.shareVideoId = id;
 			}else{
@@ -286,10 +284,12 @@ export default {
 			
 			if (this.tabsFlag) {
 				//推荐
+				this.$refs.loading.open();
 				this.refreshRecommendFlag = false;
 				this.getHomeList(true);
 			} else {
 				// 关注
+				this.$refs.loading.open();
 				this.refreshAttentionFlag = false;
 				this.getAttentionList(true);
 			}

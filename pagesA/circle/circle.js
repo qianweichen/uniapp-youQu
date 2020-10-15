@@ -26,15 +26,16 @@ export default {
 			pageScroll: 0,
 			timer: null,
 			autoPlayFlag: false,
-			loadStatus:'loadmore'
+			loadStatus: 'loadmore',
+			publishCircleId: '' //发贴返回获取的id
 		};
 	},
 	methods: {
 		//点击展开收起全文按钮
-		toggleAllText(index,flag,init){
+		toggleAllText(index, flag, init) {
 			this.$set(this.dynamicList[index], 'hideText', flag);
 			//初始化时 控制是否显示 全文/隐藏 按钮
-			if(init=="init"){
+			if (init == "init") {
 				this.$set(this.dynamicList[index], 'hasHideBtn', flag);
 			}
 		},
@@ -93,6 +94,7 @@ export default {
 						index_page: this.page,
 						version: 3, // 0是文字 1是语音 2是视频 3是全部
 						startid: this.dynamicList.length ? this.dynamicList[0].id : 0,
+						// id: this.publishCircleId	//发帖后来，放在第一条
 					},
 					success: res => {
 						// console.log("帖子数据:", res);
@@ -395,7 +397,7 @@ export default {
 					success: res => {
 						// console.log("获取圈子信息:", res);
 						//去除换行符
-						res.data.info.realm_synopsis = res.data.info.realm_synopsis.replace(/[\r\n]/g,"");
+						res.data.info.realm_synopsis = res.data.info.realm_synopsis.replace(/[\r\n]/g, "");
 						this.circleData = res.data.info;
 						//私密圈子   并且   未加入
 						this.noJurisdiction = res.data.info.attention == 1 && res.data.info.is_trailing == false;
@@ -467,11 +469,12 @@ export default {
 		//收录小程序的页面信息
 		this.submitPages('pagesA/circle/circle', 'id=' + options.id);
 	},
-	onShow(){
+	onShow() {
 		// 发布视频后返回检测id
 		var publishCircleId = uni.getStorageSync('publishCircleId');
 		if (publishCircleId) {
-			console.log('发布视频的id:',publishCircleId);
+			// console.log('发布视频的id:', publishCircleId);
+			this.publishCircleId = publishCircleId;
 			this.$refs.loading.open();
 			this.getArticleList(true).then((res) => {
 				this.$refs.loading.close();
@@ -483,14 +486,14 @@ export default {
 		this.getData();
 	},
 	onReachBottom() {
-		if(this.loadStatus != 'loadmore'){
+		if (this.loadStatus != 'loadmore') {
 			return;
 		}
 		this.loadStatus = 'loading';
 		this.getArticleList().then((res) => {
-			if(res=='nomore'){
+			if (res == 'nomore') {
 				this.loadStatus = 'nomore';
-			}else{
+			} else {
 				this.loadStatus = 'loadmore';
 			}
 		});
