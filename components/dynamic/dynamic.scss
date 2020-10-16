@@ -7,6 +7,15 @@
 		.item {
 			padding-bottom: 40rpx;
 			border-bottom: 2rpx solid $ornamentColor;
+			.tag{
+				font-size: 20rpx;
+				color: #fff;
+				background-color: #7464be;
+				padding: 2rpx 10rpx;
+				font-weight: normal;
+				border-radius: 6rpx;
+				margin-left: 10rpx;
+			}
 			.ad-group{
 				padding-top: 40rpx;
 			}
@@ -228,15 +237,6 @@
 					}
 					.content {
 						width: 510rpx;
-						.tag{
-							font-size: 20rpx;
-							color: #fff;
-							background-color: #7464be;
-							padding: 2rpx 10rpx;
-							font-weight: normal;
-							border-radius: 6rpx;
-							margin-left: 10rpx;
-						}
 					}
 					.likeBox {
 						text-align: center;

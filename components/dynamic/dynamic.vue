@@ -47,7 +47,11 @@ toggleAllText(index,flag,init){
 					<view class="header flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 						<image class="circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 						<view class="fs-28 user-nick-name">{{ item.user_nick_name }}</view>
-						<view class="fs-26">{{ item.adapter_time }}</view>
+						<view class="flex" v-if="type=='circle'">
+							<text class="tag" v-if="isIncludesVal(circleAdmin_da, item.user_id)">圈主</text>
+							<text class="tag" v-if="isIncludesVal(circleAdmin_xiao, item.user_id)">管理员</text>
+						</view>
+						<view class="fs-24" style="padding-left: 16rpx;">{{ item.adapter_time }}</view>
 					</view>
 					<view v-if="item.user_id != userId">
 						<view v-if="isAuthorized" class="btn flex-center fs-22" @click.stop="attention(item.user_id, item.is_follow, index)">
@@ -123,7 +127,7 @@ toggleAllText(index,flag,init){
 								<text>{{ item.info_zan_count }}</text>
 							</button>
 						</view>
-						<view class="flex" v-if="isAuthorized" @click="showCommentFun(item.id, index, item.user_id)">
+						<view class="flex" v-if="isAuthorized" @click="showCommentFun(item.id, index, item.user_id, item.quanzhu, item.guanli)">
 							<image src="../../static/comment.png" mode="widthFix"></image>
 							<text>{{ item.study_repount }}</text>
 						</view>
@@ -166,6 +170,8 @@ toggleAllText(index,flag,init){
 								<view class="fs-26 bold flex" style="color: #777;">
 									<text>{{ item.user_nick_name }}</text>
 									<text class="tag" v-if="item.user_id == clickDynamicUid">作者</text>
+									<text class="tag" v-if="item.user_id == clickDynamicQuanzhu">圈主</text>
+									<text class="tag" v-if="isIncludes(clickDynamicGuanli, item.user_id)">管理员</text>
 								</view>
 								<view>
 									<text style="min-width: 160rpx; display: inline-block;" class="fs-30" @longpress="showCommentAction(item.paper_id, item.id)">
@@ -201,6 +207,8 @@ toggleAllText(index,flag,init){
 								<view class="fs-26 flex" style="color: #777;">
 									<text>{{ items.user_nick_name }}</text>
 									<text class="tag" v-if="items.user_id == clickDynamicUid">作者</text>
+									<text class="tag" v-if="items.user_id == clickDynamicQuanzhu">圈主</text>
+									<text class="tag" v-if="isIncludes(clickDynamicGuanli, items.user_id)">管理员</text>
 								</view>
 								<view>
 									<text class="fs-30">{{ items.duplex_content }}</text>

@@ -8,7 +8,7 @@ Vue.prototype.apiUrl = "https://quanyu.udiao.cn/index.php?s=/api/";
 
 //修改http为https
 Vue.prototype.httpsUrl = function(url) {
-	if (url.indexOf("https") < 0) {
+	if (url&&url.indexOf("https") < 0) {
 		url = url.replace("http:", "https:");
 	}
 	return url;

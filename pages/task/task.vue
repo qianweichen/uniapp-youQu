@@ -11,7 +11,7 @@
 				<view class="flex-center">
 					<view class="fs-46">
 						<view>{{ personalInfo.fraction }}</view>
-						<view style="font-size: 22rpx;">(约{{(personalInfo.fraction/100).toFixed(2)}}元)</view>
+						<view style="font-size: 22rpx;">(约{{(personalInfo.fraction/100).toFixed(2)}}元,累计提现{{drawalNum}}元)</view>
 					</view>
 					<text class="fs-22 bold tixian" @click="goPage('/pages/task/deposit')">提现</text>
 				</view>
@@ -40,7 +40,7 @@
 			</view>
 			<view class="item flex-between">
 				<view>
-					<view class="fs-26">回帖</view>
+					<view class="fs-26">评论</view>
 					<view class="fs-24" style="color: #7364BD;">+{{ taskData.huitie.jf_num }}积分</view>
 				</view>
 				<view class="right fs-22 flex-center" @click="goHome">{{ taskData.huitie.is_ok ? '已完成' : '去完成' }}</view>
@@ -52,13 +52,13 @@
 				</view>
 				<view class="right fs-22 flex-center" @click="playAd">{{ taskData.kanshipin.is_ok ? '已完成' : '去完成' }}</view>
 			</view>
-			<view class="item flex-between">
+			<!-- <view class="item flex-between">
 				<view>
 					<view class="fs-26">浏览15分钟</view>
 					<view class="fs-24" style="color: #7364BD;">+{{ taskData.liulan.jf_num }}积分</view>
 				</view>
 				<view class="right fs-22 flex-center">{{ taskData.liulan.is_ok ? '已完成' : '去完成' }}</view>
-			</view>
+			</view> -->
 		</view>
 		<button open-type="contact" class="contact share"><image class="circle" src="../../static/icon-kf.png" mode="widthFix"></image></button>
 		<ad unit-id="adunit-37e1565cee4fea69"></ad>
@@ -78,7 +78,8 @@ export default {
 		return {
 			personalInfo: '',
 			taskData: '',
-			showPublishFlag:false
+			showPublishFlag:false,
+			drawalNum:''
 		};
 	},
 	methods: {
@@ -133,7 +134,23 @@ export default {
 						});
 				});
 			}
-		}
+		},
+		//获取提现总和
+		getAllWithdrawal() {
+			this.request({
+				url: this.apiUrl + 'user/tx_list_count',
+				methods:'POST',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					// console.log('获取提现总和:', res);
+					this.drawalNum = res.data.num;
+				}
+			});
+		},
 	},
 	onReady() {
 		if (uni.createRewardedVideoAd) {
@@ -173,6 +190,7 @@ export default {
 		}
 	},
 	onShow() {
+		this.getAllWithdrawal();
 		this.getPersonalInfo();
 		this.getTaskData();
 	}

@@ -27,7 +27,10 @@ export default {
 			timer: null,
 			autoPlayFlag: false,
 			loadStatus: 'loadmore',
-			publishCircleId: '' //发贴返回获取的id
+			publishCircleId: '', //发贴返回获取的id
+
+			circleAdmin_da: [],
+			circleAdmin_xiao: [],
 		};
 	},
 	methods: {
@@ -110,7 +113,7 @@ export default {
 
 						for (let i = 0; i < res.data.info.length; i++) {
 							let _item = res.data.info[i];
-							if (_item.study_type == 2) {
+							if (_item.study_type == 2 && _item.image_part) {
 								var src = this.httpsUrl(_item.image_part[0]);
 								uni.getImageInfo({
 									src,
@@ -406,6 +409,22 @@ export default {
 				});
 			});
 		},
+		// 圈子信息
+		getCircleAdmin() {
+			this.request({
+				url: this.apiUrl + 'User/get_qq_info',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					id: this.circleId,
+				},
+				success: res => {
+					// console.log("圈子信息:", res);
+					this.circleAdmin_da = res.data.info.da_qq;
+					this.circleAdmin_xiao = res.data.info.xiao_qq;
+				},
+			});
+		},
 		// 粘贴
 		setCode() {
 			uni.getClipboardData({
@@ -465,6 +484,7 @@ export default {
 			this.circleId = options.id;
 		}
 		this.getData();
+		this.getCircleAdmin();
 
 		//收录小程序的页面信息
 		this.submitPages('pagesA/circle/circle', 'id=' + options.id);

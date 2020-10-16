@@ -93,7 +93,7 @@ export default {
 					}
 					//获取 封面图/视频 高度
 					res.data.info.forEach((_item) => {
-						if (_item.study_type == 2) {
+						if (_item.study_type == 2&&_item.image_part) {
 							var src = this.httpsUrl(_item.image_part[0]);
 							uni.getImageInfo({
 								src,
@@ -129,7 +129,7 @@ export default {
 					this.videoList = this.videoList.concat(res.data.info);
 					//获取 封面图/视频 高度
 					res.data.info.forEach((_item) => {
-						if (_item.study_type == 2) {
+						if (_item.study_type == 2&&_item.image_part) {
 							var src = this.httpsUrl(_item.image_part[0]);
 							uni.getImageInfo({
 								src,

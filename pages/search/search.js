@@ -204,7 +204,7 @@ export default {
 					}
 					for (let i = 0; i < res.data.info.length; i++) {
 						let _item = res.data.info[i];
-						if (_item.study_type == 2) {
+						if (_item.study_type == 2&&_item.image_part) {
 							var src = this.httpsUrl(_item.image_part[0]);
 							uni.getImageInfo({
 								src,

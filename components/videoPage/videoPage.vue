@@ -81,7 +81,7 @@
 								<view class="realm-name-top" @click.stop="goPage('/pagesA/circle/circle?id=' + item.tory_id)">#{{ item.realm_name }}</view>
 							</view>
 							<view class="userInfo flex">
-								<view :class="{'rotate':isRotateHeader}" class="header circle" @click.stop="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
+								<view :class="{ rotate: isRotateHeader }" class="header circle" @click.stop="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 									<view class="ai-te flex-center">@</view>
 									<!-- <image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
@@ -231,14 +231,20 @@
 								<view class="content">
 									<view class="fs-26 bold flex" style="color: #777;">
 										<text>{{ item.user_nick_name }}</text>
-										<text class="tag" v-if="item.user_id==videoList[videoIndex].user_id">作者</text>
+										<text class="tag" v-if="item.user_id == videoList[videoIndex].user_id">作者</text>
+										<text class="tag" v-if="item.user_id == videoList[videoIndex].quanzhu">圈主</text>
+										<text class="tag" v-if="isIncludes(videoList[videoIndex].guanli,item.user_id)">管理员</text>
 									</view>
 									<view>
-										<text style="min-width: 160rpx; display: inline-block;" class="fs-30" @longpress="showCommentAction(item.paper_id, item.id)">{{ item.reply_content }}</text>
+										<text style="min-width: 160rpx; display: inline-block;" class="fs-30" @longpress="showCommentAction(item.paper_id, item.id)">
+											{{ item.reply_content }}
+										</text>
 									</view>
 									<view>
 										<text class="fs-26" style="color: #999;">{{ item.apter_time }}</text>
-										<text v-if="isAuthorized" @click="toggleTwoLevComment(true, item.id, item.user_id)" class="fs-26" style="color: #888; padding-left: 14rpx;">回复</text>
+										<text v-if="isAuthorized" @click="toggleTwoLevComment(true, item.id, item.user_id)" class="fs-26" style="color: #888; padding-left: 14rpx;">
+											回复
+										</text>
 										<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="" style="display: inline;">
 											<text class="fs-26" style="color: #888; padding-left: 14rpx;">回复</text>
 										</button>
@@ -262,7 +268,9 @@
 								<view class="content">
 									<view class="fs-26 flex" style="color: #777;">
 										<text>{{ items.user_nick_name }}</text>
-										<text class="tag" v-if="items.user_id==videoList[videoIndex].user_id">作者</text>
+										<text class="tag" v-if="items.user_id == videoList[videoIndex].user_id">作者</text>
+										<text class="tag" v-if="item.user_id == videoList[videoIndex].quanzhu">圈主</text>
+										<text class="tag" v-if="isIncludes(videoList[videoIndex].guanli,item.user_id)">管理员</text>
 									</view>
 									<view>
 										<text class="fs-30">{{ items.duplex_content }}</text>

@@ -19,7 +19,7 @@
 				<view class="flex-center">
 					<view class="fs-46">
 						<view>{{ personalInfo.fraction }}</view>
-						<view style="font-size: 22rpx;">(约{{(personalInfo.fraction/100).toFixed(2)}}元)</view>
+						<view style="font-size: 22rpx;">(约{{(personalInfo.fraction/100).toFixed(2)}}元,累计提现{{drawalNum}}元)</view>
 					</view>
 					<text class="fs-22 bold tixian flex-center" @click="goPage('/pages/task/deposit')">提现</text>
 				</view>
@@ -53,7 +53,8 @@
 				tabIndex: 'tab2',
 				personalInfo:'',
 				page:1,
-				list:[]
+				list:[],
+				drawalNum:''
 			};
 		},
 		methods: {
@@ -105,8 +106,25 @@
 					}
 				});
 			},
+			//获取提现总和
+			getAllWithdrawal() {
+				this.request({
+					url: this.apiUrl + 'user/tx_list_count',
+					methods:'POST',
+					data: {
+						token: uni.getStorageSync('token'),
+						openid: uni.getStorageSync('openid'),
+						uid: uni.getStorageSync('userId')
+					},
+					success: res => {
+						// console.log('获取提现总和:', res);
+						this.drawalNum = res.data.num;
+					}
+				});
+			},
 		},
 		onShow() {
+			this.getAllWithdrawal();
 			this.getPersonalInfo();
 			this.getList(true);
 		},

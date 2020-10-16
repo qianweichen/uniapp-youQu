@@ -99,6 +99,8 @@
 				ref="dynamicList"
 				type="circle"
 				:list="dynamicList"
+				:circleAdmin_da="circleAdmin_da"
+				:circleAdmin_xiao="circleAdmin_xiao"
 				@toggleAllText="toggleAllText"
 				@goodFun="goodFun"
 				@commentFun="commentFun"

@@ -94,48 +94,48 @@ export default {
 		});
 
 		// 开始计算浏览时间
-		let inAppTime = Date.now(); //进入的时间
-		uni.setStorageSync('inAppTime', inAppTime); //存一下
-		clearInterval(timer); //重置下，防止多次触发
-		timer = setInterval(() => {
-			let nowTime = Date.now(); //当前时间
-			let oldTime = uni.getStorageSync('playAppTime'); //之前累计的时间（不到15分钟存一下，累计起来）
-			if ((nowTime + (oldTime || 0) - inAppTime) / 1000 / 60 >= 15) {
-				//累计的时间加上这次看的时间是否到达15分钟
-				uni.removeStorageSync('playAppTime'); //到15分钟后删除累计的时间
+		// let inAppTime = Date.now(); //进入的时间
+		// uni.setStorageSync('inAppTime', inAppTime); //存一下
+		// clearInterval(timer); //重置下，防止多次触发
+		// timer = setInterval(() => {
+		// 	let nowTime = Date.now(); //当前时间
+		// 	let oldTime = uni.getStorageSync('playAppTime'); //之前累计的时间（不到15分钟存一下，累计起来）
+		// 	if ((nowTime + (oldTime || 0) - inAppTime) / 1000 / 60 >= 15) {
+		// 		//累计的时间加上这次看的时间是否到达15分钟
+		// 		uni.removeStorageSync('playAppTime'); //到15分钟后删除累计的时间
 
-				uni.request({
-					url: this.apiUrl + 'User/user_jf_add',
-					data: {
-						token: uni.getStorageSync('token'),
-						openid: uni.getStorageSync('openid'),
-						uid: uni.getStorageSync('userId'),
-						type: 2,
-						version: 1
-					},
-					success: res => {
-						if (res.data.msg != '今日已奖励过') {
-							uni.showToast({
-								title: res.data.msg,
-								icon: 'none'
-							});
-						}
-						clearInterval(timer);
-					}
-				});
-			} else {
-				// console.log('正在看');
-			}
-		}, 10000);
+		// 		uni.request({
+		// 			url: this.apiUrl + 'User/user_jf_add',
+		// 			data: {
+		// 				token: uni.getStorageSync('token'),
+		// 				openid: uni.getStorageSync('openid'),
+		// 				uid: uni.getStorageSync('userId'),
+		// 				type: 2,
+		// 				version: 1
+		// 			},
+		// 			success: res => {
+		// 				if (res.data.msg != '今日已奖励过') {
+		// 					uni.showToast({
+		// 						title: res.data.msg,
+		// 						icon: 'none'
+		// 					});
+		// 				}
+		// 				clearInterval(timer);
+		// 			}
+		// 		});
+		// 	} else {
+		// 		// console.log('正在看');
+		// 	}
+		// }, 10000);
 	},
 	onHide: function() {
 		//离开时存储这次的时间
-		let inAppTime = uni.getStorageSync('inAppTime');
-		let outAppTime = Date.now();
-		let playAppTime = outAppTime - inAppTime;
-		if (playAppTime / 1000 / 60 < 15) {
-			uni.setStorageSync('playAppTime', playAppTime);
-		}
+		// let inAppTime = uni.getStorageSync('inAppTime');
+		// let outAppTime = Date.now();
+		// let playAppTime = outAppTime - inAppTime;
+		// if (playAppTime / 1000 / 60 < 15) {
+		// 	uni.setStorageSync('playAppTime', playAppTime);
+		// }
 	}
 };
 </script>

@@ -1,7 +1,9 @@
 export default {
 	props: {
 		type: String, //dynamic:动态  circle:圈子
-		list: Array //列表数据
+		list: Array ,//列表数据
+		circleAdmin_da: Array,//圈主列表数据
+		circleAdmin_xiao: Array,//管理员列表数据
 	},
 	watch: {
 		'list.length': {
@@ -26,6 +28,8 @@ export default {
 			clickDynamicId: '', //点击评论的动态id
 			clickDynamicIndex: '', //点击评论的下标
 			clickDynamicUid:'',//点击评论的用户id
+			clickDynamicQuanzhu:'',
+			clickDynamicGuanli:'',
 			showCommentFlag: false, //评论弹窗
 			isAuthorized: false, //是否授权过
 			commentPage: 1, //评论页码
@@ -71,6 +75,25 @@ export default {
 		}
 	},
 	methods: {
+		// 数组中的字段包含某个值吗?
+		isIncludesVal(arr, val) {
+			var array = arr.filter(item=>{
+				return item.id==val;
+			});
+			if(array.length>0){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		// 数组中包含某个值吗?
+		isIncludes(arr, val) {
+			if (arr) {
+				return arr.indexOf(val) > -1;
+			} else {
+				return false;
+			}
+		},
 		//长按评论
 		showCommentAction(pid, id) {
 			if (!this.deleteBtnFlag) {
@@ -474,7 +497,7 @@ export default {
 			});
 		},
 		//评论弹窗
-		showCommentFun(id, index, uid) {
+		showCommentFun(id, index, uid , quanzhu , guanli) {
 			if (id) {
 				this.clickDynamicId = id; //保存id
 			}
@@ -483,6 +506,12 @@ export default {
 			}
 			if (uid) {
 				this.clickDynamicUid = uid; //保存uid
+			}
+			if (quanzhu) {
+				this.clickDynamicQuanzhu = quanzhu; //保存quanzhu
+			}
+			if (guanli) {
+				this.clickDynamicGuanli = guanli; //保存guanli
 			}
 			this.showCommentFlag = true;
 			// 请求第一页

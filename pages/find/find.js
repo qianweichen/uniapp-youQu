@@ -216,7 +216,7 @@ export default {
 						uid: uni.getStorageSync('userId'),
 					},
 					success: res => {
-						console.log("推荐圈子:", res);
+						// console.log("推荐圈子:", res);
 						this.recommendList = res.data.data;
 						resolve();
 					}

@@ -122,6 +122,14 @@ export default {
 		}
 	},
 	methods: {
+		// 数组中包含某个值吗?
+		isIncludes(arr, val) {
+			if (arr) {
+				return arr.indexOf(val) > -1;
+			} else {
+				return false;
+			}
+		},
 		//长按评论
 		showCommentAction(pid, id) {
 			if (!this.deleteBtnFlag) {
