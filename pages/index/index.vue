@@ -208,10 +208,16 @@ export default {
 		// 发布视频后返回检测id
 		var publishCircleId = uni.getStorageSync('publishCircleId');
 		if (publishCircleId) {
-			if (this.$refs.homePage) this.$refs.homePage.refreshVideo(publishCircleId);
+			if (this.$refs.homePage && this.tabIndex == 'home') {
+				this.$refs.homePage.refreshVideo(publishCircleId);
+			} else {
+				//切换tab到首页
+				this.tabIndex = 'home';
+				this.$refs.homePage.refreshVideo(publishCircleId);
+			}
 			uni.removeStorageSync('publishCircleId');
 		}
-		
+
 		//触发子组件onshow函数
 		if (this.$refs.homePage) this.$refs.homePage.onShowFun();
 		// if (this.$refs.findPage) this.$refs.findPage.onShowFun();
