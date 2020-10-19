@@ -78,7 +78,7 @@
 						<!-- 文案区域 -->
 						<view class="contentBox" :class="isSmallScreen && parentPage == 'home' ? 'full-page' : ''">
 							<view class="flex">
-								<view class="realm-name-top" @click.stop="goPage('/pagesA/circle/circle?id=' + item.tory_id)">#{{ item.realm_name }}</view>
+								<view v-if="item.realm_name" class="realm-name-top" @click.stop="goPage('/pagesA/circle/circle?id=' + item.tory_id)">#{{ item.realm_name }}</view>
 							</view>
 							<view class="userInfo flex">
 								<view :class="{ rotate: isRotateHeader }" class="header circle" @click.stop="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
@@ -236,7 +236,7 @@
 										<text class="tag" v-if="isIncludes(videoList[videoIndex].guanli,item.user_id)">管理员</text>
 									</view>
 									<view>
-										<text style="min-width: 160rpx; display: inline-block; white-space:pre-wrap" class="fs-30" @longpress="showCommentAction(item.paper_id, item.id)">
+										<text style="min-width: 160rpx; display: inline-block; white-space:pre-wrap" class="fs-30" @longpress="showCommentAction(item.paper_id, item.id, item.user_id)">
 											{{ item.reply_content }}
 										</text>
 									</view>

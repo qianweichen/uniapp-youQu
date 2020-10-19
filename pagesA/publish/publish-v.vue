@@ -17,8 +17,15 @@
 				<view>禁止转发</view>
 				<switch :checked="noForwardFlag" @change="noForward" color="#7364BD" />
 			</view> -->
+			<view class="item flex-between" @click="goPage('/pagesA/publish/choosePiazza')">
+				<view>选择广场</view>
+				<view class="flex">
+					<text class="xz" :style="choosePiazza.length > 0 ? 'color:#fff;' : ''">{{ `已选择${choosePiazza.length}个` || '选择' }}</text>
+					<image class="right" src="../../static/right.png" mode="widthFix"></image>
+				</view>
+			</view>
 			<view class="item flex-between" @click="goPage('/pagesA/publish/chooseCircle')">
-				<view>发布到</view>
+				<view>选择圈子</view>
 				<view class="flex">
 					<text class="xz" :style="chooseCirce.realm_name ? 'color:#fff;' : ''">{{ chooseCirce.realm_name || '选择' }}</text>
 					<image class="right" src="../../static/right.png" mode="widthFix"></image>
@@ -42,8 +49,9 @@ export default {
 			// noForwardFlag: false, //是否允许转发
 			videoData: {}, //视频数据
 			content: '', //内容
-			chooseCirce: {} ,//圈子信息
-			parentPage:''
+			chooseCirce: {}, //圈子信息
+			choosePiazza: [], //广场信息
+			parentPage: ''
 		};
 	},
 	methods: {
@@ -56,25 +64,32 @@ export default {
 					this.$refs.loading.close();
 					// console.log('选择视频',res);
 					this.videoData = {
-						tempVideoPath:res.tempFilePath,
-						tempThumbPath:res.thumbTempFilePath,
-						duration:res.duration
-					}
+						tempVideoPath: res.tempFilePath,
+						tempThumbPath: res.thumbTempFilePath,
+						duration: res.duration
+					};
 				}
 			});
 		},
 		// 第一步:订阅
 		send() {
-			if (!this.chooseCirce.id) {
+			// if (!this.chooseCirce.id) {
+			// 	uni.showToast({
+			// 		title: '请选择圈子',
+			// 		icon: 'none'
+			// 	});
+			// 	return;
+			// }
+			if (!this.content) {
 				uni.showToast({
-					title: '请选择圈子',
+					title: '请输入内容',
 					icon: 'none'
 				});
 				return;
 			}
-			if (!this.content) {
+			if (!this.videoData.tempVideoPath) {
 				uni.showToast({
-					title: '请输入内容',
+					title: '请上传视频',
 					icon: 'none'
 				});
 				return;
@@ -97,7 +112,11 @@ export default {
 			params.content = this.content;
 			params.is_open = 1; //可以转发
 			params.type = 2; //视频
-			params.fa_class = this.chooseCirce.id; //圈子id
+			params.fa_class = this.chooseCirce.id ? this.chooseCirce.id : 0; //圈子id
+			params.needle_id = 11; //广场id(默认)
+			if (this.choosePiazza.length > 0) {
+				params.needle_id = this.choosePiazza.join(','); //广场ID，多个用逗号分开，不选默认给11
+			}
 			params.color = '#000000';
 			params.title = 'default';
 			params.file_ss = 0;
@@ -172,18 +191,18 @@ export default {
 					// console.log('发布:', res);
 					uni.showToast({
 						title: res.data.msg,
-						icon:'none'
+						icon: 'none'
 					});
 					this.$refs.loading.close();
-					uni.setStorageSync('publishCircleId',res.data.id);
+					uni.setStorageSync('publishCircleId', res.data.id);
 					setTimeout(() => {
-						if(this.parentPage=='shoot'){
+						if (this.parentPage == 'shoot') {
 							uni.navigateBack({
-								delta:2
+								delta: 2
 							});
-						}else{
+						} else {
 							uni.navigateBack({
-								delta:1
+								delta: 1
 							});
 						}
 					}, 1500);
@@ -212,14 +231,14 @@ export default {
 		//获取拍摄或选择的视频
 		this.videoData = uni.getStorageSync('shootData');
 		uni.removeStorageSync('shootData');
-		
+
 		var sendCircleData = uni.getStorageSync('sendCircleData');
-		if(sendCircleData){
+		if (sendCircleData) {
 			this.chooseCirce = sendCircleData;
 			uni.removeStorageSync('sendCircleData');
 		}
-		
-		if(options&&options.parentPage){
+
+		if (options && options.parentPage) {
 			this.parentPage = options.parentPage;
 		}
 	}
@@ -239,7 +258,7 @@ export default {
 		border-radius: 8rpx;
 		color: #999;
 		text-align: center;
-		&.border{
+		&.border {
 			border: 2rpx dashed #999;
 		}
 	}

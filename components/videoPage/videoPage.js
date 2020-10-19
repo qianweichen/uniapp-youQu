@@ -130,9 +130,9 @@ export default {
 				return false;
 			}
 		},
-		//长按评论
-		showCommentAction(pid, id) {
-			if (!this.deleteBtnFlag) {
+		//长按删除
+		showCommentAction(pid, id, uid) {
+			if (!this.deleteBtnFlag && (uid != uni.getStorageSync('userId'))) {
 				return;
 			}
 			uni.showActionSheet({
