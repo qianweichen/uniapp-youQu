@@ -60,7 +60,7 @@
 				<view class="right fs-22 flex-center">{{ taskData.liulan.is_ok ? '已完成' : '去完成' }}</view>
 			</view> -->
 		</view>
-		<button open-type="contact" class="contact share"><image class="circle" src="../../static/icon-kf.png" mode="widthFix"></image></button>
+		<!-- <button open-type="contact" class="contact share"><image class="circle" src="../../static/icon-kf.png" mode="widthFix"></image></button> -->
 		<ad unit-id="adunit-37e1565cee4fea69"></ad>
 		<publish v-if="showPublishFlag" @togglePublishFlag="togglePublishFlag"></publish>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>

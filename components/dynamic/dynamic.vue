@@ -174,7 +174,7 @@ toggleAllText(index,flag,init){
 									<text class="tag" v-if="isIncludes(clickDynamicGuanli, item.user_id)">管理员</text>
 								</view>
 								<view>
-									<text style="min-width: 160rpx; display: inline-block;" class="fs-30" @longpress="showCommentAction(item.paper_id, item.id)">
+									<text style="min-width: 160rpx; display: inline-block; white-space:pre-wrap" class="fs-30" @longpress="showCommentAction(item.paper_id, item.id)">
 										{{ item.reply_content }}
 									</text>
 								</view>
