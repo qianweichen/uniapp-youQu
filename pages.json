@@ -171,16 +171,6 @@
 				"navigationBarTitleText": "选择圈子"
 			}
 		}, {
-			"path": "publish/choosePiazza",
-			"style": {
-				"navigationBarTitleText": "选择广场"
-			}
-		}, {
-			"path": "circle/choosePiazza",
-			"style": {
-				"navigationBarTitleText": "选择广场"
-			}
-		}, {
 			"path": "publish/shoot",
 			"style": {
 				"navigationBarTitleText": "拍摄"

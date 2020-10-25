@@ -102,9 +102,15 @@ export default {
 				index
 			}
 			uni.setStorageSync('playVideoPageData', playVideoPageData);
-			uni.navigateTo({
-				url: '/pages/playVideo/playVideo'
-			})
+			if (this.tabIndex == 2) {	//喜欢的
+				uni.navigateTo({
+					url: '/pages/playVideo/playVideo?isFromLike=isFromLike'
+				});
+			}else{
+				uni.navigateTo({
+					url: '/pages/playVideo/playVideo'
+				});
+			}
 		},
 		//关注
 		attention() {
@@ -174,7 +180,7 @@ export default {
 				var urlEnd = '4';
 			}
 			//version 0是文字 1是语音 2是视频 3是全部
-			var version = 3;
+			var version = 2;
 			if (this.tabIndex == 0) {
 				var version = 2;
 			}

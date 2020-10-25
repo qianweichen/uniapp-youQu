@@ -28,9 +28,11 @@ export default {
 			videoIndex: 0, //初始下标
 			videoPage: 1, //初始页码
 			userId: '', //个人页跳转来的用户id
-			search: '' ,//搜索页跳转来的搜索内容
+			search: '', //搜索页跳转来的搜索内容
 			screenWidth: uni.getSystemInfoSync().windowWidth, //屏幕宽度
 			screenHeight: uni.getSystemInfoSync().windowHeight,
+
+			isFromLike: false //是否从个人页 喜欢的作品来
 		};
 	},
 	methods: {
@@ -69,7 +71,7 @@ export default {
 		//获取个人动态
 		getPersionVideo() {
 			this.request({
-				url: this.apiUrl + 'User/get_my_list',
+				url: this.apiUrl + 'User/get_my_list' + (this.isFromLike ? '4' : ''),
 				data: {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
@@ -92,19 +94,20 @@ export default {
 						});
 					}
 					//获取 封面图/视频 高度
-					res.data.info.forEach((_item) => {
-						if (_item.study_type == 2&&_item.image_part) {
+					res.data.info.forEach(_item => {
+						if (_item.study_type == 2 && _item.image_part) {
 							var src = this.httpsUrl(_item.image_part[0]);
 							uni.getImageInfo({
 								src,
-								success: (res) => {
+								success: res => {
 									var width = this.screenWidth;
-									var height = width * res.height / res.width;
-									if (height / this.screenHeight > 0.8) { //高度在90%以上
+									var height = (width * res.height) / res.width;
+									if (height / this.screenHeight > 0.8) {
+										//高度在90%以上
 										this.$set(_item, 'cover', true);
 									}
 								}
-							})
+							});
 						}
 					});
 				}
@@ -128,26 +131,27 @@ export default {
 					this.videoPage++;
 					this.videoList = this.videoList.concat(res.data.info);
 					//获取 封面图/视频 高度
-					res.data.info.forEach((_item) => {
-						if (_item.study_type == 2&&_item.image_part) {
+					res.data.info.forEach(_item => {
+						if (_item.study_type == 2 && _item.image_part) {
 							var src = this.httpsUrl(_item.image_part[0]);
 							uni.getImageInfo({
 								src,
-								success: (res) => {
+								success: res => {
 									var width = this.screenWidth;
-									var height = width * res.height / res.width;
-									if (height / this.screenHeight > 0.8) { //高度在90%以上
+									var height = (width * res.height) / res.width;
+									if (height / this.screenHeight > 0.8) {
+										//高度在90%以上
 										this.$set(_item, 'cover', true);
 									}
 								}
-							})
+							});
 						}
 					});
 				}
 			});
 		}
 	},
-	onLoad() {
+	onLoad(options) {
 		//获取数据
 		var playVideoPageData = uni.getStorageSync('playVideoPageData');
 		if (playVideoPageData) {
@@ -157,6 +161,11 @@ export default {
 			this.videoIndex = playVideoPageData.index;
 			this.search = playVideoPageData.search; //搜索页跳转来的搜索内容
 			uni.removeStorageSync('playVideoPageData');
+		}
+
+		if (options.isFromLike == 'isFromLike') {
+			//从个人喜欢页面来
+			this.isFromLike = true;
 		}
 	},
 	onShareAppMessage(res) {

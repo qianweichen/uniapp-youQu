@@ -160,13 +160,14 @@
 						<image :src="item.playbill_url" mode="aspectFill" :style="index != swiperIndex ? 'height: 80%;' : ''"></image>
 					</swiper-item>
 				</swiper> -->
-				<view class="tabBox flex fs-30">
+				<!-- 图文动态tab -->
+				<!-- <view class="tabBox flex fs-30">
 					<view :class="{ active: tabIndex == 0 }" @click="changeMidTab(0)"><text>推荐</text></view>
 					<view v-if="isAuthorized" :class="{ active: tabIndex == 1 }" @click="changeMidTab(1)"><text>关注</text></view>
 					<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">关注</button>
-				</view>
+				</view> -->
 				<!-- 图文动态 瀑布流 -->
-				<view class="list-zp flex-between">
+				<!-- <view class="list-zp flex-between">
 					<view>
 						<view
 							v-if="index % 2 == 0"
@@ -231,10 +232,10 @@
 							</view>
 						</view>
 					</view>
-				</view>
+				</view> -->
 				<!-- <dynamicList type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun"></dynamicList> -->
 				<view v-if="dynamicList.length == 0 && loadStatus == 'nomore'" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
-				<loadMore v-else :status="loadStatus"></loadMore>
+				<!-- <loadMore v-else :status="loadStatus"></loadMore> -->
 			</scroll-view>
 		</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>

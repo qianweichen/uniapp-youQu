@@ -109,9 +109,11 @@ toggleAllText(index,flag,init){
 				<!-- 底部按钮 -->
 				<view class="bottom flex-between padding">
 					<!-- 动态列表 -->
-					<view v-if="type == 'dynamic'" class="flex-center circleName" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">
-						<image class="header circle" :src="item.realm_icon" mode="aspectFill"></image>
-						<view class="fs-22" style="color: #908E99;">{{ item.realm_name }}</view>
+					<view v-if="type == 'dynamic'">
+						<view v-if="item.realm_name" class="flex-center circleName" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">
+							<image class="header circle" :src="item.realm_icon" mode="aspectFill"></image>
+							<view class="fs-22" style="color: #908E99;">{{ item.realm_name }}</view>
+						</view>
 					</view>
 					<!-- 圈子首页 -->
 					<image v-if="type == 'circle'" class="more" src="../../static/more.png" mode="widthFix" @click="showAction(item.user_id, index, item.id)"></image>

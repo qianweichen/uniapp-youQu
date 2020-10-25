@@ -29,7 +29,7 @@
 					<image class="right" src="../../static/right-9.png" mode="widthFix"></image>
 				</view>
 			</view>
-			<view class="infoItem flex-between" @click="goPage('/pagesA/circle/choosePiazza')">
+			<view class="infoItem flex-between" @click="isPiazzaShow = true;">
 				<view class="fc-9">所属广场</view>
 				<view class="flex">
 					<view class="infoBox">{{ circleInfo.needle_id2.name || '请选择' }}</view>
@@ -51,6 +51,21 @@
 		<view class="tip fc-9 fs-26 flex-center">说明：只有加入圈子的人才能看见圈子里发布的内容，加入圈子，需要通过圈子管理员审核。私密圈子需要邀请码才能加入</view>
 		<view class="btn-big fs-32 flex-center" @click="submit">提交申请</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
+		
+		<!-- 广场弹出 -->
+		<view>
+			<view v-if="isPiazzaShow" class="mask" style="z-index: 2;" @click="isPiazzaShow = false"></view>
+			<view @click.stop="" class="piazza" :style="'height: ' + (isPiazzaShow ? '80%' : '0') + ';'">
+				<view class="line"></view>
+				<view class="title">选择标签</view>
+				<view class="list flex">
+					<view class="item flex-center" :class="{ active: item.checked }" v-for="(item, index) in piazzaList" :key="index" v-if="item.id != 11" @click="choose(item)">
+						{{ item.name }}
+					</view>
+				</view>
+				<image @click="isPiazzaShow = false;" class="close" src="../../static/close-f.png" mode="widthFix"></image>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -66,7 +81,9 @@ export default {
 				reason: '',
 				jurisdiction: false,
 				needle_id2: ''
-			}
+			},
+			piazzaList: [], //广场列表
+			isPiazzaShow: false
 		};
 	},
 	methods: {
@@ -180,7 +197,41 @@ export default {
 					}, 1500);
 				}
 			});
+		},
+		choose(data) {
+			this.piazzaList.forEach(item => {
+				item.checked = false;
+			});
+			data.checked = true;
+			this.$set(this.circleInfo, 'needle_id2', data);
+		},
+		//获取所有广场
+		getPiazza(isFirstPage) {
+			if (isFirstPage) {
+				this.page = 1;
+				this.piazzaList = [];
+			}
+			this.$refs.loading.open();
+			this.request({
+				url: this.apiUrl + 'User/get_all_needles',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					this.$refs.loading.close();
+					console.log('获取所有广场:', res);
+					res.data.info.forEach(item => {
+						item.checked = false;
+					});
+					this.piazzaList = res.data.info;
+				}
+			});
 		}
+	},
+	onLoad() {
+		this.getPiazza();
 	}
 };
 </script>
@@ -189,6 +240,56 @@ export default {
 .page-creatCircle {
 	padding-bottom: 60rpx;
 
+.piazza {
+	width: 100%;
+	height: 80%;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	z-index: 2;
+	background-color: $ornamentColor;
+	border-radius: 30rpx 30rpx 0 0;
+	transition: all ease 0.6s;
+	.close{
+		position: absolute;
+		right: 30rpx;
+		top: 30rpx;
+		width: 50rpx;
+		height: auto;
+	}
+	.line {
+		width: 200rpx;
+		height: 10rpx;
+		border-radius: 10rpx;
+		background-color: #eee;
+		margin: 20rpx auto;
+	}
+	.title {
+		color: #fff;
+		padding: 0 30rpx;
+	}
+	.list {
+		padding: 30rpx;
+		flex-wrap: wrap;
+		.item {
+			width: 156rpx;
+			height: 60rpx;
+			background-color: #eee;
+			color: #333;
+			font-size: 26rpx;
+			margin-right: 20rpx;
+			margin-bottom: 20rpx;
+			border-radius: 6rpx;
+			&.active {
+				background-color: #7464be;
+				color: #fff;
+			}
+			&:nth-child(4n) {
+				margin-right: 0;
+			}
+		}
+	}
+}
 	.banner {
 		position: relative;
 		height: 500rpx;

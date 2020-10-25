@@ -13,19 +13,8 @@
 			:header="formData"
 		></sunui-upimg>
 		<view class="chooseBox fs-26">
-			<!-- <view class="item flex-between">
-				<view>禁止转发</view>
-				<switch :checked="noForwardFlag" @change="noForward" color="#7364BD" />
-			</view> -->
-			<view class="item flex-between" @click="goPage('/pagesA/publish/choosePiazza')">
-				<view>选择广场</view>
-				<view class="flex">
-					<text class="xz" :style="choosePiazza.length > 0 ? 'color:#fff;' : ''">{{ `已选择${choosePiazza.length}个` || '选择' }}</text>
-					<image class="right" src="../../static/right.png" mode="widthFix"></image>
-				</view>
-			</view>
 			<view class="item flex-between" @click="goPage('/pagesA/publish/chooseCircle')">
-				<view>选择圈子</view>
+				<view>同步到圈子</view>
 				<view class="flex">
 					<text class="xz" :style="chooseCirce.realm_name ? 'color:#fff;' : ''">{{ chooseCirce.realm_name || '选择' }}</text>
 					<image class="right" src="../../static/right.png" mode="widthFix"></image>
@@ -50,10 +39,8 @@ export default {
 	data() {
 		return {
 			apiUrl: this.apiUrl,
-			// noForwardFlag: false,
 			content: '',
 			chooseCirce: {}, //圈子信息
-			choosePiazza: [], //广场信息
 			imgArr: [],
 			formData: {
 				token: uni.getStorageSync('token'),
@@ -72,6 +59,13 @@ export default {
 				});
 				return;
 			}
+			if (this.imgArr.length==0) {
+				uni.showToast({
+					title: '请选择图片',
+					icon: 'none'
+				});
+				return;
+			}
 			uni.requestSubscribeMessage({
 				tmplIds: ['NfOZBD9yhTMpgM_CUJDBKdmkjvllcDF2RHPvlDMldoI', '7sor7eBvPETo04jeaDtzc_co2VX9_6NHnCJaqQiVMNE'],
 				success: res => {
@@ -85,10 +79,6 @@ export default {
 					params.is_open = 1; //可以转发
 					params.type = 0; //图文
 					params.fa_class = this.chooseCirce.id ? this.chooseCirce.id : 0; //圈子id
-					params.needle_id = 11; //广场id(默认)
-					if (this.choosePiazza.length > 0) {
-						params.needle_id = this.choosePiazza.join(','); //广场ID，多个用逗号分开，不选默认给11
-					}
 					params.img_arr = this.imgArr; //图片
 					//默认
 					params.color = '#000000';

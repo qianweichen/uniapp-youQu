@@ -17,15 +17,15 @@
 				<view>禁止转发</view>
 				<switch :checked="noForwardFlag" @change="noForward" color="#7364BD" />
 			</view> -->
-			<view class="item flex-between" @click="goPage('/pagesA/publish/choosePiazza')">
-				<view>选择广场</view>
+			<view class="item flex-between" @click="isPiazzaShow = true">
+				<view>选择合适的标签提高曝光</view>
 				<view class="flex">
-					<text class="xz" :style="choosePiazza.length > 0 ? 'color:#fff;' : ''">{{ `已选择${choosePiazza.length}个` || '选择' }}</text>
+					<text class="xz" :style="choosePiazza.length > 0 ? 'color:#fff;' : ''">{{ choosePiazzaNames || '选择' }}</text>
 					<image class="right" src="../../static/right.png" mode="widthFix"></image>
 				</view>
 			</view>
 			<view class="item flex-between" @click="goPage('/pagesA/publish/chooseCircle')">
-				<view>选择圈子</view>
+				<view>同步到圈子</view>
 				<view class="flex">
 					<text class="xz" :style="chooseCirce.realm_name ? 'color:#fff;' : ''">{{ chooseCirce.realm_name || '选择' }}</text>
 					<image class="right" src="../../static/right.png" mode="widthFix"></image>
@@ -38,6 +38,21 @@
 		</view>
 		<view class="btn-big flex-center" @click="send">发布</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
+
+		<!-- 广场弹出 -->
+		<view>
+			<view v-if="isPiazzaShow" class="mask" style="z-index: 2;" @click="isPiazzaShow = false"></view>
+			<view @click.stop="" class="piazza" :style="'height: ' + (isPiazzaShow ? '80%' : '0') + ';'">
+				<view class="line"></view>
+				<view class="title">选择标签</view>
+				<view class="list flex">
+					<view class="item flex-center" :class="{ active: item.checked }" v-for="(item, index) in piazzaList" :key="index" v-if="item.id != 11" @click="choose(item)">
+						{{ item.name }}
+					</view>
+				</view>
+				<image @click="isPiazzaShow = false;" class="close" src="../../static/close-f.png" mode="widthFix"></image>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -46,15 +61,47 @@ const qiniuUploader = require('@/components/qiniuUploader/qiniuUploader.js');
 export default {
 	data() {
 		return {
-			// noForwardFlag: false, //是否允许转发
 			videoData: {}, //视频数据
 			content: '', //内容
 			chooseCirce: {}, //圈子信息
+			parentPage: '', //上一级页面
+			
 			choosePiazza: [], //广场信息
-			parentPage: ''
+			piazzaList: [], //广场列表
+			isPiazzaShow: false
 		};
 	},
+	computed:{
+		choosePiazzaNames(){
+			var names = [];
+			this.piazzaList.forEach(item=>{
+				if(item.checked){
+					names.push(item.name);
+				}
+			});
+			return names.join('、');
+		}
+	},
 	methods: {
+		// 选择广场
+		choose(data) {
+			if (data.checked) {
+				data.checked = false;
+				this.choosePiazza = this.choosePiazza.filter(item => {
+					return item != data.id;
+				});
+			} else {
+				if (this.choosePiazza.length >= 3) {
+					uni.showToast({
+						title: '最多能选择3个广场',
+						icon: 'none'
+					});
+					return;
+				}
+				data.checked = true;
+				this.choosePiazza.push(data.id);
+			}
+		},
 		//选择视频
 		chooseVideo() {
 			uni.chooseVideo({
@@ -221,11 +268,31 @@ export default {
 		// 上传图片
 		getImageInfo(e) {
 			// console.log('图片返回：', e);
+		},
+		//获取所有广场
+		getPiazza(isFirstPage) {
+			if (isFirstPage) {
+				this.page = 1;
+				this.piazzaList = [];
+			}
+			this.$refs.loading.open();
+			this.request({
+				url: this.apiUrl + 'User/get_all_needles',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					this.$refs.loading.close();
+					console.log('获取所有广场:', res);
+					res.data.info.forEach(item => {
+						item.checked = false;
+					});
+					this.piazzaList = res.data.info;
+				}
+			});
 		}
-		// 禁止转发
-		// noForward(e) {
-		// 	this.noForwardFlag = e.detail.value;
-		// }
 	},
 	onLoad(options) {
 		//获取拍摄或选择的视频
@@ -241,11 +308,63 @@ export default {
 		if (options && options.parentPage) {
 			this.parentPage = options.parentPage;
 		}
+
+		this.getPiazza();
 	}
 };
 </script>
 
 <style lang="scss">
+.piazza {
+	width: 100%;
+	height: 80%;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	z-index: 2;
+	background-color: $ornamentColor;
+	border-radius: 30rpx 30rpx 0 0;
+	transition: all ease 0.6s;
+	.close{
+		position: absolute;
+		right: 30rpx;
+		top: 30rpx;
+		width: 50rpx;
+		height: auto;
+	}
+	.line {
+		width: 200rpx;
+		height: 10rpx;
+		border-radius: 10rpx;
+		background-color: #eee;
+		margin: 20rpx auto;
+	}
+	.title {
+		color: #fff;
+		padding: 0 30rpx;
+	}
+	.list {
+		padding: 30rpx;
+		flex-wrap: wrap;
+		.item {
+			width: 156rpx;
+			height: 60rpx;
+			background-color: #eee;
+			color: #333;
+			font-size: 26rpx;
+			margin-right: 20rpx;
+			margin-bottom: 20rpx;
+			border-radius: 6rpx;
+			&.active {
+				background-color: #7464be;
+				color: #fff;
+			}
+			&:nth-child(4n) {
+				margin-right: 0;
+			}
+		}
+	}
+}
 .iptBox {
 	padding: 50rpx;
 	textarea {
