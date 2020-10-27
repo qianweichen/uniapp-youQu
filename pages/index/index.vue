@@ -169,7 +169,7 @@ export default {
 				success: res => {
 					this.$refs.loading.close();
 					// console.log('获取用户信息:', res);
-					this.messageNum = res.data.info.message_num;
+					if (res.data.info && res.data.info.message_num) this.messageNum = res.data.info.message_num;
 				}
 			});
 		}

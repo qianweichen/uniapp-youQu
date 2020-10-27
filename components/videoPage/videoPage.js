@@ -590,7 +590,8 @@ export default {
 					this.watchTimeNumber = 0;
 				}
 				//进度条满时停止
-				if (this.getRedList[this.getRedNum].time <= this.watchTime) {
+				if (this.getRedList[this.getRedNum] && this.getRedList[this.getRedNum].time && (this.getRedList[this.getRedNum].time <=
+						this.watchTime)) {
 					clearInterval(this.watchTimeTimer);
 					this.watchTimeNumber = 0;
 				}
@@ -605,7 +606,8 @@ export default {
 				});
 				return;
 			}
-			if (this.getRedList[this.getRedNum] && (this.getRedList[this.getRedNum].time > this.watchTime)) {
+			if (this.getRedList[this.getRedNum] && this.getRedList[this.getRedNum].time && (this.getRedList[this.getRedNum].time >
+					this.watchTime)) {
 				return;
 			}
 			this.request({

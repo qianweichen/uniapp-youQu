@@ -50,7 +50,9 @@ export default {
 						// 	icon: 'none'
 						// });
 						this.isNewRedShow = false;
-						this.isSignToastShow = res.data.msg.replace(/[^\d|^\.|^\-]/g, ""); //提示
+						if (res.data.msg) {
+							this.isSignToastShow = res.data.msg.replace(/[^\d|^\.|^\-]/g, ""); //提示
+						}
 						setTimeout(() => {
 							this.isShowShare = true;
 							this.isSignToastShow = null;
@@ -85,7 +87,9 @@ export default {
 				},
 				success: res => {
 					// console.log("获取红包开关:", res);
-					this.isShowRed = res.data.data.with_status;
+					if (res.data.data && res.data.data.with_status) {
+						this.isShowRed = res.data.data.with_status;
+					}
 				},
 			});
 		},
@@ -205,21 +209,23 @@ export default {
 					this.videoList = this.videoList.concat(res.data.data);
 					this.refreshRecommendFlag = true;
 					//获取 封面图/视频 高度
-					res.data.data.forEach((_item) => {
-						if (_item.study_type == 2&&_item.image_part) {
-							var src = this.httpsUrl(_item.image_part[0]);
-							uni.getImageInfo({
-								src,
-								success: (res) => {
-									var width = this.screenWidth;
-									var height = width * res.height / res.width;
-									if (height / this.screenHeight > 0.8) { //高度在90%以上
-										this.$set(_item, 'cover', true);
+					if (res.data.data) {
+						res.data.data.forEach((_item) => {
+							if (_item.study_type == 2 && _item.image_part) {
+								var src = this.httpsUrl(_item.image_part[0]);
+								uni.getImageInfo({
+									src,
+									success: (res) => {
+										var width = this.screenWidth;
+										var height = width * res.height / res.width;
+										if (height / this.screenHeight > 0.8) { //高度在90%以上
+											this.$set(_item, 'cover', true);
+										}
 									}
-								}
-							})
-						}
-					});
+								})
+							}
+						});
+					}
 				},
 			});
 		},
@@ -251,21 +257,23 @@ export default {
 					this.attentionVideoList = this.attentionVideoList.concat(res.data.info);
 					this.refreshAttentionFlag = true;
 					//获取 封面图/视频 高度
-					res.data.info.forEach((_item) => {
-						if (_item.study_type == 2&&_item.image_part) {
-							var src = this.httpsUrl(_item.image_part[0]);
-							uni.getImageInfo({
-								src,
-								success: (res) => {
-									var width = this.screenWidth;
-									var height = width * res.height / res.width;
-									if (height / this.screenHeight > 0.8) { //高度在90%以上
-										this.$set(_item, 'cover', true);
+					if (res.data.info) {
+						res.data.info.forEach((_item) => {
+							if (_item.study_type == 2 && _item.image_part) {
+								var src = this.httpsUrl(_item.image_part[0]);
+								uni.getImageInfo({
+									src,
+									success: (res) => {
+										var width = this.screenWidth;
+										var height = width * res.height / res.width;
+										if (height / this.screenHeight > 0.8) { //高度在90%以上
+											this.$set(_item, 'cover', true);
+										}
 									}
-								}
-							})
-						}
-					});
+								})
+							}
+						});
+					}
 				},
 			});
 		},
@@ -274,14 +282,14 @@ export default {
 			this.getPersonalInfo(); //获取用户信息
 		},
 		//index页刷新视频用
-		refreshVideo(id) {	//双击底部按钮刷新时id为空，发布视频返回刷新时id为发布的视频id
+		refreshVideo(id) { //双击底部按钮刷新时id为空，发布视频返回刷新时id为发布的视频id
 			// console.log("发布视频的id：",id);
-			if(id){
+			if (id) {
 				this.shareVideoId = id;
-			}else{
+			} else {
 				this.shareVideoId = '';
 			}
-			
+
 			if (this.tabsFlag) {
 				//推荐
 				this.$refs.loading.open();
@@ -404,7 +412,7 @@ export default {
 			this.shareVideoId = shareVideoId;
 			uni.removeStorageSync('shareVideoId');
 		}
-		
+
 		//获取首页视频列表
 		this.$refs.loading.open();
 		this.getHomeList(true);

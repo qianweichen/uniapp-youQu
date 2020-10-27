@@ -78,7 +78,8 @@ export default {
 					params.content = this.content;
 					params.is_open = 1; //可以转发
 					params.type = 0; //图文
-					params.fa_class = this.chooseCirce.id ? this.chooseCirce.id : 0; //圈子id
+					params.fa_class = this.chooseCirce.id ? this.chooseCirce.id : 1; //圈子id
+					params.needle_id = 11; //广场id(默认)
 					params.img_arr = this.imgArr; //图片
 					//默认
 					params.color = '#000000';
