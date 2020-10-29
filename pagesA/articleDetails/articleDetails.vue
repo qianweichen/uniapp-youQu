@@ -76,7 +76,7 @@
 			</view>
 		</view>
 		<!-- 圈子 -->
-		<view class="circleName flex-between" @click="goPage('/pagesA/circle/circle?id=' + articleData.tory_id)">
+		<view v-if="articleData.tory_id != 0" class="circleName flex-between" @click="goPage('/pagesA/circle/circle?id=' + articleData.tory_id)">
 			<view class="flex">
 				<image class="header circle" :src="articleData.realm_icon" mode="aspectFill"></image>
 				<view>

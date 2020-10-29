@@ -574,6 +574,7 @@ export default {
 			if (isFirstPage == true) {
 				this.commentPage = 1;
 				this.commentList = [];
+				this.hasNextPage = true;
 			}
 			this.request({
 				url: this.apiUrl + 'User/get_article_huifu',
@@ -587,11 +588,13 @@ export default {
 				},
 				success: res => {
 					// console.log("获取评论:", res);
-					if (res.data.huifu.length == 0 && this.commentPage > 1) {
-						uni.showToast({
-							title: '没有更多了',
-							icon: 'none'
-						});
+					if (res.data.huifu.length == 0) {
+						if (this.commentPage > 1) {
+							uni.showToast({
+								title: '没有评论了',
+								icon: 'none'
+							});
+						}
 						this.hasNextPage = false;
 					}
 					this.commentPage++;
@@ -630,7 +633,7 @@ export default {
 		if (options.scene) {
 			this.articleId = options.scene.split('-')[0];
 		}
-		if(options.id){
+		if (options.id) {
 			this.articleId = options.id;
 		}
 		this.$refs.loading.open();

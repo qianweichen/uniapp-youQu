@@ -47,7 +47,7 @@ toggleAllText(index,flag,init){
 					<view class="header flex" @click="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
 						<image class="circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 						<view class="fs-28 user-nick-name">{{ item.user_nick_name }}</view>
-						<view class="flex" v-if="type=='circle'">
+						<view class="flex" v-if="type == 'circle'">
 							<text class="tag" v-if="isIncludesVal(circleAdmin_da, item.user_id)">圈主</text>
 							<text class="tag" v-if="isIncludesVal(circleAdmin_xiao, item.user_id)">管理员</text>
 						</view>
@@ -109,14 +109,22 @@ toggleAllText(index,flag,init){
 				<!-- 底部按钮 -->
 				<view class="bottom flex-between padding">
 					<!-- 动态列表 -->
-					<view v-if="type == 'dynamic'">
-						<view v-if="item.realm_name" class="flex-center circleName" @click="goPage('/pagesA/circle/circle?id=' + item.tory_id)">
-							<image class="header circle" :src="item.realm_icon" mode="aspectFill"></image>
-							<view class="fs-22" style="color: #908E99;">{{ item.realm_name }}</view>
-						</view>
+					<view
+						v-if="type == 'dynamic' && item.realm_name && item.tory_id != 0"
+						class="flex-center circleName"
+						@click="goPage('/pagesA/circle/circle?id=' + item.tory_id)"
+					>
+						<image class="header circle" :src="item.realm_icon" mode="aspectFill"></image>
+						<view class="fs-22" style="color: #908E99;">{{ item.realm_name }}</view>
 					</view>
 					<!-- 圈子首页 -->
-					<image v-if="type == 'circle'" class="more" src="../../static/more.png" mode="widthFix" @click="showAction(item.user_id, index, item.id)"></image>
+					<image
+						v-if="type == 'circle' || item.tory_id == 0"
+						class="more"
+						src="../../static/more.png"
+						mode="widthFix"
+						@click="showAction(item.user_id, index, item.id)"
+					></image>
 					<!-- 公共部分 -->
 					<view class="flex-between function fs-22">
 						<view v-if="isAuthorized" class="flex" @click="goodFun(item.id, index)">
@@ -176,7 +184,11 @@ toggleAllText(index,flag,init){
 									<text class="tag" v-if="isIncludes(clickDynamicGuanli, item.user_id)">管理员</text>
 								</view>
 								<view>
-									<text style="min-width: 160rpx; display: inline-block; white-space:pre-wrap" class="fs-30" @longpress="showCommentAction(item.paper_id, item.id)">
+									<text
+										style="min-width: 160rpx; display: inline-block; white-space:pre-wrap"
+										class="fs-30"
+										@longpress="showCommentAction(item.paper_id, item.id)"
+									>
 										{{ item.reply_content }}
 									</text>
 								</view>

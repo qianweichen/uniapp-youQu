@@ -4,8 +4,8 @@ import Vue from 'vue';
 Vue.prototype.miniProgramName = "友趣短视频";
 
 //请求地址
-// Vue.prototype.apiUrl = "https://quanyu.udiao.cn/index.php?s=/api/";
-Vue.prototype.apiUrl = "http://vlog.ime123.com/index.php?s=/api/";
+Vue.prototype.apiUrl = "https://quanyu.udiao.cn/index.php?s=/api/";
+// Vue.prototype.apiUrl = "http://vlog.ime123.com/index.php?s=/api/";
 
 //修改http为https
 Vue.prototype.httpsUrl = function(url) {

@@ -181,7 +181,7 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="tabIndex == 2" class="list-zp flex" @click="goPlayPage(index)">
+		<view v-if="tabIndex == 2" class="list-zp flex">
 			<!-- <dynamicList
 				ref="dynamicList"
 				type="dynamic"
@@ -191,7 +191,7 @@
 				@attentionFun="attentionFun"
 				@playVideoFun="playVideoFun"
 			></dynamicList> -->
-			<view class="item" v-for="(item, index) in dynamicList" :key="index">
+			<view class="item" v-for="(item, index) in dynamicList" :key="index" @click="goPlayPage(index)">
 				<!-- 视频 -->
 				<view class="imgBox">
 					<!-- <image v-if="item.study_type == 2" class="type video" src="../../static/play.png" mode="widthFix"></image>
