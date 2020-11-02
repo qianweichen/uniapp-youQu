@@ -28,7 +28,9 @@ export default {
 
 			isNewRedShow: false, //新人红包
 			isSignToastShow: null, //签到积分提醒
-			closedRed: false //是否关闭过红包
+			closedRed: false, //是否关闭过红包
+
+			advertisingList: []
 		};
 	},
 	methods: {
@@ -384,6 +386,29 @@ export default {
 					this.isNewRedShow = (res.data.data == 0) && !this.closedRed;
 				}
 			})
+		},
+		getAdvertising() {
+			this.request({
+				url: this.apiUrl + 'user/xcxbanner',
+				data: {
+
+				},
+				success: res => {
+					var arr = [],
+						i = 0;
+					res.data.data.forEach((item, index) => {
+						if (!arr[i]) {
+							arr[i] = [];
+						}
+						arr[i].push(item);
+						if ((index + 1) % 4 == 0){	//4个一组
+							i++;
+						}
+					});
+					this.advertisingList = arr;
+					// console.log('广告：', arr);
+				}
+			})
 		}
 	},
 	mounted() {
@@ -393,6 +418,9 @@ export default {
 		if (nowDate != oldDate) {
 			this.isShowNotice = true;
 		}
+
+		//获取小程序广告位
+		this.getAdvertising();
 
 		// console.log('homeCreated');
 		//判断授权 已授权为true

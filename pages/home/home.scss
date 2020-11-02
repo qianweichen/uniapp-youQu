@@ -92,8 +92,12 @@
 	position: absolute;
 	left: 0;
 	bottom: 0;
-	padding: 40rpx;
+	padding: 40rpx 0;
 	box-sizing: border-box;
+	>view{
+		width: 670rpx;
+		margin: 0 auto;
+	}
 	.bg {
 		width: 480rpx;
 		height: 420rpx;
@@ -141,8 +145,27 @@
 		display: block;
 		padding-top: 20rpx;
 	}
+	.ads-swiper{
+		width: 710rpx;
+	}
 	.btn-group {
-		padding: 50rpx 0;
+		.item{
+			position: relative;
+			margin-right: 36rpx;
+			&:nth-child(4n){
+				margin-right: 0;
+			}
+			.add-number{
+				position: absolute;
+				top: 0;
+				right: -20rpx;
+				font-size: 20rpx;
+				color: #8C2411;
+				padding: 2rpx 4rpx;
+				background-color: #FFC600;
+				border-radius: 10rpx;
+			}
+		}
 		.img-box {
 			width: 128rpx;
 			height: 128rpx;
@@ -150,8 +173,9 @@
 			border-radius: 50%;
 			margin: 0 auto;
 			image {
-				width: 82rpx;
-				height: 82rpx;
+				width: 100%;
+				height: 100%;
+				border-radius: 50%;
 			}
 		}
 		.text {
@@ -163,12 +187,13 @@
 			color: #7e0c00;
 			font-weight: bold;
 			margin-top: -20rpx;
+			position: relative;
 		}
 	}
 	.red-swiper{
 		background:rgba(250,234,221,1);
 		border-radius:20rpx;
-		width:690rpx;
+		width:100%;
 		height:84rpx;
 		padding: 10rpx 20rpx;
 		box-sizing: border-box;

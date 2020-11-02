@@ -45,6 +45,7 @@ export default {
 			clickTimer: null,
 
 			// 视频红包
+			clickRedFlag: true, //红包防抖
 			isVideoRedShow: null, //视频红包积分提醒
 			getRedNum: 0, //第几个红包
 			getRedList: [{ //每一个红包对应的浏览时间（固定值）
@@ -599,6 +600,9 @@ export default {
 		},
 		//点击红包领取
 		clickRed() {
+			if (!this.clickRedFlag) {
+				return;
+			}
 			if (this.getRedNum > 3) {
 				uni.showToast({
 					title: '今天的红包领完啦',
@@ -606,10 +610,11 @@ export default {
 				});
 				return;
 			}
-			if (this.getRedList[this.getRedNum] && this.getRedList[this.getRedNum].time && (this.getRedList[this.getRedNum].time >
+			if (!this.getRedList[this.getRedNum] || !this.getRedList[this.getRedNum].time || (this.getRedList[this.getRedNum].time >
 					this.watchTime)) {
 				return;
 			}
+			this.clickRedFlag = false;
 			this.request({
 				url: this.apiUrl + 'user/set_inc_ji_fen',
 				data: {
@@ -619,10 +624,7 @@ export default {
 					type: 1 //1:增加积分 2:查询次数
 				},
 				success: (res) => {
-					// uni.showToast({
-					// 	title: res.data.msg,
-					// 	icon: 'none'
-					// });
+					this.clickRedFlag = true;
 					this.isVideoRedShow = res.data.msg.replace(/[^\d|^\.|^\-]/g, ""); //积分提示
 					setTimeout(() => {
 						this.isVideoRedShow = null;

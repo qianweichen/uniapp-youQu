@@ -45,12 +45,13 @@ export default {
 					// console.log('提现:', res);
 					uni.showToast({
 						title: res.data.msg,
-						duration:3000
+						icon: 'none',
+						duration: 3000
 					});
 					this.$refs.loading.close();
-					setTimeout(()=>{
+					setTimeout(() => {
 						this.getTxCs();
-					},3000)
+					}, 3000);
 				}
 			});
 		},

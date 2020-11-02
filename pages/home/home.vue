@@ -9,7 +9,15 @@
 			<view>
 				<image v-if="isAuthorized" @click="signIn" class="red" src="../../static/new-red.png" mode="widthFix"></image>
 				<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share"><image class="red" src="../../static/new-red.png" mode="widthFix"></image></button>
-				<image @click="isNewRedShow = false; closedRed = true;" class="close" src="../../static/close-r.png" mode="widthFix"></image>
+				<image
+					@click="
+						isNewRedShow = false;
+						closedRed = true;
+					"
+					class="close"
+					src="../../static/close-r.png"
+					mode="widthFix"
+				></image>
 			</view>
 		</view>
 		<!-- 签到toast -->
@@ -66,7 +74,7 @@
 					:videoList="attentionVideoList"
 					:parentPage="'home'"
 					@loginFun="refreshList"
-					@getNextPage="getHomeList"
+					@getNextPage="getAttentionList"
 					@goodFun="goodFun"
 					@commentFun="commentFun"
 					@attentionFun="attentionFun"
@@ -94,90 +102,77 @@
 		<view v-if="isShowShare">
 			<view class="mask" @click="isShowShare = false">
 				<view class="share-group" @click.stop="">
-					<image class="bg" src="@/static/share-bg.png" mode="widthFix"></image>
-					<view class="title flex-between">
-						<view v-if="isAuthorized" @click="goPage('/pages/mine/wallet')">提现</view>
-						<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">提现</button>
-						<image @click="isShowShare = false" src="@/static/share-close.png" mode="widthFix"></image>
-					</view>
-
-					<view v-if="!personalInfo.is_sign" class="tip">打卡单次最高得2元，秒体现秒到账</view>
-					<!-- <view v-else class="tip">邀请一个好友最高可得2元，秒体现秒到账。</view> -->
-
-					<view v-if="isAuthorized">
-						<view v-if="!personalInfo.is_sign" :animation="animation2" class="sign-in fs-40 flex-center" @click="signIn">
-							<view>点击打卡</view>
-							<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
+					<view>
+						<image class="bg" src="@/static/share-bg.png" mode="widthFix"></image>
+						<view class="title flex-between">
+							<view v-if="isAuthorized" @click="goPage('/pages/mine/wallet')">提现</view>
+							<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">提现</button>
+							<image @click="isShowShare = false" src="@/static/share-close.png" mode="widthFix"></image>
 						</view>
-						<view v-else>
-							<!-- <image :animation="animation2" @click="goPage('/pages/mine/invitation')" class="share-btn" src="@/static/share-btn.png" mode="widthFix"></image> -->
-							<view class="tip" style="padding-top: 20rpx;">
-								<view class="flex-center">
-									<image style="width: 30rpx; height: auto; margin-right: 12rpx;" src="../../static/sign-ok.png" mode="widthFix"></image>
-									<text>今日已打卡</text>
-								</view>
-								<view>我的余额：{{ (personalInfo.fraction / 100).toFixed(2) }}元</view>
-							</view>
-							<view class="sign-in fs-40 flex-center" @click="goPage('/pages/mine/wallet')">
-								<view>立即提现</view>
+
+						<view v-if="!personalInfo.is_sign" class="tip">打卡单次最高得2元，秒体现秒到账</view>
+						<!-- <view v-else class="tip">邀请一个好友最高可得2元，秒体现秒到账。</view> -->
+
+						<view v-if="isAuthorized">
+							<view v-if="!personalInfo.is_sign" :animation="animation2" class="sign-in fs-40 flex-center" @click="signIn">
+								<view>点击打卡</view>
 								<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
 							</view>
-						</view>
-					</view>
-					<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share" style="overflow: unset;">
-						<view :animation="animation2" class="sign-in fs-40 flex-center">
-							<view>点击打卡</view>
-							<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
-						</view>
-					</button>
-
-					<view v-if="isAuthorized" class="btn-group flex-between" @click="goPage('/pages/task/task')">
-						<view>
-							<view class="img-box flex-center"><image src="@/static/share-fsp.png" mode="widthFix"></image></view>
-							<view class="text flex-center">发视频</view>
-						</view>
-						<view>
-							<view class="img-box flex-center"><image src="@/static/share-ksp.png" mode="widthFix"></image></view>
-							<view class="text flex-center">看视频</view>
-						</view>
-						<view>
-							<view class="img-box flex-center"><image src="@/static/share-zan.png" mode="widthFix"></image></view>
-							<view class="text flex-center">点赞×10</view>
-						</view>
-						<view>
-							<view class="img-box flex-center"><image src="@/static/share-pl.png" mode="widthFix"></image></view>
-							<view class="text flex-center">写评论</view>
-						</view>
-					</view>
-					<button v-else open-type="getUserInfo" class="share btn-group flex-between" @getuserinfo="getUserInfo">
-						<view>
-							<view class="img-box flex-center"><image src="@/static/share-fsp.png" mode="widthFix"></image></view>
-							<view class="text flex-center">发视频</view>
-						</view>
-						<view>
-							<view class="img-box flex-center"><image src="@/static/share-ksp.png" mode="widthFix"></image></view>
-							<view class="text flex-center">看视频</view>
-						</view>
-						<view>
-							<view class="img-box flex-center"><image src="@/static/share-zan.png" mode="widthFix"></image></view>
-							<view class="text flex-center">点赞×10</view>
-						</view>
-						<view>
-							<view class="img-box flex-center"><image src="@/static/share-pl.png" mode="widthFix"></image></view>
-							<view class="text flex-center">写评论</view>
-						</view>
-					</button>
-					<swiper class="red-swiper" circular vertical interval="1500" autoplay>
-						<swiper-item v-for="(item, index) in txList" :key="index">
-							<view class="tx-group flex-between">
-								<view class="flex">
-									<image class="header" :src="item.user_head_sculpture" mode="aspectFill"></image>
-									<view class="fs-24">{{ item.user_nick_name }}</view>
+							<view v-else>
+								<!-- <image :animation="animation2" @click="goPage('/pages/mine/invitation')" class="share-btn" src="@/static/share-btn.png" mode="widthFix"></image> -->
+								<view class="tip" style="padding-top: 20rpx;">
+									<view class="flex-center">
+										<image style="width: 30rpx; height: auto; margin-right: 12rpx;" src="../../static/sign-ok.png" mode="widthFix"></image>
+										<text>今日已打卡</text>
+									</view>
+									<view>我的余额：{{ (personalInfo.fraction / 100).toFixed(2) }}元</view>
 								</view>
-								<view class="fs-24 bold">赚到了{{ item.display_money }}元现金</view>
+								<view class="sign-in fs-40 flex-center" @click="goPage('/pages/mine/wallet')">
+									<view>立即提现</view>
+									<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
+								</view>
 							</view>
-						</swiper-item>
-					</swiper>
+						</view>
+						<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share" style="overflow: unset;">
+							<view :animation="animation2" class="sign-in fs-40 flex-center">
+								<view>点击打卡</view>
+								<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
+							</view>
+						</button>
+						<!-- 广告位 -->
+						<swiper v-if="isAuthorized" class="ads-swiper">
+							<swiper-item v-for="(item, index) in advertisingList" :key="index" class="btn-group flex">
+								<view v-for="(items, indexs) in item" :key="indexs" class="item">
+									<view class="img-box flex-center"><image :src="items.logo" mode="widthFix"></image></view>
+									<view class="text flex-center">{{ items.name }}</view>
+									<view class="add-number">+{{ items.number }}积分</view>
+								</view>
+							</swiper-item>
+						</swiper>
+						<button v-else open-type="getUserInfo" class="ads-swiper share btn-group flex-between" @getuserinfo="getUserInfo">
+							<swiper class="ads-swiper">
+								<swiper-item v-for="(item, index) in advertisingList" :key="index" class="btn-group flex">
+									<view v-for="(items, indexs) in item" :key="indexs" class="item">
+										<view class="img-box flex-center"><image :src="items.logo" mode="widthFix"></image></view>
+										<view class="text flex-center">{{ items.name }}</view>
+										<view class="add-number">+{{ items.number }}积分</view>
+									</view>
+								</swiper-item>
+							</swiper>
+						</button>
+						<!-- 提现列表 -->
+						<swiper class="red-swiper" circular vertical interval="1500" autoplay>
+							<swiper-item v-for="(item, index) in txList" :key="index">
+								<view class="tx-group flex-between">
+									<view class="flex">
+										<image class="header" :src="item.user_head_sculpture" mode="aspectFill"></image>
+										<view class="fs-24">{{ item.user_nick_name }}</view>
+									</view>
+									<view class="fs-24 bold">赚到了{{ item.display_money }}元现金</view>
+								</view>
+							</swiper-item>
+						</swiper>
+					</view>
 				</view>
 			</view>
 		</view>
