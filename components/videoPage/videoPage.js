@@ -14,6 +14,7 @@ export default {
 			showCommentFlag: false, //评论弹窗
 			showShareFlag: false, //控制分享弹出
 
+			commentFlag: true, //评论防抖
 			commentPage: 1, //评论页码
 			commentList: [], //评论列表
 			commentContent: '', //评论内容
@@ -782,7 +783,11 @@ export default {
 		},
 		//评论
 		sendComment() {
-			if (this.commentContent == '') {
+			if (!this.commentFlag) {
+				return;
+			}
+			//为空或全部为空格
+			if (this.commentContent == '' || this.commentContent.match(/^[ ]*$/)) {
 				uni.showToast({
 					title: '请输入内容',
 					icon: 'none'
@@ -790,6 +795,7 @@ export default {
 				return;
 			}
 			this.$refs.loading.open();
+			this.commentFlag = false;
 			this.request({
 				url: this.apiUrl + 'User/add_paper_reply',
 				data: {
@@ -806,6 +812,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.commentFlag = true;
 					this.$refs.loading.close();
 					if (res.data.msg == "已评论,请等待审核！") {
 						this.commentContent = '';

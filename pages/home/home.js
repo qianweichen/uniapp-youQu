@@ -34,6 +34,38 @@ export default {
 		};
 	},
 	methods: {
+		// 点击小程序广告
+		clickAdvertising(items) {
+			// console.log(items);
+			uni.navigateToMiniProgram({
+				appId: items.appid,
+				path: items.pages_url,
+				success: res => {
+					// console.log('打开小程序成功:', res);
+					//请求积分
+					this.request({
+						url: this.apiUrl + 'user/xcxbanner_integral',
+						data: {
+							token: uni.getStorageSync('token'),
+							openid: uni.getStorageSync('openid'),
+							uid: uni.getStorageSync('userId'),
+							id:items.id
+						},
+						success: res => {
+							// console.log('获得小程序积分:', res);
+							uni.showToast({
+								title:res.data.msg,
+								icon:'none'
+							});
+							this.getPersonalInfo();
+						}
+					});
+				},
+				fail: res => {
+					console.log('打开小程序失败:', res);
+				}
+			});
+		},
 		//签到
 		signIn() {
 			//小神推模板消息订阅
@@ -46,11 +78,6 @@ export default {
 						uid: uni.getStorageSync('userId')
 					},
 					success: res => {
-						// console.log('签到:', res);
-						// uni.showToast({
-						// 	title: res.data.msg,
-						// 	icon: 'none'
-						// });
 						this.isNewRedShow = false;
 						if (res.data.msg) {
 							this.isSignToastShow = res.data.msg.replace(/[^\d|^\.|^\-]/g, ""); //提示
@@ -401,7 +428,7 @@ export default {
 							arr[i] = [];
 						}
 						arr[i].push(item);
-						if ((index + 1) % 4 == 0){	//4个一组
+						if ((index + 1) % 4 == 0) { //4个一组
 							i++;
 						}
 					});

@@ -142,7 +142,7 @@
 						<!-- 广告位 -->
 						<swiper v-if="isAuthorized" class="ads-swiper">
 							<swiper-item v-for="(item, index) in advertisingList" :key="index" class="btn-group flex">
-								<view v-for="(items, indexs) in item" :key="indexs" class="item">
+								<view v-for="(items, indexs) in item" :key="indexs" class="item" @click="clickAdvertising(items)">
 									<view class="img-box flex-center"><image :src="items.logo" mode="widthFix"></image></view>
 									<view class="text flex-center">{{ items.name }}</view>
 									<view class="add-number">+{{ items.number }}积分</view>
