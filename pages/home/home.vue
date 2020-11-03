@@ -145,7 +145,7 @@
 								<view v-for="(items, indexs) in item" :key="indexs" class="item" @click="clickAdvertising(items)">
 									<view class="img-box flex-center"><image :src="items.logo" mode="widthFix"></image></view>
 									<view class="text flex-center">{{ items.name }}</view>
-									<view class="add-number">+{{ items.number }}积分</view>
+									<view v-if="items.number" class="add-number">+{{ items.number }}积分</view>
 								</view>
 							</swiper-item>
 						</swiper>
