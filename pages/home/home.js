@@ -30,7 +30,9 @@ export default {
 			isSignToastShow: null, //签到积分提醒
 			closedRed: false, //是否关闭过红包
 
-			advertisingList: []
+			advertisingList: [],
+			
+			sevenRed:''
 		};
 	},
 	methods: {
@@ -71,13 +73,14 @@ export default {
 			//小神推模板消息订阅
 			this.subscription('', (res) => {
 				this.request({
-					url: this.apiUrl + 'User/add_user_punch',
+					url: this.apiUrl + 'user/continuity_sign',
 					data: {
 						token: uni.getStorageSync('token'),
 						openid: uni.getStorageSync('openid'),
 						uid: uni.getStorageSync('userId')
 					},
 					success: res => {
+						// console.log('签到:',res);
 						this.isNewRedShow = false;
 						if (res.data.msg) {
 							this.isSignToastShow = res.data.msg.replace(/[^\d|^\.|^\-]/g, ""); //提示
@@ -87,6 +90,7 @@ export default {
 							this.isSignToastShow = null;
 						}, 2000);
 						this.getPersonalInfo();
+						this.getSignDay();
 					}
 				});
 			});
@@ -213,6 +217,7 @@ export default {
 			this.isAuthorized = this.beAuthorized();
 			this.getPersonalInfo(); //获取用户信息
 			this.getNewUser(); //获取是否新人
+			this.getSignDay();	// 获取昨天签到的是第几天
 		},
 		//获取首页视频列表
 		getHomeList(isFirstPage) {
@@ -343,6 +348,7 @@ export default {
 				this.isAuthorized = true;
 				this.getPersonalInfo(); //获取用户信息
 				this.getNewUser(); //获取是否新人
+				this.getSignDay();	// 获取昨天签到的是第几天
 				//更新组件中的登录状态
 				if (this.$refs.recommendVideo) this.$refs.recommendVideo.isAuthorized = true;
 				if (this.$refs.refreshAttentionFlag) this.$refs.refreshAttentionFlag.isAuthorized = true;
@@ -436,6 +442,20 @@ export default {
 					// console.log('广告：', arr);
 				}
 			})
+		},
+		getSignDay(){
+			this.request({
+				url: this.apiUrl + 'user/get_sign_day',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					// console.log('签到天数：', res);
+					this.sevenRed = res.data;
+				}
+			})
 		}
 	},
 	mounted() {
@@ -455,6 +475,7 @@ export default {
 		if (this.isAuthorized) {
 			this.getPersonalInfo(); //获取用户信息
 			this.getNewUser(); //获取是否新人
+			this.getSignDay();	// 获取昨天签到的是第几天
 		} else {
 			setTimeout(() => {
 				this.isNewRedShow = true;

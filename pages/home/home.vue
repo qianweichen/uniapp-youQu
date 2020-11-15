@@ -109,12 +109,51 @@
 							<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">提现</button>
 							<image @click="isShowShare = false" src="@/static/share-close.png" mode="widthFix"></image>
 						</view>
+						
+						<!-- 7日签到 -->
+						<view class="seven-days">
+							<view class="item active">
+								<view class="num">1</view>
+								<view>1天</view>
+								<view v-if="sevenRed.data==0||sevenRed.data==7" class="add">+{{sevenRed.res.number1}}</view>
+							</view>
+							<view class="item" :class="{active:sevenRed.data>=1}">
+								<view class="num">2</view>
+								<view>2天</view>
+								<view v-if="sevenRed.data==1" class="add">+{{sevenRed.res.number2}}</view>
+							</view>
+							<view class="item" :class="{active:sevenRed.data>=2}">
+								<view class="num">3</view>
+								<view>3天</view>
+								<view v-if="sevenRed.data==2" class="add">+{{sevenRed.res.number3}}</view>
+							</view>
+							<view class="item":class="{active:sevenRed.data>=3}">
+								<view class="num">4</view>
+								<view>4天</view>
+								<view v-if="sevenRed.data==3" class="add">+{{sevenRed.res.number4}}</view>
+							</view>
+							<view class="item" :class="{active:sevenRed.data>=4}">
+								<view class="num">5</view>
+								<view>5天</view>
+								<view v-if="sevenRed.data==4" class="add">+{{sevenRed.res.number5}}</view>
+							</view>
+							<view class="item" :class="{active:sevenRed.data>=5}">
+								<view class="num">6</view>
+								<view>6天</view>
+								<view v-if="sevenRed.data==5" class="add">+{{sevenRed.res.number6}}</view>
+							</view>
+							<view class="item" :class="{active:sevenRed.data>=6}">
+								<image src="../../static/red-gift.png" mode="widthFix"></image>
+								<view>7天</view>
+								<view v-if="sevenRed.data==6" class="add">+{{sevenRed.res.number7}}</view>
+							</view>
+						</view>
 
-						<view v-if="!personalInfo.is_sign" class="tip">打卡单次最高得2元，秒体现秒到账</view>
+						<!-- <view v-if="!personalInfo.is_sign" class="tip">打卡单次最高得2元，秒体现秒到账</view> -->
 						<!-- <view v-else class="tip">邀请一个好友最高可得2元，秒体现秒到账。</view> -->
 
 						<view v-if="isAuthorized">
-							<view v-if="!personalInfo.is_sign" :animation="animation2" class="sign-in fs-40 flex-center" @click="signIn">
+							<view v-if="sevenRed.state==0" :animation="animation2" class="sign-in fs-40 flex-center" @click="signIn">
 								<view>点击打卡</view>
 								<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
 							</view>

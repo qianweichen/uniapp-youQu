@@ -111,7 +111,7 @@
 				"navigationBarTitleText": "推荐有礼"
 			}
 		}
-	],
+    ],
 	"subPackages": [{
 		"root": "pagesA",
 		"pages": [{
@@ -211,7 +211,12 @@
 			"style": {
 				"navigationBarTitleText": "意见反馈"
 			}
-		}]
+		},{
+            "path" : "clockIn/clockIn",
+            "style" : {
+				"navigationBarTitleText": "早起打卡挑战赛"
+			}
+        }]
 	}],
 	"globalStyle": {
 		"backgroundColor": "#1f1d2b",
