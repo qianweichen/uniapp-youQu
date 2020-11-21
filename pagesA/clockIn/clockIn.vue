@@ -6,24 +6,45 @@
 		<view style="height: 416rpx;"></view>
 		<view class="info-group">
 			<view class="fc-3 fs-28">今日总累计积分</view>
-			<view class="num">6355</view>
+			<view class="num">{{ poolInfo.data }}</view>
 			<view class="people flex-center">
 				<image src="../../static/clockIn/user.png" mode="widthFix"></image>
-				<view class="number">6344</view>
+				<view class="number">{{ poolInfo.num }}</view>
 				<view>人已参加报名</view>
 			</view>
-			<view class="time">
-				<text>活动计时：</text>
-				<text class="number">01</text>
+			<view v-if="activityTime" class="time">
+				<text>距离报名截至时间还有：</text>
+				<text class="number">{{ activityTime.hour }}</text>
 				<text>时</text>
-				<text class="number">01</text>
+				<text class="number">{{ activityTime.minute }}</text>
 				<text>分</text>
-				<text class="number">01</text>
+				<text class="number">{{ activityTime.second }}</text>
 				<text>秒</text>
+			</view>
+			<view v-else class="time">
+				不在报名时间段内
 			</view>
 			<view class="btn-group">
 				<image src="../../static/clockIn/btn.png" mode="widthFix"></image>
-				<view class="flex-center">打卡倒计时 07:02:31</view>
+				<!-- 0未预约   1已预约 未打卡   2已打卡瓜分 -->
+				<!-- 在打卡时间段 -->
+				<view v-if="clockTime">
+					<view v-if="clockStatus == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
+					<view v-if="clockStatus == 1" class="flex-center" @click="clockIn">打卡倒计时 {{ clockTime.hour }}:{{ clockTime.minute }}:{{ clockTime.second }}</view>
+					<view v-if="clockStatus == 2" class="flex-center" @click="appointment">观看视频，立即预约</view>
+				</view>
+				<!-- 不在打卡时间段 -->
+				<view v-else>
+					<!-- 在预约时间段内 -->
+					<view v-if="activityTime">
+						<view v-if="clockStatusToday == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
+						<view v-if="clockStatusToday == 1" class="flex-center">已预约</view>
+					</view>
+					<view v-else>
+						<view v-if="clockStatusToday == 0" class="flex-center">不在预约时间段内</view>
+						<view v-if="clockStatusToday == 1" class="flex-center">已预约</view>
+					</view>
+				</view>
 			</view>
 		</view>
 		<view class="step-group">
@@ -49,12 +70,12 @@
 					<view class="name2">12点前积分结算</view>
 				</view>
 			</view>
-			<view class="header-group">
-				<image v-for="(item,index) in 6" :key="index" src="../../static/clockIn/day2.png" mode="aspectFill"></image>
+			<view class="header-group" v-if="ranking.length > 0">
+				<image v-for="(item, index) in ranking" :key="index" :src="item.user.user_head_sculpture" mode="aspectFill" v-if="index < 6"></image>
 				<image src="../../static/clockIn/more.png" mode="widthFix"></image>
 			</view>
 		</view>
-		<view class="ranking-group">
+		<view class="ranking-group" v-if="ranking.length > 0">
 			<view class="title flex-center">
 				<image src="../../static/clockIn/arrow.png" mode="widthFix"></image>
 				<view>打卡战况</view>
@@ -62,27 +83,29 @@
 			</view>
 			<view class="icon-group flex-between">
 				<view>
-					<image src="../../static/clockIn/day1.png" mode="widthFix"></image>
-					<view class="name">五月蓝天</view>
-					<view class="name2">00:02:00打卡</view>
+					<image v-if="ranking[1]" class="circle" :src="ranking[1].user.user_head_sculpture" mode="aspectFill"></image>
+					<image v-else class="circle" src="../../static/logo.png" mode="widthFix"></image>
+					<view class="name">{{ ranking[1].user.user_nick_name || '拭目以待' }}</view>
+					<view class="name2">{{item.updatetime_text || '-'}}</view>
 					<view class="ranking">
 						<image src="../../static/clockIn/icon-2.png" mode="widthFix"></image>
 						<view class="flex-center">亚军</view>
 					</view>
 				</view>
 				<view>
-					<image src="../../static/clockIn/day2.png" mode="widthFix"></image>
-					<view class="name">乖乖是只猫</view>
-					<view class="name2">00:02:00打卡</view>
+					<image class="circle" :src="ranking[0].user.user_head_sculpture" mode="aspectFill"></image>
+					<view class="name">{{ ranking[0].user.user_nick_name }}</view>
+					<view class="name2">{{item.updatetime_text || '-'}}</view>
 					<view class="ranking">
 						<image src="../../static/clockIn/icon-1.png" mode="widthFix"></image>
 						<view class="flex-center">冠军</view>
 					</view>
 				</view>
 				<view>
-					<image src="../../static/clockIn/day3.png" mode="widthFix"></image>
-					<view class="name">张海璐</view>
-					<view class="name2">00:02:00打卡</view>
+					<image v-if="ranking[2]" class="circle" :src="ranking[2].user.user_head_sculpture" mode="aspectFill"></image>
+					<image v-else class="circle" src="../../static/logo.png" mode="widthFix"></image>
+					<view class="name">{{ ranking[2].user.user_nick_name || '拭目以待' }}</view>
+					<view class="name2">{{item.updatetime_text || '-'}}</view>
 					<view class="ranking">
 						<image src="../../static/clockIn/icon-3.png" mode="widthFix"></image>
 						<view class="flex-center">季军</view>
@@ -90,32 +113,320 @@
 				</view>
 			</view>
 			<view class="list">
-				<view class="item flex-between" v-for="(item,index) in 8" :key="index">
+				<view class="item flex-between" v-for="(item, index) in ranking" :key="index" v-if="index > 2">
 					<view class="flex">
-						<image class="header" src="../../static/clockIn/day2.png" mode="aspectFill"></image>
-						<view class="fs-24 fc-3">乖乖是只喵</view>
+						<image class="header" :src="item.user.user_head_sculpture" mode="aspectFill"></image>
+						<view class="fs-24 fc-3">{{ item.user.user_nick_name }}</view>
 					</view>
-					<view class="flex">	
+					<view class="flex">
 						<image class="clock" src="../../static/clockIn/clock.png" mode="widthFix"></image>
-						<view class="fs-24 fc-8">今日打卡0次，总共打卡10次</view>
+						<view class="fs-24 fc-8">今日打卡{{ item.today_num }}次，总共打卡{{ item.count_num }}次</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<view class="fixed-btns">
+			<view @click="goPage('/pagesA/clockIn/rules')">活动规则</view>
+			<view @click="goPage('/pagesA/clockIn/record')" style="background-color: #5F3DD2;">我的战绩</view>
+		</view>
+		<!-- 超时弹窗 -->
+		<view v-if="isTimeoutShow" class="mask flex-center">
+			<view class="time-out">
+				<image class="icon" src="../../static/clockIn/time-out.png" mode="widthFix"></image>
+				<view class="fs-24">
+					<view>打卡失败！已超出打卡时间范围，</view>
+					<view>明天记得早点再来哦~</view>
+				</view>
+				<view class="btn flex-center" @click="isTimeoutShow = false">继续报名</view>
+				<image class="close" src="../../static/close.png" mode="widthFix" @click="isTimeoutShow = false"></image>
+			</view>
+		</view>
+		<!-- 成功弹窗 -->
+		<view v-if="isSuccessShow" class="mask flex-center">
+			<view class="time-out">
+				<image class="icon" src="../../static/clockIn/success.png" mode="widthFix"></image>
+				<view class="fs-24">
+					<view>
+						打卡成功
+						<!-- <text>您是第</text>
+						<text class="number">562</text>
+						<text>位打卡成功，积分将在</text> -->
+					</view>
+					<!-- <view>12点发放至账户</view> -->
+				</view>
+				<view class="btn flex-center" @click="isSuccessShow = false">继续报名</view>
+				<image class="close" src="../../static/close.png" mode="widthFix" @click="isSuccessShow = false"></image>
+			</view>
+		</view>
+		<w-loading mask="true" click="true" ref="loading"></w-loading>
 	</view>
 </template>
 
 <script>
+let rewardedVideoAd = null;
 export default {
 	data() {
-		return {};
-	}
+		return {
+			isTimeoutShow: false,
+			isSuccessShow: false,
+			activityTime: '',
+			clockTime: '',
+			poolInfo: {},
+			clockStatus: '',	 //昨天的活动是否预约了 	0未预约   1已预约 未打卡   2已打卡瓜分
+			clockStatusToday:'',//今天是否预约明天的活动	0未预约   1已预约
+			ranking: [],
+			timeQuantum:'' //0-5点=1   5-10点=2  10点以后=3
+		};
+	},
+	methods: {
+		//obj：修改哪个对象   endtime：结束时间
+		getSurplusTime(obj, endtime) {
+			var nowtime = new Date(), //获取当前时间
+				endtime = new Date(endtime); //定义结束时间
+			var lefttime = endtime.getTime() - nowtime.getTime(); //距离结束时间的毫秒数
+			var hour = String(Math.floor((lefttime / (1000 * 60 * 60)) % 24)),
+				minute = String(Math.floor((lefttime / (1000 * 60)) % 60)),
+				second = String(Math.floor((lefttime / 1000) % 60));
+			this[obj] = {
+				hour: hour.length > 1 ? hour : '0' + hour,
+				minute: minute.length > 1 ? minute : '0' + minute,
+				second: second.length > 1 ? second : '0' + second
+			};
+		},
+		//获取积分池数据
+		getIntegralPool() {
+			this.request({
+				url: this.apiUrl + 'user/integral_pool',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId'),
+					type: 1 //1 今日 2昨天  默认1
+				},
+				success: res => {
+					console.log('积分池数量', res);
+					this.poolInfo = res.data;
+				}
+			});
+		},
+		//打卡
+		clockIn() {
+			this.request({
+				url: this.apiUrl + 'user/punch_clock',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log('打卡', res);
+					this.isSuccessShow = true;
+				}
+			});
+		},
+		//预约
+		appointment() {
+			// 用户触发广告后，显示激励视频广告
+			if (rewardedVideoAd) {
+				rewardedVideoAd.show().catch(() => {
+					// 失败重试
+					rewardedVideoAd
+						.load()
+						.then(() => rewardedVideoAd.show())
+						.catch(err => {
+							// console.log('激励视频 广告显示失败');
+						});
+				});
+			}
+		},
+		doAppointment(){
+			this.request({
+				url: this.apiUrl + 'user/make_punch',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log('预约', res);
+					uni.showToast({
+						title:res.data.msg,
+						icon:'none'
+					});
+					this.init();
+				}
+			});
+		},
+		//查询打卡状态
+		getClockStatus() {
+			this.request({
+				url: this.apiUrl + 'user/is_clock_or_make',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log('查询打卡状态', res);
+					this.clockStatus = res.data.data; //	0未预约   1已预约 未打卡   2已打卡瓜分
+					this.clockStatusToday = res.data.data2; //	0未预约   1已预约
+
+					//已预约并且超过打卡时间，弹框提示，一天只提示一次
+					if(this.timeQuantum==3&&this.clockStatus==1){
+						var today = new Date().toLocaleDateString(),
+							storageDay = uni.getStorageSync('timeoutShowFlag');
+						if(today!=storageDay){
+							this.isTimeoutShow = true;
+							uni.setStorageSync('timeoutShowFlag',today);
+						}
+					}
+				}
+			});
+		},
+		//战况
+		getRanking() {
+			this.request({
+				url: this.apiUrl + 'user/zhnakuang',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId'),
+					page: 1
+				},
+				success: res => {
+					console.log('战况', res);
+					this.ranking = res.data.data;
+				}
+			});
+		},
+		//获取倒计时
+		getCountDown() {
+			//获取当前时间
+			var now = new Date().getTime(),
+				today_5 = new Date(new Date(new Date().toLocaleDateString()).getTime() + 5 * 60 * 60 * 1000).getTime(), //今天5点
+				today_10 = new Date(new Date(new Date().toLocaleDateString()).getTime() + 10 * 60 * 60 * 1000).getTime(); //今天10点
+			if (now < today_5) {
+				//5点前
+				//不在预约时间
+				this.activityTime = '';
+				//非打卡时段不显示打卡倒计时
+				this.clockTime = '';
+				
+				this.timeQuantum=1;
+			} else if (now < today_10) {
+				//5-10点
+				//预约截至时间 第二天0点
+				var appointmentEndTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000);
+				this.getSurplusTime('activityTime', appointmentEndTime);
+				//打卡截至时间 当天上午十点
+				var clockEndTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 10 * 60 * 60 * 1000);
+				this.getSurplusTime('clockTime', clockEndTime);
+
+				this.timeQuantum=2;
+			} else {
+				//10点以后
+				//预约截至时间 第二天0点
+				var appointmentEndTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000);
+				this.getSurplusTime('activityTime', appointmentEndTime);
+				//非打卡时段不显示打卡倒计时
+				this.clockTime = '';
+
+				this.timeQuantum=3;
+			}
+		},
+		init(){
+			this.getIntegralPool();
+			this.getClockStatus();
+			this.getRanking();
+		}
+	},
+	onLoad() {
+		this.init();
+		//每秒刷新一下时间
+		this.getCountDown();
+		setInterval(() => {
+			this.getCountDown();
+		}, 1000);
+	},
+	onReady() {
+		if (uni.createRewardedVideoAd) {
+			rewardedVideoAd = uni.createRewardedVideoAd({ adUnitId: 'adunit-838a47bd221802de' });
+			rewardedVideoAd.onLoad(() => {
+				// console.log('onLoad event');
+			});
+			rewardedVideoAd.onError(err => {
+				// console.log('onError event', err);
+			});
+			rewardedVideoAd.onClose(res => {
+				// console.log('onClose event', res);
+				if ((res && res.isEnded) || res === undefined) {
+					this.doAppointment();
+				}
+			});
+		}
+	},
 };
 </script>
 
 <style lang="scss">
 .wrap {
 	position: relative;
+	.time-out {
+		position: relative;
+		width: 568rpx;
+		height: 552rpx;
+		padding-top: 70rpx;
+		box-sizing: border-box;
+		background: #ffffff;
+		border-radius: 20rpx;
+		text-align: center;
+		.icon {
+			width: 236rpx;
+			height: 214rpx;
+		}
+		.fs-24 {
+			padding: 28rpx 0 48rpx;
+			.number {
+				color: #5f3dd2;
+				font-size: 30rpx;
+				font-weight: bold;
+			}
+		}
+		.btn {
+			width: 384rpx;
+			height: 78rpx;
+			background: #5f3dd2;
+			font-size: 34rpx;
+			color: #ffffff;
+			border-radius: 40rpx;
+			margin: 0 auto;
+		}
+		.close {
+			width: 36rpx;
+			height: 36rpx;
+			position: absolute;
+			right: 30rpx;
+			top: 30rpx;
+		}
+	}
+	.fixed-btns {
+		position: fixed;
+		top: 300rpx;
+		right: 0;
+		width: 94rpx;
+		height: 220rpx;
+		background: #c111fb;
+		border-radius: 20rpx 0 0 20rpx;
+		overflow: hidden;
+		view {
+			width: 100%;
+			height: 50%;
+			padding: 20rpx;
+			box-sizing: border-box;
+			font-size: 26rpx;
+			color: #fff;
+		}
+	}
 	.bg {
 		position: absolute;
 		top: 0;
@@ -159,6 +470,7 @@ export default {
 				padding: 0 4rpx;
 				background-color: #c111fb;
 				color: #fff;
+				margin: 0 4rpx;
 			}
 		}
 		.btn-group {
@@ -219,16 +531,16 @@ export default {
 			}
 			.name2 {
 				font-size: 20rpx;
-				color: #C588D9;
+				color: #c588d9;
 			}
 		}
-		.header-group{
-			image{
+		.header-group {
+			image {
 				width: 82rpx;
 				height: 84rpx;
 				border-radius: 50%;
 				margin-right: 11rpx;
-				&:last-child{
+				&:last-child {
 					margin-right: 0;
 				}
 			}
@@ -260,7 +572,7 @@ export default {
 		.icon-group {
 			padding: 50rpx 40rpx;
 			text-align: center;
-			>view{
+			> view {
 				position: relative;
 				image {
 					width: 128rpx;
@@ -274,49 +586,49 @@ export default {
 				}
 				.name2 {
 					font-size: 20rpx;
-					color: #C588D9;
+					color: #c588d9;
 				}
-				.ranking{
+				.ranking {
 					position: absolute;
 					left: calc(50% - 80rpx);
 					bottom: 68rpx;
-					image{
+					image {
 						width: 160rpx;
 						height: 54rpx;
 						display: block;
 					}
-					view{
+					view {
 						position: absolute;
 						left: 0;
 						top: 0;
 						width: 100%;
 						height: 100%;
 						font-size: 24rpx;
-						color: #FFFFFF;
+						color: #ffffff;
 						padding: 4rpx 0 0 16rpx;
 					}
 				}
 			}
 		}
-		.list{
-			.item{
+		.list {
+			.item {
 				width: 652rpx;
 				height: 84rpx;
-				background: #F5F5F5;
+				background: #f5f5f5;
 				border-radius: 20rpx;
 				padding: 0 20rpx;
 				box-sizing: border-box;
 				margin-bottom: 20rpx;
-				&:last-child{
+				&:last-child {
 					margin-bottom: 0;
 				}
-				.header{
+				.header {
 					width: 32px;
 					height: 32px;
 					border-radius: 50%;
 					margin-right: 15rpx;
 				}
-				.clock{
+				.clock {
 					width: 34rpx;
 					height: 32rpx;
 					margin-right: 8rpx;

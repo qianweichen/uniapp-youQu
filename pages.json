@@ -216,6 +216,16 @@
             "style" : {
 				"navigationBarTitleText": "早起打卡挑战赛"
 			}
+        },{
+            "path" : "clockIn/record",
+            "style" : {
+				"navigationBarTitleText": "我的战绩"
+			}
+        },{
+            "path" : "clockIn/rules",
+            "style" : {
+				"navigationBarTitleText": "活动规则"
+			}
         }]
 	}],
 	"globalStyle": {
