@@ -61,6 +61,7 @@ const qiniuUploader = require('@/components/qiniuUploader/qiniuUploader.js');
 export default {
 	data() {
 		return {
+			sending:false,
 			videoData: {}, //视频数据
 			content: '', //内容
 			chooseCirce: {}, //圈子信息
@@ -127,6 +128,9 @@ export default {
 			// 	});
 			// 	return;
 			// }
+			if(this.sending){
+				return;
+			}
 			if (!this.content) {
 				uni.showToast({
 					title: '请输入内容',
@@ -151,6 +155,7 @@ export default {
 		},
 		// 第二步:上传七牛
 		saveVideo() {
+			this.sending = true;
 			this.$refs.loading.open();
 			var params = {};
 			params.token = uni.getStorageSync('token');
@@ -240,6 +245,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.sending = false;
 					this.$refs.loading.close();
 					uni.setStorageSync('publishCircleId', res.data.id);
 					setTimeout(() => {

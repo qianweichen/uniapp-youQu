@@ -83,12 +83,12 @@
 								</view>
 							</view>
 							<view class="userInfo flex">
-								<view :class="{ rotate: isRotateHeader }" class="header circle" @click.stop="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
+								<view :class="{ rotate: isRotateHeader }" class="header circle" @click.stop="goPage(`/pages/personalCenter/personalCenter?id=${item.user_id}&videoId=${item.id}`)">
 									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 									<view class="ai-te flex-center">@</view>
 									<!-- <image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->
 								</view>
-								<view @click.stop="goPage('/pages/personalCenter/personalCenter?id=' + item.user_id)">
+								<view @click.stop="goPage(`/pages/personalCenter/personalCenter?id=${item.user_id}&videoId=${item.id}`)">
 									<view class="fs-30 bold nick-name">{{ item.user_nick_name }}</view>
 									<!-- <view class="fs-22" style="color: #eee; padding-top: 14rpx;">{{ item.adapter_time }}</view> -->
 								</view>

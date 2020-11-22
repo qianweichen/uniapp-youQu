@@ -38,6 +38,7 @@ export default {
 	},
 	data() {
 		return {
+			sending:false,
 			apiUrl: this.apiUrl,
 			content: '',
 			chooseCirce: {}, //圈子信息
@@ -52,6 +53,9 @@ export default {
 	methods: {
 		// 第一步:订阅
 		send() {
+			if(this.sending){
+				return;
+			}
 			if (!this.content) {
 				uni.showToast({
 					title: '请输入内容',
@@ -70,6 +74,7 @@ export default {
 				tmplIds: ['NfOZBD9yhTMpgM_CUJDBKdmkjvllcDF2RHPvlDMldoI', '7sor7eBvPETo04jeaDtzc_co2VX9_6NHnCJaqQiVMNE'],
 				success: res => {
 					// console.log(res);
+					this.sending = true;
 					this.$refs.loading.open();
 					var params = {};
 					params.token = uni.getStorageSync('token');
@@ -102,6 +107,7 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
+					this.sending = false;
 					this.$refs.loading.close();
 					setTimeout(() => {
 						uni.navigateBack();

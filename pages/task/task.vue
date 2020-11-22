@@ -11,7 +11,7 @@
 				<view class="flex-center">
 					<view class="fs-46">
 						<view>{{ personalInfo.fraction }}</view>
-						<view style="font-size: 22rpx;">(约{{(personalInfo.fraction/100).toFixed(2)}}元,累计提现{{drawalNum}}元)</view>
+						<view style="font-size: 22rpx;">(约{{(personalInfo.fraction/1000).toFixed(2)}}元,累计提现{{drawalNum}}元)</view>
 					</view>
 					<text class="fs-22 bold tixian" @click="goPage('/pages/task/deposit')">提现</text>
 				</view>

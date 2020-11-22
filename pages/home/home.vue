@@ -85,18 +85,18 @@
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
 
 		<!-- 公告 -->
-		<!-- <view v-if="isShowNotice">
+		<view v-if="isShowNotice">
 			<view class="mask">
 				<view class="notice">
 					<image src="@/static/notice.png" mode="widthFix"></image>
 					<view class="concat">
-						<view class="title">友趣短视频小程序正式上线啦！</view>
-						<view class="info">新版福利：发布的视频或动态点赞量达到100，奖励10元。点赞量达到1000，奖励100元。联系客服即可领取奖励，快来体验吧！</view>
+						<view class="title">版本更新</view>
+						<view class="info">本次更新平台新增早起打卡功能，分享视频也可以增加积分。积分兑换比例调整为根据前一日广告收益浮动</view>
 						<view class="btn-big flex-center" @click="closeNotice">立即探索</view>
 					</view>
 				</view>
 			</view>
-		</view> -->
+		</view>
 
 		<!-- 红包-签到 -->
 		<view v-if="isShowShare">
@@ -109,48 +109,48 @@
 							<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">提现</button>
 							<image @click="isShowShare = false" src="@/static/share-close.png" mode="widthFix"></image>
 						</view>
-						
+
 						<!-- 7日签到 -->
 						<view class="seven-days">
 							<view class="flex">
 								<view class="item active">
 									<view class="num">1</view>
 									<view>第1天</view>
-									<view v-if="sevenRed.data==0||sevenRed.data==7" class="add">+{{sevenRed.res.number1}}</view>
+									<view v-if="sevenRed.data == 0 || sevenRed.data == 7" class="add">+{{ sevenRed.res.number1 }}</view>
 								</view>
-								<view class="item" :class="{active:sevenRed.data>=1}">
+								<view class="item" :class="{ active: sevenRed.data >= 1 }">
 									<view class="num">2</view>
 									<view>第2天</view>
-									<view v-if="sevenRed.data==1" class="add">+{{sevenRed.res.number2}}</view>
+									<view v-if="sevenRed.data == 1" class="add">+{{ sevenRed.res.number2 }}</view>
 								</view>
-								<view class="item" :class="{active:sevenRed.data>=2}">
+								<view class="item" :class="{ active: sevenRed.data >= 2 }">
 									<view class="num">3</view>
 									<view>第3天</view>
-									<view v-if="sevenRed.data==2" class="add">+{{sevenRed.res.number3}}</view>
+									<view v-if="sevenRed.data == 2" class="add">+{{ sevenRed.res.number3 }}</view>
 								</view>
-								<view class="item":class="{active:sevenRed.data>=3}">
+								<view class="item" :class="{ active: sevenRed.data >= 3 }">
 									<view class="num">4</view>
 									<view>第4天</view>
-									<view v-if="sevenRed.data==3" class="add">+{{sevenRed.res.number4}}</view>
+									<view v-if="sevenRed.data == 3" class="add">+{{ sevenRed.res.number4 }}</view>
 								</view>
-								<view class="item" :class="{active:sevenRed.data>=4}">
+								<view class="item" :class="{ active: sevenRed.data >= 4 }">
 									<view class="num">5</view>
 									<view>第5天</view>
-									<view v-if="sevenRed.data==4" class="add">+{{sevenRed.res.number5}}</view>
+									<view v-if="sevenRed.data == 4" class="add">+{{ sevenRed.res.number5 }}</view>
 								</view>
-								<view class="item" :class="{active:sevenRed.data>=5}">
+								<view class="item" :class="{ active: sevenRed.data >= 5 }">
 									<view class="num">6</view>
 									<view>第6天</view>
-									<view v-if="sevenRed.data==5" class="add">+{{sevenRed.res.number6}}</view>
+									<view v-if="sevenRed.data == 5" class="add">+{{ sevenRed.res.number6 }}</view>
 								</view>
-								<view class="item" :class="{active:sevenRed.data>=6}">
+								<view class="item" :class="{ active: sevenRed.data >= 6 }">
 									<image src="../../static/red-gift.png" mode="widthFix"></image>
 									<view>第7天</view>
-									<view v-if="sevenRed.data==6" class="add">+{{sevenRed.res.number7}}</view>
+									<view v-if="sevenRed.data == 6" class="add">+{{ sevenRed.res.number7 }}</view>
 								</view>
 							</view>
 							<view v-if="isAuthorized">
-								<view v-if="sevenRed.state==0" class="tip" style="padding-top: 20rpx;" @click="signIn">
+								<view v-if="sevenRed.state == 0" class="tip" style="padding-top: 20rpx;" @click="signIn">
 									<view class="flex-center">
 										<text style="padding: 6rpx 20rpx; border-radius: 30rpx; background-color: #FF893E; color: #fff;">点击打卡</text>
 									</view>
@@ -169,9 +169,7 @@
 						<!-- <view v-else class="tip">邀请一个好友最高可得2元，秒体现秒到账。</view> -->
 
 						<view v-if="isAuthorized">
-							<view v-if="sevenRed.state==0">
-								
-							</view>
+							<view v-if="sevenRed.state == 0"></view>
 							<view v-else>
 								<!-- <image :animation="animation2" @click="goPage('/pages/mine/invitation')" class="share-btn" src="@/static/share-btn.png" mode="widthFix"></image> -->
 								<view class="tip" style="padding-top: 20rpx;">
@@ -179,7 +177,7 @@
 										<image style="width: 30rpx; height: auto; margin-right: 12rpx;" src="../../static/sign-ok.png" mode="widthFix"></image>
 										<text>今日已打卡</text>
 									</view>
-									<view>我的余额：{{ (personalInfo.fraction / 100).toFixed(2) }}元</view>
+									<view>我的余额：{{ (personalInfo.fraction / 1000).toFixed(2) }}元</view>
 								</view>
 							</view>
 							<view class="sign-in fs-40 flex-center" @click="goPage('/pagesA/clockIn/clockIn')">
@@ -214,6 +212,9 @@
 								</swiper-item>
 							</swiper>
 						</button>
+						<view class="fs-24" style="color: #7E0C00; padding-bottom: 40rpx;">
+							*每天点击以上小程序也可以增加积分哦
+						</view>
 						<!-- 提现列表 -->
 						<swiper class="red-swiper" circular vertical interval="1500" autoplay>
 							<swiper-item v-for="(item, index) in txList" :key="index">

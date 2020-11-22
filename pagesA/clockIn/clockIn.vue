@@ -21,16 +21,14 @@
 				<text class="number">{{ activityTime.second }}</text>
 				<text>秒</text>
 			</view>
-			<view v-else class="time">
-				不在报名时间段内
-			</view>
+			<view v-else class="time">不在报名时间段内</view>
 			<view class="btn-group">
 				<image src="../../static/clockIn/btn.png" mode="widthFix"></image>
 				<!-- 0未预约   1已预约 未打卡   2已打卡瓜分 -->
 				<!-- 在打卡时间段 -->
 				<view v-if="clockTime">
 					<view v-if="clockStatus == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
-					<view v-if="clockStatus == 1" class="flex-center" @click="clockIn">打卡倒计时 {{ clockTime.hour }}:{{ clockTime.minute }}:{{ clockTime.second }}</view>
+					<view v-if="clockStatus == 1" class="flex-center" @click="clockIn">打卡中 {{ clockTime.hour }}:{{ clockTime.minute }}:{{ clockTime.second }}</view>
 					<view v-if="clockStatus == 2" class="flex-center" @click="appointment">观看视频，立即预约</view>
 				</view>
 				<!-- 不在打卡时间段 -->
@@ -38,11 +36,11 @@
 					<!-- 在预约时间段内 -->
 					<view v-if="activityTime">
 						<view v-if="clockStatusToday == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
-						<view v-if="clockStatusToday == 1" class="flex-center">已预约</view>
+						<view v-if="clockStatusToday == 1" class="flex-center">打卡倒计时{{ starClockTime.hour }}:{{ starClockTime.minute }}:{{ starClockTime.second }}</view>
 					</view>
 					<view v-else>
 						<view v-if="clockStatusToday == 0" class="flex-center">不在预约时间段内</view>
-						<view v-if="clockStatusToday == 1" class="flex-center">已预约</view>
+						<view v-if="clockStatusToday == 1" class="flex-center">打卡倒计时{{ starClockTime.hour }}:{{ starClockTime.minute }}:{{ starClockTime.second }}</view>
 					</view>
 				</view>
 			</view>
@@ -86,7 +84,7 @@
 					<image v-if="ranking[1]" class="circle" :src="ranking[1].user.user_head_sculpture" mode="aspectFill"></image>
 					<image v-else class="circle" src="../../static/logo.png" mode="widthFix"></image>
 					<view class="name">{{ ranking[1].user.user_nick_name || '拭目以待' }}</view>
-					<view class="name2">{{item.updatetime_text || '-'}}</view>
+					<view class="name2">{{ item.updatetime_text || '-' }}</view>
 					<view class="ranking">
 						<image src="../../static/clockIn/icon-2.png" mode="widthFix"></image>
 						<view class="flex-center">亚军</view>
@@ -95,7 +93,7 @@
 				<view>
 					<image class="circle" :src="ranking[0].user.user_head_sculpture" mode="aspectFill"></image>
 					<view class="name">{{ ranking[0].user.user_nick_name }}</view>
-					<view class="name2">{{item.updatetime_text || '-'}}</view>
+					<view class="name2">{{ item.updatetime_text || '-' }}</view>
 					<view class="ranking">
 						<image src="../../static/clockIn/icon-1.png" mode="widthFix"></image>
 						<view class="flex-center">冠军</view>
@@ -105,7 +103,7 @@
 					<image v-if="ranking[2]" class="circle" :src="ranking[2].user.user_head_sculpture" mode="aspectFill"></image>
 					<image v-else class="circle" src="../../static/logo.png" mode="widthFix"></image>
 					<view class="name">{{ ranking[2].user.user_nick_name || '拭目以待' }}</view>
-					<view class="name2">{{item.updatetime_text || '-'}}</view>
+					<view class="name2">{{ item.updatetime_text || '-' }}</view>
 					<view class="ranking">
 						<image src="../../static/clockIn/icon-3.png" mode="widthFix"></image>
 						<view class="flex-center">季军</view>
@@ -169,13 +167,14 @@ export default {
 		return {
 			isTimeoutShow: false,
 			isSuccessShow: false,
-			activityTime: '',
-			clockTime: '',
+			activityTime: '', //活动倒计时
+			clockTime: '', //打卡中：打卡结束倒计时
+			starClockTime: '', //已预约：打开开始倒计时
 			poolInfo: {},
-			clockStatus: '',	 //昨天的活动是否预约了 	0未预约   1已预约 未打卡   2已打卡瓜分
-			clockStatusToday:'',//今天是否预约明天的活动	0未预约   1已预约
+			clockStatus: '', //昨天的活动是否预约了 	0未预约   1已预约 未打卡   2已打卡瓜分
+			clockStatusToday: '', //今天是否预约明天的活动	0未预约   1已预约
 			ranking: [],
-			timeQuantum:'' //0-5点=1   5-10点=2  10点以后=3
+			timeQuantum: '' //0-5点=1   5-10点=2  10点以后=3
 		};
 	},
 	methods: {
@@ -239,7 +238,7 @@ export default {
 				});
 			}
 		},
-		doAppointment(){
+		doAppointment() {
 			this.request({
 				url: this.apiUrl + 'user/make_punch',
 				data: {
@@ -250,8 +249,8 @@ export default {
 				success: res => {
 					console.log('预约', res);
 					uni.showToast({
-						title:res.data.msg,
-						icon:'none'
+						title: res.data.msg,
+						icon: 'none'
 					});
 					this.init();
 				}
@@ -272,12 +271,12 @@ export default {
 					this.clockStatusToday = res.data.data2; //	0未预约   1已预约
 
 					//已预约并且超过打卡时间，弹框提示，一天只提示一次
-					if(this.timeQuantum==3&&this.clockStatus==1){
+					if (this.timeQuantum == 3 && this.clockStatus == 1) {
 						var today = new Date().toLocaleDateString(),
 							storageDay = uni.getStorageSync('timeoutShowFlag');
-						if(today!=storageDay){
+						if (today != storageDay) {
 							this.isTimeoutShow = true;
-							uni.setStorageSync('timeoutShowFlag',today);
+							uni.setStorageSync('timeoutShowFlag', today);
 						}
 					}
 				}
@@ -311,8 +310,11 @@ export default {
 				this.activityTime = '';
 				//非打卡时段不显示打卡倒计时
 				this.clockTime = '';
-				
-				this.timeQuantum=1;
+				//不在打卡时间段获取打卡开始时间倒计时（今天五点）
+				var starClockTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 5 * 60 * 60 * 1000);
+				this.getSurplusTime('starClockTime', starClockTime);
+
+				this.timeQuantum = 1;
 			} else if (now < today_10) {
 				//5-10点
 				//预约截至时间 第二天0点
@@ -321,8 +323,10 @@ export default {
 				//打卡截至时间 当天上午十点
 				var clockEndTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 10 * 60 * 60 * 1000);
 				this.getSurplusTime('clockTime', clockEndTime);
+				//打卡时间段不获取打卡开始时间倒计时
+				this.starClockTime = '';
 
-				this.timeQuantum=2;
+				this.timeQuantum = 2;
 			} else {
 				//10点以后
 				//预约截至时间 第二天0点
@@ -330,11 +334,14 @@ export default {
 				this.getSurplusTime('activityTime', appointmentEndTime);
 				//非打卡时段不显示打卡倒计时
 				this.clockTime = '';
+				//不在打卡时间段获取打卡开始时间倒计时（明天五点）
+				var starClockTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + (24 + 5) * 60 * 60 * 1000);
+				this.getSurplusTime('starClockTime', starClockTime);
 
-				this.timeQuantum=3;
+				this.timeQuantum = 3;
 			}
 		},
-		init(){
+		init() {
 			this.getIntegralPool();
 			this.getClockStatus();
 			this.getRanking();
@@ -364,7 +371,7 @@ export default {
 				}
 			});
 		}
-	},
+	}
 };
 </script>
 

@@ -90,6 +90,9 @@
 						<!-- <image src="../../static/good.png" mode="widthFix"></image>
 						<text class="fs-22">{{ item.info_zan_count }}</text> -->
 					</view>
+					<view v-if="item.id==videoId" class="watched flex-center">
+						刚才看过
+					</view>
 				</view>
 				<!-- <view class="infoBox flex-column-between">
 					<view class="cont fs-24" v-if="item.study_content">{{ item.study_content }}</view>

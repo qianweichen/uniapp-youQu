@@ -195,7 +195,9 @@
 		padding-top: 20rpx;
 	}
 	.ads-swiper{
+		height: 200rpx;
 		width: 710rpx;
+		padding-top: 40rpx;
 	}
 	.btn-group {
 		.item{
@@ -298,12 +300,12 @@
 	overflow: hidden;
 	.notice {
 		width: 534rpx;
-		height: 618rpx;
 		background: #fff;
 		border-radius: 10rpx;
 		position: fixed;
 		left: calc(50% - 267rpx);
 		top: calc(50% - 309rpx);
+		white-space: pre-wrap;
 		image {
 			width: 688rpx;
 			height: auto;
@@ -329,7 +331,9 @@
 				width: 100%;
 				color: #fff;
 				height: 75rpx;
-				margin-top: 40rpx;
+				margin: 60rpx 0;
+				position: relative;
+				z-index: 2;
 			}
 		}
 	}

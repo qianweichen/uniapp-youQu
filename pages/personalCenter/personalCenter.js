@@ -18,7 +18,9 @@ export default {
 			pageScroll: 0,
 			timer: null,
 			autoPlayFlag: false,
-			loadStatus:'loadmore'
+			loadStatus:'loadmore',
+			
+			videoId:''
 		};
 	},
 	methods: {
@@ -263,6 +265,11 @@ export default {
 		this.personalId = options.id;
 		this.getPersonalInfo();
 		this.getVideoList(true);
+		
+		//从哪个视频跳转来的   用于标记
+		if(options.videoId){
+			this.videoId = options.videoId;
+		}
 	},
 	onReachBottom() {
 		if(this.loadStatus != "loadmore"){
