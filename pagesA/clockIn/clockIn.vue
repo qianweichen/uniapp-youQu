@@ -21,8 +21,16 @@
 				<text class="number">{{ activityTime.second }}</text>
 				<text>秒</text>
 			</view>
-			<view v-else class="time">不在报名时间段内</view>
-			<view class="btn-group">
+			<view v-else class="time">
+				<text>距离报名截至时间还有：</text>
+				<text class="number">00</text>
+				<text>时</text>
+				<text class="number">00</text>
+				<text>分</text>
+				<text class="number">00</text>
+				<text>秒</text>
+			</view>
+			<view v-if="isAuthorized" class="btn-group">
 				<image src="../../static/clockIn/btn.png" mode="widthFix"></image>
 				<!-- 0未预约   1已预约 未打卡   2已打卡瓜分 -->
 				<!-- 在打卡时间段 -->
@@ -39,11 +47,29 @@
 						<view v-if="clockStatusToday == 1" class="flex-center">打卡倒计时{{ starClockTime.hour }}:{{ starClockTime.minute }}:{{ starClockTime.second }}</view>
 					</view>
 					<view v-else>
-						<view v-if="clockStatusToday == 0" class="flex-center">不在预约时间段内</view>
+						<view v-if="clockStatusToday == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
 						<view v-if="clockStatusToday == 1" class="flex-center">打卡倒计时{{ starClockTime.hour }}:{{ starClockTime.minute }}:{{ starClockTime.second }}</view>
 					</view>
 				</view>
 			</view>
+			<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share btn-group">
+				<image src="../../static/clockIn/btn.png" mode="widthFix"></image>
+				<view v-if="clockTime">
+					<view v-if="clockStatus == 0" class="flex-center">观看视频，立即预约</view>
+					<view v-if="clockStatus == 1" class="flex-center">打卡中 {{ clockTime.hour }}:{{ clockTime.minute }}:{{ clockTime.second }}</view>
+					<view v-if="clockStatus == 2" class="flex-center">观看视频，立即预约</view>
+				</view>
+				<view v-else>
+					<view v-if="activityTime">
+						<view v-if="clockStatusToday == 0" class="flex-center">观看视频，立即预约</view>
+						<view v-if="clockStatusToday == 1" class="flex-center">打卡倒计时{{ starClockTime.hour }}:{{ starClockTime.minute }}:{{ starClockTime.second }}</view>
+					</view>
+					<view v-else>
+						<view v-if="clockStatusToday == 0" class="flex-center">观看视频，立即预约</view>
+						<view v-if="clockStatusToday == 1" class="flex-center">打卡倒计时{{ starClockTime.hour }}:{{ starClockTime.minute }}:{{ starClockTime.second }}</view>
+					</view>
+				</view>
+			</button>
 		</view>
 		<view class="step-group">
 			<view class="title flex-center">
@@ -68,8 +94,8 @@
 					<view class="name2">12点前积分结算</view>
 				</view>
 			</view>
-			<view class="header-group" v-if="ranking.length > 0">
-				<image v-for="(item, index) in ranking" :key="index" :src="item.user.user_head_sculpture" mode="aspectFill" v-if="index < 6"></image>
+			<view class="header-group" v-if="joined.length > 0">
+				<image v-for="(item, index) in joined" :key="index" :src="item.user_head_sculpture" mode="aspectFill"></image>
 				<image src="../../static/clockIn/more.png" mode="widthFix"></image>
 			</view>
 		</view>
@@ -125,7 +151,16 @@
 		</view>
 		<view class="fixed-btns">
 			<view @click="goPage('/pagesA/clockIn/rules')">活动规则</view>
-			<view @click="goPage('/pagesA/clockIn/record')" style="background-color: #5F3DD2;">我的战绩</view>
+			<view v-if="isAuthorized" @click="goPage('/pagesA/clockIn/record')" style="background-color: #5F3DD2;">我的战绩</view>
+			<button
+				v-else
+				open-type="getUserInfo"
+				@getuserinfo="getUserInfo"
+				class="share"
+				style="background-color: #5F3DD2; color: #fff; font-size: 26rpx; height: 50%; padding: 20rpx; border-radius: 0;"
+			>
+				我的战绩
+			</button>
 		</view>
 		<!-- 超时弹窗 -->
 		<view v-if="isTimeoutShow" class="mask flex-center">
@@ -173,11 +208,21 @@ export default {
 			poolInfo: {},
 			clockStatus: '', //昨天的活动是否预约了 	0未预约   1已预约 未打卡   2已打卡瓜分
 			clockStatusToday: '', //今天是否预约明天的活动	0未预约   1已预约
-			ranking: [],
-			timeQuantum: '' //0-5点=1   5-10点=2  10点以后=3
+			ranking: [], //排名
+			joined: [], //已加入
+			timeQuantum: '', //0-5点=1   5-10点=2  10点以后=3
+			isAuthorized: false //授权否
 		};
 	},
 	methods: {
+		//授权
+		getUserInfo(e) {
+			if (!e.detail.userInfo) return;
+			this.doLogin(e.detail.userInfo, () => {
+				this.isAuthorized = true;
+				this.init();
+			});
+		},
 		//obj：修改哪个对象   endtime：结束时间
 		getSurplusTime(obj, endtime) {
 			var nowtime = new Date(), //获取当前时间
@@ -225,20 +270,32 @@ export default {
 		},
 		//预约
 		appointment() {
-			// 用户触发广告后，显示激励视频广告
-			if (rewardedVideoAd) {
-				rewardedVideoAd.show().catch(() => {
-					// 失败重试
-					rewardedVideoAd
-						.load()
-						.then(() => rewardedVideoAd.show())
-						.catch(err => {
-							// console.log('激励视频 广告显示失败');
+			uni.requestSubscribeMessage({
+				tmplIds: ['juzBV1wr_fSkUcLvdMBm4fheXMPKVc0a_PmKd9rAdCQ'],
+				complete: res => {
+					// 用户触发广告后，显示激励视频广告
+					if (rewardedVideoAd) {
+						rewardedVideoAd.show().catch(() => {
+							// 失败重试
+							rewardedVideoAd
+								.load()
+								.then(() => rewardedVideoAd.show())
+								.catch(err => {
+									// console.log('激励视频 广告显示失败');
+								});
 						});
-				});
-			}
+					}
+				}
+			});
 		},
 		doAppointment() {
+			if (!this.activityTime && this.clockStatusToday == 0) {
+				uni.showToast({
+					title: '上期积分池正在瓜分，5点以后才可预约！',
+					icon: 'none'
+				});
+				return;
+			}
 			this.request({
 				url: this.apiUrl + 'user/make_punch',
 				data: {
@@ -295,6 +352,7 @@ export default {
 				success: res => {
 					console.log('战况', res);
 					this.ranking = res.data.data;
+					this.joined = res.data.data2;
 				}
 			});
 		},
@@ -348,6 +406,9 @@ export default {
 		}
 	},
 	onLoad() {
+		//判断授权 已授权为true
+		this.isAuthorized = this.beAuthorized();
+
 		this.init();
 		//每秒刷新一下时间
 		this.getCountDown();
@@ -370,6 +431,15 @@ export default {
 					this.doAppointment();
 				}
 			});
+		}
+	},
+	onShareAppMessage(res) {
+		if (res.from === 'menu') {
+			return {
+				title: this.miniProgramName,
+				path: '/pages/index/index',
+				imageUrl: '/static/logo.png'
+			};
 		}
 	}
 };
@@ -482,9 +552,11 @@ export default {
 		}
 		.btn-group {
 			position: relative;
+			width: 602rpx;
+			height: 130rpx;
 			image {
 				width: 602rpx;
-				height: 129rpx;
+				height: 130rpx;
 				display: block;
 			}
 			view {

@@ -155,6 +155,11 @@
 										<text style="padding: 6rpx 20rpx; border-radius: 30rpx; background-color: #FF893E; color: #fff;">点击打卡</text>
 									</view>
 								</view>
+								<view v-else class="tip" style="padding-top: 20rpx;">
+									<view class="flex-center">
+										<text style="padding: 6rpx 20rpx; border-radius: 30rpx; background-color: #FF893E; color: #fff;">已打卡</text>
+									</view>
+								</view>
 							</view>
 							<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share" style="overflow: unset;">
 								<view class="tip" style="padding-top: 20rpx;">
@@ -212,7 +217,7 @@
 								</swiper-item>
 							</swiper>
 						</button>
-						<view class="fs-24" style="color: #7E0C00; padding-bottom: 40rpx;">
+						<view class="fs-24 text-center" style="color: #7E0C00; padding-bottom: 40rpx;">
 							*每天点击以上小程序也可以增加积分哦
 						</view>
 						<!-- 提现列表 -->

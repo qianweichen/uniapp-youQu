@@ -34,23 +34,27 @@ export default {
 		},
 		//签到
 		signIn() {
-			this.subscription(); //小神推模板消息订阅
-			this.request({
-				url: this.apiUrl + 'User/add_user_punch',
-				data: {
-					token: uni.getStorageSync('token'),
-					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId')
-				},
-				success: res => {
-					// console.log('签到:', res);
-					uni.showToast({
-						title: res.data.msg,
-						icon: 'none'
+			uni.requestSubscribeMessage({
+				tmplIds: ['eouzl8p41dm6RqLnP1EJwn22CFomD67vIc8nXezyMI4'],
+				complete: res => {
+					this.request({
+						url: this.apiUrl + 'User/add_user_punch',
+						data: {
+							token: uni.getStorageSync('token'),
+							openid: uni.getStorageSync('openid'),
+							uid: uni.getStorageSync('userId')
+						},
+						success: res => {
+							// console.log('签到:', res);
+							uni.showToast({
+								title: res.data.msg,
+								icon: 'none'
+							});
+							// setTimeout(()=>{
+							// 	this.getPersonalInfo();
+							// },1500);
+						}
 					});
-					// setTimeout(()=>{
-					// 	this.getPersonalInfo();
-					// },1500);
 				}
 			});
 		},

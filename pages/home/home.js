@@ -31,8 +31,8 @@ export default {
 			closedRed: false, //是否关闭过红包
 
 			advertisingList: [],
-			
-			sevenRed:''
+
+			sevenRed: ''
 		};
 	},
 	methods: {
@@ -51,13 +51,13 @@ export default {
 							token: uni.getStorageSync('token'),
 							openid: uni.getStorageSync('openid'),
 							uid: uni.getStorageSync('userId'),
-							id:items.id
+							id: items.id
 						},
 						success: res => {
 							// console.log('获得小程序积分:', res);
 							uni.showToast({
-								title:res.data.msg,
-								icon:'none'
+								title: res.data.msg,
+								icon: 'none'
 							});
 							this.getPersonalInfo();
 						}
@@ -70,29 +70,31 @@ export default {
 		},
 		//签到
 		signIn() {
-			//小神推模板消息订阅
-			this.subscription('', (res) => {
-				this.request({
-					url: this.apiUrl + 'user/continuity_sign',
-					data: {
-						token: uni.getStorageSync('token'),
-						openid: uni.getStorageSync('openid'),
-						uid: uni.getStorageSync('userId')
-					},
-					success: res => {
-						// console.log('签到:',res);
-						this.isNewRedShow = false;
-						if (res.data.msg) {
-							this.isSignToastShow = res.data.msg.replace(/[^\d|^\.|^\-]/g, ""); //提示
+			uni.requestSubscribeMessage({
+				tmplIds: ['eouzl8p41dm6RqLnP1EJwn22CFomD67vIc8nXezyMI4'],
+				complete: res => {
+					this.request({
+						url: this.apiUrl + 'user/continuity_sign',
+						data: {
+							token: uni.getStorageSync('token'),
+							openid: uni.getStorageSync('openid'),
+							uid: uni.getStorageSync('userId')
+						},
+						success: res => {
+							// console.log('签到:',res);
+							this.isNewRedShow = false;
+							if (res.data.msg) {
+								this.isSignToastShow = res.data.msg.replace(/[^\d|^\.|^\-]/g, ""); //提示
+							}
+							setTimeout(() => {
+								this.isShowShare = true;
+								this.isSignToastShow = null;
+							}, 2000);
+							this.getPersonalInfo();
+							this.getSignDay();
 						}
-						setTimeout(() => {
-							this.isShowShare = true;
-							this.isSignToastShow = null;
-						}, 2000);
-						this.getPersonalInfo();
-						this.getSignDay();
-					}
-				});
+					});
+				}
 			});
 		},
 		//获取用户信息
@@ -217,7 +219,7 @@ export default {
 			this.isAuthorized = this.beAuthorized();
 			this.getPersonalInfo(); //获取用户信息
 			this.getNewUser(); //获取是否新人
-			this.getSignDay();	// 获取昨天签到的是第几天
+			this.getSignDay(); // 获取昨天签到的是第几天
 		},
 		//获取首页视频列表
 		getHomeList(isFirstPage) {
@@ -348,7 +350,7 @@ export default {
 				this.isAuthorized = true;
 				this.getPersonalInfo(); //获取用户信息
 				this.getNewUser(); //获取是否新人
-				this.getSignDay();	// 获取昨天签到的是第几天
+				this.getSignDay(); // 获取昨天签到的是第几天
 				//更新组件中的登录状态
 				if (this.$refs.recommendVideo) this.$refs.recommendVideo.isAuthorized = true;
 				if (this.$refs.refreshAttentionFlag) this.$refs.refreshAttentionFlag.isAuthorized = true;
@@ -443,7 +445,7 @@ export default {
 				}
 			})
 		},
-		getSignDay(){
+		getSignDay() {
 			this.request({
 				url: this.apiUrl + 'user/get_sign_day',
 				data: {
@@ -462,7 +464,8 @@ export default {
 		// 公告:每天弹出一次
 		var nowDate = new Date().toLocaleDateString(),
 			oldDate = uni.getStorageSync('showNoticeDate');
-		if (nowDate != oldDate) {
+		// if (nowDate != oldDate) {
+		if (!oldDate) {
 			this.isShowNotice = true;
 		}
 
@@ -475,7 +478,7 @@ export default {
 		if (this.isAuthorized) {
 			this.getPersonalInfo(); //获取用户信息
 			this.getNewUser(); //获取是否新人
-			this.getSignDay();	// 获取昨天签到的是第几天
+			this.getSignDay(); // 获取昨天签到的是第几天
 		} else {
 			setTimeout(() => {
 				this.isNewRedShow = true;

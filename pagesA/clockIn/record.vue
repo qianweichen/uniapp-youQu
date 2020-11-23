@@ -5,29 +5,30 @@
 		<view class="top flex-center">
 			<view>
 				<view class="fs-24">总获得积分</view>
-				<view class="num">{{ list.integral_count }}</view>
+				<view class="num">{{ info.integral_count }}</view>
 			</view>
 		</view>
 		<view>
 			<view class="info flex-between">
 				<view class="item">
-					<view>{{ list.baoming_num }}</view>
+					<view>{{ info.baoming_num }}</view>
 					<view>报名次数</view>
 				</view>
 				<view class="item">
-					<view>{{ list.chenggong_num }}</view>
+					<view>{{ info.chenggong_num }}</view>
 					<view>成功次数</view>
 				</view>
 				<view class="item">
-					<view>{{ list.integral_height }}</view>
+					<view>{{ info.integral_height }}</view>
 					<view>最高积分</view>
 				</view>
 			</view>
-			<view class="list" v-for="(item, index) in list.data_list" :key="index">
+			<view class="list" v-for="(item, index) in list" :key="index">
 				<view class="title fs-22 flex-between">
 					<view>{{ item.createtime }}</view>
-					<view v-if="item.state == 0" class="fail">挑战失败</view>
-					<view v-else class="success">挑战成功</view>
+					<view v-if="item.state == 1" class="fail">进行中</view>
+					<view v-if="item.state == 2" class="success">挑战成功</view>
+					<view v-if="item.state == 3" class="fail">挑战失败</view>
 				</view>
 				<view class="cont flex-between">
 					<view class="item">
@@ -39,12 +40,12 @@
 						<view>达标人数</view>
 					</view>
 					<view class="item">
-						<view>{{ item.carveup_integral }}</view>
+						<view>{{ item.carveup_integral || 0}}</view>
 						<view>所获积分</view>
 					</view>
 				</view>
 			</view>
-			<view v-if="list.data_list.length == 0 && status == 'nomore'" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
+			<view v-if="list.length == 0 && status == 'nomore'" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
 			<loadMore v-else :status="status"></loadMore>
 		</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
@@ -56,7 +57,9 @@ export default {
 	data() {
 		return {
 			status: 'loadmore',
-			list: []
+			info:'',
+			list: [],
+			page:1
 		};
 	},
 	methods: {
@@ -67,21 +70,32 @@ export default {
 				data: {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId')
+					uid: uni.getStorageSync('userId'),
+					page:this.page
 				},
 				success: res => {
 					console.log('战绩', res);
-					this.status = 'nomore';
-					res.data.data.data_list = res.data.data.data_list.filter(item => {
-						return item.carveup_integral;
-					});
-					this.list = res.data.data;
+					if(res.data.data.data_list.length<10){
+						this.status = 'nomore';
+					}else{
+						this.status = 'loadmore';
+					}
+					if(!this.info){
+						this.info = res.data.data;
+					}
+					this.page++;
+					this.list.push(...res.data.data.data_list);
 				}
 			});
 		}
 	},
 	onLoad() {
 		this.getRecord();
+	},
+	onReachBottom() {
+		if(this.status == 'loadmore'){
+			this.getRecord();
+		}
 	}
 };
 </script>

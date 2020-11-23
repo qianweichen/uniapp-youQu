@@ -439,7 +439,7 @@ export default {
 				// return;
 			} else { //关注
 				//小神推订阅
-				this.subscription('attention');
+				// this.subscription('attention');
 			}
 			this.$refs.loading.open();
 			this.request({
