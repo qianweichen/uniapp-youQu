@@ -178,10 +178,10 @@
 							<view v-else>
 								<!-- <image :animation="animation2" @click="goPage('/pages/mine/invitation')" class="share-btn" src="@/static/share-btn.png" mode="widthFix"></image> -->
 								<view class="tip" style="padding-top: 20rpx;">
-									<view class="flex-center">
+									<!-- <view class="flex-center">
 										<image style="width: 30rpx; height: auto; margin-right: 12rpx;" src="../../static/sign-ok.png" mode="widthFix"></image>
 										<text>今日已签到</text>
-									</view>
+									</view> -->
 									<view>我的余额：{{ (personalInfo.fraction / 1000).toFixed(2) }}元</view>
 								</view>
 							</view>

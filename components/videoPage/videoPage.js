@@ -74,7 +74,10 @@ export default {
 
 			//头像反转
 			isRotateHeader: false,
-			rotateHeaderTimer: null
+			rotateHeaderTimer: null,
+			
+			advertisingList:[],
+			isAdvertisingShow:true
 		}
 	},
 	props: {
@@ -124,6 +127,14 @@ export default {
 		}
 	},
 	methods: {
+		// 点击小程序广告
+		clickAdvertising(items) {
+			// console.log(items);
+			uni.navigateToMiniProgram({
+				appId: items.appid,
+				path: items.pages_url
+			});
+		},
 		// 数组中包含某个值吗?
 		isIncludes(arr, val) {
 			if (arr) {
@@ -1022,6 +1033,18 @@ export default {
 				}
 				this.animationData = animation2.export()
 			}.bind(this), 1000);
+		},
+		getAdvertising() {
+			this.request({
+				url: this.apiUrl + 'user/xcxbanner',
+				data: {
+		
+				},
+				success: res => {
+					this.advertisingList = res.data.data;
+					// console.log('广告：', this.advertisingList);
+				}
+			})
 		}
 	},
 	created() {
@@ -1030,6 +1053,9 @@ export default {
 
 		//创建动画
 		this.createdAnimate();
+		
+		//获取小程序广告
+		this.getAdvertising();
 	},
 	mounted() {
 		if (this.index != 0) { //有初始视频下标

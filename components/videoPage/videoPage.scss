@@ -196,6 +196,29 @@
 		position: absolute;
 		bottom: 0;
 		left: 0;
+		.advertising{
+			padding: 10rpx 40rpx 10rpx 10rpx;
+			background-color: rgba(0,0,0,0.7);
+			border-radius: 10rpx;
+			color: #fff;
+			margin-bottom: 20rpx;
+			font-size: 28rpx;
+			font-weight: bold;
+			position: relative;
+			.header{
+				width: 60rpx;
+				height: 60rpx;
+				margin-right: 10rpx;
+				border-radius: 50%;
+			}
+			.close{
+				position: absolute;
+				right: 0rpx;
+				top: 0rpx;
+				width: 30rpx;
+				height: 30rpx;
+			}
+		}
 		&.full-page {
 			padding-bottom: 144rpx;
 		}
