@@ -9,7 +9,7 @@ Vue.prototype.apiUrl = "https://quanyu.udiao.cn/index.php?s=/api/";
 
 //修改http为https
 Vue.prototype.httpsUrl = function(url) {
-	if (url&&url.indexOf("https") < 0) {
+	if (url && url.indexOf("https") < 0) {
 		url = url.replace("http:", "https:");
 	}
 	return url;
@@ -52,7 +52,7 @@ Vue.prototype.doLogin = function(userInfo, callBack, type) {
 		data: {
 			userInfo,
 			wx_openid: uni.getStorageSync('openid'),
-			uniacid:1
+			uniacid: 1
 		},
 		success: res => {
 			if (this.$refs.loading) {
@@ -96,6 +96,7 @@ Vue.prototype.request = function(obj) {
 			var page = pages[pages.length - 1];
 			var pageIndex = pages[0];
 			if (res.status && res.status == "error") {
+				console.log('错误信息：', res);
 				uni.showToast({
 					title: res.msg,
 					icon: 'none'
@@ -116,6 +117,7 @@ Vue.prototype.request = function(obj) {
 				return;
 			}
 			if (res.data.status && res.data.status == "error") {
+				console.log('错误信息：', res);
 				uni.showToast({
 					title: res.data.msg,
 					icon: 'none'

@@ -152,19 +152,19 @@
 							<view v-if="isAuthorized">
 								<view v-if="sevenRed.state == 0" class="tip" style="padding-top: 20rpx;" @click="signIn">
 									<view class="flex-center">
-										<text style="padding: 6rpx 20rpx; border-radius: 30rpx; background-color: #FF893E; color: #fff;">点击打卡</text>
+										<text style="padding: 6rpx 20rpx; border-radius: 30rpx; background-color: #FF893E; color: #fff;">点击签到</text>
 									</view>
 								</view>
 								<view v-else class="tip" style="padding-top: 20rpx;">
 									<view class="flex-center">
-										<text style="padding: 6rpx 20rpx; border-radius: 30rpx; background-color: #FF893E; color: #fff;">已打卡</text>
+										<text style="padding: 6rpx 20rpx; border-radius: 30rpx; background-color: #FF893E; color: #fff;">今日已签到</text>
 									</view>
 								</view>
 							</view>
 							<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share" style="overflow: unset;">
 								<view class="tip" style="padding-top: 20rpx;">
 									<view class="flex-center">
-										<text style="padding: 6rpx 20rpx; border-radius: 30rpx; background-color: #FF893E; color: #fff;">点击打卡</text>
+										<text style="padding: 6rpx 20rpx; border-radius: 30rpx; background-color: #FF893E; color: #fff;">点击签到</text>
 									</view>
 								</view>
 							</button>
@@ -180,7 +180,7 @@
 								<view class="tip" style="padding-top: 20rpx;">
 									<view class="flex-center">
 										<image style="width: 30rpx; height: auto; margin-right: 12rpx;" src="../../static/sign-ok.png" mode="widthFix"></image>
-										<text>今日已打卡</text>
+										<text>今日已签到</text>
 									</view>
 									<view>我的余额：{{ (personalInfo.fraction / 1000).toFixed(2) }}元</view>
 								</view>
