@@ -32,12 +32,16 @@
 			</view>
 			<view v-if="isAuthorized" class="btn-group">
 				<image src="../../static/clockIn/btn.png" mode="widthFix"></image>
-				<!-- 0未预约   1已预约 未打卡   2已打卡瓜分 -->
 				<!-- 在打卡时间段 -->
 				<view v-if="clockTime">
+					<!-- 0未预约   1已预约 未打卡   2已打卡瓜分 -->
 					<view v-if="clockStatus == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
 					<view v-if="clockStatus == 1" class="flex-center" @click="clockIn">打卡中 {{ clockTime.hour }}:{{ clockTime.minute }}:{{ clockTime.second }}</view>
-					<view v-if="clockStatus == 2" class="flex-center" @click="appointment">观看视频，立即预约</view>
+					<view v-if="clockStatus == 2">
+						<!-- 0今天未预约  1今天已预约 -->
+						<view v-if="clockStatusToday == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
+						<view v-if="clockStatusToday == 1" class="flex-center">已预约明天的活动</view>
+					</view>
 				</view>
 				<!-- 不在打卡时间段 -->
 				<view v-else>
@@ -180,12 +184,13 @@
 				<image class="icon" src="../../static/clockIn/success.png" mode="widthFix"></image>
 				<view class="fs-24">
 					<view>
-						打卡成功
+						<text>打卡成功，</text>
 						<!-- <text>您是第</text>
 						<text class="number">562</text>
-						<text>位打卡成功，积分将在</text> -->
+						<text>位打卡成功，</text> -->
+						<text>积分将在</text>
 					</view>
-					<!-- <view>12点发放至账户</view> -->
+					<view>12点前发放至账户</view>
 				</view>
 				<view class="btn flex-center" @click="isSuccessShow = false">继续报名</view>
 				<image class="close" src="../../static/close.png" mode="widthFix" @click="isSuccessShow = false"></image>
@@ -265,6 +270,7 @@ export default {
 				success: res => {
 					console.log('打卡', res);
 					this.isSuccessShow = true;
+					this.init();
 				}
 			});
 		},

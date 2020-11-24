@@ -72,7 +72,7 @@
 							</view>
 						</view> -->
 						<!-- 载入中动画 -->
-						<view v-if="isLoadVideoShow" class="donut"></view>
+						<!-- <view v-if="isLoadVideoShow" class="donut"></view> -->
 						<!-- 播放按钮 -->
 						<view v-if="showVideoPlayBtn" @click.stop="playVideo" class="playBtn circle flex-center"><image src="../../static/play.png" mode="widthFix"></image></view>
 						<!-- 文案区域 -->
