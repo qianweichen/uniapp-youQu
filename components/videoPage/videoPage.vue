@@ -82,17 +82,17 @@
 								<view v-if="index==2||index==22" class="advertising flex" @click="clickAdvertising(advertisingList[0])">
 									<image class="header" :src="advertisingList[0].logo" mode="aspectFill"></image>
 									<text>{{ advertisingList[0].name }}</text>
-									<image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image>
+									<!-- <image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image> -->
 								</view>
 								<view v-if="index==8||index==27" class="advertising flex" @click="clickAdvertising(advertisingList[1])">
 									<image class="header" :src="advertisingList[1].logo" mode="aspectFill"></image>
 									<text>{{ advertisingList[1].name }}</text>
-									<image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image>
+									<!-- <image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image> -->
 								</view>
 								<view v-if="index==15||index==33" class="advertising flex" @click="clickAdvertising(advertisingList[2])">
 									<image class="header" :src="advertisingList[2].logo" mode="aspectFill"></image>
 									<text>{{ advertisingList[2].name }}</text>
-									<image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image>
+									<!-- <image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image> -->
 								</view>
 							</view>
 							<!-- 标签 -->
