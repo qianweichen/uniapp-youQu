@@ -50,13 +50,13 @@ export default {
 			isVideoRedShow: null, //视频红包积分提醒
 			getRedNum: 0, //第几个红包
 			getRedList: [{ //每一个红包对应的浏览时间（固定值）
+				time: 30,
+			}, {
 				time: 60,
 			}, {
-				time: 60 * 5,
+				time: 90,
 			}, {
-				time: 60 * 15,
-			}, {
-				time: 60 * 30,
+				time: 120,
 			}],
 			watchTime: 0, //当前红包累计的时间
 			refillTime: 30, //每次滑动可以累计加的时间（固定值）

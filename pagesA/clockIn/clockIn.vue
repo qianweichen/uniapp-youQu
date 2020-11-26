@@ -114,7 +114,7 @@
 					<image v-if="ranking[1]" class="circle" :src="ranking[1].user.user_head_sculpture" mode="aspectFill"></image>
 					<image v-else class="circle" src="../../static/logo.png" mode="widthFix"></image>
 					<view class="name">{{ ranking[1].user.user_nick_name || '拭目以待' }}</view>
-					<view class="name2">{{ item.updatetime_text || '-' }}</view>
+					<view class="name2">{{ ranking[1].updatetime_text || '-' }}</view>
 					<view class="ranking">
 						<image src="../../static/clockIn/icon-2.png" mode="widthFix"></image>
 						<view class="flex-center">亚军</view>
@@ -123,7 +123,7 @@
 				<view>
 					<image class="circle" :src="ranking[0].user.user_head_sculpture" mode="aspectFill"></image>
 					<view class="name">{{ ranking[0].user.user_nick_name }}</view>
-					<view class="name2">{{ item.updatetime_text || '-' }}</view>
+					<view class="name2">{{ ranking[0].updatetime_text || '-' }}</view>
 					<view class="ranking">
 						<image src="../../static/clockIn/icon-1.png" mode="widthFix"></image>
 						<view class="flex-center">冠军</view>
@@ -133,7 +133,7 @@
 					<image v-if="ranking[2]" class="circle" :src="ranking[2].user.user_head_sculpture" mode="aspectFill"></image>
 					<image v-else class="circle" src="../../static/logo.png" mode="widthFix"></image>
 					<view class="name">{{ ranking[2].user.user_nick_name || '拭目以待' }}</view>
-					<view class="name2">{{ item.updatetime_text || '-' }}</view>
+					<view class="name2">{{ ranking[2].updatetime_text || '-' }}</view>
 					<view class="ranking">
 						<image src="../../static/clockIn/icon-3.png" mode="widthFix"></image>
 						<view class="flex-center">季军</view>
@@ -357,6 +357,9 @@ export default {
 				},
 				success: res => {
 					console.log('战况', res);
+					res.data.data.forEach(item => {
+						item.updatetime_text = new Date(item.updatetime * 1000).Format('hh:mm:ss');
+					});
 					this.ranking = res.data.data;
 					this.joined = res.data.data2;
 				}
