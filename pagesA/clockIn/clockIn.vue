@@ -1,14 +1,14 @@
 <template>
 	<view class="wrap">
-		<backCapsule type="normal"></backCapsule>
+		<backCapsule type="capsule"></backCapsule>
 		<navigationBar name="早起打卡挑战赛"></navigationBar>
-		<image class="bg" src="../../static/clockIn/bg.png" mode="widthFix"></image>
+		<image class="bg" src="../static/clockIn/bg.png" mode="widthFix"></image>
 		<view style="height: 416rpx;"></view>
 		<view class="info-group">
 			<view class="fc-3 fs-28">今日总累计积分</view>
 			<view class="num">{{ poolInfo.data }}</view>
 			<view class="people flex-center">
-				<image src="../../static/clockIn/user.png" mode="widthFix"></image>
+				<image src="../static/clockIn/user.png" mode="widthFix"></image>
 				<view class="number">{{ poolInfo.num }}</view>
 				<view>人已参加报名</view>
 			</view>
@@ -31,7 +31,7 @@
 				<text>秒</text>
 			</view>
 			<view v-if="isAuthorized" class="btn-group">
-				<image src="../../static/clockIn/btn.png" mode="widthFix"></image>
+				<image src="../static/clockIn/btn.png" mode="widthFix"></image>
 				<!-- 在打卡时间段 -->
 				<view v-if="clockTime">
 					<!-- 0未预约   1已预约 未打卡   2已打卡瓜分 -->
@@ -57,7 +57,7 @@
 				</view>
 			</view>
 			<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share btn-group">
-				<image src="../../static/clockIn/btn.png" mode="widthFix"></image>
+				<image src="../static/clockIn/btn.png" mode="widthFix"></image>
 				<view v-if="clockTime">
 					<view v-if="clockStatus == 0" class="flex-center">观看视频，立即预约</view>
 					<view v-if="clockStatus == 1" class="flex-center">打卡中 {{ clockTime.hour }}:{{ clockTime.minute }}:{{ clockTime.second }}</view>
@@ -77,65 +77,102 @@
 		</view>
 		<view class="step-group">
 			<view class="title flex-center">
-				<image src="../../static/clockIn/arrow.png" mode="widthFix"></image>
+				<image src="../static/clockIn/arrow.png" mode="widthFix"></image>
 				<view>三步赚取打卡积分</view>
-				<image src="../../static/clockIn/arrow.png" mode="widthFix"></image>
+				<image src="../static/clockIn/arrow.png" mode="widthFix"></image>
 			</view>
 			<view class="icon-group flex-between">
 				<view>
-					<image src="../../static/clockIn/day1.png" mode="widthFix"></image>
+					<image src="../static/clockIn/day1.png" mode="widthFix"></image>
 					<view class="name">参与打卡</view>
 					<view class="name2">报名比赛</view>
 				</view>
 				<view>
-					<image src="../../static/clockIn/day2.png" mode="widthFix"></image>
+					<image src="../static/clockIn/day2.png" mode="widthFix"></image>
 					<view class="name">打卡（05:00-10:00）</view>
 					<view class="name2">获得瓜分资格</view>
 				</view>
 				<view>
-					<image src="../../static/clockIn/day3.png" mode="widthFix"></image>
+					<image src="../static/clockIn/day3.png" mode="widthFix"></image>
 					<view class="name">瓜分积分</view>
 					<view class="name2">12点前积分结算</view>
 				</view>
 			</view>
 			<view class="header-group" v-if="joined.length > 0">
 				<image v-for="(item, index) in joined" :key="index" :src="item.user_head_sculpture" mode="aspectFill"></image>
-				<image src="../../static/clockIn/more.png" mode="widthFix"></image>
+				<image src="../static/clockIn/more.png" mode="widthFix"></image>
 			</view>
+		</view>
+		<!-- 邀请助力 -->
+		<view v-if="false" class="invite">
+			<view class="title flex-center">
+				<image src="../static/clockIn/arrow.png" mode="widthFix"></image>
+				<view>邀请好友助力</view>
+				<image src="../static/clockIn/arrow.png" mode="widthFix"></image>
+			</view>
+			<!-- 进度条 -->
+			<view class="progress flex-center">
+				<view class="line-group">
+					<view class="line">
+						<view class="tip-0 flex-center">赶快邀请好友助力吧！</view>
+						<view class="tip flex-center">已邀请n位好友</view>
+						<view class="tip-10 flex-center">已邀请10位好友</view>
+					</view>
+				</view>
+			</view>
+			<!-- 按钮 -->
+			<view class="btn-group flex-center">
+				<image src="../../static/red-btn.png" mode="widthFix"></image>
+				<view class="btn">邀请好友助力，获取更多积分</view>
+			</view>
+			<view class="tips">邀请好友成功预约打卡后可获得10积分，同时积分池积分也会瓜分的更多（每天限定只能邀请10个好友）。</view>
+			<swiper class="list" circular vertical interval="2000" autoplay>
+				<swiper-item v-for="(item, index) in ranking" :key="index">
+					<view class="item flex-between">
+						<view class="flex">
+							<image class="header" :src="item.user.user_head_sculpture" mode="aspectFill"></image>
+							<view class="user-name fs-24 fc-3">{{ item.user.user_nick_name }}</view>
+						</view>
+						<view class="flex">
+							<view class="fs-24 fc-8">{{ item.updatetime_text }}，获取10积分</view>
+						</view>
+					</view>
+				</swiper-item>
+			</swiper>
 		</view>
 		<view class="ranking-group" v-if="ranking.length > 0">
 			<view class="title flex-center">
-				<image src="../../static/clockIn/arrow.png" mode="widthFix"></image>
+				<image src="../static/clockIn/arrow.png" mode="widthFix"></image>
 				<view>打卡战况</view>
-				<image src="../../static/clockIn/arrow.png" mode="widthFix"></image>
+				<image src="../static/clockIn/arrow.png" mode="widthFix"></image>
 			</view>
 			<view class="icon-group flex-between">
 				<view>
 					<image v-if="ranking[1]" class="circle" :src="ranking[1].user.user_head_sculpture" mode="aspectFill"></image>
-					<image v-else class="circle" src="../../static/logo.png" mode="widthFix"></image>
-					<view class="name">{{ ranking[1].user.user_nick_name || '拭目以待' }}</view>
+					<image v-else class="circle" src="../static/logo.png" mode="widthFix"></image>
+					<view class="name user-name">{{ ranking[1].user.user_nick_name || '拭目以待' }}</view>
 					<view class="name2">{{ ranking[1].updatetime_text || '-' }}</view>
 					<view class="ranking">
-						<image src="../../static/clockIn/icon-2.png" mode="widthFix"></image>
+						<image src="../static/clockIn/icon-2.png" mode="widthFix"></image>
 						<view class="flex-center">亚军</view>
 					</view>
 				</view>
 				<view>
 					<image class="circle" :src="ranking[0].user.user_head_sculpture" mode="aspectFill"></image>
-					<view class="name">{{ ranking[0].user.user_nick_name }}</view>
+					<view class="name user-name">{{ ranking[0].user.user_nick_name }}</view>
 					<view class="name2">{{ ranking[0].updatetime_text || '-' }}</view>
 					<view class="ranking">
-						<image src="../../static/clockIn/icon-1.png" mode="widthFix"></image>
+						<image src="../static/clockIn/icon-1.png" mode="widthFix"></image>
 						<view class="flex-center">冠军</view>
 					</view>
 				</view>
 				<view>
 					<image v-if="ranking[2]" class="circle" :src="ranking[2].user.user_head_sculpture" mode="aspectFill"></image>
-					<image v-else class="circle" src="../../static/logo.png" mode="widthFix"></image>
-					<view class="name">{{ ranking[2].user.user_nick_name || '拭目以待' }}</view>
+					<image v-else class="circle" src="../static/logo.png" mode="widthFix"></image>
+					<view class="name user-name">{{ ranking[2].user.user_nick_name || '拭目以待' }}</view>
 					<view class="name2">{{ ranking[2].updatetime_text || '-' }}</view>
 					<view class="ranking">
-						<image src="../../static/clockIn/icon-3.png" mode="widthFix"></image>
+						<image src="../static/clockIn/icon-3.png" mode="widthFix"></image>
 						<view class="flex-center">季军</view>
 					</view>
 				</view>
@@ -144,11 +181,11 @@
 				<view class="item flex-between" v-for="(item, index) in ranking" :key="index" v-if="index > 2">
 					<view class="flex">
 						<image class="header" :src="item.user.user_head_sculpture" mode="aspectFill"></image>
-						<view class="fs-24 fc-3">{{ item.user.user_nick_name }}</view>
+						<view class="user-name fs-24 fc-3">{{ item.user.user_nick_name }}</view>
 					</view>
 					<view class="flex">
-						<image class="clock" src="../../static/clockIn/clock.png" mode="widthFix"></image>
-						<view class="fs-24 fc-8">今日打卡{{ item.today_num }}次，总共打卡{{ item.count_num }}次</view>
+						<image class="clock" src="../static/clockIn/clock.png" mode="widthFix"></image>
+						<view class="fs-24 fc-8">{{ item.updatetime_text }}，累计打卡{{ item.count_num }}天</view>
 					</view>
 				</view>
 			</view>
@@ -169,19 +206,19 @@
 		<!-- 超时弹窗 -->
 		<view v-if="isTimeoutShow" class="mask flex-center">
 			<view class="time-out">
-				<image class="icon" src="../../static/clockIn/time-out.png" mode="widthFix"></image>
+				<image class="icon" src="../static/clockIn/time-out.png" mode="widthFix"></image>
 				<view class="fs-24">
 					<view>打卡失败！已超出打卡时间范围，</view>
 					<view>明天记得早点再来哦~</view>
 				</view>
 				<view class="btn flex-center" @click="isTimeoutShow = false">继续报名</view>
-				<image class="close" src="../../static/close.png" mode="widthFix" @click="isTimeoutShow = false"></image>
+				<image class="close" src="../static/close.png" mode="widthFix" @click="isTimeoutShow = false"></image>
 			</view>
 		</view>
 		<!-- 成功弹窗 -->
 		<view v-if="isSuccessShow" class="mask flex-center">
 			<view class="time-out">
-				<image class="icon" src="../../static/clockIn/success.png" mode="widthFix"></image>
+				<image class="icon" src="../static/clockIn/success.png" mode="widthFix"></image>
 				<view class="fs-24">
 					<view>
 						<text>打卡成功，</text>
@@ -193,7 +230,7 @@
 					<view>12点前发放至账户</view>
 				</view>
 				<view class="btn flex-center" @click="isSuccessShow = false">继续报名</view>
-				<image class="close" src="../../static/close.png" mode="widthFix" @click="isSuccessShow = false"></image>
+				<image class="close" src="../static/close.png" mode="widthFix" @click="isSuccessShow = false"></image>
 			</view>
 		</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
@@ -426,21 +463,21 @@ export default {
 		}, 1000);
 	},
 	onReady() {
-		if (uni.createRewardedVideoAd) {
-			rewardedVideoAd = uni.createRewardedVideoAd({ adUnitId: 'adunit-838a47bd221802de' });
-			rewardedVideoAd.onLoad(() => {
-				// console.log('onLoad event');
-			});
-			rewardedVideoAd.onError(err => {
-				// console.log('onError event', err);
-			});
-			rewardedVideoAd.onClose(res => {
-				// console.log('onClose event', res);
-				if ((res && res.isEnded) || res === undefined) {
-					this.doAppointment();
-				}
-			});
-		}
+		// if (uni.createRewardedVideoAd) {
+		// 	rewardedVideoAd = uni.createRewardedVideoAd({ adUnitId: 'adunit-838a47bd221802de' });
+		// 	rewardedVideoAd.onLoad(() => {
+		// 		// console.log('onLoad event');
+		// 	});
+		// 	rewardedVideoAd.onError(err => {
+		// 		// console.log('onError event', err);
+		// 	});
+		// 	rewardedVideoAd.onClose(res => {
+		// 		// console.log('onClose event', res);
+		// 		if ((res && res.isEnded) || res === undefined) {
+		// 			this.doAppointment();
+		// 		}
+		// 	});
+		// }
 	},
 	onShareAppMessage(res) {
 		if (res.from === 'menu') {
@@ -455,8 +492,179 @@ export default {
 </script>
 
 <style lang="scss">
+.user-name {
+	width: 190rpx;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 .wrap {
 	position: relative;
+	.invite {
+		width: 690rpx;
+		margin: 0 auto 20rpx;
+		padding: 45rpx 24rpx;
+		box-sizing: border-box;
+		background: #ffffff;
+		box-shadow: -2rpx 4rpx 24rpx 4rpx rgba(228, 228, 228, 0.58);
+		border-radius: 20rpx;
+		.title {
+			image {
+				width: 48rpx;
+				height: 12rpx;
+				&:last-child {
+					transform: rotate(180deg);
+				}
+			}
+			view {
+				font-size: 28rpx;
+				color: #333333;
+				font-weight: bold;
+				padding: 0 19rpx;
+			}
+		}
+		.progress {
+			padding: 124rpx 0 44rpx;
+			.line-group {
+				width: 576rpx;
+				height: 14rpx;
+				background: #e5e5e5;
+				border-radius: 8rpx;
+				position: relative;
+				.line {
+					width: 0%;
+					height: 100%;
+					border-radius: 8rpx;
+					position: absolute;
+					left: 0;
+					top: 0;
+					background-color: #ffa43c;
+					.tip {
+						position: absolute;
+						right: -90rpx;
+						bottom: 38rpx;
+						width: 192rpx;
+						height: 48rpx;
+						background: #ffa43c;
+						border-radius: 8rpx;
+						font-size: 24rpx;
+						font-weight: bold;
+						color: #FFFFFF;
+						&::after {
+							content: '';
+							width: 0;
+							height: 0;
+							border-right: 20rpx solid transparent;
+							border-left: 20rpx solid transparent;
+							border-top: 20rpx solid #ffa43c;
+							position: absolute;
+							left: calc(50% - 20rpx);
+							bottom: -14rpx;
+						}
+					}
+					.tip-0 {
+						position: absolute;
+						left: -20rpx;
+						bottom: 38rpx;
+						width: 252rpx;
+						height: 48rpx;
+						background: #E5E5E5;
+						color: #888888;
+						border-radius: 8rpx;
+						font-size: 24rpx;
+						font-weight: bold;
+						&::after {
+							content: '';
+							width: 0;
+							height: 0;
+							border-right: 20rpx solid transparent;
+							border-left: 20rpx solid transparent;
+							border-top: 20rpx solid #E5E5E5;
+							position: absolute;
+							left: 10rpx;
+							bottom: -14rpx;
+						}
+					}
+					.tip-10 {
+						position: absolute;
+						right: -28rpx;
+						bottom: 38rpx;
+						width: 192rpx;
+						height: 48rpx;
+						background: #ffa43c;
+						border-radius: 8rpx;
+						font-size: 24rpx;
+						font-weight: bold;
+						color: #FFFFFF;
+						&::after {
+							content: '';
+							width: 0;
+							height: 0;
+							border-right: 20rpx solid transparent;
+							border-left: 20rpx solid transparent;
+							border-top: 20rpx solid #ffa43c;
+							position: absolute;
+							right: 10rpx;
+							bottom: -14rpx;
+						}
+					}
+				}
+			}
+		}
+		.btn-group{
+			position: relative;
+			width: 600rpx;
+			height: 130rpx;
+			margin: 0 auto;
+			image{
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+			}
+			.btn{
+				font-size: 40rpx;
+				font-weight: 800;
+				color: #FFF6E2;
+				text-shadow: 0 2rpx 2rpx #B28600;
+				position: relative;
+				padding-bottom: 4rpx;
+			}
+		}
+		.tips{
+			padding: 24rpx 40rpx 48rpx;
+			font-size: 22rpx;
+			color: #C588D9;
+			line-height: 32rpx;
+		}
+		.list {
+			height: 84rpx;
+			.item {
+				width: 652rpx;
+				height: 84rpx;
+				background: #f5f5f5;
+				border-radius: 20rpx;
+				padding: 0 20rpx;
+				box-sizing: border-box;
+				margin-bottom: 20rpx;
+				&:last-child {
+					margin-bottom: 0;
+				}
+				.header {
+					width: 32px;
+					height: 32px;
+					border-radius: 50%;
+					margin-right: 15rpx;
+				}
+				.clock {
+					width: 34rpx;
+					height: 32rpx;
+					margin-right: 8rpx;
+				}
+			}
+		}
+	}
 	.time-out {
 		position: relative;
 		width: 568rpx;
@@ -594,7 +802,7 @@ export default {
 				width: 48rpx;
 				height: 12rpx;
 				&:last-child {
-					transform: scale(180deg);
+					transform: rotate(180deg);
 				}
 			}
 			view {
@@ -647,7 +855,7 @@ export default {
 				width: 48rpx;
 				height: 12rpx;
 				&:last-child {
-					transform: scale(180deg);
+					transform: rotate(180deg);
 				}
 			}
 			view {

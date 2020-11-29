@@ -18,7 +18,6 @@ export default {
 							uni.setStorageSync('openid', res.data.info.openid);
 							uni.setStorageSync('session_key', res.data.info.session_key);
 							wx.aldstat.sendOpenid(res.data.info.openid); //阿拉丁
-							wx.aldPushSendOpenid(res.data.info.openid); //小神推
 							//3.授权过时刷新token
 							uni.getUserInfo({
 								provider: 'weixin',

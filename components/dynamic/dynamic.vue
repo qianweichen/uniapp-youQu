@@ -60,6 +60,11 @@ toggleAllText(index,flag,init){
 						<button v-else open-type="getUserInfo" class="share btn flex-center" @getuserinfo="getUserInfo" style="font-size: 22rpx;">关注</button>
 					</view>
 				</view>
+				<!-- 文字内容 -->
+				<view class="content fs-28 padding" :class="{ hide: item.hideText }" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
+					<view class="text-group">{{ item.study_content }}</view>
+				</view>
+				<view v-if="item.hasHideBtn" @click="toggleAllText(index, item.hideText)" class="padding fs-28" style="color: #1890FF; padding-bottom: 20rpx;">{{ item.hideText ? '全文' : '收起' }}</view>
 				<!-- 图片/视频 -->
 				<view v-if="item.study_type == 2" class="mediaBox" :style="'height:' + (item.height || 300) + 'px;'">
 					<video
@@ -83,29 +88,26 @@ toggleAllText(index,flag,init){
 					<!-- 进度条 -->
 					<!-- <view v-if="item.playVideoFlag" class="progress"><view :style="'width:' + progressNum + '%;'"></view></view> -->
 				</view>
-				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox" :style="'height:' + (imgHeightList[index] || 300) + 'px;'">
+				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox flex-center">
+					<!-- <view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox" :style="'height:' + (imgHeightList[index] || 300) + 'px;'"> -->
 					<!-- 1 -->
-					<!-- <view class="one" v-if="item.image_part.length == 1"><image :src="item.image_part[0]" mode="widthFix" @click="browseImg(item.image_part, 0)"></image></view> -->
+					<view class="one" v-if="item.image_part.length == 1"><image :src="item.image_part[0]" mode="widthFix" @click="browseImg(item.image_part, 0)"></image></view>
 					<!-- 2 -->
-					<!-- <view class="two" v-if="item.image_part.length == 2">
+					<view class="two" v-if="item.image_part.length == 2">
 						<image v-for="(items, indexs) in item.image_part" :key="indexs" :src="items" mode="aspectFill" @click="browseImg(item.image_part, indexs)"></image>
-					</view> -->
+					</view>
 					<!-- 3-9 -->
-					<!-- <view class="more" v-if="item.image_part.length > 2">
+					<view class="more" v-if="item.image_part.length > 2">
 						<image v-for="(items, indexs) in item.image_part" :key="indexs" :src="items" mode="aspectFill" @click="browseImg(item.image_part, indexs)"></image>
-					</view> -->
-					<swiper class="swiper" circular @change="changeSwiper" :data-index="index">
+					</view>
+					<!-- <swiper class="swiper" circular @change="changeSwiper" :data-index="index">
 						<swiper-item v-for="(items, indexs) in item.image_part" :key="indexs">
 							<image :src="items" mode="aspectFill" @click="browseImg(item.image_part, indexs)" @load="imgLoad" :data-index="index"></image>
 						</swiper-item>
 					</swiper>
-					<view class="page-num flex-center">{{ bannerImgNumList[index] || 1 }}/{{ item.image_part.length }}</view>
+					<view class="page-num flex-center">{{ bannerImgNumList[index] || 1 }}/{{ item.image_part.length }}</view> -->
 				</view>
 				<!-- 文字 -->
-				<view class="content fs-28 padding" :class="{ hide: item.hideText }" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
-					<view class="text-group">{{ item.study_content }}</view>
-				</view>
-				<view v-if="item.hasHideBtn" @click="toggleAllText(index, item.hideText)" class="padding fs-28" style="color: #1890FF;">{{ item.hideText ? '全文' : '收起' }}</view>
 				<!-- 底部按钮 -->
 				<view class="bottom flex-between padding">
 					<!-- 动态列表 -->

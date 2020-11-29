@@ -1,24 +1,27 @@
 export default {
 	props: {
 		type: String, //dynamic:动态  circle:圈子
-		list: Array ,//列表数据
-		circleAdmin_da: Array,//圈主列表数据
-		circleAdmin_xiao: Array,//管理员列表数据
+		list: Array, //列表数据
+		circleAdmin_da: Array, //圈主列表数据
+		circleAdmin_xiao: Array, //管理员列表数据
 	},
 	watch: {
 		'list.length': {
 			handler(newValue, oldValue) {
 				if (newValue !== oldValue) {
 					// 操作
-					const query = uni.createSelectorQuery().in(this);
-					query.selectAll('.text-group').boundingClientRect(data => {
-						data.forEach((item, index) => {
-							if (index < oldValue) {
-								return;
-							}
-							this.$emit('toggleAllText', index, item.height > 60, 'init');
-						});
-					}).exec();
+					this.$nextTick(() => {
+						const query = uni.createSelectorQuery().in(this);
+						query.selectAll('.text-group').boundingClientRect(data => {
+							console.log(data);
+							data.forEach((item, index) => {
+								if (index < oldValue) {
+									return;
+								}
+								this.$emit('toggleAllText', index, item.height > 60, 'init');
+							});
+						}).exec();
+					});
 				}
 			}
 		}
@@ -27,9 +30,9 @@ export default {
 		return {
 			clickDynamicId: '', //点击评论的动态id
 			clickDynamicIndex: '', //点击评论的下标
-			clickDynamicUid:'',//点击评论的用户id
-			clickDynamicQuanzhu:'',
-			clickDynamicGuanli:'',
+			clickDynamicUid: '', //点击评论的用户id
+			clickDynamicQuanzhu: '',
+			clickDynamicGuanli: '',
 			showCommentFlag: false, //评论弹窗
 			isAuthorized: false, //是否授权过
 			commentPage: 1, //评论页码
@@ -77,12 +80,12 @@ export default {
 	methods: {
 		// 数组中的字段包含某个值吗?
 		isIncludesVal(arr, val) {
-			var array = arr.filter(item=>{
-				return item.id==val;
+			var array = arr.filter(item => {
+				return item.id == val;
 			});
-			if(array.length>0){
+			if (array.length > 0) {
 				return true;
-			}else{
+			} else {
 				return false;
 			}
 		},
@@ -497,7 +500,7 @@ export default {
 			});
 		},
 		//评论弹窗
-		showCommentFun(id, index, uid , quanzhu , guanli) {
+		showCommentFun(id, index, uid, quanzhu, guanli) {
 			if (id) {
 				this.clickDynamicId = id; //保存id
 			}
