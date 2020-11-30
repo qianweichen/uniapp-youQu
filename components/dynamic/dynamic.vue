@@ -88,7 +88,7 @@ toggleAllText(index,flag,init){
 					<!-- 进度条 -->
 					<!-- <view v-if="item.playVideoFlag" class="progress"><view :style="'width:' + progressNum + '%;'"></view></view> -->
 				</view>
-				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox flex-center">
+				<view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox">
 					<!-- <view v-if="item.study_type != 2 && item.image_part.length > 0" class="mediaBox" :style="'height:' + (imgHeightList[index] || 300) + 'px;'"> -->
 					<!-- 1 -->
 					<view class="one" v-if="item.image_part.length == 1"><image :src="item.image_part[0]" mode="widthFix" @click="browseImg(item.image_part, 0)"></image></view>

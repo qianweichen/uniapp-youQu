@@ -135,14 +135,17 @@
 					}
 				}
 				.one {
-					width: 100%;
+					margin: 0 auto;
+					width: 690rpx;
 					image {
-						width: 100%;
+						width: 55%;
 						height: 596rpx;
 						margin-right: 0;
 					}
 				}
 				.two {
+					margin: 0 auto;
+					width: 690rpx;
 					image {
 						width: 340rpx;
 						height: 340rpx;
@@ -152,6 +155,7 @@
 					}
 				}
 				.more {
+					margin: 0 auto;
 					width: 690rpx;
 					image {
 						width: 222rpx;
