@@ -104,6 +104,12 @@ Vue.prototype.request = function(obj) {
 				page.$vm.$refs.loading.close();
 				if (pageIndex.$vm.$refs.homePage) {
 					pageIndex.$vm.$refs.homePage.$refs.loading.close();
+					if (pageIndex.$vm.$refs.homePage.$refs.recommendVideo) {
+						pageIndex.$vm.$refs.homePage.$refs.recommendVideo.$refs.loading.close();
+					}
+					if (pageIndex.$vm.$refs.homePage.$refs.attentionVideo) {
+						pageIndex.$vm.$refs.homePage.$refs.attentionVideo.$refs.loading.close();
+					}
 				}
 				if (pageIndex.$vm.$refs.findPage) {
 					pageIndex.$vm.$refs.findPage.$refs.loading.close();
@@ -125,6 +131,12 @@ Vue.prototype.request = function(obj) {
 				page.$vm.$refs.loading.close();
 				if (pageIndex.$vm.$refs.homePage) {
 					pageIndex.$vm.$refs.homePage.$refs.loading.close();
+					if (pageIndex.$vm.$refs.homePage.$refs.recommendVideo) {
+						pageIndex.$vm.$refs.homePage.$refs.recommendVideo.$refs.loading.close();
+					}
+					if (pageIndex.$vm.$refs.homePage.$refs.attentionVideo) {
+						pageIndex.$vm.$refs.homePage.$refs.attentionVideo.$refs.loading.close();
+					}
 				}
 				if (pageIndex.$vm.$refs.findPage) {
 					pageIndex.$vm.$refs.findPage.$refs.loading.close();
