@@ -463,21 +463,21 @@ export default {
 		}, 1000);
 	},
 	onReady() {
-		// if (uni.createRewardedVideoAd) {
-		// 	rewardedVideoAd = uni.createRewardedVideoAd({ adUnitId: 'adunit-838a47bd221802de' });
-		// 	rewardedVideoAd.onLoad(() => {
-		// 		// console.log('onLoad event');
-		// 	});
-		// 	rewardedVideoAd.onError(err => {
-		// 		// console.log('onError event', err);
-		// 	});
-		// 	rewardedVideoAd.onClose(res => {
-		// 		// console.log('onClose event', res);
-		// 		if ((res && res.isEnded) || res === undefined) {
-		// 			this.doAppointment();
-		// 		}
-		// 	});
-		// }
+		if (uni.createRewardedVideoAd) {
+			rewardedVideoAd = uni.createRewardedVideoAd({ adUnitId: 'adunit-838a47bd221802de' });
+			rewardedVideoAd.onLoad(() => {
+				// console.log('onLoad event');
+			});
+			rewardedVideoAd.onError(err => {
+				// console.log('onError event', err);
+			});
+			rewardedVideoAd.onClose(res => {
+				// console.log('onClose event', res);
+				if ((res && res.isEnded) || res === undefined) {
+					this.doAppointment();
+				}
+			});
+		}
 	},
 	onShareAppMessage(res) {
 		if (res.from === 'menu') {
