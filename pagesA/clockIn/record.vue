@@ -40,7 +40,10 @@
 						<view>达标人数</view>
 					</view>
 					<view class="item">
-						<view>{{ item.carveup_integral || 0}}</view>
+						<view>
+							<text>{{ item.carveup_integral || 0}}</text>
+							<text v-if="item.state == 2" class="fs-22" style="color: red;">+{{ item.bind_integral || 0}}</text>
+						</view>
 						<view>所获积分</view>
 					</view>
 				</view>

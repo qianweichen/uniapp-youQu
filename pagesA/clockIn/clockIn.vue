@@ -104,7 +104,7 @@
 			</view>
 		</view>
 		<!-- 邀请助力 -->
-		<view v-if="false" class="invite">
+		<view class="invite">
 			<view class="title flex-center">
 				<image src="../static/clockIn/arrow.png" mode="widthFix"></image>
 				<view>邀请好友助力</view>
@@ -113,28 +113,32 @@
 			<!-- 进度条 -->
 			<view class="progress flex-center">
 				<view class="line-group">
-					<view class="line">
-						<view class="tip-0 flex-center">赶快邀请好友助力吧！</view>
-						<view class="tip flex-center">已邀请n位好友</view>
-						<view class="tip-10 flex-center">已邀请10位好友</view>
+					<view class="line" :style="`width: ${sharePeoplesNum}%;`">
+						<view v-if="shareList.length == 0" class="tip-0 flex-center">赶快邀请好友助力吧！</view>
+						<view v-else-if="shareList.length == 10" class="tip-10 flex-center">已邀请10位好友</view>
+						<view v-else class="tip flex-center">已邀请{{ shareList.length }}位好友</view>
 					</view>
 				</view>
 			</view>
 			<!-- 按钮 -->
-			<view class="btn-group flex-center">
+			<view v-if="isAuthorized" class="btn-group flex-center">
 				<image src="../../static/red-btn.png" mode="widthFix"></image>
-				<view class="btn">邀请好友助力，获取更多积分</view>
+				<button class="btn share" open-type="share">邀请好友助力，获取更多积分</button>
 			</view>
+			<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share btn-group flex-center">
+				<image src="../../static/red-btn.png" mode="widthFix"></image>
+				<button class="btn share" open-type="share">邀请好友助力，获取更多积分</button>
+			</button>
 			<view class="tips">邀请好友成功预约打卡后可获得10积分，同时积分池积分也会瓜分的更多（每天限定只能邀请10个好友）。</view>
-			<swiper class="list" circular vertical interval="2000" autoplay>
-				<swiper-item v-for="(item, index) in ranking" :key="index">
+			<swiper v-if="shareList.length>0" class="list" circular vertical interval="2000" autoplay>
+				<swiper-item v-for="(item, index) in shareList" :key="index">
 					<view class="item flex-between">
 						<view class="flex">
 							<image class="header" :src="item.user.user_head_sculpture" mode="aspectFill"></image>
 							<view class="user-name fs-24 fc-3">{{ item.user.user_nick_name }}</view>
 						</view>
 						<view class="flex">
-							<view class="fs-24 fc-8">{{ item.updatetime_text }}，获取10积分</view>
+							<view class="fs-24 fc-8">{{ item.createtime_text }}，获取{{ item.bind_integral }}积分</view>
 						</view>
 					</view>
 				</swiper-item>
@@ -240,6 +244,11 @@
 <script>
 let rewardedVideoAd = null;
 export default {
+	computed: {
+		sharePeoplesNum() {
+			return this.shareList.length * 10;
+		}
+	},
 	data() {
 		return {
 			isTimeoutShow: false,
@@ -253,7 +262,9 @@ export default {
 			ranking: [], //排名
 			joined: [], //已加入
 			timeQuantum: '', //0-5点=1   5-10点=2  10点以后=3
-			isAuthorized: false //授权否
+			isAuthorized: false, //授权否
+			shareList: [],
+			pid: '' //邀请人id
 		};
 	},
 	methods: {
@@ -344,7 +355,8 @@ export default {
 				data: {
 					token: uni.getStorageSync('token'),
 					openid: uni.getStorageSync('openid'),
-					uid: uni.getStorageSync('userId')
+					uid: uni.getStorageSync('userId'),
+					pid: this.pid
 				},
 				success: res => {
 					console.log('预约', res);
@@ -445,13 +457,31 @@ export default {
 				this.timeQuantum = 3;
 			}
 		},
+		getShareList() {
+			this.request({
+				url: this.apiUrl + 'user/jfc_bind_list',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log('邀请人列表', res);
+					res.data.data.forEach(item => {
+						item.createtime_text = new Date(item.createtime * 1000).Format('hh:mm:ss');
+					});
+					this.shareList = res.data.data;
+				}
+			});
+		},
 		init() {
 			this.getIntegralPool();
 			this.getClockStatus();
 			this.getRanking();
+			this.getShareList();
 		}
 	},
-	onLoad() {
+	onLoad(options) {
 		//判断授权 已授权为true
 		this.isAuthorized = this.beAuthorized();
 
@@ -461,6 +491,11 @@ export default {
 		setInterval(() => {
 			this.getCountDown();
 		}, 1000);
+
+		//邀请助力
+		if (options.pid) {
+			this.pid = options.pid;
+		}
 	},
 	onReady() {
 		if (uni.createRewardedVideoAd) {
@@ -480,13 +515,10 @@ export default {
 		}
 	},
 	onShareAppMessage(res) {
-		if (res.from === 'menu') {
-			return {
-				title: this.miniProgramName,
-				path: '/pages/index/index',
-				imageUrl: '/static/logo.png'
-			};
-		}
+		return {
+			title: '您的好友 ' + uni.getStorageSync('userInfo').nickName + ' 邀请你一起参加早起打卡挑战赛,瓜分万元奖励',
+			path: '/pagesA/clockIn/clockIn?pid=' + uni.getStorageSync('userId')
+		};
 	}
 };
 </script>
@@ -549,7 +581,7 @@ export default {
 						border-radius: 8rpx;
 						font-size: 24rpx;
 						font-weight: bold;
-						color: #FFFFFF;
+						color: #ffffff;
 						&::after {
 							content: '';
 							width: 0;
@@ -568,7 +600,7 @@ export default {
 						bottom: 38rpx;
 						width: 252rpx;
 						height: 48rpx;
-						background: #E5E5E5;
+						background: #e5e5e5;
 						color: #888888;
 						border-radius: 8rpx;
 						font-size: 24rpx;
@@ -579,7 +611,7 @@ export default {
 							height: 0;
 							border-right: 20rpx solid transparent;
 							border-left: 20rpx solid transparent;
-							border-top: 20rpx solid #E5E5E5;
+							border-top: 20rpx solid #e5e5e5;
 							position: absolute;
 							left: 10rpx;
 							bottom: -14rpx;
@@ -595,7 +627,7 @@ export default {
 						border-radius: 8rpx;
 						font-size: 24rpx;
 						font-weight: bold;
-						color: #FFFFFF;
+						color: #ffffff;
 						&::after {
 							content: '';
 							width: 0;
@@ -611,31 +643,31 @@ export default {
 				}
 			}
 		}
-		.btn-group{
+		.btn-group {
 			position: relative;
 			width: 600rpx;
 			height: 130rpx;
 			margin: 0 auto;
-			image{
+			image {
 				position: absolute;
 				left: 0;
 				top: 0;
 				width: 100%;
 				height: 100%;
 			}
-			.btn{
+			.btn {
 				font-size: 40rpx;
 				font-weight: 800;
-				color: #FFF6E2;
-				text-shadow: 0 2rpx 2rpx #B28600;
+				color: #fff6e2;
+				text-shadow: 0 2rpx 2rpx #b28600;
 				position: relative;
 				padding-bottom: 4rpx;
 			}
 		}
-		.tips{
+		.tips {
 			padding: 24rpx 40rpx 48rpx;
 			font-size: 22rpx;
-			color: #C588D9;
+			color: #c588d9;
 			line-height: 32rpx;
 		}
 		.list {

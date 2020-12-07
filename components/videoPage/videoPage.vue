@@ -45,7 +45,8 @@
 					<view v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index">
 						<!-- 封面图 -->
 						<view v-if="videoIndex != index || isLoadVideoShow" class="cover-img-group">
-							<image class="cover-img" :src="item.image_part[0]" :mode="item.cover ? 'aspectFill' : 'aspectFit'"></image>
+							<!-- <image class="cover-img" :src="item.image_part[0]" :mode="item.cover ? 'aspectFill' : 'aspectFit'"></image> -->
+							<image class="cover-img" :src="item.study_video + '?vframe/jpg/offset/0'" :mode="item.cover ? 'aspectFill' : 'aspectFit'"></image>
 						</view>
 						<!-- 播放结束 -->
 						<!-- <view class="playEndBox flex-center" v-if="showVideoEndShare">
@@ -79,17 +80,17 @@
 						<view class="contentBox" :class="isSmallScreen && parentPage == 'home' ? 'full-page' : ''">
 							<!-- 广告 -->
 							<view v-if="isAdvertisingShow" class="flex">
-								<view v-if="index==2||index==22" class="advertising flex" @click="clickAdvertising(advertisingList[0])">
+								<view v-if="index == 2 || index == 22" class="advertising flex" @click="clickAdvertising(advertisingList[0])">
 									<image class="header" :src="advertisingList[0].logo" mode="aspectFill"></image>
 									<text>{{ advertisingList[0].name }}</text>
 									<!-- <image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image> -->
 								</view>
-								<view v-if="index==8||index==27" class="advertising flex" @click="clickAdvertising(advertisingList[1])">
+								<view v-if="index == 8 || index == 27" class="advertising flex" @click="clickAdvertising(advertisingList[1])">
 									<image class="header" :src="advertisingList[1].logo" mode="aspectFill"></image>
 									<text>{{ advertisingList[1].name }}</text>
 									<!-- <image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image> -->
 								</view>
-								<view v-if="index==15||index==33" class="advertising flex" @click="clickAdvertising(advertisingList[2])">
+								<view v-if="index == 15 || index == 33" class="advertising flex" @click="clickAdvertising(advertisingList[2])">
 									<image class="header" :src="advertisingList[2].logo" mode="aspectFill"></image>
 									<text>{{ advertisingList[2].name }}</text>
 									<!-- <image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image> -->
@@ -103,7 +104,11 @@
 							</view>
 							<!-- 昵称头像 -->
 							<view class="userInfo flex">
-								<view :class="{ rotate: isRotateHeader }" class="header circle" @click.stop="goPage(`/pages/personalCenter/personalCenter?id=${item.user_id}&videoId=${item.id}`)">
+								<view
+									:class="{ rotate: isRotateHeader }"
+									class="header circle"
+									@click.stop="goPage(`/pages/personalCenter/personalCenter?id=${item.user_id}&videoId=${item.id}`)"
+								>
 									<image class="header-img circle" :src="item.user_head_sculpture" mode="aspectFill"></image>
 									<view class="ai-te flex-center">@</view>
 									<!-- <image v-if="item.user_id != userId && item.is_follow != 1" class="add" src="../../static/tabbar/publish.png" mode="widthFix"></image> -->

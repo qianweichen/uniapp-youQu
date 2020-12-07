@@ -64,7 +64,9 @@ toggleAllText(index,flag,init){
 				<view class="content fs-28 padding" :class="{ hide: item.hideText }" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
 					<view class="text-group">{{ item.study_content }}</view>
 				</view>
-				<view v-if="item.hasHideBtn" @click="toggleAllText(index, item.hideText)" class="padding fs-28" style="color: #1890FF; padding-bottom: 20rpx;">{{ item.hideText ? '全文' : '收起' }}</view>
+				<view v-if="item.hasHideBtn" @click="toggleAllText(index, item.hideText)" class="padding fs-28" style="color: #1890FF; padding-bottom: 20rpx;">
+					{{ item.hideText ? '全文' : '收起' }}
+				</view>
 				<!-- 图片/视频 -->
 				<view v-if="item.study_type == 2" class="mediaBox" :style="'height:' + (item.height || 300) + 'px;'">
 					<video
@@ -83,7 +85,8 @@ toggleAllText(index,flag,init){
 						@error="videoError"
 						@click="clickVideoFun"
 					></video>
-					<image v-else class="poster" :src="item.image_part[0]" mode="aspectFill"></image>
+					<image v-else class="poster" :src="item.study_video + '?vframe/jpg/offset/0'" mode="aspectFill"></image>
+					<!-- <image v-else class="poster" :src="item.image_part[0]" mode="aspectFill"></image> -->
 					<view v-if="!item.playVideoFlag" @click="playVideoFun(index)" class="circle play flex-center"><image src="../../static/play.png" mode="widthFix"></image></view>
 					<!-- 进度条 -->
 					<!-- <view v-if="item.playVideoFlag" class="progress"><view :style="'width:' + progressNum + '%;'"></view></view> -->
