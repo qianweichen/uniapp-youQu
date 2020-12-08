@@ -218,8 +218,9 @@
 									data-type="video"
 									:data-id="videoList[videoIndex].id"
 									:data-content="videoList[videoIndex].study_content"
-									:data-img="videoList[videoIndex].image_part[0]"
+									:data-img="videoList[videoIndex].study_video + '?vframe/jpg/offset/0'"
 								>
+								<!-- :data-img="videoList[videoIndex].image_part[0]" -->
 									<image src="../../static/wechat.png" mode="widthFix" :animation="isAnimationDataShow ? animationData : ''"></image>
 									<view class="fs-22">分享</view>
 								</button>

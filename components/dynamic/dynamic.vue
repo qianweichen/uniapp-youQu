@@ -157,9 +157,10 @@ toggleAllText(index,flag,init){
 							open-type="share"
 							:data-id="item.id"
 							:data-content="item.study_content"
-							:data-img="item.image_part[0]"
+							:data-img="item.study_video + '?vframe/jpg/offset/0'"
 							:data-type="item.study_type"
 						>
+						<!-- :data-img="item.image_part[0]" -->
 							<image src="../../static/wechat.png" mode="widthFix"></image>
 							<text>分享</text>
 						</button>
