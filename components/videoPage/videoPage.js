@@ -75,13 +75,14 @@ export default {
 			//头像反转
 			isRotateHeader: false,
 			rotateHeaderTimer: null,
-			
-			advertisingList:[],
-			isAdvertisingShow:true,
-			
-			touchDot:'',
-			touchInterval:'',
-			touchTime:''
+
+			advertisingList: [],
+			isAdvertisingShow: true,
+
+			touchDot: '',
+			touchInterval: '',
+			touchTime: '',
+			touchFlag: false
 		}
 	},
 	props: {
@@ -134,6 +135,7 @@ export default {
 		// 滑动
 		// 触摸开始事件 
 		videoTouchStart: function(e) {
+			this.touchFlag = true;
 			this.touchDot = e.touches[0].pageX; // 获取触摸时的原点 
 			// 使用js计时器记录时间  
 			this.touchInterval = setInterval(function() {
@@ -143,9 +145,10 @@ export default {
 		// 触摸移动事件 
 		videoTouchMove: function(e) {
 			var touchMove = e.touches[0].pageX;
-			console.log("touchMove:" + touchMove + " touchDot:" + this.touchDot + " diff:" + (touchMove - this.touchDot));
+			// console.log("touchMove:" + touchMove + " touchDot:" + this.touchDot + " diff:" + (touchMove - this.touchDot));
 			// 向左滑动  
-			if (touchMove - this.touchDot <= -40 && this.touchTime < 10) {
+			if (touchMove - this.touchDot <= -50 && this.touchTime < 10 && this.touchFlag) {
+				this.touchFlag = false;
 				console.log('向左滑动');
 				this.goPage(`/pages/personalCenter/personalCenter?id=${this.videoList[this.videoIndex].user_id}&videoId=${this.videoList[this.videoIndex].id}`);
 			}
@@ -1074,7 +1077,7 @@ export default {
 			this.request({
 				url: this.apiUrl + 'user/xcxbanner',
 				data: {
-		
+
 				},
 				success: res => {
 					this.advertisingList = res.data.data;
@@ -1089,7 +1092,7 @@ export default {
 
 		//创建动画
 		this.createdAnimate();
-		
+
 		//获取小程序广告
 		this.getAdvertising();
 	},

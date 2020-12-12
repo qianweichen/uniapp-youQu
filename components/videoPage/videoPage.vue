@@ -35,6 +35,7 @@
 						:show-center-play-btn="false"
 						:controls="false"
 						:object-fit="item.cover ? 'cover' : ''"
+						:enable-progress-gesture="false"
 						loop
 						@timeupdate="videoTimeUpdate"
 						@play="videoPlayStard"
