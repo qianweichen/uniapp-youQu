@@ -77,7 +77,11 @@ export default {
 			rotateHeaderTimer: null,
 			
 			advertisingList:[],
-			isAdvertisingShow:true
+			isAdvertisingShow:true,
+			
+			touchDot:'',
+			touchInterval:'',
+			touchTime:''
 		}
 	},
 	props: {
@@ -127,6 +131,38 @@ export default {
 		}
 	},
 	methods: {
+		// 滑动
+		// 触摸开始事件 
+		videoTouchStart: function(e) {
+			this.touchDot = e.touches[0].pageX; // 获取触摸时的原点 
+			// 使用js计时器记录时间  
+			this.touchInterval = setInterval(function() {
+				this.touchTime++;
+			}, 100);
+		},
+		// 触摸移动事件 
+		videoTouchMove: function(e) {
+			var touchMove = e.touches[0].pageX;
+			console.log("touchMove:" + touchMove + " touchDot:" + this.touchDot + " diff:" + (touchMove - this.touchDot));
+			// 向左滑动  
+			if (touchMove - this.touchDot <= -40 && this.touchTime < 10) {
+				console.log('向左滑动');
+				this.goPage(`/pages/personalCenter/personalCenter?id=${this.videoList[this.videoIndex].user_id}&videoId=${this.videoList[this.videoIndex].id}`);
+			}
+			// 向右滑动 
+			// if (touchMove - this.touchDot >= 40 && this.touchTime < 10) {
+			// 	console.log('向右滑动');
+			// 	wx.switchTab({
+			// 		url: 'pages/position_man/position_man'
+			// 	});
+			// 	console.log(54645)
+			// }
+		},
+		// 触摸结束事件 
+		videoTouchEnd: function(e) {
+			clearInterval(this.touchInterval); // 清除setInterval 
+			this.touchTime = 0;
+		},
 		// 点击小程序广告
 		clickAdvertising(items) {
 			// console.log(items);

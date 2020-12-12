@@ -85,7 +85,7 @@
 		<view v-if="tabIndex == 0" class="list-zp flex">
 			<view class="item" v-for="(item, index) in dynamicList" :key="index" @click="goPlayPage(index)">
 				<view class="imgBox">
-					<image class="poster" :src="item.image_part[0]" mode="aspectFill"></image>
+					<image class="poster" :src="item.study_video + '?vframe/jpg/offset/0'" mode="aspectFill"></image>
 					<view class="mask flex">
 						<!-- <image src="../../static/good.png" mode="widthFix"></image>
 						<text class="fs-22">{{ item.info_zan_count }}</text> -->
@@ -199,7 +199,7 @@
 				<view class="imgBox">
 					<!-- <image v-if="item.study_type == 2" class="type video" src="../../static/play.png" mode="widthFix"></image>
 					<image v-else class="type" src="../../static/shoot-img.png" mode="widthFix"></image> -->
-					<image class="poster" :src="item.image_part[0]" mode="aspectFill"></image>
+					<image class="poster" :src="item.study_video + '?vframe/jpg/offset/0'" mode="aspectFill"></image>
 					<view class="mask flex"></view>
 				</view>
 			</view>

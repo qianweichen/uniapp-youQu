@@ -31,10 +31,6 @@
 		<!-- tab -->
 		<view class="topTab flex-center" :style="'height:' + (customBar + topCustomBar) + 'px;'">
 			<view class="tabs flex-between fs-32">
-				<view @click="changeTabs(true)">
-					<text :class="{ active: tabsFlag }">推荐</text>
-					<view v-if="tabsFlag" class="line"></view>
-				</view>
 				<view v-if="isAuthorized" @click="changeTabs(false)">
 					<text :class="{ active: !tabsFlag }">关注</text>
 					<view v-if="!tabsFlag" class="line"></view>
@@ -44,6 +40,10 @@
 						<text :class="{ active: !tabsFlag }">关注</text>
 						<view v-if="!tabsFlag" class="line"></view>
 					</button>
+				</view>
+				<view @click="changeTabs(true)">
+					<text :class="{ active: tabsFlag }">推荐</text>
+					<view v-if="tabsFlag" class="line"></view>
 				</view>
 			</view>
 			<image @click="goPage('/pages/search/search')" class="search" src="@/static/search.png" mode="widthFix"></image>

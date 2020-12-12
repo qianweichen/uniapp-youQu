@@ -22,7 +22,7 @@
 	},
  -->
 <template>
-	<view style="height: 100%;">
+	<view style="height: 100%;" @touchstart="videoTouchStart" @touchmove="videoTouchMove" @touchend="videoTouchEnd">
 		<!-- 视频 -->
 		<swiper class="video-swiper" @change="changeSwiper" :current="videoIndex" vertical duration="300">
 			<swiper-item v-for="(item, index) in videoList" :key="index">
