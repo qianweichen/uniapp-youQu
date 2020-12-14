@@ -82,6 +82,9 @@
 							</button>
 						</view>
 					</view>
+					<view style="padding: 30rpx;">
+						<ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom>
+					</view>
 					<!-- 为我推荐 -->
 					<view class="myCircle recommend">
 						<!-- <view class="title flex-between">

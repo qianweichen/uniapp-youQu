@@ -5,7 +5,7 @@
 			<image @click="isShowShare = true" class="red-icon" src="@/static/share-icon.png" mode="widthFix" :animation="animation"></image>
 		</view>
 		<!-- 新人红包 -->
-		<view v-if="isNewRedShow" class="new-red flex-center">
+		<!-- <view v-if="isNewRedShow" class="new-red flex-center">
 			<view>
 				<image v-if="isAuthorized" @click="signIn" class="red" src="../../static/new-red.png" mode="widthFix"></image>
 				<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share"><image class="red" src="../../static/new-red.png" mode="widthFix"></image></button>
@@ -19,7 +19,7 @@
 					mode="widthFix"
 				></image>
 			</view>
-		</view>
+		</view> -->
 		<!-- 签到toast -->
 		<view v-if="isSignToastShow" class="sign-toast flex-center">
 			<view style="position: relative;">
@@ -85,7 +85,7 @@
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
 
 		<!-- 公告 -->
-		<view v-if="isShowNotice">
+		<!-- <view v-if="isShowNotice">
 			<view class="mask">
 				<view class="notice">
 					<image src="@/static/notice.png" mode="widthFix"></image>
@@ -96,7 +96,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 
 		<!-- 红包-签到 -->
 		<view v-if="isShowShare">

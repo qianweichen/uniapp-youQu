@@ -48,6 +48,8 @@
 </template>
 
 <script>
+// 在页面中定义插屏广告
+let interstitialAd = null;
 import home from '@/pages/home/home';
 import find from '@/pages/find/find';
 import message from '@/pages/message/message';
@@ -114,6 +116,13 @@ export default {
 		},
 		//切换底部tabbar
 		changeTabIndex(e) {
+			// 在适合的场景显示插屏广告
+			if (interstitialAd) {
+				interstitialAd.show().catch(err => {
+					console.error(err);
+				});
+			}
+
 			var index = e.currentTarget.dataset.name;
 			//点击当前页
 			if (index == this.tabIndex) {
@@ -203,6 +212,16 @@ export default {
 				// }
 			}
 		});
+
+		//广告
+		if (wx.createInterstitialAd) {
+			interstitialAd = wx.createInterstitialAd({
+				adUnitId: 'adunit-f4669b91d9da4f72'
+			});
+			interstitialAd.onLoad(() => {});
+			interstitialAd.onError(err => {});
+			interstitialAd.onClose(() => {});
+		}
 	},
 	onShow() {
 		// 发布视频后返回检测id

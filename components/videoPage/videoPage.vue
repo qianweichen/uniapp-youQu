@@ -80,22 +80,25 @@
 						<!-- 文案区域 -->
 						<view class="contentBox" :class="isSmallScreen && parentPage == 'home' ? 'full-page' : ''">
 							<!-- 广告 -->
-							<view v-if="isAdvertisingShow" class="flex">
+							<!-- <view v-if="isAdvertisingShow" class="flex">
 								<view v-if="index == 2 || index == 22" class="advertising flex" @click="clickAdvertising(advertisingList[0])">
 									<image class="header" :src="advertisingList[0].logo" mode="aspectFill"></image>
 									<text>{{ advertisingList[0].name }}</text>
-									<!-- <image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image> -->
+									<image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image>
 								</view>
 								<view v-if="index == 8 || index == 27" class="advertising flex" @click="clickAdvertising(advertisingList[1])">
 									<image class="header" :src="advertisingList[1].logo" mode="aspectFill"></image>
 									<text>{{ advertisingList[1].name }}</text>
-									<!-- <image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image> -->
+									<image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image>
 								</view>
 								<view v-if="index == 15 || index == 33" class="advertising flex" @click="clickAdvertising(advertisingList[2])">
 									<image class="header" :src="advertisingList[2].logo" mode="aspectFill"></image>
 									<text>{{ advertisingList[2].name }}</text>
-									<!-- <image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image> -->
+									<image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image>
 								</view>
+							</view> -->
+							<view style="width: 300rpx; zoom: 0.9; padding-bottom: 20rpx;">
+								<ad-custom unit-id="adunit-be40a436865b3778"></ad-custom>
 							</view>
 							<!-- 标签 -->
 							<view class="flex">

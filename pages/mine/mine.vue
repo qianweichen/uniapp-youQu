@@ -62,6 +62,9 @@
 				粉丝
 			</view>
 		</button>
+		<view>
+			<ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom>
+		</view>
 		<view class="functionList flex">
 			<view class="item" v-for="(item, index) in btnList" :key="index">
 				<view v-if="isAuthorized" @click="goPage(item.url)">
@@ -197,6 +200,9 @@ export default {
 
 <style lang="scss">
 @import '@/pages/personalCenter/personalCenter.scss';
+.page-persionalC{
+	min-height: 100%;
+}
 .banner {
 	.myPage {
 		width: 194rpx;

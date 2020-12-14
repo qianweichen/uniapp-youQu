@@ -113,7 +113,7 @@
 			<!-- 进度条 -->
 			<view class="progress flex-center">
 				<view class="line-group">
-					<view class="line" :style="'width:'+sharePeoplesNum+'%;'">
+					<view class="line" :style="'width:' + sharePeoplesNum + '%;'">
 						<view v-if="shareList.length == 0" class="tip-0 flex-center">赶快邀请好友助力吧！</view>
 						<view v-else-if="shareList.length == 10" class="tip-10 flex-center">已邀请10位好友</view>
 						<view v-else class="tip flex-center">已邀请{{ shareList.length }}位好友</view>
@@ -130,7 +130,7 @@
 				<button class="btn share" open-type="share">邀请好友助力，获取更多积分</button>
 			</button>
 			<view class="tips">邀请新用户成功预约打卡后可获得300积分，邀请老用户成功预约打卡后可获得100积分，同时积分池的积分也会瓜分的更多（每天限定只能邀请10个好友）</view>
-			<swiper v-if="shareList.length>0" class="list" circular vertical interval="2000" autoplay>
+			<swiper v-if="shareList.length > 0" class="list" circular vertical interval="2000" autoplay>
 				<swiper-item v-for="(item, index) in shareList" :key="index">
 					<view class="item flex-between">
 						<view class="flex">
@@ -242,6 +242,8 @@
 </template>
 
 <script>
+// 在页面中定义插屏广告
+let interstitialAd = null;
 let rewardedVideoAd = null;
 export default {
 	computed: {
@@ -495,6 +497,22 @@ export default {
 		//邀请助力
 		if (options.pid) {
 			this.pid = options.pid;
+		}
+		
+		//广告
+		if (wx.createInterstitialAd) {
+			interstitialAd = wx.createInterstitialAd({
+				adUnitId: 'adunit-f4669b91d9da4f72'
+			});
+			interstitialAd.onLoad(() => {});
+			interstitialAd.onError(err => {});
+			interstitialAd.onClose(() => {});
+		}
+		// 在适合的场景显示插屏广告
+		if (interstitialAd) {
+			interstitialAd.show().catch(err => {
+				console.error(err);
+			});
 		}
 	},
 	onReady() {

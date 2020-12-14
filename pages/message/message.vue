@@ -20,6 +20,9 @@
 					<view>通知</view>
 				</view> -->
 			</view>
+			<view style="padding: 30rpx 0;">
+				<ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom>
+			</view>
 			<view class="list">
 				<!-- 系统消息 -->
 				<!-- <view class="good flex-between align-star comment" @click="goPage('/pages/message/systemNote')">
