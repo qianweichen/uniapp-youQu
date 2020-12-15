@@ -21,7 +21,7 @@
 				</view> -->
 			</view>
 			<view style="padding: 30rpx 0;">
-				<ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom>
+				<ad-custom unit-id="adunit-be40a436865b3778"></ad-custom>
 			</view>
 			<view class="list">
 				<!-- 系统消息 -->

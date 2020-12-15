@@ -224,6 +224,13 @@ export default {
 		}
 	},
 	onShow() {
+		// 在适合的场景显示插屏广告
+		if (interstitialAd) {
+			interstitialAd.show().catch(err => {
+				console.error(err);
+			});
+		}
+		
 		// 发布视频后返回检测id
 		var publishCircleId = uni.getStorageSync('publishCircleId');
 		if (publishCircleId) {

@@ -63,7 +63,7 @@
 			</view>
 		</button>
 		<view>
-			<ad-custom unit-id="adunit-41ae0353c959fde8"></ad-custom>
+			<ad-custom unit-id="adunit-be40a436865b3778"></ad-custom>
 		</view>
 		<view class="functionList flex">
 			<view class="item" v-for="(item, index) in btnList" :key="index">
