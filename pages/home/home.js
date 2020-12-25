@@ -247,8 +247,8 @@ export default {
 					//获取 封面图/视频 高度
 					if (res.data.data) {
 						res.data.data.forEach((_item) => {
-							if (_item.study_type == 2 && _item.image_part) {
-								var src = this.httpsUrl(_item.image_part[0]);
+							if (_item.study_type == 2) {
+								var src = this.httpsUrl(_item.study_video + '?vframe/jpg/offset/0');
 								uni.getImageInfo({
 									src,
 									success: (res) => {
@@ -295,8 +295,8 @@ export default {
 					//获取 封面图/视频 高度
 					if (res.data.info) {
 						res.data.info.forEach((_item) => {
-							if (_item.study_type == 2 && _item.image_part) {
-								var src = this.httpsUrl(_item.image_part[0]);
+							if (_item.study_type == 2) {
+								var src = this.httpsUrl(_item.study_video + '?vframe/jpg/offset/0');
 								uni.getImageInfo({
 									src,
 									success: (res) => {

@@ -29,7 +29,7 @@
 				<view class="videoBox" v-if="(index + 1) % 6 != 0 || parentPage != 'home'" @click="clickVideo" :data-id="item.id" :data-index="index" @longpress="longPress">
 					<!-- 只显示一个视频，ios缓存有问题，没法同时放3个，遇到长视频会卡 -->
 					<video
-						v-if="videoIndex == index"
+						v-if="videoIndex == index || videoIndex + 1 == index || videoIndex - 1 == index"
 						:id="'myVideo' + index"
 						:src="item.study_video"
 						:show-center-play-btn="false"
