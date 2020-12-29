@@ -62,6 +62,9 @@ export default {
 			bannerImgNumList: [], //轮播中图片总数
 
 			progressNum: 0,
+			
+			platform: uni.getStorageSync('platform'),
+			tabbarHeight: uni.upx2px(144)
 		};
 	},
 	computed: {

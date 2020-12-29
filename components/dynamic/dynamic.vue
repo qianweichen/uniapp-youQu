@@ -160,7 +160,7 @@ toggleAllText(index,flag,init){
 							:data-img="item.study_video + '?vframe/jpg/offset/0'"
 							:data-type="item.study_type"
 						>
-						<!-- :data-img="item.image_part[0]" -->
+							<!-- :data-img="item.image_part[0]" -->
 							<image src="../../static/wechat.png" mode="widthFix"></image>
 							<text>分享</text>
 						</button>
@@ -172,7 +172,7 @@ toggleAllText(index,flag,init){
 		</view>
 		<!-- 评论区域 -->
 		<view class="mask" @click="hideCommentFun" v-if="showCommentFlag" @touchmove.stop.prevent="moveHandle"></view>
-		<view class="comment" v-if="showCommentFlag">
+		<view class="comment" v-if="showCommentFlag" :style="'bottom:' + (platform == 'ios' ? tabbarHeight : 0) + 'px;'" @touchmove.stop.prevent="">
 			<view class="title flex-center">
 				<text class="fs-26">全部评论</text>
 				<image @click="hideCommentFun" src="../../static/close.png" mode="widthFix"></image>

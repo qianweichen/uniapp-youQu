@@ -203,6 +203,7 @@ export default {
 		uni.getSystemInfo({
 			success: res => {
 				this.platform = res.platform;
+				uni.setStorageSync('platform',res.platform);
 				// if (res.platform == 'devtools') {
 				// 	PC;
 				// } else if (res.platform == 'ios') {

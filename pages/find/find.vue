@@ -13,7 +13,7 @@
 		</view>
 		<view :style="'height:' + customBar + 'px;'"></view>
 
-		<view class="dynamic" :style="'height: calc(100% - ' + (customBar + topCustomBar) + 'px);'">
+		<view class="dynamic" :style="'height: calc(100% - ' + customBar + 'px);'">
 			<!-- <scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic" refresher-enabled @refresherrefresh="refreshDynamic" :refresher-triggered="refreshFlag"> -->
 			<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic" :scroll-top="scrollTop" scroll-with-animation @scroll="pageScrollFun">
 				<view>
