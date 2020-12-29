@@ -155,7 +155,7 @@
 						<view class="btnBox fs-26" :class="isSmallScreen && parentPage == 'home' ? 'btnBox-full-page' : ''">
 							<view v-if="isAuthorized && parentPage == 'home' && parentPageVideoType == 'recommend'">
 								<view
-									v-if="getRedNum < 4"
+									v-if="getRedNum < getRedList.length"
 									class="progress-group"
 									@click.stop="clickRed"
 									:animation="getRedList[getRedNum].time <= watchTime ? redAnimationData : ''"

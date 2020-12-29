@@ -26,6 +26,7 @@ export default {
 			pageScroll: 0,
 			timer: null,
 			autoPlayFlag: false,
+			
 			loadStatus: 'loadmore',
 			publishCircleId: '', //发贴返回获取的id
 
