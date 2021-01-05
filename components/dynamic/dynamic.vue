@@ -36,7 +36,14 @@ toggleAllText(index,flag,init){
 		this.$set(this.dynamicList[index], 'hasHideBtn', flag);
 	}
 },
- 
+//退出视频全屏时 在iOS系统的scrollview中，会回到顶部，需要滚动到之前的位置
+@exitFullScreen="exitFullScreen"
+exitFullScreen() {
+	this.scrollTop = this.pageScroll + 1;
+	setTimeout(() => {
+		this.scrollTop = this.pageScroll;
+	}, 0);
+},
 -->
 <template>
 	<view class="page-dynamic fc-f">

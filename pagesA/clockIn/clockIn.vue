@@ -35,11 +35,11 @@
 				<!-- 在打卡时间段 -->
 				<view v-if="clockTime">
 					<!-- 0未预约   1已预约 未打卡   2已打卡瓜分 -->
-					<view v-if="clockStatus == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
+					<view v-if="clockStatus == 0" class="flex-center" @click="appointment">点击预约打卡</view>
 					<view v-if="clockStatus == 1" class="flex-center" @click="clockIn">打卡中 {{ clockTime.hour }}:{{ clockTime.minute }}:{{ clockTime.second }}</view>
 					<view v-if="clockStatus == 2">
 						<!-- 0今天未预约  1今天已预约 -->
-						<view v-if="clockStatusToday == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
+						<view v-if="clockStatusToday == 0" class="flex-center" @click="appointment">点击预约打卡</view>
 						<view v-if="clockStatusToday == 1" class="flex-center">已预约明天的活动</view>
 					</view>
 				</view>
@@ -47,11 +47,11 @@
 				<view v-else>
 					<!-- 在预约时间段内 -->
 					<view v-if="activityTime">
-						<view v-if="clockStatusToday == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
+						<view v-if="clockStatusToday == 0" class="flex-center" @click="appointment">点击预约打卡</view>
 						<view v-if="clockStatusToday == 1" class="flex-center">打卡倒计时{{ starClockTime.hour }}:{{ starClockTime.minute }}:{{ starClockTime.second }}</view>
 					</view>
 					<view v-else>
-						<view v-if="clockStatusToday == 0" class="flex-center" @click="appointment">观看视频，立即预约</view>
+						<view v-if="clockStatusToday == 0" class="flex-center" @click="appointment">点击预约打卡</view>
 						<view v-if="clockStatusToday == 1" class="flex-center">打卡倒计时{{ starClockTime.hour }}:{{ starClockTime.minute }}:{{ starClockTime.second }}</view>
 					</view>
 				</view>
@@ -59,17 +59,17 @@
 			<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share btn-group">
 				<image src="../static/clockIn/btn.png" mode="widthFix"></image>
 				<view v-if="clockTime">
-					<view v-if="clockStatus == 0" class="flex-center">观看视频，立即预约</view>
+					<view v-if="clockStatus == 0" class="flex-center">点击预约打卡</view>
 					<view v-if="clockStatus == 1" class="flex-center">打卡中 {{ clockTime.hour }}:{{ clockTime.minute }}:{{ clockTime.second }}</view>
-					<view v-if="clockStatus == 2" class="flex-center">观看视频，立即预约</view>
+					<view v-if="clockStatus == 2" class="flex-center">点击预约打卡</view>
 				</view>
 				<view v-else>
 					<view v-if="activityTime">
-						<view v-if="clockStatusToday == 0" class="flex-center">观看视频，立即预约</view>
+						<view v-if="clockStatusToday == 0" class="flex-center">点击预约打卡</view>
 						<view v-if="clockStatusToday == 1" class="flex-center">打卡倒计时{{ starClockTime.hour }}:{{ starClockTime.minute }}:{{ starClockTime.second }}</view>
 					</view>
 					<view v-else>
-						<view v-if="clockStatusToday == 0" class="flex-center">观看视频，立即预约</view>
+						<view v-if="clockStatusToday == 0" class="flex-center">点击预约打卡</view>
 						<view v-if="clockStatusToday == 1" class="flex-center">打卡倒计时{{ starClockTime.hour }}:{{ starClockTime.minute }}:{{ starClockTime.second }}</view>
 					</view>
 				</view>
@@ -329,18 +329,20 @@ export default {
 			uni.requestSubscribeMessage({
 				tmplIds: ['juzBV1wr_fSkUcLvdMBm4fheXMPKVc0a_PmKd9rAdCQ'],
 				complete: res => {
+					this.doAppointment();
 					// 用户触发广告后，显示激励视频广告
-					if (rewardedVideoAd) {
-						rewardedVideoAd.show().catch(() => {
-							// 失败重试
-							rewardedVideoAd
-								.load()
-								.then(() => rewardedVideoAd.show())
-								.catch(err => {
-									// console.log('激励视频 广告显示失败');
-								});
-						});
-					}
+					// if (rewardedVideoAd) {
+					// 	rewardedVideoAd.show().catch(() => {
+					// 		// 失败重试
+					// 		rewardedVideoAd
+					// 			.load()
+					// 			.then(() => rewardedVideoAd.show())
+					// 			.catch(err => {
+					// 				// console.log('激励视频 广告显示失败');
+					// 				this.doAppointment();
+					// 			});
+					// 	});
+					// }
 				}
 			});
 		},
@@ -498,8 +500,8 @@ export default {
 		if (options.pid) {
 			this.pid = options.pid;
 		}
-		
-		//广告
+
+		// 插屏广告
 		if (wx.createInterstitialAd) {
 			interstitialAd = wx.createInterstitialAd({
 				adUnitId: 'adunit-f4669b91d9da4f72'
@@ -516,21 +518,21 @@ export default {
 		}
 	},
 	onReady() {
-		if (uni.createRewardedVideoAd) {
-			rewardedVideoAd = uni.createRewardedVideoAd({ adUnitId: 'adunit-838a47bd221802de' });
-			rewardedVideoAd.onLoad(() => {
-				// console.log('onLoad event');
-			});
-			rewardedVideoAd.onError(err => {
-				// console.log('onError event', err);
-			});
-			rewardedVideoAd.onClose(res => {
-				// console.log('onClose event', res);
-				if ((res && res.isEnded) || res === undefined) {
-					this.doAppointment();
-				}
-			});
-		}
+		// if (uni.createRewardedVideoAd) {
+		// 	rewardedVideoAd = uni.createRewardedVideoAd({ adUnitId: 'adunit-838a47bd221802de' });
+		// 	rewardedVideoAd.onLoad(() => {
+		// 		// console.log('onLoad event');
+		// 	});
+		// 	rewardedVideoAd.onError(err => {
+		// 		// console.log('onError event', err);
+		// 	});
+		// 	rewardedVideoAd.onClose(res => {
+		// 		// console.log('onClose event', res);
+		// 		if ((res && res.isEnded) || res === undefined) {
+		// 			this.doAppointment();
+		// 		}
+		// 	});
+		// }
 	},
 	onShareAppMessage(res) {
 		return {

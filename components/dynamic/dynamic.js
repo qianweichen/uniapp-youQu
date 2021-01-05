@@ -158,6 +158,7 @@ export default {
 					var videoContext = uni.createVideoContext('myVideo', this);
 					if (this.isVideoFull) {
 						videoContext.exitFullScreen();
+						this.$emit('exitFullScreen');
 					} else {
 						videoContext.requestFullScreen();
 					}
@@ -178,6 +179,7 @@ export default {
 			if (e.detail.fullscreen) {
 				this.isVideoFull = true;
 			} else {
+				this.$emit('exitFullScreen');
 				this.isVideoFull = false;
 			}
 		},

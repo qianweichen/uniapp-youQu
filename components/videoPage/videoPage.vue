@@ -173,6 +173,7 @@
 									<cmd-progress width="40" status="success" type="circle" :percent="100" :showInfo="false"></cmd-progress>
 									<image src="../../static/redpak.png" mode="widthFix"></image>
 								</view>
+								<view style="">{{getRedNum}}/{{getRedList.length}}</view>
 							</view>
 							<view v-if="isAuthorized" @click.stop="goodFun(item.id, index)">
 								<image class="opcity" :src="'../../static/like' + (item.is_info_zan ? '' : '_w') + '.png'" mode="widthFix"></image>

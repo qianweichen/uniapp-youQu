@@ -33,6 +33,12 @@ export default {
 		}
 	},
 	methods: {
+		exitFullScreen() {
+			this.scrollTop = this.pageScroll + 1;
+			setTimeout(() => {
+				this.scrollTop = this.pageScroll;
+			}, 0);
+		},
 		//点赞后修改数据
 		goodFun(index, num) {
 			this.dynamicList[index]['is_info_zan'] = !this.dynamicList[index]['is_info_zan']; //修改点赞状态
