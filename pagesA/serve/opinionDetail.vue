@@ -10,7 +10,7 @@
 			<view class="bold">联系方式</view>
 			<input type="number" placeholder="请输入联系方式" />
 		</view>
-		<sunui-upimg @change="getImageInfo" :upload_auto="true" ref="upimg1" :upload_count="3"></sunui-upimg>
+		<sunUiUpimg @change="getImageInfo" :upload_auto="true" ref="upimg1" :upload_count="3"></sunUiUpimg>
 		<view class="bottomBox">
 			<view class="flex-center">
 				<checkbox color="#7364BD" class="checkbox" checked="" />
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-	import sunUiUpimg from '@/components/sunui-upimg/sunui-upimg.vue';
+	import sunUiUpimg from '../components/sunui-upimg/sunui-upimg.vue';
 	export default{
 		data(){
 			return{

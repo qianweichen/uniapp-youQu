@@ -89,6 +89,9 @@
 			"postcss": false,
 			"urlCheck": false,
 			"minified": true
+		},
+		"optimization": {
+			"subPackages": true
 		}
 	}
 }

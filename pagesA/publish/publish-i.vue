@@ -3,7 +3,7 @@
 		<backCapsule type="normal"></backCapsule>
 		<navigationBar name="发布" haveHeight></navigationBar>
 		<view class="iptBox"><textarea class="fs-26" placeholder="在这里写下你的心情..." placeholder-class="fc-9" maxlength="140" v-model="content" /></view>
-		<sunui-upimg
+		<sunUiUpimg
 			@change="getImageInfo"
 			:upload_auto="true"
 			ref="upimg1"
@@ -11,7 +11,7 @@
 			upload_img_wh="width:196rpx;height:196rpx;"
 			:url="apiUrl + 'User/img_upload'"
 			:header="formData"
-		></sunui-upimg>
+		></sunUiUpimg>
 		<view class="chooseBox fs-26">
 			<view class="item flex-between" @click="goPage('/pagesA/publish/chooseCircle')">
 				<view>同步到圈子</view>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import sunUiUpimg from '@/components/sunui-upimg/sunui-upimg.vue';
+import sunUiUpimg from '../components/sunui-upimg/sunui-upimg.vue';
 export default {
 	components: {
 		sunUiUpimg: sunUiUpimg
