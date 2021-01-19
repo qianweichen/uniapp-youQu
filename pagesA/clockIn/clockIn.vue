@@ -388,7 +388,7 @@ export default {
 
 					//已预约并且超过打卡时间，弹框提示，一天只提示一次
 					if (this.timeQuantum == 3 && this.clockStatus == 1) {
-						var today = new Date().toLocaleDateString(),
+						var today = new Date().Format("yyyy-MM-dd"),
 							storageDay = uni.getStorageSync('timeoutShowFlag');
 						if (today != storageDay) {
 							this.isTimeoutShow = true;
@@ -422,8 +422,8 @@ export default {
 		getCountDown() {
 			//获取当前时间
 			var now = new Date().getTime(),
-				today_5 = new Date(new Date(new Date().toLocaleDateString()).getTime() + 5 * 60 * 60 * 1000).getTime(), //今天5点
-				today_10 = new Date(new Date(new Date().toLocaleDateString()).getTime() + 10 * 60 * 60 * 1000).getTime(); //今天10点
+				today_5 = new Date(new Date(new Date().Format("yyyy-MM-dd")).getTime() + 5 * 60 * 60 * 1000).getTime(), //今天5点
+				today_10 = new Date(new Date(new Date().Format("yyyy-MM-dd")).getTime() + 10 * 60 * 60 * 1000).getTime(); //今天10点
 			if (now < today_5) {
 				//5点前
 				//不在预约时间
@@ -431,17 +431,17 @@ export default {
 				//非打卡时段不显示打卡倒计时
 				this.clockTime = '';
 				//不在打卡时间段获取打卡开始时间倒计时（今天五点）
-				var starClockTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 5 * 60 * 60 * 1000);
+				var starClockTime = new Date(new Date(new Date().Format("yyyy-MM-dd")).getTime() + 5 * 60 * 60 * 1000);
 				this.getSurplusTime('starClockTime', starClockTime);
 
 				this.timeQuantum = 1;
 			} else if (now < today_10) {
 				//5-10点
 				//预约截至时间 第二天0点
-				var appointmentEndTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000);
+				var appointmentEndTime = new Date(new Date(new Date().Format("yyyy-MM-dd")).getTime() + 24 * 60 * 60 * 1000);
 				this.getSurplusTime('activityTime', appointmentEndTime);
 				//打卡截至时间 当天上午十点
-				var clockEndTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 10 * 60 * 60 * 1000);
+				var clockEndTime = new Date(new Date(new Date().Format("yyyy-MM-dd")).getTime() + 10 * 60 * 60 * 1000);
 				this.getSurplusTime('clockTime', clockEndTime);
 				//打卡时间段不获取打卡开始时间倒计时
 				this.starClockTime = '';
@@ -450,12 +450,12 @@ export default {
 			} else {
 				//10点以后
 				//预约截至时间 第二天0点
-				var appointmentEndTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000);
+				var appointmentEndTime = new Date(new Date(new Date().Format("yyyy-MM-dd")).getTime() + 24 * 60 * 60 * 1000);
 				this.getSurplusTime('activityTime', appointmentEndTime);
 				//非打卡时段不显示打卡倒计时
 				this.clockTime = '';
 				//不在打卡时间段获取打卡开始时间倒计时（明天五点）
-				var starClockTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + (24 + 5) * 60 * 60 * 1000);
+				var starClockTime = new Date(new Date(new Date().Format("yyyy-MM-dd")).getTime() + (24 + 5) * 60 * 60 * 1000);
 				this.getSurplusTime('starClockTime', starClockTime);
 
 				this.timeQuantum = 3;
