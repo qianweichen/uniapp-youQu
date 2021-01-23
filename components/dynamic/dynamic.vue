@@ -87,6 +87,7 @@ exitFullScreen() {
 						enable-danmu
 						:danmu-list="item.pinglun"
 						:object-fit="isVideoFull ? '' : 'cover'"
+						:show-fullscreen-btn="!closeFullScreen"
 						@fullscreenchange="videoFullScreenChange"
 						@timeupdate="videoTimeUpdate"
 						@error="videoError"

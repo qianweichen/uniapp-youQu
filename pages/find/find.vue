@@ -68,7 +68,7 @@
 					</view>
 				</view>
 				<view class="dynamic-group" @touchstart="touchstart" @touchend="touchend" @touchmove="touchmove">
-					<dynamicList ref="dynamicList" type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun" @toggleAllText="toggleAllText" @exitFullScreen="exitFullScreen"></dynamicList>
+					<dynamicList ref="dynamicList" closeFullScreen type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun" @toggleAllText="toggleAllText" @exitFullScreen="exitFullScreen"></dynamicList>
 				</view>
 				<view v-if="dynamicList.length == 0 && loadStatus == 'nomore'" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
 				<loadMore v-else :status="loadStatus"></loadMore>

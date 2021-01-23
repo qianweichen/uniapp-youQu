@@ -4,6 +4,10 @@ export default {
 		list: Array, //列表数据
 		circleAdmin_da: Array, //圈主列表数据
 		circleAdmin_xiao: Array, //管理员列表数据
+		closeFullScreen: {	//是否关闭视频放大功能
+			type: Boolean,
+			default: false
+		}
 	},
 	watch: {
 		'list.length': {
@@ -149,6 +153,10 @@ export default {
 		},
 		//点击视频
 		clickVideoFun(e) {
+			if(this.closeFullScreen){
+				return;
+			}
+			
 			// 双击
 			var curTime = e.timeStamp; //本次点击时间
 			var lastTime = this.clickTime; //上次点击时间
