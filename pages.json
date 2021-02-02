@@ -228,6 +228,12 @@
 			}
         }]
 	}],
+	"preloadRule": {
+		"pages/index/index": {
+			"network": "all",
+			"packages": ["pagesA"]
+		}
+	},
 	"globalStyle": {
 		"backgroundColor": "#1f1d2b",
 		"navigationStyle": "custom"
