@@ -19,20 +19,20 @@
 	left: calc(50% - 15px);
 	top: calc(50% - 15px);
 }
-.video-toast{
+.video-toast {
 	position: absolute;
 	left: 0;
 	top: 0;
 	z-index: 1;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0,0.5);
-	>view{
-		.img{
+	background-color: rgba(0, 0, 0, 0.5);
+	> view {
+		.img {
 			width: 320rpx;
 			height: auto;
 		}
-		.number{
+		.number {
 			top: 216rpx;
 			left: 130rpx;
 			position: absolute;
@@ -43,11 +43,12 @@
 	}
 }
 .video-swiper {
+	-webkit-overflow-scrolling: touch;
 	width: 100%;
 	height: 100%;
 	background-color: #000;
 }
-.like-img{
+.like-img {
 	position: fixed;
 	width: 100px;
 	height: auto;
@@ -196,22 +197,22 @@
 		position: absolute;
 		bottom: 0;
 		left: 0;
-		.advertising{
+		.advertising {
 			padding: 10rpx 20rpx;
-			background-color: rgba(0,0,0,0.7);
+			background-color: rgba(0, 0, 0, 0.7);
 			border-radius: 10rpx;
 			color: #fff;
 			margin-bottom: 20rpx;
 			font-size: 28rpx;
 			font-weight: bold;
 			position: relative;
-			.header{
+			.header {
 				width: 60rpx;
 				height: 60rpx;
 				margin-right: 10rpx;
 				border-radius: 50%;
 			}
-			.close{
+			.close {
 				position: absolute;
 				right: 0rpx;
 				top: 0rpx;
@@ -245,10 +246,10 @@
 					width: 100%;
 					height: 100%;
 					transform: scale(1);
-					backface-visibility:hidden;
+					backface-visibility: hidden;
 					transform-style: preserve-3d;
 				}
-				.ai-te{
+				.ai-te {
 					font-size: 36rpx;
 					font-weight: bold;
 					position: absolute;
@@ -257,20 +258,20 @@
 					width: 100%;
 					height: 100%;
 					transform: scale(0);
-					backface-visibility:hidden;
+					backface-visibility: hidden;
 					transform-style: preserve-3d;
 				}
-				&.rotate{
+				&.rotate {
 					width: 30rpx;
 					height: 50rpx;
 					margin-right: 10rpx;
 					.header-img {
 						transform: scale(0);
-						transition:all 0.3s;
+						transition: all 0.3s;
 					}
-					.ai-te{
+					.ai-te {
 						transform: scale(1);
-						transition:all 0.3s;
+						transition: all 0.3s;
 					}
 				}
 				.add {
@@ -345,8 +346,7 @@
 }
 .comment {
 	width: 100%;
-	height: 948rpx;
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	z-index: 1;
 	background: #fff;
@@ -364,18 +364,22 @@
 		}
 	}
 	.sendComment {
-		padding: 0 32rpx;
-		height: 110rpx;
-		input {
-			width: 600rpx;
-		}
-		.send {
-			width: 55rpx;
-			height: auto;
+		padding: 32rpx;
+		.ipt-group{
+			padding: 10rpx 30rpx;
+			background-color: #eee;
+			border-radius: 30rpx;
+			input {
+				width: 600rpx;
+			}
+			.send {
+				width: 46rpx;
+				height: auto;
+			}
 		}
 	}
 	.listBox {
-		height: calc(100% - 108rpx - 110rpx);
+		height: 720rpx;
 		.list {
 			padding-bottom: 20rpx;
 			.item {
@@ -388,7 +392,7 @@
 				}
 				.content {
 					width: 510rpx;
-					.tag{
+					.tag {
 						font-size: 20rpx;
 						color: #fff;
 						background-color: #7464be;
@@ -409,7 +413,7 @@
 			}
 			.secondaryComment {
 				padding: 0 21rpx 6rpx 87rpx;
-				.header{
+				.header {
 					width: 50rpx;
 					height: 50rpx;
 				}

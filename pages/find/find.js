@@ -30,9 +30,15 @@ export default {
 			pageScroll: 0,
 			timer: null,
 			autoPlayFlag: false,
+
+			platform: uni.getStorageSync('platform')
 		}
 	},
 	methods: {
+		showDynamicCommentFun(flag) {
+			// console.log('find', flag);
+			this.$emit('showDynamicCommentFun', flag);
+		},
 		exitFullScreen() {
 			this.scrollTop = this.pageScroll + 1;
 			setTimeout(() => {

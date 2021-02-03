@@ -68,7 +68,7 @@ exitFullScreen() {
 					</view>
 				</view>
 				<!-- 文字内容 -->
-				<view class="content fs-28 padding" :class="{ hide: item.hideText }" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
+				<view class="content fs-28 padding" :class="{ 'hide-overflow': item.hideText }" @click="goPage('/pagesA/articleDetails/articleDetails?id=' + item.id)">
 					<view class="text-group">{{ item.study_content }}</view>
 				</view>
 				<view v-if="item.hasHideBtn" @click="toggleAllText(index, item.hideText)" class="padding fs-28" style="color: #1890FF; padding-bottom: 20rpx;">
@@ -180,7 +180,7 @@ exitFullScreen() {
 		</view>
 		<!-- 评论区域 -->
 		<view class="mask" @click="hideCommentFun" v-if="showCommentFlag" @touchmove.stop.prevent="moveHandle"></view>
-		<view class="comment" v-if="showCommentFlag" :style="'bottom:' + (platform == 'ios' ? tabbarHeight : 0) + 'px;'" @touchmove.stop.prevent="">
+		<view class="comment" v-if="showCommentFlag" @touchmove.stop.prevent="">
 			<view class="title flex-center">
 				<text class="fs-26">全部评论</text>
 				<image @click="hideCommentFun" src="../../static/close.png" mode="widthFix"></image>
@@ -257,9 +257,14 @@ exitFullScreen() {
 				</view>
 				<view v-else style="text-align: center; padding-top: 200rpx;">暂无评论</view>
 			</scroll-view>
-			<view class="sendComment flex-between">
-				<input type="text" placeholder="留下你的精彩评论吧" maxlength="30" v-model="commentContent" />
-				<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
+			<view class="sendComment">
+				<view class="ipt-group flex-between">
+					<input type="text" placeholder="留下你的精彩评论吧" maxlength="30" v-model="commentContent" />
+					<image v-if="isAuthorized" class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
+					<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
+						<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
+					</button>
+				</view>
 			</view>
 		</view>
 		<!-- 二级评论 -->

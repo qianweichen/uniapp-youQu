@@ -328,12 +328,14 @@
 					</view>
 					<view v-else style="text-align: center; padding-top: 200rpx;">暂无评论</view>
 				</scroll-view>
-				<view class="sendComment flex-between">
-					<input type="text" placeholder="留下你的精彩评论吧" maxlength="30" v-model="commentContent" />
-					<image v-if="isAuthorized" class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
-					<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
-						<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
-					</button>
+				<view class="sendComment">
+					<view class="ipt-group flex-between">
+						<input type="text" placeholder="留下你的精彩评论吧" maxlength="30" v-model="commentContent" />
+						<image v-if="isAuthorized" class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
+						<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
+							<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
+						</button>
+					</view>
 				</view>
 			</view>
 		</view>

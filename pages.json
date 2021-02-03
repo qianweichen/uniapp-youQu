@@ -226,6 +226,11 @@
             "style" : {
 				"navigationBarTitleText": "活动规则"
 			}
+        },{
+            "path" : "game/ComposeWatermelon",
+            "style" : {
+				"navigationBarTitleText": "合成大西瓜"
+			}
         }]
 	}],
 	"preloadRule": {

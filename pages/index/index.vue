@@ -1,8 +1,8 @@
 <template>
 	<view class="page-index">
-		<view v-if="platform == 'ios'" :class="isSmallScreen && tabIndex == 'home' ? 'full-page' : 'normal-page'">
+		<view v-if="platform == 'ios'" :class="(isSmallScreen && tabIndex == 'home') || tabIndex == 'find' ? 'full-page' : 'normal-page'">
 			<home ref="homePage" v-if="loadTabList[0]" :class="{ hide: tabIndex != 'home' }"></home>
-			<find ref="findPage" v-if="loadTabList[1]" :class="{ hide: tabIndex != 'find' }"></find>
+			<find ref="findPage" v-if="loadTabList[1]" :class="{ hide: tabIndex != 'find' }" @showDynamicCommentFun="showDynamicCommentFun"></find>
 			<message ref="messagePage" v-if="loadTabList[2]" :class="{ hide: tabIndex != 'message' }"></message>
 			<mine ref="minePage" v-if="loadTabList[3]" :class="{ hide: tabIndex != 'mine' }"></mine>
 		</view>
@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		<!-- tabbar -->
-		<view class="tabbar flex-around" :class="isSmallScreen && tabIndex == 'home' ? 'lucency' : ''">
+		<view class="tabbar flex-around" :class="[isSmallScreen && tabIndex == 'home' ? 'lucency' : '', isTabbarShow ? 'go-back' : '']">
 			<view @click="changeTabIndex" data-name="home">
 				<image class="icon" :src="'../../static/tabbar/home' + (tabIndex == 'home' ? 'A' : '') + '.png'" mode="widthFix"></image>
 				<view :class="{ active: tabIndex == 'home' }">首页</view>
@@ -75,10 +75,16 @@ export default {
 			clickTime: 0, //首页点击事件  控制双击
 			isSmallScreen: uni.getSystemInfoSync().windowHeight <= 667, //是否开启底部透明
 			customBar: this.CustomBar,
-			isAddProgramShow: true //是否显示添加到小程序
+			isAddProgramShow: true, //是否显示添加到小程序
+
+			isTabbarShow: false
 		};
 	},
 	methods: {
+		showDynamicCommentFun(flag) {
+			// console.log('index',flag);
+			this.isTabbarShow = flag;
+		},
 		doubleClick(e) {
 			var curTime = e.timeStamp; //本次点击时间
 			var lastTime = this.clickTime; //上次点击时间
@@ -203,7 +209,7 @@ export default {
 		uni.getSystemInfo({
 			success: res => {
 				this.platform = res.platform;
-				uni.setStorageSync('platform',res.platform);
+				uni.setStorageSync('platform', res.platform);
 				// if (res.platform == 'devtools') {
 				// 	PC;
 				// } else if (res.platform == 'ios') {
@@ -231,7 +237,7 @@ export default {
 				console.error(err);
 			});
 		}
-		
+
 		// 发布视频后返回检测id
 		var publishCircleId = uni.getStorageSync('publishCircleId');
 		if (publishCircleId) {
@@ -381,6 +387,9 @@ export default {
 		color: rgba(255, 255, 255, 0.7);
 		font-size: 22rpx;
 		text-align: center;
+		&.go-back{
+			z-index: -1;
+		}
 		&.lucency {
 			background-color: rgba(0, 0, 0, 0);
 		}

@@ -61,17 +61,46 @@
 								<image class="icon-right" src="../../static/right.png" mode="widthFix"></image>
 							</button>
 						</view>
+						<view class="banner-group flex-between">
+							<view class="banner" @click="goPage('/pagesA/clockIn/clockIn')">
+								<image class="cover" src="../../static/banner-clock.png" mode="aspectFill"></image>
+								<view class="cont">
+									<view class="name">早起打卡</view>
+									<view class="info">早起打卡赚积分</view>
+									<view class="go flex-center">GO＞</view>
+								</view>
+							</view>
+							<view class="banner" @click="goPage('/pagesA/game/ComposeWatermelon')">
+								<image class="cover" src="../../static/banner-game.png" mode="aspectFill"></image>
+								<view class="cont">
+									<view class="name">合成大西瓜</view>
+									<view class="info">全民合成大西瓜</view>
+									<view class="go flex-center">GO＞</view>
+								</view>
+							</view>
+						</view>
 					</view>
 					<!-- 广告 -->
-					<view style="padding: 30rpx;">
-						<ad-custom unit-id="adunit-be40a436865b3778"></ad-custom>
-					</view>
+					<view style="padding: 30rpx;"><ad-custom unit-id="adunit-be40a436865b3778"></ad-custom></view>
 				</view>
 				<view class="dynamic-group" @touchstart="touchstart" @touchend="touchend" @touchmove="touchmove">
-					<dynamicList ref="dynamicList" closeFullScreen type="dynamic" :list="dynamicList" @goodFun="goodFun" @commentFun="commentFun" @attentionFun="attentionFun" @playVideoFun="playVideoFun" @toggleAllText="toggleAllText" @exitFullScreen="exitFullScreen"></dynamicList>
+					<dynamicList
+						ref="dynamicList"
+						closeFullScreen
+						type="dynamic"
+						:list="dynamicList"
+						@goodFun="goodFun"
+						@commentFun="commentFun"
+						@attentionFun="attentionFun"
+						@playVideoFun="playVideoFun"
+						@toggleAllText="toggleAllText"
+						@exitFullScreen="exitFullScreen"
+						@showDynamicCommentFun="showDynamicCommentFun"
+					></dynamicList>
 				</view>
 				<view v-if="dynamicList.length == 0 && loadStatus == 'nomore'" style="text-align: center; padding-top: 200rpx; color: #999;">暂无数据</view>
 				<loadMore v-else :status="loadStatus"></loadMore>
+				<view v-if="platform == 'ios'" style="height: 144rpx;"></view>
 			</scroll-view>
 		</view>
 		<w-loading mask="true" click="true" ref="loading"></w-loading>
