@@ -35,6 +35,11 @@ export default {
 		}
 	},
 	methods: {
+		stopVideo(){
+			for (var i = 0; i < this.dynamicList.length; i++) {
+				this.$set(this.dynamicList[i], 'playVideoFlag', false);
+			}
+		},
 		showDynamicCommentFun(flag) {
 			// console.log('find', flag);
 			this.$emit('showDynamicCommentFun', flag);

@@ -159,6 +159,13 @@ export default {
 					this.$refs.homePage.$refs.attentionVideo.videoContext.play();
 				}
 			}
+			
+			//切换tab暂停发现页视频
+			if (index == 'home' || index == 'message' || index == 'mine') {
+				if (this.$refs.findPage) {
+					this.$refs.findPage.stopVideo();
+				}
+			}
 
 			//标记
 			this.tabIndex = index;

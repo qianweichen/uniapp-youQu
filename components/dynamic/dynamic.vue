@@ -259,7 +259,7 @@ exitFullScreen() {
 			</scroll-view>
 			<view class="sendComment">
 				<view class="ipt-group flex-between">
-					<input type="text" placeholder="留下你的精彩评论吧" maxlength="30" v-model="commentContent" />
+					<input type="text" placeholder="留下你的精彩评论吧" @confirm="sendComment" maxlength="30" v-model="commentContent" />
 					<image v-if="isAuthorized" class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
 					<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
 						<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
