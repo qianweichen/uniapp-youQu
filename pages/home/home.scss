@@ -273,6 +273,18 @@
 		> view {
 			position: relative;
 		}
+		.number{
+			position: absolute;
+			right: -30rpx;
+			top: 0;
+			width: 32rpx;
+			height: 32rpx;
+			color: #fff;
+			background-color: #7364bd;
+			font-size: 20rpx;
+			border-radius: 50%;
+			opacity: 0.8;
+		}
 		.line {
 			width: 22rpx;
 			height: 4rpx;

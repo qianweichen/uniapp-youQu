@@ -38,7 +38,7 @@ export default {
 	},
 	data() {
 		return {
-			sending:false,
+			sending: false,
 			apiUrl: this.apiUrl,
 			content: '',
 			chooseCirce: {}, //圈子信息
@@ -53,7 +53,7 @@ export default {
 	methods: {
 		// 第一步:订阅
 		send() {
-			if(this.sending){
+			if (this.sending) {
 				return;
 			}
 			if (!this.content) {
@@ -63,18 +63,18 @@ export default {
 				});
 				return;
 			}
-			if (this.imgArr.length==0) {
+			if (this.imgArr.length == 0) {
 				uni.showToast({
 					title: '请选择图片',
 					icon: 'none'
 				});
 				return;
 			}
+			this.sending = true;
 			uni.requestSubscribeMessage({
 				tmplIds: ['NfOZBD9yhTMpgM_CUJDBKdmkjvllcDF2RHPvlDMldoI', '7sor7eBvPETo04jeaDtzc_co2VX9_6NHnCJaqQiVMNE'],
 				success: res => {
 					// console.log(res);
-					this.sending = true;
 					this.$refs.loading.open();
 					var params = {};
 					params.token = uni.getStorageSync('token');
@@ -92,6 +92,9 @@ export default {
 					params.file_ss = 0;
 					params.mch_id = 1;
 					this.submit(params);
+				},
+				fail: res => {
+					this.sending = false;
 				}
 			});
 		},
@@ -107,9 +110,9 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
-					this.sending = false;
 					this.$refs.loading.close();
 					setTimeout(() => {
+						this.sending = false;
 						uni.navigateBack();
 					}, 1500);
 				}

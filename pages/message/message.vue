@@ -1,7 +1,7 @@
 <template>
 	<view class="page-msg">
 		<navigationBar name="站内信" haveHeight tabbarPage></navigationBar>
-		<scroll-view scroll-y="true" @scrolltolower="onBottomFun" style="height: calc(100% - 150rpx);">
+		<scroll-view scroll-y="true" @scrolltolower="onBottomFun" style="height: calc(100% - 150rpx);" scroll-anchoring>
 			<view class="btnBox flex-around fs-26">
 				<view @click="goPage('/pages/message/classesMsg?type=3')">
 					<image src="../../static/msg1.png" mode="widthFix"></image>

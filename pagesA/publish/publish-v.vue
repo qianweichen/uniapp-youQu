@@ -50,7 +50,7 @@
 						{{ item.name }}
 					</view>
 				</view>
-				<image @click="isPiazzaShow = false;" class="close" src="../../static/close-f.png" mode="widthFix"></image>
+				<image @click="isPiazzaShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image>
 			</view>
 		</view>
 	</view>
@@ -61,22 +61,22 @@ const qiniuUploader = require('@/components/qiniuUploader/qiniuUploader.js');
 export default {
 	data() {
 		return {
-			sending:false,
+			sending: false,
 			videoData: {}, //视频数据
 			content: '', //内容
 			chooseCirce: {}, //圈子信息
 			parentPage: '', //上一级页面
-			
+
 			choosePiazza: [], //广场信息
 			piazzaList: [], //广场列表
 			isPiazzaShow: false
 		};
 	},
-	computed:{
-		choosePiazzaNames(){
+	computed: {
+		choosePiazzaNames() {
 			var names = [];
-			this.piazzaList.forEach(item=>{
-				if(item.checked){
+			this.piazzaList.forEach(item => {
+				if (item.checked) {
 					names.push(item.name);
 				}
 			});
@@ -128,7 +128,7 @@ export default {
 			// 	});
 			// 	return;
 			// }
-			if(this.sending){
+			if (this.sending) {
 				return;
 			}
 			if (!this.content) {
@@ -145,17 +145,20 @@ export default {
 				});
 				return;
 			}
+			this.sending = true;
 			uni.requestSubscribeMessage({
 				tmplIds: ['NfOZBD9yhTMpgM_CUJDBKdmkjvllcDF2RHPvlDMldoI', '7sor7eBvPETo04jeaDtzc_co2VX9_6NHnCJaqQiVMNE'],
 				success: res => {
 					// console.log(res);
 					this.saveVideo();
+				},
+				fail: res => {
+					this.sending = false;
 				}
 			});
 		},
 		// 第二步:上传七牛
 		saveVideo() {
-			this.sending = true;
 			this.$refs.loading.open();
 			var params = {};
 			params.token = uni.getStorageSync('token');
@@ -245,10 +248,10 @@ export default {
 						title: res.data.msg,
 						icon: 'none'
 					});
-					this.sending = false;
 					this.$refs.loading.close();
 					uni.setStorageSync('publishCircleId', res.data.id);
 					setTimeout(() => {
+						this.sending = false;
 						if (this.parentPage == 'shoot') {
 							uni.navigateBack({
 								delta: 2
@@ -331,7 +334,7 @@ export default {
 	background-color: $ornamentColor;
 	border-radius: 30rpx 30rpx 0 0;
 	transition: all ease 0.6s;
-	.close{
+	.close {
 		position: absolute;
 		right: 30rpx;
 		top: 30rpx;

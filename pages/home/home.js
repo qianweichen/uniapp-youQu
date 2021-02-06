@@ -32,7 +32,9 @@ export default {
 
 			advertisingList: [],
 
-			sevenRed: ''
+			sevenRed: '',
+			
+			attentionNumber:''
 		};
 	},
 	methods: {
@@ -201,6 +203,7 @@ export default {
 				this.$refs.attentionVideo.stopVideo();
 				this.$refs.recommendVideo.playVideo();
 			} else {
+				this.resetAttentionNumber();
 				this.$refs.recommendVideo.stopVideo();
 				this.$refs.attentionVideo.playVideo();
 			}
@@ -458,6 +461,37 @@ export default {
 					this.sevenRed = res.data;
 				}
 			})
+		},
+		getAttentionNumber(){
+			this.request({
+				url: this.apiUrl + 'user/my_follow',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log('关注视频数量：', res);
+					this.attentionNumber = res.data.data;
+					if(this.attentionNumber>99){
+						this.attentionNumber = '99';
+					}
+				}
+			})
+		},
+		resetAttentionNumber(){
+			this.request({
+				url: this.apiUrl + 'user/my_follow_reset',
+				data: {
+					token: uni.getStorageSync('token'),
+					openid: uni.getStorageSync('openid'),
+					uid: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log('重置关注数量：', res);
+					this.getAttentionNumber();	//关注数量
+				}
+			})
 		}
 	},
 	mounted() {
@@ -479,6 +513,7 @@ export default {
 			this.getPersonalInfo(); //获取用户信息
 			this.getNewUser(); //获取是否新人
 			this.getSignDay(); // 获取昨天签到的是第几天
+			this.getAttentionNumber();	//关注数量
 		} else {
 			setTimeout(() => {
 				this.isNewRedShow = true;

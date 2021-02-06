@@ -15,7 +15,7 @@
 
 		<view class="dynamic" :style="'height: calc(100% - ' + customBar + 'px);'">
 			<!-- <scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic" refresher-enabled @refresherrefresh="refreshDynamic" :refresher-triggered="refreshFlag"> -->
-			<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic" :scroll-top="scrollTop" scroll-with-animation @scroll="pageScrollFun">
+			<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getDynamic" :scroll-top="scrollTop" scroll-with-animation @scroll="pageScrollFun" enable-back-to-top scroll-anchoring>
 				<view>
 					<!-- 我加入的圈子 -->
 					<view class="myCircle">

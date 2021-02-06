@@ -69,6 +69,26 @@ export default {
 				time: 90,
 			}, {
 				time: 90,
+			}, {
+				time: 90,
+			}, {
+				time: 90,
+			}, {
+				time: 90,
+			}, {
+				time: 90,
+			}, {
+				time: 90,
+			}, {
+				time: 90,
+			}, {
+				time: 90,
+			}, {
+				time: 90,
+			}, {
+				time: 90,
+			}, {
+				time: 90,
 			}],
 			watchTime: 0, //当前红包累计的时间
 			refillTime: 30, //每次滑动可以累计加的时间（固定值）
@@ -640,7 +660,7 @@ export default {
 		// 红包star--------------------------------------------------------------------------------------------------
 		//领取红包累加时间函数
 		getRedPacket() {
-			if (this.getRedNum > this.getRedList.length) {
+			if (this.getRedNum >= this.getRedList.length) {
 				return;
 			}
 			clearInterval(this.watchTimeTimer); //每次滑动，重置定时器 防止叠加
@@ -666,7 +686,7 @@ export default {
 			if (!this.clickRedFlag) {
 				return;
 			}
-			if (this.getRedNum > this.getRedList.length) {
+			if (this.getRedNum >= this.getRedList.length) {
 				uni.showToast({
 					title: '今天的红包领完啦',
 					icon: 'none'

@@ -34,6 +34,7 @@
 				<view v-if="isAuthorized" @click="changeTabs(false)">
 					<text :class="{ active: !tabsFlag }">关注</text>
 					<view v-if="!tabsFlag" class="line"></view>
+					<view v-if="attentionNumber" class="number flex-center">{{attentionNumber}}</view>
 				</view>
 				<view v-else>
 					<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
