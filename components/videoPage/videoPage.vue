@@ -97,7 +97,7 @@
 										<image @click.stop="isAdvertisingShow = false" class="close" src="../../static/close-f.png" mode="widthFix"></image>
 									</view>
 								</view> -->
-								<view style="width: 300rpx; zoom: 0.9; padding-bottom: 20rpx;">
+								<view style="width: 300rpx; zoom: 0.9; padding-bottom: 20rpx; opacity: 0.5;">
 									<ad-custom unit-id="adunit-be40a436865b3778"></ad-custom>
 								</view>
 								<!-- 标签 -->

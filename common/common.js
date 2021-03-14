@@ -41,8 +41,71 @@ Vue.prototype.beAuthorized = function() {
 	return false;
 }
 
+//获取code
+Vue.prototype.getCode = function() {
+	return new Promise((resolve, reject) => {
+		uni.login({
+			provider: 'weixin',
+			success: res => {
+				resolve(res.code);
+			}
+		});
+	});
+}
+
+//获取openid
+Vue.prototype.getOpenid = function(code) {
+	return new Promise((resolve, reject) => {
+		this.request({
+			url: this.apiUrl + 'Login/index',
+			data: {
+				code: code
+			},
+			success: res => {
+				if (res.data.code == 0) {
+					uni.setStorageSync('openid', res.data.info.openid);
+					uni.setStorageSync('session_key', res.data.info.session_key);
+					wx.aldstat.sendOpenid(res.data.info.openid); //阿拉丁
+					resolve(res.data.info.openid);
+				} else {
+					uni.showToast({
+						title: '登陆失败，请稍后再试',
+						icon: 'none'
+					});
+				}
+			}
+		});
+	});
+}
+
+//获取微信用户信息
+Vue.prototype.getWxUserInfo = function() {
+	return new Promise((resolve, reject) => {
+		if(!wx.getUserProfile){
+			reject('版本库不支持此接口');
+			return;
+		}
+		wx.getUserProfile({
+			desc:'在动态中展示',
+			success:(res)=>{
+				console.log(res);
+				resolve(res);
+			},
+			fail:function(err){
+				console.log(err);
+				reject('获取失败');
+			}
+		});
+	});
+}
+
 //用户登陆 获取token
-Vue.prototype.doLogin = function(userInfo, callBack, type) {
+Vue.prototype.doLogin = async function(userInfo, callBack, type) {
+	//没有openid则获取openid
+	if (!uni.getStorageSync('openid')) {
+		var code = await this.getCode();
+		await this.getOpenid(code);
+	}
 	if (this.$refs.loading) {
 		this.$refs.loading.open();
 	}

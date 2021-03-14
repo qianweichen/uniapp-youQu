@@ -62,12 +62,10 @@
 				粉丝
 			</view>
 		</button>
-		<view>
-			<ad-custom unit-id="adunit-be40a436865b3778"></ad-custom>
-		</view>
+		<view><ad-custom unit-id="adunit-be40a436865b3778"></ad-custom></view>
 		<view class="functionList flex">
 			<view class="item" v-for="(item, index) in btnList" :key="index">
-				<view v-if="isAuthorized" @click="goPage(item.url)">
+				<view v-if="isAuthorized" @click="btnListClick(item)">
 					<view class="imgBox flex-center"><image :src="item.img" mode="widthFix"></image></view>
 					<view class="fs-26">{{ item.name }}</view>
 				</view>
@@ -120,6 +118,11 @@ export default {
 					name: '关于我们',
 					img: '../../static/about.png',
 					url: '/pages/mine/about'
+				},
+				{
+					name: '清理缓存',
+					img: '../../static/clear.png',
+					url: ''
 				}
 				// ,{
 				// 	name:'收到的礼物',
@@ -135,6 +138,27 @@ export default {
 		};
 	},
 	methods: {
+		btnListClick(item) {
+			if (item.name == '清理缓存') {
+				uni.showModal({
+					title: '提示',
+					content: '确定要清除缓存吗？',
+					success: function(res) {
+						if (res.confirm) {
+							// console.log('用户点击确定');
+							uni.clearStorageSync();
+							uni.reLaunch({
+								url: '../index/index'
+							});
+						} else if (res.cancel) {
+							// console.log('用户点击取消');
+						}
+					}
+				});
+				return;
+			}
+			this.goPage(item.url);
+		},
 		//签到
 		signIn() {
 			uni.requestSubscribeMessage({
@@ -200,7 +224,7 @@ export default {
 
 <style lang="scss">
 @import '@/pages/personalCenter/personalCenter.scss';
-.page-persionalC{
+.page-persionalC {
 	min-height: 100%;
 }
 .banner {

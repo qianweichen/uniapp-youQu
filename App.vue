@@ -2,39 +2,16 @@
 import Vue from 'vue';
 var timer = '';
 export default {
-	onLaunch: function() {
-		//登陆1.获取code
-		uni.login({
-			provider: 'weixin',
-			success: res => {
-				//2.获取openid
-				this.request({
-					url: this.apiUrl + 'Login/index',
-					data: {
-						code: res.code
-					},
-					success: res => {
-						if (res.data.code == 0) {
-							uni.setStorageSync('openid', res.data.info.openid);
-							uni.setStorageSync('session_key', res.data.info.session_key);
-							wx.aldstat.sendOpenid(res.data.info.openid); //阿拉丁
-							//3.授权过时刷新token
-							uni.getUserInfo({
-								provider: 'weixin',
-								success: res => {
-									this.doLogin(res.userInfo, '', 'refresh');
-								}
-							});
-						} else {
-							uni.showToast({
-								title: '登陆失败，请稍后再试',
-								icon: 'none'
-							});
-						}
-					}
-				});
-			}
-		});
+	onLaunch: async function() {
+		//授权过时刷新token
+		setTimeout(()=>{
+			uni.getUserInfo({
+				provider: 'weixin',
+				success: res => {
+					this.doLogin(res.userInfo, '', 'refresh');
+				}
+			});
+		},5000);
 
 		//小程序版本更新
 		const updateManager = uni.getUpdateManager();
