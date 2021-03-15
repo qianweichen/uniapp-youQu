@@ -98,7 +98,7 @@
 									</view>
 								</view> -->
 								<view style="width: 300rpx; zoom: 0.9; padding-bottom: 20rpx; opacity: 0.5;">
-									<ad-custom unit-id="adunit-be40a436865b3778"></ad-custom>
+									<ad-custom style="border-radius: 12rpx; overflow: hidden;" unit-id="adunit-be40a436865b3778"></ad-custom>
 								</view>
 								<!-- 标签 -->
 								<view class="flex">
