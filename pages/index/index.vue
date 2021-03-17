@@ -155,8 +155,10 @@ export default {
 			} else if (this.tabIndex != index) {
 				if (this.$refs.homePage.$refs.recommendVideo) {
 					this.$refs.homePage.$refs.recommendVideo.videoContext.play();
+					this.$refs.homePage.$refs.recommendVideo.isAuthorized = this.beAuthorized();
 				} else if (this.$refs.homePage.$refs.attentionVideo) {
 					this.$refs.homePage.$refs.attentionVideo.videoContext.play();
+					this.$refs.homePage.$refs.attentionVideo.isAuthorized = this.beAuthorized();
 				}
 			}
 			

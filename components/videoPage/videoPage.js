@@ -50,15 +50,15 @@ export default {
 			isVideoRedShow: null, //视频红包积分提醒
 			getRedNum: 0, //第几个红包
 			getRedList: [{ //每一个红包对应的浏览时间（固定值）
-				time: 30,
+				time: 40,
 			},{
-				time: 30,
+				time: 40,
 			},{
-				time: 30,
+				time: 40,
 			},{
-				time: 30,
+				time: 40,
 			},{
-				time: 30,
+				time: 40,
 			}, {
 				time: 60,
 			}, {

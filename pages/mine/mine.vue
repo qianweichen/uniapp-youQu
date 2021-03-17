@@ -120,7 +120,7 @@ export default {
 					url: '/pages/mine/about'
 				},
 				{
-					name: '清理缓存',
+					name: '退出登录',
 					img: '../../static/clear.png',
 					url: ''
 				}
@@ -139,10 +139,10 @@ export default {
 	},
 	methods: {
 		btnListClick(item) {
-			if (item.name == '清理缓存') {
+			if (item.name == '退出登录') {
 				uni.showModal({
 					title: '提示',
-					content: '确定要清除缓存吗？',
+					content: '确定要退出登录吗？',
 					success: function(res) {
 						if (res.confirm) {
 							// console.log('用户点击确定');

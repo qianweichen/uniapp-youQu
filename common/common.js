@@ -94,7 +94,7 @@ Vue.prototype.getWxUserInfo = function() {
 				resolve(res.userInfo);
 			},
 			fail: function(err) {
-				console.log('获取用户信息失败：',err);
+				console.log('获取用户信息失败：', err);
 				reject(err);
 			}
 		});
@@ -108,9 +108,9 @@ Vue.prototype.doLogin = async function(userInfo, callBack, type) {
 		var code = await this.getCode();
 		await this.getOpenid(code);
 	}
-	try{
+	try {
 		var userInfo = await this.getWxUserInfo();
-	}catch{
+	} catch {
 		return;
 	}
 	uni.setStorageSync('userInfo', userInfo);
@@ -167,6 +167,9 @@ Vue.prototype.request = function(obj) {
 			var pageIndex = pages[0];
 			if (res.status && res.status == "error") {
 				console.log('错误信息：', res);
+				if (res.msg == "账户未授权!") {
+					this.doLogin();
+				}
 				uni.showToast({
 					title: res.msg,
 					icon: 'none'
@@ -194,6 +197,9 @@ Vue.prototype.request = function(obj) {
 			}
 			if (res.data.status && res.data.status == "error") {
 				console.log('错误信息：', res);
+				if (res.data.msg == "账户未授权!") {
+					this.doLogin();
+				}
 				uni.showToast({
 					title: res.data.msg,
 					icon: 'none'
