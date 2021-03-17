@@ -29,7 +29,7 @@
 								<text class="fs-22">创建我的圈子</text>
 							</view>
 							<view v-else class="right flex-center">
-								<button open-type="getUserInfo" class="share flex-center" @getuserinfo="getUserInfo">
+								<button class="share flex-center" @click="getUserInfo">
 									<image src="../../static/add.png" mode="widthFix"></image>
 									<text class="fs-22">创建我的圈子</text>
 								</button>
@@ -55,7 +55,7 @@
 								<view class="fs-22">完成任务兑好礼</view>
 								<image class="icon-right" src="../../static/right.png" mode="widthFix"></image>
 							</view>
-							<button v-else open-type="getUserInfo" class="share flex gift-right" @getuserinfo="getUserInfo">
+							<button v-else class="share flex gift-right" @click="getUserInfo">
 								<image class="icon-gift" src="../../static/gift-c.png" mode="widthFix"></image>
 								<view class="fs-22">完成任务兑好礼</view>
 								<image class="icon-right" src="../../static/right.png" mode="widthFix"></image>

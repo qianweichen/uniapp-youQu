@@ -37,7 +37,7 @@
 					<view v-if="attentionNumber" class="number flex-center">{{attentionNumber}}</view>
 				</view>
 				<view v-else>
-					<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+					<button class="share" @click="getUserInfo">
 						<text :class="{ active: !tabsFlag }">关注</text>
 						<view v-if="!tabsFlag" class="line"></view>
 					</button>
@@ -107,7 +107,7 @@
 						<image class="bg" src="@/static/share-bg.png" mode="widthFix"></image>
 						<view class="title flex-between">
 							<view v-if="isAuthorized" @click="goPage('/pages/mine/wallet')">提现</view>
-							<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">提现</button>
+							<button v-else class="share" @click="getUserInfo">提现</button>
 							<image @click="isShowShare = false" src="@/static/share-close.png" mode="widthFix"></image>
 						</view>
 
@@ -162,7 +162,7 @@
 									</view>
 								</view>
 							</view>
-							<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share" style="overflow: unset;">
+							<button v-else @click="getUserInfo" class="share" style="overflow: unset;">
 								<view class="tip" style="padding-top: 20rpx;">
 									<view class="flex-center">
 										<text style="padding: 6rpx 20rpx; border-radius: 30rpx; background-color: #FF893E; color: #fff;">点击签到</text>
@@ -191,7 +191,7 @@
 								<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
 							</view>
 						</view>
-						<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share" style="overflow: unset;">
+						<button v-else @click="getUserInfo" class="share" style="overflow: unset;">
 							<view :animation="animation2" class="sign-in fs-40 flex-center">
 								<view>早起打卡</view>
 								<image class="red-btn" src="../../static/red-btn.png" mode="widthFix"></image>
@@ -207,7 +207,7 @@
 								</view>
 							</swiper-item>
 						</swiper>
-						<button v-else open-type="getUserInfo" class="ads-swiper share btn-group flex-between" @getuserinfo="getUserInfo">
+						<button v-else class="ads-swiper share btn-group flex-between" @click="getUserInfo">
 							<swiper class="ads-swiper">
 								<swiper-item v-for="(item, index) in advertisingList" :key="index" class="btn-group flex">
 									<view v-for="(items, indexs) in item" :key="indexs" class="item">

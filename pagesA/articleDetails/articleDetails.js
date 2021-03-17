@@ -620,7 +620,6 @@ export default {
 			});
 		},
 		getUserInfo(e) {
-			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 				this.userId = uni.getStorageSync('userId')

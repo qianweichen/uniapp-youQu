@@ -81,19 +81,21 @@ Vue.prototype.getOpenid = function(code) {
 //获取微信用户信息
 Vue.prototype.getWxUserInfo = function() {
 	return new Promise((resolve, reject) => {
-		if(!wx.getUserProfile){
-			reject('版本库不支持此接口');
+		if (!wx.getUserProfile) {
+			wx.showModal({
+				title: '提示',
+				content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+			});
 			return;
 		}
 		wx.getUserProfile({
-			desc:'在动态中展示',
-			success:(res)=>{
-				console.log(res);
-				resolve(res);
+			desc: '展示用户信息',
+			success: (res) => {
+				resolve(res.userInfo);
 			},
-			fail:function(err){
-				console.log(err);
-				reject('获取失败');
+			fail: function(err) {
+				console.log('获取用户信息失败：',err);
+				reject(err);
 			}
 		});
 	});
@@ -106,10 +108,15 @@ Vue.prototype.doLogin = async function(userInfo, callBack, type) {
 		var code = await this.getCode();
 		await this.getOpenid(code);
 	}
+	try{
+		var userInfo = await this.getWxUserInfo();
+	}catch{
+		return;
+	}
+	uni.setStorageSync('userInfo', userInfo);
 	if (this.$refs.loading) {
 		this.$refs.loading.open();
 	}
-	uni.setStorageSync('userInfo', userInfo);
 	this.request({
 		url: this.apiUrl + 'Login/do_login',
 		data: {

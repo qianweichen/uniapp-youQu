@@ -56,7 +56,7 @@
 					</view>
 				</view>
 			</view>
-			<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share btn-group">
+			<button v-else @click="getUserInfo" class="share btn-group">
 				<image src="../static/clockIn/btn.png" mode="widthFix"></image>
 				<view v-if="clockTime">
 					<view v-if="clockStatus == 0" class="flex-center">点击预约打卡</view>
@@ -125,7 +125,7 @@
 				<image src="../../static/red-btn.png" mode="widthFix"></image>
 				<button class="btn share" open-type="share">邀请好友助力，获取更多积分</button>
 			</view>
-			<button v-else open-type="getUserInfo" @getuserinfo="getUserInfo" class="share btn-group flex-center">
+			<button v-else @click="getUserInfo" class="share btn-group flex-center">
 				<image src="../../static/red-btn.png" mode="widthFix"></image>
 				<button class="btn share" open-type="share">邀请好友助力，获取更多积分</button>
 			</button>
@@ -199,8 +199,7 @@
 			<view v-if="isAuthorized" @click="goPage('/pagesA/clockIn/record')" style="background-color: #5F3DD2;">我的战绩</view>
 			<button
 				v-else
-				open-type="getUserInfo"
-				@getuserinfo="getUserInfo"
+				@click="getUserInfo"
 				class="share"
 				style="background-color: #5F3DD2; color: #fff; font-size: 26rpx; height: 50%; padding: 20rpx; border-radius: 0;"
 			>
@@ -272,7 +271,6 @@ export default {
 	methods: {
 		//授权
 		getUserInfo(e) {
-			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 				this.init();

@@ -31,7 +31,7 @@
 				<view class="flex-center" @click="checkFriendCode">提交</view>
 				<view class="flex-center sc" @click="makePic">生成海报</view>
 			</view>
-			<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+			<button v-else class="share" @click="getUserInfo">
 				<view class="flex-center btnBox">
 					<view class="flex-center">提交</view>
 					<view class="flex-center sc">生成海报</view>
@@ -304,7 +304,6 @@ export default {
 			});
 		},
 		getUserInfo(e) {
-			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 				this.getCode();

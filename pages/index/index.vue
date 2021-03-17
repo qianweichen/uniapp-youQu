@@ -31,7 +31,7 @@
 				<view :class="{ active: tabIndex == 'message' }">站内信</view>
 			</view>
 			<view v-else>
-				<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+				<button class="share" @click="getUserInfo">
 					<image class="icon" :src="'../../static/tabbar/message' + (tabIndex == 'message' ? 'A' : '') + '.png'" mode="widthFix"></image>
 					<view :class="{ active: tabIndex == 'message' }">站内信</view>
 				</button>
@@ -172,7 +172,6 @@ export default {
 		},
 		//授权
 		getUserInfo(e) {
-			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 				//获取消息数

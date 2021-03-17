@@ -32,7 +32,7 @@
 			<image @click="close" class="close" src="../../static/close-r.png" mode="widthFix"></image>
 		</view>
 		<view class="btnBox" v-else>
-			<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+			<button class="share" @click="getUserInfo">
 				<view class="send flex-between fc-f">
 					<view>
 						<image src="../../static/send-v.png" mode="widthFix"></image>
@@ -62,7 +62,6 @@ export default {
 	},
 	methods: {
 		getUserInfo(e) {
-			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 			});

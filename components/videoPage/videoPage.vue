@@ -180,7 +180,7 @@
 									<view>{{ item.info_zan_count }}</view>
 								</view>
 								<view v-else>
-									<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+									<button class="share" @click="getUserInfo">
 										<image class="opcity" :src="'../../static/like_w.png'" mode="widthFix"></image>
 										<view>{{ item.info_zan_count }}</view>
 									</button>
@@ -200,7 +200,7 @@
 									<view>{{ item.is_follow == 0 || !item.is_follow ? '' : '已' }}关注</view>
 								</view>
 								<view v-else>
-									<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+									<button class="share" @click="getUserInfo">
 										<image class="opcity" src="../../static/attention-w.png" mode="widthFix"></image>
 										<view>关注</view>
 									</button>
@@ -283,7 +283,7 @@
 										<text v-if="isAuthorized" @click="toggleTwoLevComment(true, item.id, item.user_id)" class="fs-26" style="color: #888; padding-left: 14rpx;">
 											回复
 										</text>
-										<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="" style="display: inline;">
+										<button v-else class="share" @click.stop="getUserInfo" style="display: inline;">
 											<text class="fs-26" style="color: #888; padding-left: 14rpx;">回复</text>
 										</button>
 									</view>
@@ -292,7 +292,7 @@
 									<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 									<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
 								</view>
-								<button v-else open-type="getUserInfo" class="share likeBox" @getuserinfo="getUserInfo" @click.stop="">
+								<button v-else class="share likeBox" @click.stop="getUserInfo">
 									<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 									<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
 								</button>
@@ -333,7 +333,7 @@
 					<view class="ipt-group flex-between">
 						<input type="text" placeholder="留下你的精彩评论吧" maxlength="30" v-model="commentContent" />
 						<image v-if="isAuthorized" class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
-						<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
+						<button v-else class="share" @click.stop="getUserInfo">
 							<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
 						</button>
 					</view>
@@ -347,7 +347,7 @@
 				<view class="inputAlt-cont-head flex-between">
 					<view @click="toggleTwoLevComment(false)">取消</view>
 					<view v-if="isAuthorized" @click="sendTwoLevComment">发布</view>
-					<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view @click="sendTwoLevComment">发布</view></button>
+					<button v-else class="share" @click="getUserInfo"><view @click="sendTwoLevComment">发布</view></button>
 				</view>
 				<view class="inputAlt-cont-ipt">
 					<view style="text-align:right; font-size:24rpx;">{{ twoComment.length }}/200</view>

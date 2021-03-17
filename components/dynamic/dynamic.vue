@@ -64,7 +64,7 @@ exitFullScreen() {
 						<view v-if="isAuthorized" class="btn flex-center fs-22" @click.stop="attention(item.user_id, item.is_follow, index)">
 							{{ item.is_follow == 1 ? '已关注' : '关注' }}
 						</view>
-						<button v-else open-type="getUserInfo" class="share btn flex-center" @getuserinfo="getUserInfo" style="font-size: 22rpx;">关注</button>
+						<button v-else class="share btn flex-center" @click="getUserInfo" style="font-size: 22rpx;">关注</button>
 					</view>
 				</view>
 				<!-- 文字内容 -->
@@ -145,7 +145,7 @@ exitFullScreen() {
 							<text>{{ item.info_zan_count }}</text>
 						</view>
 						<view v-else class="flex">
-							<button open-type="getUserInfo" class="share flex" @getuserinfo="getUserInfo">
+							<button class="share flex" @click="getUserInfo">
 								<image :src="'../../static/like' + (item.is_info_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<text>{{ item.info_zan_count }}</text>
 							</button>
@@ -155,7 +155,7 @@ exitFullScreen() {
 							<text>{{ item.study_repount }}</text>
 						</view>
 						<view class="flex" v-else>
-							<button open-type="getUserInfo" class="share flex" @getuserinfo="getUserInfo">
+							<button class="share flex" @click="getUserInfo">
 								<image src="../../static/comment.png" mode="widthFix"></image>
 								<text>{{ item.study_repount }}</text>
 							</button>
@@ -211,7 +211,7 @@ exitFullScreen() {
 									<text v-if="isAuthorized" @click="toggleTwoLevComment(true, item.id, item.user_id)" class="fs-26" style="color: #888; padding-left: 14rpx;">
 										回复
 									</text>
-									<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="" style="display: inline;">
+									<button v-else class="share" @click.stop="getUserInfo" style="display: inline;">
 										<text class="fs-26" style="color: #888; padding-left: 14rpx;">回复</text>
 									</button>
 								</view>
@@ -220,7 +220,7 @@ exitFullScreen() {
 								<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
 							</view>
-							<button v-else open-type="getUserInfo" class="share likeBox" @getuserinfo="getUserInfo" @click.stop="">
+							<button v-else class="share likeBox" @click.stop="getUserInfo">
 								<image class="like" :src="'../../static/like' + (item.is_huifu_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<view class="fs-26" :style="'color: #' + (false ? '999' : '7364BD') + ';'">{{ item.is_huifu_zan_count }}</view>
 							</button>
@@ -261,7 +261,7 @@ exitFullScreen() {
 				<view class="ipt-group flex-between">
 					<input type="text" placeholder="留下你的精彩评论吧" @confirm="sendComment" maxlength="30" v-model="commentContent" />
 					<image v-if="isAuthorized" class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
-					<button v-else open-type="getUserInfo" class="share" @getuserinfo="getUserInfo" @click.stop="">
+					<button v-else class="share" @click.stop="getUserInfo">
 						<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
 					</button>
 				</view>

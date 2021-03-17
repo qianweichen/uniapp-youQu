@@ -16,7 +16,7 @@
 								<view v-else class="fs-22 join flex-center" @click.stop="toggleIptCodeFlag(true)">加入</view>
 							</view>
 							<view v-else @click.stop="">
-								<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo"><view class="fs-22 join flex-center">加入</view></button>
+								<button class="share" @click="getUserInfo"><view class="fs-22 join flex-center">加入</view></button>
 							</view>
 						</view>
 						<view v-if="isAuthorized" class="nameBox fc-f" @click="goPage('/pagesA/circle/circleInfo?id=' + circleId)">
@@ -24,7 +24,7 @@
 							<view class="fs-24" style="color: #ddd;">{{ circleData.realm_synopsis || '' }}</view>
 							<view class="fs-20">关注 {{ circleData.concern || 0 }} | 帖子 {{ circleData.is_paper_count || 0 }}</view>
 						</view>
-						<button v-else open-type="getUserInfo" class="share nameBox fc-f" @getuserinfo="getUserInfo" style="text-align: left;">
+						<button v-else class="share nameBox fc-f" @click="getUserInfo" style="text-align: left;">
 							<view class="fs-32 bold">{{ circleData.realm_name || '' }}</view>
 							<view class="fs-24" style="color: #ddd;">{{ circleData.realm_synopsis || '' }}</view>
 							<view class="fs-20">关注 {{ circleData.concern || 0 }} | 帖子 {{ circleData.is_paper_count || 0 }}</view>
@@ -35,7 +35,7 @@
 						<view class="fs-22 fc-f">分享</view>
 					</view>
 					<view v-else class="share">
-						<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+						<button class="share" @click="getUserInfo">
 							<image src="../../static/ercode.png" mode="widthFix"></image>
 							<view class="fs-22 fc-f">分享</view>
 						</button>
@@ -58,7 +58,7 @@
 				</view>
 			</view>
 			<view v-else>
-				<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+				<button class="share" @click="getUserInfo">
 					<view class="picBox flex-center">
 						<view>
 							<image src="../../static/lock.png" mode="widthFix"></image>

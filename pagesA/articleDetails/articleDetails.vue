@@ -15,7 +15,7 @@
 						<view v-if="isAuthorized" class="btn flex-center fs-22" @click.stop="attention(articleData.user_id, articleData.is_follow, index)">
 							{{ articleData.is_follow == 1 ? '已关注' : '关注' }}
 						</view>
-						<button v-else open-type="getUserInfo" class="share btn flex-center" @getuserinfo="getUserInfo" style="font-size: 22rpx;">关注</button>
+						<button v-else class="share btn flex-center" @click="getUserInfo" style="font-size: 22rpx;">关注</button>
 					</view>
 				</view>
 				<!-- 文字 -->
@@ -51,7 +51,7 @@
 							<text>{{ articleData.info_zan_count }}</text>
 						</view>
 						<view v-else>
-							<button open-type="getUserInfo" class="share flex" @getuserinfo="getUserInfo">
+							<button class="share flex" @click="getUserInfo">
 								<image :src="'../../static/like' + (articleData.is_info_zan ? '' : '2') + '.png'" mode="widthFix"></image>
 								<text>{{ articleData.info_zan_count }}</text>
 							</button>
@@ -61,7 +61,7 @@
 							<text>{{ articleData.study_repount }}</text>
 						</view>
 						<view v-else>
-							<button open-type="getUserInfo" class="share flex" @getuserinfo="getUserInfo">
+							<button class="share flex" @click="getUserInfo">
 								<image src="../../static/comment.png" mode="widthFix"></image>
 								<text>{{ articleData.study_repount }}</text>
 							</button>
@@ -128,7 +128,7 @@
 				<image class="send" src="../../static/send.png" mode="widthFix" @click="sendComment"></image>
 			</view>
 		</view>
-		<button v-else open-type="getUserInfo" class="share sendBox" @getuserinfo="getUserInfo">
+		<button v-else class="share sendBox" @click="getUserInfo">
 			<view class="box flex-between">
 				<input disabled class="fs-26" type="text" placeholder="留下你的精彩评论吧" style="text-align: left;" />
 				<image class="send" src="../../static/send.png" mode="widthFix"></image>
@@ -191,7 +191,7 @@
 			</view>
 			<image v-if="shareOpen" @click="toggleShare(false)" src="../../static/arrow-down.png" mode="widthFix" style="width: 26rpx; height: auto;"></image>
 		</view>
-		<button v-else open-type="getUserInfo" class="share shareBox flex-column-between" @getuserinfo="getUserInfo" :style="shareOpen ? 'height:350rpx;' : ''">
+		<button v-else class="share shareBox flex-column-between" @click="getUserInfo" :style="shareOpen ? 'height:350rpx;' : ''">
 			<view v-if="!shareOpen">
 				<image class="icon-share" src="../../static/share-r.png" mode="widthFix"></image>
 				<view class="fs-22">分享</view>

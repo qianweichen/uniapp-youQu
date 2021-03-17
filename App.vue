@@ -3,16 +3,6 @@ import Vue from 'vue';
 var timer = '';
 export default {
 	onLaunch: async function() {
-		//授权过时刷新token
-		setTimeout(()=>{
-			uni.getUserInfo({
-				provider: 'weixin',
-				success: res => {
-					this.doLogin(res.userInfo, '', 'refresh');
-				}
-			});
-		},5000);
-
 		//小程序版本更新
 		const updateManager = uni.getUpdateManager();
 		updateManager.onCheckForUpdate(function(res) {

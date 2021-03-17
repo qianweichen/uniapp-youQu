@@ -38,7 +38,7 @@
 						<view class="flex-center" style="width: 100%; height: 100%;" v-if="personalInfo.id == uid" @click="signIn">打卡</view>
 					</view>
 					<view v-else style="width: 312rpx;">
-						<button open-type="getUserInfo" class="share flex-center" @getuserinfo="getUserInfo" @click.stop="" style="width: 100%; height: 100%;">关注</button>
+						<button class="share flex-center" @click.stop="getUserInfo" style="width: 100%; height: 100%;">关注</button>
 					</view>
 
 					<view class="flex-center">举报</view>

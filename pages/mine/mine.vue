@@ -6,13 +6,13 @@
 				<view class="fs-26">个人主页</view>
 				<image src="../../static/right.png" mode="widthFix"></image>
 			</view>
-			<button v-else open-type="getUserInfo" class="share myPage flex-center" @getuserinfo="getUserInfo">
+			<button v-else class="share myPage flex-center" @click="getUserInfo">
 				<view class="fs-26">个人主页</view>
 				<image src="../../static/right.png" mode="widthFix"></image>
 			</button>
 			<image v-if="isAuthorized" class="header circle" :src="personalInfo.user_head_sculpture || ''" mode="aspectFill"></image>
 			<view v-else class="header circle" style="background-color: #363441;">
-				<button open-type="getUserInfo" class="share flex-center" @getuserinfo="getUserInfo" style="width: 100%; height: 100%;">点我登陆</button>
+				<button class="share flex-center" @click="getUserInfo" style="width: 100%; height: 100%;">点我登陆</button>
 			</view>
 			<view v-if="isAuthorized" class="btnBox flex-between fs-26">
 				<view class="flex-center gz" @click="goPage('/pages/mine/editInformation')">编辑资料</view>
@@ -20,7 +20,7 @@
 				<view v-else class="flex-center sx" @click="signIn">{{ personalInfo.fraction }}积分</view>
 			</view>
 			<view v-else>
-				<button open-type="getUserInfo" class="share btnBox flex-between" @getuserinfo="getUserInfo">
+				<button class="share btnBox flex-between" @click="getUserInfo">
 					<view class="flex-center gz fs-26">编辑资料</view>
 					<view class="flex-center sx fs-26">打卡</view>
 				</button>
@@ -48,7 +48,7 @@
 				粉丝
 			</view>
 		</view>
-		<button v-else open-type="getUserInfo" class="share myNum flex" @getuserinfo="getUserInfo" style="font-size: 30rpx;">
+		<button v-else class="share myNum flex" @click="getUserInfo" style="font-size: 30rpx;">
 			<view>
 				<text class="bold fs-40">{{ personalInfo.trailing }}</text>
 				圈子
@@ -70,7 +70,7 @@
 					<view class="fs-26">{{ item.name }}</view>
 				</view>
 				<view v-else>
-					<button open-type="getUserInfo" class="share" @getuserinfo="getUserInfo">
+					<button class="share" @click="getUserInfo">
 						<view class="imgBox flex-center"><image :src="item.img" mode="widthFix"></image></view>
 						<view class="fs-26">{{ item.name }}</view>
 					</button>
@@ -202,7 +202,6 @@ export default {
 			});
 		},
 		getUserInfo(e) {
-			if (!e.detail.userInfo) return;
 			this.doLogin(e.detail.userInfo, () => {
 				this.isAuthorized = true;
 				this.getPersonalInfo();
